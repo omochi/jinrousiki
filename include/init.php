@@ -26,42 +26,44 @@ class InitializeConfig {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'ROOM_OPT'             => array('room_config', 'time_config', 'game_option_config',
-				    'option/room_option_class', 'option/room_option_item_class'),
-    'ROLES'                => 'role_class',
-    'TIME_CALC'            => array('time_config', 'room_config', 'game_config', 'cast_config',
-				    'role_data_class', 'image_class', 'info_functions'),
-    'TWITTER'              => array('twitter_config', 'twitter'),
-    'PAPARAZZI'            => 'paparazzi_class',
-    'server_config'        => array('system_class', 'functions'), //常時ロードされる
-    'chaos_config'         => 'cast_config',
-    'shared_server_config' => 'info_functions',
-    'copyright_config'     => array('version', 'info_functions'),
-    'database_class'       => 'database_config',
-    'system_class'         => 'room_class', //常時ロードされる
-    'room_class'           => 'option_class',
-    'user_class'           => array('game_config', 'message', 'role_data_class', 'game_functions'),
-    'talk_class'           => 'user_class',
-    'role_class'           => 'game_format',
-    'icon_class'           => 'icon_config',
-    'user_icon_class'      => 'user_icon_config',
-    'sound_class'          => 'sound_config',
-    'login_class'          => 'session_class',
-    'game_view_class'      => array('icon_class', 'talk_class'),
-    'game_log_class'       => array('session_class', 'talk_class'),
-    'user_manager_class'   => array('room_config', 'room_class', 'user_class', 'session_class',
-				    'icon_functions'),
-    'icon_view_class'      => 'icon_functions',
-    'icon_edit_class'      => 'icon_functions',
-    'icon_upload_class'    => array('session_class', 'icon_functions'),
-    'paparazzi_class'      => 'paparazzi',
-    'index_functions'      => array('menu_config', 'bbs_config', 'version'),
-    'game_play_functions'  => array('user_class', 'image_class'),
-    'game_vote_functions'  => 'game_functions',
-    'icon_functions'       => array('icon_class', 'user_icon_class'),
-    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'image_class'),
-    'setup_class'          => array('setup_config', 'version', 'database_class'),
-    'test/objection'       => array('game_config', 'sound_class')
+    'ROOM_OPT'               => 'room_option_class',
+    'ROLES'                  => 'role_class',
+    'TIME_CALC'              => array('time_config', 'room_config', 'game_config', 'cast_config',
+				      'role_data_class', 'image_class', 'info_functions'),
+    'TWITTER'                => array('twitter_config', 'twitter'),
+    'PAPARAZZI'              => 'paparazzi_class',
+    'server_config'          => array('system_class', 'functions'), //常時ロードされる
+    'chaos_config'           => 'cast_config',
+    'shared_server_config'   => 'info_functions',
+    'copyright_config'       => array('version', 'info_functions'),
+    'database_class'         => 'database_config',
+    'system_class'           => 'room_class', //常時ロードされる
+    'room_class'             => 'option_class',
+    'room_option_class'      => array('option_class', 'room_option_item_class'),
+    'room_option_item_class' => array('room_config', 'time_config', 'game_option_config'),
+    'option_form_class'      => 'room_option_class',
+    'user_class'             => array('game_config', 'message', 'role_data_class', 'game_functions'),
+    'talk_class'             => 'user_class',
+    'role_class'             => 'game_format',
+    'icon_class'             => 'icon_config',
+    'user_icon_class'        => 'user_icon_config',
+    'sound_class'            => 'sound_config',
+    'login_class'            => 'session_class',
+    'game_view_class'        => array('icon_class', 'talk_class'),
+    'game_log_class'         => array('session_class', 'talk_class'),
+    'user_manager_class'     => array('room_config', 'room_class', 'user_class', 'session_class',
+				      'icon_functions'),
+    'icon_view_class'        => 'icon_functions',
+    'icon_edit_class'        => 'icon_functions',
+    'icon_upload_class'      => array('session_class', 'icon_functions'),
+    'paparazzi_class'        => 'paparazzi',
+    'index_functions'        => array('menu_config', 'bbs_config', 'version', 'option_form_class'),
+    'game_play_functions'    => array('user_class', 'image_class'),
+    'game_vote_functions'    => 'game_functions',
+    'icon_functions'         => array('icon_class', 'user_icon_class'),
+    'oldlog_functions'       => array('oldlog_config', 'cast_config', 'image_class'),
+    'setup_class'            => array('setup_config', 'version', 'database_class'),
+    'test/objection'         => array('game_config', 'sound_class')
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
@@ -81,7 +83,7 @@ class InitializeConfig {
     'PAPARAZZI'     => 'Paparazzi'
   );
 
-  function __construct(){
+  function __construct() {
     $this->path = new StdClass();
     $this->path->root    = JINRO_ROOT;
     $this->path->config  = JINRO_CONF;
@@ -95,27 +97,27 @@ class InitializeConfig {
   }
 
   //依存情報設定
-  protected function SetDepend($type, $name, $depend){
+  protected function SetDepend($type, $name, $depend) {
     if (is_null($this->$type)) return false;
     $this->{$type}[$name] = $depend;
     return true;
   }
 
   //依存クラス情報設定 ＆ ロード
-  protected function SetClass($name, $class){
+  protected function SetClass($name, $class) {
     if (! $this->SetDepend('class_list', $name, $class)) return false;
     $this->LoadClass($name);
     return true;
   }
 
   //依存解決処理
-  protected function LoadDependence($name){
+  protected function LoadDependence($name) {
     if (array_key_exists($name, $this->depend_file))  $this->LoadFile($this->depend_file[$name]);
     if (array_key_exists($name, $this->depend_class)) $this->LoadClass($this->depend_class[$name]);
   }
 
   //ファイルロード
-  function LoadFile($name){
+  function LoadFile($name) {
     $name_list = func_get_args();
     if (is_array($name_list[0])) $name_list = $name_list[0];
     if (count($name_list) > 1) {
@@ -164,7 +166,6 @@ class InitializeConfig {
       $path = $this->path->module . '/' . $name;
       break;
 
-    case 'option_class':
     case 'role_class':
     case 'role_data_class':
     case 'chatengine':
@@ -172,6 +173,13 @@ class InitializeConfig {
     case 'paparazzi':
     case 'paparazzi_class':
       $path = $this->path->include . '/' . @array_shift(explode('_', $name));
+      break;
+
+    case 'option_class':
+    case 'option_form_class':
+    case 'room_option_class':
+    case 'room_option_item_class':
+      $path = $this->path->include . '/option';
       break;
 
     default:
@@ -184,7 +192,7 @@ class InitializeConfig {
     return true;
   }
 
-  function LoadClass($name){
+  function LoadClass($name) {
     $name_list = func_get_args();
     if (is_array($name_list[0])) $name_list = $name_list[0];
     if (count($name_list) > 1) {
@@ -201,7 +209,7 @@ class InitializeConfig {
     return true;
   }
 
-  function LoadRequest($class = null, $load = false){
+  function LoadRequest($class = null, $load = false) {
     if ($load) $this->LoadFile('game_config');
     $this->LoadFile('request_class');
     return RQ::Load($class);

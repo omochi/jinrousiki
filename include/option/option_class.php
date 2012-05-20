@@ -86,6 +86,11 @@ class OptionManager {
     'decide', 'authority', 'joker', 'deep_sleep', 'blinder', 'mind_open',
     'perverseness', 'liar', 'gentleman', 'critical', 'sudden_death', 'quiz');
 
+  //個別クラス取得
+  static function GetClass($name) {
+    return self::Load($name) ? self::LoadClass($name) : null;
+  }
+
   //個別クラスファイルロード
   static function Load($name) {
     if (is_null($name) || ! file_exists($file = self::GetPath($name))) return false;

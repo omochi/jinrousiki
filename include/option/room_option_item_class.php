@@ -1,7 +1,8 @@
 <?php
 abstract class RoomOptionItem {
   public $name;
-  public $enabled;
+  public $enable;
+  public $value;
 
   public $collect = 'SetOption';
 
@@ -9,7 +10,6 @@ abstract class RoomOptionItem {
   public $formtype;
   public $formname;
   public $formvalue;
-  public $value;
   public $caption;
   public $explain;
   */
@@ -17,9 +17,9 @@ abstract class RoomOptionItem {
   function  __construct($group) {
     $this->name = array_pop(explode('Option_', get_class($this)));
     RoomOption::SetGroup($group, $this);
-    $enable = sprintf('%s_enable', $this->name);
-    $this->enabled = isset(GameOptionConfig::$$enable) ? GameOptionConfig::$$enable : true;
+    $enable  = sprintf('%s_enable',  $this->name);
     $default = sprintf('default_%s', $this->name);
+    $this->enable = isset(GameOptionConfig::$$enable) ? GameOptionConfig::$$enable : true;
     if (isset(GameOptionConfig::$$default)) {
       $this->value = GameOptionConfig::$$default;
     }
@@ -129,7 +129,7 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
 	  }
 	  else if (is_string($value)) {
 	    $item = RoomOption::Get($value);
-	    if (isset($item) && $item->enabled) {
+	    if (isset($item) && $item->enable) {
 	      $this->items[$item->name] = $item;
 	    }
 	  }

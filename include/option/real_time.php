@@ -6,6 +6,8 @@
  * @author enogu
  */
 class Option_real_time extends RoomOptionItem {
+  public $formtype = 'realtime';
+
   function __construct() { parent::__construct(RoomOption::GAME_OPTION); }
 
   function GetCaption(){ return 'リアルタイム制'; }

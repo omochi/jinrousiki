@@ -283,7 +283,7 @@ class RoleManager {
 }
 
 //-- 役職の基底クラス --//
-class Role {
+abstract class Role {
   public $role;
   public $action;
   public $not_action;
@@ -291,7 +291,7 @@ class Role {
   public $not_submit;
   public $ignore_message;
 
-  function __construct(){
+  function __construct() {
     global $ROLES;
 
     $this->role = array_pop(explode('Role_', get_class($this)));
@@ -304,7 +304,7 @@ class Role {
   }
 
   //Mixin 呼び出し用
-  function __call($name, $args){
+  function __call($name, $args) {
     if (! is_object($this->filter)) {
       PrintData('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
       return false;
@@ -316,12 +316,12 @@ class Role {
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
-  protected function GetClass($method){
+  protected function GetClass($method) {
     $class = 'Role_' . $this->role;
     return method_exists($class, $method) ? new $class() : $this;
   }
 
-  protected function GetProperty($property){
+  protected function GetProperty($property) {
     $class  = 'Role_' . $this->role;
     $mix_in = new $class();
     return isset($mix_in->$property) ? $mix_in->$property :
@@ -332,53 +332,53 @@ class Role {
 
   //-- 汎用関数 --//
   //ユーザ取得
-  protected function GetActor(){ global $ROLES; return $ROLES->actor; }
+  protected function GetActor() { global $ROLES; return $ROLES->actor; }
 
   //ユーザ名取得
-  protected function GetUname($uname = null){
+  protected function GetUname($uname = null) {
     return is_null($uname) ? $this->GetActor()->uname : $uname;
   }
 
   //データ初期化
-  protected function InitStack($name = null){
+  protected function InitStack($name = null) {
     global $ROLES;
     $data = is_null($name) ? $this->role : $name;
     if (! property_exists($ROLES->stack, $data)) $ROLES->stack->$data = array();
   }
 
   //データ取得
-  protected function GetStack($name = null, $fill = false){
+  protected function GetStack($name = null, $fill = false) {
     global $ROLES;
     $data = is_null($name) ? $this->role : $name;
     return property_exists($ROLES->stack, $data) ? $ROLES->stack->$data : ($fill ? array() : null);
   }
 
   //データセット
-  protected function SetStack($data, $role = null){
+  protected function SetStack($data, $role = null) {
     global $ROLES;
     $ROLES->stack->{is_null($role) ? $this->role : $role} = $data;
   }
 
   //データ追加
-  protected function AddStack($data, $role = null, $uname = null){
+  protected function AddStack($data, $role = null, $uname = null) {
     global $ROLES;
     $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
   }
 
   //同一ユーザ判定
-  protected function IsActor($uname){ return $this->GetActor()->IsSame($uname); }
+  protected function IsActor($uname) { return $this->GetActor()->IsSame($uname); }
 
   //発動日判定
-  protected function IsDoom(){
+  protected function IsDoom() {
     return $this->GetActor()->GetDoomDate($this->role) == DB::$ROOM->date;
   }
 
   //投票能力判定
-  function IsVote(){ return ! is_null($this->action); }
+  function IsVote() { return ! is_null($this->action); }
 
   //-- 役職情報表示 --//
   //役職情報表示
-  function OutputAbility(){
+  function OutputAbility() {
     if ($this->IgnoreAbility()) return;
     $this->OutputImage();
     $this->OutputPartner();
@@ -387,83 +387,83 @@ class Role {
   }
 
   //役職情報表示判定
-  protected function IgnoreAbility(){ return false; }
+  protected function IgnoreAbility() { return false; }
 
   //役職画像表示
-  protected function OutputImage(){
+  protected function OutputImage() {
     Image::Role()->Output(isset($this->display_role) ? $this->display_role : $this->role);
   }
 
   //仲間情報表示
-  protected function OutputPartner(){}
+  protected function OutputPartner() {}
 
   //能力結果表示
-  protected function OutputResult(){}
+  protected function OutputResult() {}
 
   //投票能力表示
-  function OutputAction(){}
+  function OutputAction() {}
 
   //-- 発言処理 --//
   //閲覧者取得
-  protected function GetViewer(){ return $this->GetStack('viewer'); }
+  protected function GetViewer() { return $this->GetStack('viewer'); }
 
   //閲覧者情報取得
-  protected function GetTalkFlag($data){ return $this->GetStack('builder')->flag->$data; }
+  protected function GetTalkFlag($data) { return $this->GetStack('builder')->flag->$data; }
 
   //-- 処刑投票処理 --//
   //実ユーザ判定
-  protected function IsRealActor(){
+  protected function IsRealActor() {
     return DB::$USER->ByRealUname($this->GetUname())->IsRole(true, $this->role);
   }
 
   //生存仲間判定
-  protected function IsLivePartner(){
+  protected function IsLivePartner() {
     foreach ($this->GetActor()->GetPartner($this->role) as $id) {
       if (DB::$USER->ByID($id)->IsLive(true)) return true;
     }
     return false;
   }
 
-  protected function SuddenDeathKill($id){
+  protected function SuddenDeathKill($id) {
     DB::$USER->SuddenDeath($id, 'SUDDEN_DEATH', $this->sudden_death);
   }
 
   //-- 処刑集計処理 --//
   //処刑者ユーザ名取得
-  protected function GetVoteKill(){ return $this->GetStack('vote_kill_uname'); }
+  protected function GetVoteKill() { return $this->GetStack('vote_kill_uname'); }
 
   //処刑実行判定
-  protected function IsVoteKill(){ return $this->GetVoteKill() != ''; }
+  protected function IsVoteKill() { return $this->GetVoteKill() != ''; }
 
   //処刑者判定
-  protected function IsVoted($uname = null){
+  protected function IsVoted($uname = null) {
     return $this->GetVoteKill() == $this->GetUname($uname);
   }
 
   //得票者名取得
-  protected function GetVotedUname($uname = null){
+  protected function GetVotedUname($uname = null) {
     return array_keys($this->GetStack('target'), $this->GetUname($uname));
   }
 
   //投票先ユーザ名取得
-  protected function GetVoteTargetUname($uname = null){
+  protected function GetVoteTargetUname($uname = null) {
     $stack = $this->GetStack('target');
     return $stack[$this->GetUname($uname)];
   }
 
   //投票者ユーザ取得
-  protected function GetVoteUser($uname = null){
+  protected function GetVoteUser($uname = null) {
     return DB::$USER->ByRealUname($this->GetVoteTargetUname($uname));
   }
 
   //-- 投票データ表示 (夜) --//
   //投票データセット (夜)
-  function SetVoteNight(){
+  function SetVoteNight() {
     if (is_null($this->action)) {
-      OutputVoteResult('夜：あなたは投票できません');
+      VoteHTML::OutputResult('夜：あなたは投票できません');
     }
     else {
-      if (! is_null($str = $this->IgnoreVote())) OutputVoteResult('夜：' . $str);
+      if (! is_null($str = $this->IgnoreVote())) VoteHTML::OutputResult('夜：' . $str);
       foreach (array('', 'not_') as $header) {
 	foreach (array('action', 'submit') as $data) {
 	  $this->SetStack($this->{$header . $data}, $header . $data);
@@ -473,40 +473,42 @@ class Role {
   }
 
   //投票スキップ判定
-  function IgnoreVote(){ return $this->IsVote() ? null : $this->ignore_message; }
+  function IgnoreVote() { return $this->IsVote() ? null : $this->ignore_message; }
 
   //-- 投票画面表示 (夜) --//
   //投票対象ユーザ取得
-  function GetVoteTargetUser(){ return DB::$USER->rows; }
+  function GetVoteTargetUser() { return DB::$USER->rows; }
 
   //投票のアイコンパス取得
-  function GetVoteIconPath($user, $live){
+  function GetVoteIconPath($user, $live) {
     return $live ? Icon::GetFile($user->icon_filename) : Icon::GetDead();
   }
 
   //投票のチェックボックス取得
-  function GetVoteCheckbox($user, $id, $live){
+  function GetVoteCheckbox($user, $id, $live) {
     return $this->IsVoteCheckbox($user, $live) ?
       $this->GetVoteCheckboxHeader() . ' id="' . $id . '" value="' . $id . '">'."\n" : '';
   }
 
   //投票対象判定
-  protected function IsVoteCheckbox($user, $live){ return $live && ! $this->IsActor($user->uname); }
+  protected function IsVoteCheckbox($user, $live) {
+    return $live && ! $this->IsActor($user->uname);
+  }
 
   //投票のチェックボックスヘッダ取得
-  function GetVoteCheckboxHeader(){ return '<input type="radio" name="target_no"'; }
+  function GetVoteCheckboxHeader() { return '<input type="radio" name="target_no"'; }
 
   //-- 投票処理 (夜) --//
   //投票結果チェック (夜)
-  function CheckVoteNight(){
+  function CheckVoteNight() {
     $this->SetStack(RQ::$get->situation, 'message');
     if (! is_null($str = $this->VoteNight())) {
-      OutputVoteResult('夜：投票先が正しくありません<br>'."\n" . $str);
+      VoteHTML::OutputResult('夜：投票先が正しくありません<br>'."\n" . $str);
     }
   }
 
   //投票処理 (夜)
-  function VoteNight(){
+  function VoteNight() {
     $user = DB::$USER->ByID($this->GetVoteNightTarget());
     $live = DB::$USER->IsVirtualLive($user->user_no); //仮想的な生死を判定
     if (! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
@@ -516,36 +518,36 @@ class Role {
   }
 
   //投票対象者取得 (夜)
-  function GetVoteNightTarget(){ return RQ::$get->target_no; }
+  function GetVoteNightTarget() { return RQ::$get->target_no; }
 
   //投票スキップ判定 (夜)
-  function IgnoreVoteNight($user, $live){
+  function IgnoreVoteNight($user, $live) {
     return ! $live || $this->IsActor($user->uname) ? '自分・死者には投票できません' : null;
   }
 
   //-- 投票集計処理 (夜) --//
   //成功データ追加
-  protected function AddSuccess($target, $data = null, $null = false){
+  protected function AddSuccess($target, $data = null, $null = false) {
     global $ROLES;
     $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? null : true;
   }
 
   //投票者取得
-  protected function GetVoter(){ return $this->GetStack('voter'); }
+  protected function GetVoter() { return $this->GetStack('voter'); }
 
   //襲撃人狼取得
-  protected function GetWolfVoter(){ return $this->GetStack('voted_wolf'); }
+  protected function GetWolfVoter() { return $this->GetStack('voted_wolf'); }
 
   //人狼襲撃対象者取得
-  protected function GetWolfTarget(){ return $this->GetStack('wolf_target'); }
+  protected function GetWolfTarget() { return $this->GetStack('wolf_target'); }
 
   //-- 勝敗判定 --//
   //勝利判定
-  function Win($winner){ return true; }
+  function Win($winner) { return true; }
 
   //生存判定
-  protected function IsLive($strict = false){ return $this->GetActor()->IsLive($strict); }
+  protected function IsLive($strict = false) { return $this->GetActor()->IsLive($strict); }
 
   //死亡判定
-  protected function IsDead($strict = false){ return $this->GetActor()->IsDead($strict); }
+  protected function IsDead($strict = false) { return $this->GetActor()->IsDead($strict); }
 }

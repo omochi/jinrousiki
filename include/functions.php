@@ -2,7 +2,7 @@
 //-- テキスト処理クラス --//
 class Text {
   //パスワード暗号化
-  static function CryptPassword($str){ return sha1(ServerConfig::$salt . $str); }
+  static function CryptPassword($str) { return sha1(ServerConfig::$salt . $str); }
 
   //トリップ変換
   /*
@@ -16,7 +16,7 @@ class Text {
     テストてすと＃テストてすと#   => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
     テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
   */
-  static function ConvertTrip($str){
+  static function ConvertTrip($str) {
     if (GameConfig::$trip) {
       if (get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
       //トリップ関連のキーワードを置換
@@ -70,7 +70,7 @@ class Text {
 
   //特殊文字のエスケープ処理
   //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
-  static function Escape(&$str, $trim = true){
+  static function Escape(&$str, $trim = true) {
     if (is_array($str)) {
       $result = array();
       foreach ($str as $item) $result[] = self::Escape($item);
@@ -86,12 +86,12 @@ class Text {
   }
 
   //改行コードを <br> に変換する (PHP5.3 以下の nl2br() だと <br /> 固定なので HTML 4.01 だと不向き)
-  static function LineToBR(&$str){
+  static function LineToBR(&$str) {
     return $str = str_replace("\n", '<br>', $str);
   }
 
   //POST されたデータの文字コードを統一する
-  static function EncodePostData(){
+  static function EncodePostData() {
     foreach ($_POST as $key => $value) {
       $encode = @mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
       if ($encode != '' && $encode != ServerConfig::$encode) {
@@ -104,7 +104,7 @@ class Text {
 //-- セキュリティ関連クラス --//
 class Security {
   //リファラチェック
-  static function CheckReferer($page, $white_list = null){
+  static function CheckReferer($page, $white_list = null) {
     if (is_array($white_list)) { //ホワイトリストチェック
       foreach ($white_list as $host) {
 	if (strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
@@ -115,7 +115,7 @@ class Security {
   }
 
   //ブラックリストチェック
-  static function CheckBlackList(){
+  static function CheckBlackList() {
     $addr = $_SERVER['REMOTE_ADDR'];
     $host = gethostbyaddr($addr);
     foreach (array('white' => false, 'black' => true) as $type => $flag) {
@@ -135,7 +135,7 @@ class Security {
    この値がtrueの場合、強制的に詳細なスキャンが実行されます。
    * @return : boolean : 危険な値が発見された場合 true、それ以外の場合 false
    */
-  static function CheckValue($value, $found = false){
+  static function CheckValue($value, $found = false) {
     $num = '22250738585072011';
     if ($found || (strpos(str_replace('.', '', serialize($value)), $num) !== false)) {
       //文字列の中に問題の数字が埋め込まれているケースを排除する
@@ -161,7 +161,7 @@ class Security {
 //-- 日時関連 --//
 class Time {
   //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
-  static function Get(){
+  static function Get() {
     $time = time();
     if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
     return $time;
@@ -173,21 +173,21 @@ class Time {
   }
 
   //TZ 補正をかけた日時を返す
-  static function GetDate($format, $time){
+  static function GetDate($format, $time) {
     return ServerConfig::$adjust_time_difference ? gmdate($format, $time) : date($format, $time);
   }
 
   //時間 (秒) を変換する
-  static function Convert($seconds){
+  static function Convert($seconds) {
     $sentence = '';
     $hours    = 0;
     $minutes  = 0;
 
-    if ($seconds >= 60){
+    if ($seconds >= 60) {
       $minutes = floor($seconds / 60);
       $seconds %= 60;
     }
-    if ($minutes >= 60){
+    if ($minutes >= 60) {
       $hours = floor($minutes / 60);
       $minutes %= 60;
     }
@@ -199,7 +199,7 @@ class Time {
   }
 
   //TIMESTAMP 形式の時刻を変換する
-  static function ConvertTimeStamp($time_stamp, $date = true){
+  static function ConvertTimeStamp($time_stamp, $date = true) {
     $time = strtotime($time_stamp);
     if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
     return $date ? self::GetDate('Y/m/d (D) H:i:s', $time) : $time;
@@ -215,7 +215,7 @@ class HTML {
   const JS     = "<script type=\"text/javascript\" src=\"%s/%s.js\"></script>\n";
 
   //共通 HTML ヘッダ生成
-  static function GenerateHeader($title, $css = null, $close = false){
+  static function GenerateHeader($title, $css = null, $close = false) {
     $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
@@ -233,33 +233,29 @@ EOF;
   }
 
   //共通 HTML ヘッダ出力
-  static function OutputHeader($title, $css = null, $close = false){
+  static function OutputHeader($title, $css = null, $close = false) {
     echo self::GenerateHeader($title, $css, $close);
   }
 
   //CSS 読み込み
-  static function LoadCSS($path){
-    return sprintf(self::CSS, $path);
-  }
+  static function LoadCSS($path) { return sprintf(self::CSS, $path); }
 
   //CSS 出力
-  static function OutputCSS($path){
-    echo self::LoadCSS($path);
-  }
+  static function OutputCSS($path) { echo self::LoadCSS($path); }
 
   //JavaScript 読み込み
-  static function LoadJavaScript($file, $path = null){
+  static function LoadJavaScript($file, $path = null) {
     if (is_null($path)) $path = JINRO_ROOT . '/javascript';
     return sprintf(self::JS, $path, $file);
   }
 
   //JavaScript 出力
-  static function OutputJavaScript($file, $path = null){
+  static function OutputJavaScript($file, $path = null) {
     echo self::LoadJavaScript($file, $path);
   }
 
   //ページジャンプ用 JavaScript 出力
-  static function GenerateSetLocation(){
+  static function GenerateSetLocation() {
     $str = <<<EOF
 <script type="text/javascript"><!--
 if (top != self) { top.location.href = self.location.href; }
@@ -269,25 +265,23 @@ EOF;
   }
 
   //HTML ヘッダクローズ
-  static function GenerateBodyHeader($css = null){
+  static function GenerateBodyHeader($css = null) {
     $str = isset($css) ? self::LoadCSS($css) : '';
     return $str . self::HEADER;
   }
 
   //HTML ヘッダクローズ出力
-  static function OutputBodyHeader($css = null){
-    echo self::GenerateBodyHeader($css);
-  }
+  static function OutputBodyHeader($css = null) { echo self::GenerateBodyHeader($css); }
 
   //HTML フッタ出力
-  static function OutputFooter($exit = false){
+  static function OutputFooter($exit = false) {
     DB::Disconnect();
     echo self::FOOTER;
     if ($exit) exit;
   }
 
   //結果ページ HTML ヘッダ出力
-  static function OutputResultHeader($title, $url = ''){
+  static function OutputResultHeader($title, $url = '') {
     self::OutputHeader($title);
     if ($url != '') printf(self::JUMP, $url);
     if (is_object(DB::$ROOM)) echo DB::$ROOM->GenerateCSS();
@@ -295,7 +289,7 @@ EOF;
   }
 
   //結果ページ出力
-  static function OutputResult($title, $body, $url = ''){
+  static function OutputResult($title, $body, $url = '') {
     DB::Disconnect();
     self::OutputResultHeader($title, $url);
     echo $body . "<br>\n";
@@ -303,7 +297,7 @@ EOF;
   }
 
   //共有フレーム HTML ヘッダ出力
-  static function OutputFrameHeader($title){
+  static function OutputFrameHeader($title) {
     $str = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html lang="ja">
@@ -316,7 +310,7 @@ EOF;
   }
 
   //フレーム HTML フッタ出力
-  static function OutputFrameFooter(){
+  static function OutputFrameFooter() {
     echo <<<EOF
 <noframes>
 <body>

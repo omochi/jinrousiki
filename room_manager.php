@@ -2,18 +2,18 @@
 require_once('include/init.php');
 //$INIT_CONF->LoadFile('feedengine'); //RSS機能はテスト中
 $INIT_CONF->LoadFile('room_config', 'image_class');
-$INIT_CONF->LoadClass('ROOM_OPT');
+//$INIT_CONF->LoadClass('ROOM_OPT');
 
 if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
 Text::EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
   $INIT_CONF->LoadFile('message', 'user_icon_class');
-  $INIT_CONF->LoadClass('TWITTER');
+  $INIT_CONF->LoadClass('ROOM_OPT', 'TWITTER');
   CreateRoom();
 }
 else {
-  $INIT_CONF->LoadFile('time_config', 'chaos_config');
+  $INIT_CONF->LoadFile('time_config', 'chaos_config', 'room_option_class');
   OutputRoomList();
 }
 DB::Disconnect();
@@ -350,8 +350,6 @@ EOF;
 
 //部屋作成画面を出力
 function OutputCreateRoomPage(){
-  global $ROOM_OPT;
-
   if (ServerConfig::$disable_establish) {
     echo '村作成はできません';
     return;
@@ -364,7 +362,7 @@ function OutputCreateRoomPage(){
 
 EOF;
 
-  RoomOption::ShowBuildRoomForm();
+  OptionForm::Output();
   $password = is_null(ServerConfig::$room_password) ? '' :
     '<label for="room_password">村作成パスワード</label>：' .
     '<input type="password" id="room_password" name="room_password" size="20">　';

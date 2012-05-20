@@ -2,7 +2,7 @@
 //-- 日時関連 (Game 拡張) --//
 class GameTime {
   //リアルタイムの経過時間
-  static function GetRealPass(&$left_time){
+  static function GetRealPass(&$left_time) {
     $start_time = DB::$ROOM->scene_start_time; //シーンの最初の時刻を取得
     $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間
     $pass_time  = DB::$ROOM->system_time - $start_time;
@@ -15,7 +15,7 @@ class GameTime {
   }
 
   //会話で時間経過制の経過時間
-  static function GetTalkPass(&$left_time, $silence = false){
+  static function GetTalkPass(&$left_time, $silence = false) {
     $query = 'SELECT SUM(spend_time) FROM talk' . DB::$ROOM->GetQuery() .
       sprintf(" AND scene = '%s'", DB::$ROOM->scene);
     $spend_time = (int)DB::FetchResult($query);
@@ -33,7 +33,7 @@ class GameTime {
   }
 
   //リアルタイム表示に使う JavaScript の変数を出力
-  static function OutputTimer($end_time, $type = null, $flag = false){
+  static function OutputTimer($end_time, $type = null, $flag = false) {
     $end_date = self::GetJavaScriptDate($end_time);
     $format = <<<EOF
 <script language="JavaScript"><!--
@@ -59,7 +59,7 @@ EOF;
   }
 
   //JavaScript の Date() オブジェクト作成コードを生成する
-  private function GetJavaScriptDate($time){
+  private function GetJavaScriptDate($time) {
     $time_list = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
     $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
     return sprintf('new Date(%s)', implode(',', $time_list));

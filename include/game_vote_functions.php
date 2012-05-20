@@ -1,4 +1,251 @@
 <?php
+//-- HTML 生成クラス (投票拡張) --//
+class VoteHTML {
+  const ERROR  = '投票エラー [%s]';
+  const RESULT = "<div id=\"game_top\" align=\"center\">%s<br>\n%s</div>";
+
+  //結果出力
+  static function OutputResult($str, $reset = false) {
+    if ($reset) DB::$ROOM->DeleteVote(); //今までの投票を全部削除
+    $title = ServerConfig::$title . ' [投票結果]';
+    HTML::OutputResult($title, self::GenerateResult($str));
+  }
+
+  //エラーページ出力
+  static function OutputError($title, $str = null){
+    if (is_null($str)) $str = 'プログラムエラーです。管理者に問い合わせてください。';
+    HTML::OutputResult(sprintf(self::ERROR, $title), self::GenerateResult($str));
+  }
+
+  //開始前の投票ページ出力
+  static function OutputBeforeGame() {
+    CheckScene(); //投票する状況があっているかチェック
+    self::OutputHeader();
+    echo '<input type="hidden" name="situation" value="KICK_DO">'."\n";
+    echo '<table class="vote-page"><tr>'."\n";
+
+    $count  = 0;
+    $header = '<input type="radio" name="target_no" id="';
+    $path   = Icon::GetPath();
+    foreach (DB::$USER->rows as $id => $user) {
+      if ($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+      $count++;
+
+      $checkbox = ! $user->IsDummyBoy() && (GameConfig::$self_kick || ! $user->IsSelf()) ?
+	$header . $id . '" value="' . $id . '">'."\n" : '';
+      echo $user->GenerateVoteTag($path . $user->icon_filename, $checkbox);
+    }
+
+    $str = <<<EOF
+</tr></table>
+<span class="vote-message">* Kick するには %d 人の投票が必要です</span>
+<div class="vote-page-link" align="right"><table><tr>
+<td>%s</td>
+<td><input type="submit" value="%s"></form></td>
+<td>
+<form method="POST" action="%s">
+<input type="hidden" name="vote" value="on">
+<input type="hidden" name="situation" value="GAMESTART">
+<input type="submit" value="%s">
+</form>
+</td>
+</tr></table></div>%s
+EOF;
+    printf($str, GameConfig::$kick, RQ::$get->back_url, VoteMessage::$KICK_DO, RQ::$get->post_url,
+	   VoteMessage::$GAME_START, "\n");
+    if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
+  }
+
+  //昼の投票ページを出力する
+  static function OutputDay() {
+    CheckScene(); //投票する状況があっているかチェック
+    if (DB::$ROOM->date == 1) self::OutputResult('処刑：初日は投票不要です');
+    $revote_count = DB::$ROOM->revote_count;
+
+    //投票済みチェック
+    if (! DB::$ROOM->test_mode) {
+      $str = " AND scene = '%s' AND vote_count = %d AND revote_count = %d AND user_no = %d";
+      $query = DB::$ROOM->GetQuery(true, 'vote') .
+	sprintf($str, DB::$ROOM->scene, DB::$ROOM->vote_count, $revote_count, DB::$SELF->user_no);
+
+      if (DB::FetchResult($query) > 0) self::OutputResult('処刑：投票済み');
+    }
+
+    //特殊イベントを参照して投票対象をセット
+    if (isset(DB::$ROOM->event->vote_duel) && is_array(DB::$ROOM->event->vote_duel)) {
+      $user_stack = array();
+      foreach (DB::$ROOM->event->vote_duel as $id) $user_stack[$id] = DB::$USER->rows[$id];
+    }
+    else {
+      $user_stack = DB::$USER->rows;
+    }
+    $virtual_self = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想投票者を取得
+
+    self::OutputHeader();
+    $str = <<<EOF
+<input type="hidden" name="situation" value="VOTE_KILL">
+<input type="hidden" name="revote_count" value="%d">
+<table class="vote-page"><tr>%s
+EOF;
+    printf($str, $revote_count, "\n");
+
+    $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
+    $count = 0;
+    $base_path = Icon::GetPath();
+    $dead_icon = Icon::GetDead();
+    foreach ($user_stack as $id => $user) {
+      if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+      $count++;
+      $is_live = DB::$USER->IsVirtualLive($id);
+
+      //生きていればユーザアイコン、死んでれば死亡アイコン
+      $path = $is_live ? $base_path . $user->icon_filename : $dead_icon;
+      $checkbox = ($is_live && ! $user->IsSame($virtual_self->uname)) ?
+	$checkbox_header . $id . '" value="' . $id . '">' : '';
+      echo $user->GenerateVoteTag($path, $checkbox);
+    }
+
+    $str = <<<EOF
+</tr></table>
+<span class="vote-message">* 投票先の変更はできません。慎重に！</span>
+<div class="vote-page-link" align="right"><table><tr>
+<td>%s</td>
+<td><input type="submit" value="%s"></td>
+</tr></table></div>
+</form>%s
+EOF;
+    printf($str, RQ::$get->back_url, VoteMessage::$VOTE_DO, "\n");
+    if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
+  }
+
+  //夜の投票ページを出力する
+  static function OutputNight() {
+    global $ROLES;
+
+    CheckScene(); //投票シーンチェック
+    //-- 投票済みチェック --//
+    $filter = CheckVoteNight();
+    if (! DB::$ROOM->test_mode) CheckAlreadyVote($ROLES->stack->action, $ROLES->stack->not_action);
+
+    self::OutputHeader();
+    //PrintData($filter);
+    //PrintData($ROLES->stack);
+    echo '<table class="vote-page"><tr>'."\n";
+    $count = 0;
+    foreach ($filter->GetVoteTargetUser() as $id => $user) {
+      if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+      $count++;
+      $live = DB::$USER->IsVirtualLive($id);
+      /*
+	死者は死亡アイコン (蘇生能力者は死亡アイコンにしない)
+	生存者はユーザアイコン (狼仲間なら狼アイコン)
+      */
+      $path     = $filter->GetVoteIconPath($user, $live);
+      $checkbox = $filter->GetVoteCheckbox($user, $id, $live);
+      echo $user->GenerateVoteTag($path, $checkbox);
+    }
+
+    if (is_null($ROLES->stack->submit)) $ROLES->stack->submit = $ROLES->stack->action;
+    $str = <<<EOF
+</tr></table>
+<span class="vote-message">%s</span>
+<div class="vote-page-link" align="right"><table><tr>
+<td>%s</td>
+<input type="hidden" name="situation" value="%s">
+<td><input type="submit" value="%s"></td></form>%s
+EOF;
+    $submit = is_null($ROLES->stack->submit) ? $ROLES->stack->action : $ROLES->stack->submit;
+    printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, $ROLES->stack->action,
+	   VoteMessage::$$submit, "\n");
+
+    if (isset($ROLES->stack->not_action)) {
+      if (is_null($ROLES->stack->not_submit)) $ROLES->stack->not_submit = $ROLES->stack->not_action;
+      $str = <<<EOF
+<td>
+<form method="POST" action="%s">
+<input type="hidden" name="vote" value="on">
+<input type="hidden" name="situation" value="%s">
+<input type="hidden" name="target_no" value="%d">
+<input type="submit" value="%s"></form>
+</td>%s
+EOF;
+      printf($str, RQ::$get->post_url, $ROLES->stack->not_action, DB::$SELF->user_no,
+	     VoteMessage::${$ROLES->stack->not_submit}, "\n");
+    }
+
+    echo "</tr></table></div>\n";
+    if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
+  }
+
+  //死者の投票ページ出力
+  static function OutputHeaven(){
+    //投票済みチェック
+    if (DB::$SELF->IsDrop())     self::OutputResult('蘇生辞退：投票済み');
+    if (DB::$ROOM->IsOpenCast()) self::OutputResult('蘇生辞退：投票不要です');
+
+    self::OutputHeader();
+    $str = <<<EOF
+<input type="hidden" name="situation" value="REVIVE_REFUSE">
+<span class="vote-message">%s</span>
+<div class="vote-page-link" align="right"><table><tr>
+<td>%s</td>
+<td><input type="submit" value="%s"></form></td>
+</tr></table></div>%s
+EOF;
+    printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, VoteMessage::$REVIVE_REFUSE, "\n");
+    HTML::OutputFooter(true);
+  }
+
+  //身代わり君 (霊界) の投票ページ出力
+  static function OutputDummyBoy() {
+    self::OutputHeader();
+    $str = <<<EOF
+<span class="vote-message">%s</span>
+<div class="vote-page-link" align="right"><table><tr>
+<td>%s</td>
+<td>
+<input type="hidden" name="situation" value="RESET_TIME">
+<input type="submit" value="%s"></form>
+</td>%s
+EOF;
+    printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, VoteMessage::$RESET_TIME, "\n");
+
+    //蘇生辞退ボタン表示判定
+    if (! DB::$SELF->IsDrop() && DB::$ROOM->IsOption('not_open_cast') && ! DB::$ROOM->IsOpenCast()) {
+      $str = <<<EOF
+<td>
+<form method="POST" action="%s">
+<input type="hidden" name="vote" value="on">
+<input type="hidden" name="situation" value="REVIVE_REFUSE">
+<input type="submit" value="%s">
+</form>
+</td>%s
+EOF;
+      printf($str, RQ::$get->post_url, VoteMessage::$REVIVE_REFUSE, "\n");
+    }
+    echo "</tr></table></div>\n";
+    if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
+  }
+
+  //ヘッダ出力
+  private function OutputHeader() {
+    HTML::OutputHeader(ServerConfig::$title . ' [投票]', 'game');
+    HTML::OutputCSS(sprintf('%s/game_vote', JINRO_CSS));
+    echo '<link rel="stylesheet" id="scene">'."\n";
+    $css = empty(DB::$ROOM->scene) ? null : sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene);
+    HTML::OutputBodyHeader($css);
+    $str = <<<EOF
+<a id="game_top"></a>
+<form method="POST" action="%s">
+<input type="hidden" name="vote" value="on">%s
+EOF;
+    printf($str, RQ::$get->post_url, "\n");
+  }
+
+  //結果生成
+  private function GenerateResult($str) { return sprintf(self::RESULT, $str, RQ::$get->back_url); }
+}
+
 //投票コマンドがあっているかチェック
 function CheckSituation($applay_situation){
   if (is_array($applay_situation)) {
@@ -7,39 +254,14 @@ function CheckSituation($applay_situation){
   elseif (RQ::$get->situation == $applay_situation) {
     return true;
   }
-  OutputVoteResult('無効な投票です');
+  VoteHTML::OutputResult('無効な投票です');
 }
 
 //シーンの一致チェック
 function CheckScene(){
   if (DB::$ROOM->scene != DB::$SELF->last_load_scene) {
-    OutputVoteResult('戻ってリロードしてください');
+    VoteHTML::OutputResult('戻ってリロードしてください');
   }
-}
-
-//投票結果出力
-function OutputVoteResult($sentence, $reset_vote = false){
-  if ($reset_vote) DB::$ROOM->DeleteVote(); //今までの投票を全部削除
-  $title  = ServerConfig::$title . ' [投票結果]';
-  $header = '<div id="game_top" align="center">';
-  $footer = sprintf("<br>\n%s</div>", RQ::$get->back_url);
-  HTML::OutputResult($title, $header . $sentence . $footer);
-}
-
-//投票ページ HTML ヘッダ出力
-function OutputVotePageHeader(){
-  HTML::OutputHeader(ServerConfig::$title . ' [投票]', 'game');
-  HTML::OutputCSS(sprintf('%s/game_vote', JINRO_CSS));
-  echo '<link rel="stylesheet" id="scene">'."\n";
-  $css = DB::$ROOM->scene != '' ? sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene) : null;
-  HTML::OutputBodyHeader($css);
-  $url = RQ::$get->post_url;
-  echo <<<EOF
-<a id="game_top"></a>
-<form method="POST" action="{$url}">
-<input type="hidden" name="vote" value="on">
-
-EOF;
 }
 
 //役職の人数通知リストを作成する
@@ -158,7 +380,7 @@ function AggregateVoteGameStart($force_start = false){
   if (DB::$ROOM->IsDummyBoy()) { //身代わり君の役職を決定
     Cast::SetDummyBoy($fix_role_list, $role_list);
     if (count($fix_role_list) < 1) {
-      OutputVoteResult(sprintf($error, '身代わり君に役が与えられていません'), $reset_flag);
+      VoteHTML::OutputResult(sprintf($error, '身代わり君に役が与えられていません'), $reset_flag);
     }
     $fix_uname_list[] = 'dummy_boy'; //決定済みリストに身代わり君を追加
     unset($uname_list[array_search('dummy_boy', $uname_list)]); //身代わり君を削除
@@ -209,7 +431,7 @@ function AggregateVoteGameStart($force_start = false){
   if ($remain_uname_list_count != $role_list_count) {
     $format = '配役未決定者の人数 (%d) と残り配役の数 (%d) が一致していません';
     $str    = sprintf($format, $remain_uname_list_count, $role_list_count);
-    OutputVoteResult(sprintf($error, $str), $reset_flag);
+    VoteHTML::OutputResult(sprintf($error, $str), $reset_flag);
   }
 
   //未決定者を二次配役
@@ -225,21 +447,21 @@ function AggregateVoteGameStart($force_start = false){
   if ($user_count != $fix_uname_list_count) {
     $format = '村人の人数 (%d) と配役決定者の人数 (%d) が一致していません';
     $str    = sprintf($format, $user_count, $fix_uname_list_count);
-    OutputVoteResult(sprintf($error, $str), $reset_flag);
+    VoteHTML::OutputResult(sprintf($error, $str), $reset_flag);
   }
 
   $fix_role_list_count = count($fix_role_list); //配役の数
   if ($fix_uname_list_count != $fix_role_list_count) {
     $format = '配役決定者の人数 (%d) と配役の数 (%d) が一致していません';
     $str    = sprintf($format, $fix_uname_list_count, $fix_role_list_count);
-    OutputVoteResult(sprintf($error, $str), $reset_flag);
+    VoteHTML::OutputResult(sprintf($error, $str), $reset_flag);
   }
 
   $role_list_count = count($role_list); //残り配役数
   if ($role_list_count > 0) {
     $format = '配役リストに余り (%d) があります';
     $str    = sprintf($format, $role_list_count);
-    OutputVoteResult(sprintf($error, $str), $reset_flag);
+    VoteHTML::OutputResult(sprintf($error, $str), $reset_flag);
   }
 
   //兼任となる役職の設定
@@ -328,14 +550,14 @@ function VoteDay(){
 
   CheckSituation('VOTE_KILL'); //コマンドチェック
   $target = DB::$USER->ByReal(RQ::$get->target_no); //投票先のユーザ情報を取得
-  if (is_null($target->user_no)) OutputVoteResult('処刑：無効な投票先です');
-  if ($target->IsSelf()) OutputVoteResult('処刑：自分には投票できません');
-  if ($target->IsDead()) OutputVoteResult('処刑：死者には投票できません');
+  if (is_null($target->user_no)) VoteHTML::OutputResult('処刑：無効な投票先です');
+  if ($target->IsSelf()) VoteHTML::OutputResult('処刑：自分には投票できません');
+  if ($target->IsDead()) VoteHTML::OutputResult('処刑：死者には投票できません');
 
   //特殊イベントを取得
   $vote_duel = isset(DB::$ROOM->event->vote_duel) ? DB::$ROOM->event->vote_duel : null;
   if (is_array($vote_duel) && ! in_array(RQ::$get->target_no, $vote_duel)){
-    OutputVoteResult('処刑：決選投票対象者以外には投票できません');
+    VoteHTML::OutputResult('処刑：決選投票対象者以外には投票できません');
   }
 
   //投票済みチェック
@@ -350,7 +572,7 @@ function VoteDay(){
     $query = DB::$ROOM->GetQuery(true, 'vote') .
       sprintf($str,
 	      DB::$ROOM->scene, DB::$ROOM->vote_count, RQ::$get->revote_count, DB::$SELF->user_no);
-    if (DB::FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
+    if (DB::FetchResult($query) > 0) VoteHTML::OutputResult('処刑：投票済み');
   }
 
   //-- 投票処理 --//
@@ -370,7 +592,7 @@ function VoteDay(){
   if ($vote_number < 0) $vote_number = 0; //マイナス補正
 
   if (! DB::$SELF->Vote('VOTE_KILL', $target->user_no, $vote_number)){ //投票処理
-    OutputVoteResult('データベースエラー');
+    VoteHTML::OutputResult('データベースエラー');
   }
 
   //システムメッセージ
@@ -379,7 +601,7 @@ function VoteDay(){
 
   AggregateVoteDay(); //集計処理
   DB::Commit();
-  OutputVoteResult('投票完了');
+  VoteHTML::OutputResult('投票完了');
 }
 
 //昼の投票集計処理
@@ -682,7 +904,7 @@ function AggregateVoteDay(){
 function CheckVoteNight(){
   global $ROLES;
 
-  if (DB::$SELF->IsDummyBoy()) OutputVoteResult('夜：身代わり君の投票は無効です');
+  if (DB::$SELF->IsDummyBoy()) VoteHTML::OutputResult('夜：身代わり君の投票は無効です');
   foreach (array('', 'not_') as $header) {   //データを初期化
     foreach (array('action', 'submit') as $data) $ROLES->stack->{$header . $data} = null;
   }
@@ -692,7 +914,7 @@ function CheckVoteNight(){
       集計処理は実施されないので、ここではそのまま投票させておく。
       逆にスキップ判定を実施した場合、初日投票能力者が詰む。
     */
-    //if (DB::$ROOM->date == 1) OutputVoteResult('夜：初日は暗殺できません');
+    //if (DB::$ROOM->date == 1) VoteHTML::OutputResult('夜：初日は暗殺できません');
     if (DB::$ROOM->test_mode || ! CheckSelfVoteNight('DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')) {
       $filter = $ROLES->LoadMain(new User('mage')); //上記のバグ対策用 (本来は assassin 相当)
       $ROLES->actor->uname = DB::$SELF->uname; //同一ユーザ判定用
@@ -710,67 +932,6 @@ function CheckVoteNight(){
   return $filter;
 }
 
-//夜の投票ページを出力する
-function OutputVoteNight(){
-  global $ROLES;
-
-  CheckScene(); //投票シーンチェック
- //-- 投票済みチェック --//
-  $filter = CheckVoteNight();
-  if (! DB::$ROOM->test_mode) CheckAlreadyVote($ROLES->stack->action, $ROLES->stack->not_action);
-
-  OutputVotePageHeader();
-  //PrintData($filter);
-  //PrintData($ROLES->stack);
-  echo '<table class="vote-page"><tr>'."\n";
-  $count = 0;
-  foreach ($filter->GetVoteTargetUser() as $id => $user) {
-    if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
-    $count++;
-    $live = DB::$USER->IsVirtualLive($id);
-    /*
-      死者は死亡アイコン (蘇生能力者は死亡アイコンにしない)
-      生存者はユーザアイコン (狼仲間なら狼アイコン)
-    */
-    $path     = $filter->GetVoteIconPath($user, $live);
-    $checkbox = $filter->GetVoteCheckbox($user, $id, $live);
-    echo $user->GenerateVoteTag($path, $checkbox);
-  }
-
-
-  if (is_null($ROLES->stack->submit)) $ROLES->stack->submit = $ROLES->stack->action;
-  $str = <<<EOF
-</tr></table>
-<span class="vote-message">%s</span>
-<div class="vote-page-link" align="right"><table><tr>
-<td>%s</td>
-<input type="hidden" name="situation" value="%s">
-<td><input type="submit" value="%s"></td></form>%s
-EOF;
-  $submit = is_null($ROLES->stack->submit) ? $ROLES->stack->action : $ROLES->stack->submit;
-  printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, $ROLES->stack->action,
-	 VoteMessage::$$submit, "\n");
-  if (isset($ROLES->stack->not_action)) {
-    if (is_null($ROLES->stack->not_submit)) {
-      $ROLES->stack->not_submit = $ROLES->stack->not_action;
-    }
-    $str = <<<EOF
-<td>
-<form method="POST" action="%s">
-<input type="hidden" name="vote" value="on">
-<input type="hidden" name="situation" value="%s">
-<input type="hidden" name="target_no" value="%d">
-<input type="submit" value="%s"></form>
-</td>%s
-EOF;
-  printf($str, RQ::$get->post_url, $ROLES->stack->not_action, DB::$SELF->user_no,
-	 VoteMessage::${$ROLES->stack->not_submit}, "\n");
-  }
-
-  echo "</tr></table></div>\n";
-  if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
-}
-
 //夜の投票処理
 function VoteNight(){
   global $ROLES;
@@ -778,13 +939,13 @@ function VoteNight(){
   //-- イベント名と役職の整合チェック --//
   $filter = CheckVoteNight();
   if (empty(RQ::$get->situation)) {
-    OutputVoteResult('夜：投票イベントが空です');
+    VoteHTML::OutputResult('夜：投票イベントが空です');
   }
   elseif (RQ::$get->situation == $ROLES->stack->not_action) {
     $not_action = true;
   }
   elseif (RQ::$get->situation != $ROLES->stack->action) {
-    OutputVoteResult('夜：投票イベントが一致しません');
+    VoteHTML::OutputResult('夜：投票イベントが一致しません');
   }
   else {
     $not_action = false;
@@ -794,14 +955,14 @@ function VoteNight(){
 
   //-- 投票処理 --//
   if ($not_action) { //投票キャンセルタイプは何もしない
-    if (! DB::$SELF->Vote(RQ::$get->situation)) OutputVoteResult('データベースエラー'); //投票処理
+    if (! DB::$SELF->Vote(RQ::$get->situation)) VoteHTML::OutputResult('データベースエラー'); //投票処理
     DB::$ROOM->Talk('', RQ::$get->situation, DB::$SELF->uname, '', null, null, DB::$SELF->role_id);
   }
   else {
     $filter->CheckVoteNight();
     //PrintData($ROLES->stack);
     if (! DB::$SELF->Vote(RQ::$get->situation, $ROLES->stack->target_no)) {
-      OutputVoteResult('データベースエラー'); //投票処理
+      VoteHTML::OutputResult('データベースエラー'); //投票処理
     }
     $str = $ROLES->stack->target_handle;
     DB::$ROOM->Talk($str, $ROLES->stack->message, DB::$SELF->uname, '', null, null, DB::$SELF->role_id);
@@ -810,7 +971,7 @@ function VoteNight(){
   AggregateVoteNight(); //集計処理
   foreach (DB::$USER->rows as $user) $user->UpdatePlayer(); //player 更新
   DB::Commit();
-  OutputVoteResult('投票完了');
+  VoteHTML::OutputResult('投票完了');
 }
 
 //夜の集計処理

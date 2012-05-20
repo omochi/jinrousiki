@@ -10,10 +10,10 @@ DB::Connect();
 Session::Certify(); //セッション認証
 
 //ロック処理
-if (! DB::Transaction()) OutputVoteResult('サーバが混雑しています。再度投票をお願いします。');
+if (! DB::Transaction()) VoteHTML::OutputResult('サーバが混雑しています。再度投票をお願いします。');
 
 DB::$ROOM = new Room(RQ::$get, true); //村情報をロード
-if (DB::$ROOM->IsFinished()) OutputVoteError('ゲーム終了', 'ゲームは終了しました');
+if (DB::$ROOM->IsFinished()) VoteHTML::OutputError('ゲーム終了', 'ゲームは終了しました');
 DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 
 DB::$USER = new UserDataSet(RQ::$get, true); //ユーザ情報をロード
@@ -33,7 +33,7 @@ if (RQ::$get->vote) { //投票処理
       break;
 
     default: //ここに来たらロジックエラー
-      OutputVoteError('ゲーム開始前投票');
+      VoteHML::OutputError('ゲーム開始前投票');
       break;
     }
   }
@@ -42,11 +42,11 @@ if (RQ::$get->vote) { //投票処理
       VoteResetTime();
     }
     else {
-      VoteDeadUser();
+      VoteHeaven();
     }
   }
   elseif (RQ::$get->target_no == 0) { //空投票検出
-    OutputVoteError('空投票', '投票先を指定してください');
+    VoteHTML::OutputError('空投票', '投票先を指定してください');
   }
   elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
     VoteDay();
@@ -55,30 +55,30 @@ if (RQ::$get->vote) { //投票処理
     VoteNight();
   }
   else { //ここに来たらロジックエラー
-    OutputVoteError('投票コマンドエラー', '投票先を指定してください');
+    VoteHTML::OutputError('投票コマンドエラー', '投票先を指定してください');
   }
 }
 else { //シーンに合わせた投票ページを出力
   $INIT_CONF->LoadFile('vote_message');
   if (DB::$SELF->IsDead()) {
-    DB::$SELF->IsDummyBoy() ? OutputVoteDummyBoy() : OutputVoteDeadUser();
+    DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
   }
   else {
     switch (DB::$ROOM->scene) {
     case 'beforegame':
-      OutputVoteBeforeGame();
+      VoteHTML::OutputBeforeGame();
       break;
 
     case 'day':
-      OutputVoteDay();
+      VoteHTML::OutputDay();
       break;
 
     case 'night':
-      OutputVoteNight();
+      VoteHTML::OutputNight();
       break;
 
     default: //ここに来たらロジックエラー
-      OutputVoteError('投票シーンエラー');
+      VoteHTML::OutputError('投票シーンエラー');
       break;
     }
   }
@@ -86,14 +86,6 @@ else { //シーンに合わせた投票ページを出力
 DB::Disconnect();
 
 //-- 関数 --//
-//エラーページ出力
-function OutputVoteError($title, $str = null){
-  $header = '<div align="center"><a id="game_top"></a>';
-  $footer = sprintf("<br>\n%s</div>", RQ::$get->back_url);
-  if (is_null($str)) $str = 'プログラムエラーです。管理者に問い合わせてください。';
-  HTML::OutputResult(sprintf('投票エラー [%s]', $title), $header . $str . $footer);
-}
-
 //ゲーム開始投票の処理
 function VoteGameStart(){
   CheckSituation('GAMESTART');
@@ -102,24 +94,26 @@ function VoteGameStart(){
     if (GameConfig::$power_gm) { //強権モードによる強制開始処理
       if (! AggregateVoteGameStart(true)) $str .= '：開始人数に達していません。';
       DB::Commit();
-      OutputVoteResult($str);
+      VoteHTML::OutputResult($str);
     }
     else {
-      OutputVoteResult($str . '：身代わり君は投票不要です');
+      VoteHTML::OutputResult($str . '：身代わり君は投票不要です');
     }
   }
 
   //投票済みチェック
   DB::$ROOM->LoadVote();
-  if (in_array(DB::$SELF->user_no, DB::$ROOM->vote)) OutputVoteResult($str . '：投票済みです');
+  if (in_array(DB::$SELF->user_no, DB::$ROOM->vote)) {
+    VoteHTML::OutputResult($str . '：投票済みです');
+  }
 
   if (DB::$SELF->Vote('GAMESTART')) { //投票処理
     AggregateVoteGameStart(); //集計処理
     DB::Commit();
-    OutputVoteResult($str . '：投票完了');
+    VoteHTML::OutputResult($str . '：投票完了');
   }
   else {
-    OutputVoteResult($str . '：データベースエラー');
+    VoteHTML::OutputResult($str . '：データベースエラー');
   }
 }
 
@@ -129,22 +123,22 @@ function VoteKick(){
   $str = 'Kick 投票：';
   $target = DB::$USER->ByID(RQ::$get->target_no); //投票先のユーザ情報を取得
   if ($target->uname == '' || $target->live == 'kick') {
-    OutputVoteResult($str . '投票先が指定されていないか、すでに Kick されています');
+    VoteHTML::OutputResult($str . '投票先が指定されていないか、すでに Kick されています');
   }
-  if ($target->IsDummyBoy()) OutputVoteResult($str . '身代わり君には投票できません');
+  if ($target->IsDummyBoy()) VoteHTML::OutputResult($str . '身代わり君には投票できません');
   if (! GameConfig::$self_kick && $target->IsSelf()) {
-    OutputVoteResult($str . '自分には投票できません');
+    VoteHTML::OutputResult($str . '自分には投票できません');
   }
 
   //ゲーム開始チェック
   if (DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'scene')) != 'beforegame') {
-    OutputVoteResult($str . '既にゲーム開始されています');
+    VoteHTML::OutputResult($str . '既にゲーム開始されています');
   }
 
   DB::$ROOM->LoadVote(true); //投票情報をロード
   $id = DB::$SELF->user_no;
   if (isset(DB::$ROOM->vote[$id]) && in_array($target->user_no, DB::$ROOM->vote[$id])) {
-    OutputVoteResult($str . "{$target->handle_name} さんへ Kick 投票済み");
+    VoteHTML::OutputResult($str . "{$target->handle_name} さんへ Kick 投票済み");
   }
 
   if (DB::$SELF->Vote('KICK_DO', $target->user_no)) { //投票処理
@@ -153,10 +147,10 @@ function VoteKick(){
     DB::Commit();
     $add_str = '投票完了：%s さん：%d 人目 (Kick するには %d 人以上の投票が必要です)';
     $str .= sprintf($add_str, $target->handle_name, $vote_count, GameConfig::$kick);
-    OutputVoteResult($str);
+    VoteHTML::OutputResult($str);
   }
   else {
-    OutputVoteResult($str . 'データベースエラー');
+    VoteHTML::OutputResult($str . 'データベースエラー');
   }
 }
 
@@ -190,20 +184,20 @@ function AggregateVoteKick($target){
 }
 
 //死者の投票処理
-function VoteDeadUser(){
+function VoteHeaven(){
   CheckSituation('REVIVE_REFUSE'); //コマンドチェック
-  if (DB::$SELF->IsDrop())     OutputVoteResult('蘇生辞退：投票済み'); //投票済みチェック
-  if (DB::$ROOM->IsOpenCast()) OutputVoteResult('蘇生辞退：投票不要です'); //霊界公開判定
+  if (DB::$SELF->IsDrop())     VoteHTML::OutputResult('蘇生辞退：投票済み'); //投票済みチェック
+  if (DB::$ROOM->IsOpenCast()) VoteHTML::OutputResult('蘇生辞退：投票不要です'); //霊界公開判定
 
   //-- 投票処理 --//
-  if (! DB::$SELF->Update('live', 'drop')) OutputVoteResult('データベースエラー');
+  if (! DB::$SELF->Update('live', 'drop')) VoteHTML::OutputResult('データベースエラー');
 
   //システムメッセージ
   $str = 'システム：' . DB::$SELF->handle_name . 'さんは蘇生を辞退しました。';
   DB::$ROOM->Talk($str, null, DB::$SELF->uname, 'heaven', null, 'normal');
 
   DB::Commit();
-  OutputVoteResult('投票完了');
+  VoteHTML::OutputResult('投票完了');
 }
 
 //最終更新時刻リセット投票処理 (身代わり君専用)
@@ -217,160 +211,10 @@ function VoteResetTime(){
   $str = 'システム：投票制限時間をリセットしました。';
   DB::$ROOM->Talk($str, null, DB::$SELF->uname, DB::$ROOM->scene, 'dummy_boy');
   DB::Commit();
-  OutputVoteResult('投票完了');
-}
-
-//開始前の投票ページ出力
-function OutputVoteBeforeGame(){
-  CheckScene(); //投票する状況があっているかチェック
-  OutputVotePageHeader();
-  echo '<input type="hidden" name="situation" value="KICK_DO">'."\n";
-  echo '<table class="vote-page"><tr>'."\n";
-
-  $count  = 0;
-  $header = '<input type="radio" name="target_no" id="';
-  $path   = Icon::GetPath();
-  foreach (DB::$USER->rows as $id => $user) {
-    if ($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
-    $count++;
-
-    $checkbox = ! $user->IsDummyBoy() && (GameConfig::$self_kick || ! $user->IsSelf()) ?
-      $header . $id . '" value="' . $id . '">'."\n" : '';
-    echo $user->GenerateVoteTag($path . $user->icon_filename, $checkbox);
-  }
-
-  $str = <<<EOF
-</tr></table>
-<span class="vote-message">* Kick するには %d 人の投票が必要です</span>
-<div class="vote-page-link" align="right"><table><tr>
-<td>%s</td>
-<td><input type="submit" value="%s"></form></td>
-<td>
-<form method="POST" action="%s">
-<input type="hidden" name="vote" value="on">
-<input type="hidden" name="situation" value="GAMESTART">
-<input type="submit" value="%s">
-</form>
-</td>
-</tr></table></div>%s
-EOF;
-  printf($str, GameConfig::$kick, RQ::$get->back_url, VoteMessage::$KICK_DO, RQ::$get->post_url,
-	 VoteMessage::$GAME_START, "\n");
-  HTML::OutputFooter(true);
-}
-
-//昼の投票ページを出力する
-function OutputVoteDay(){
-  CheckScene(); //投票する状況があっているかチェック
-  if (DB::$ROOM->date == 1) OutputVoteResult('処刑：初日は投票不要です');
-  $revote_count = DB::$ROOM->revote_count;
-
-  //投票済みチェック
-  $str = " AND scene = '%s' AND vote_count = %d AND revote_count = %d AND user_no = %d";
-  $query = DB::$ROOM->GetQuery(true, 'vote') .
-    sprintf($str, DB::$ROOM->scene, DB::$ROOM->vote_count, $revote_count, DB::$SELF->user_no);
-
-  if (DB::FetchResult($query) > 0) OutputVoteResult('処刑：投票済み');
-  if (isset(DB::$ROOM->event->vote_duel) && is_array(DB::$ROOM->event->vote_duel)) { //特殊イベントを取得
-    $user_stack = array();
-    foreach (DB::$ROOM->event->vote_duel as $id) $user_stack[$id] = DB::$USER->rows[$id];
-  }
-  else {
-    $user_stack = DB::$USER->rows;
-  }
-  $virtual_self = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想投票者を取得
-
-  OutputVotePageHeader();
-  echo <<<EOF
-<input type="hidden" name="situation" value="VOTE_KILL">
-<input type="hidden" name="revote_count" value="{$revote_count}">
-<table class="vote-page"><tr>
-
-EOF;
-
-  $checkbox_header = "\n".'<input type="radio" name="target_no" id="';
-  $count = 0;
-  $base_path = Icon::GetPath();
-  $dead_icon = Icon::GetDead();
-  foreach ($user_stack as $id => $user) {
-    if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
-    $count++;
-    $is_live = DB::$USER->IsVirtualLive($id);
-
-    //生きていればユーザアイコン、死んでれば死亡アイコン
-    $path = $is_live ? $base_path . $user->icon_filename : $dead_icon;
-    $checkbox = ($is_live && ! $user->IsSame($virtual_self->uname)) ?
-      $checkbox_header . $id . '" value="' . $id . '">' : '';
-    echo $user->GenerateVoteTag($path, $checkbox);
-  }
-
-  $url = RQ::$get->back_url;
-  $str = <<<EOF
-</tr></table>
-<span class="vote-message">* 投票先の変更はできません。慎重に！</span>
-<div class="vote-page-link" align="right"><table><tr>
-<td>%s</td>
-<td><input type="submit" value="%s"></td>
-</tr></table></div>
-</form>%s
-EOF;
-  printf($str, $url, VoteMessage::$VOTE_DO, "\n");
-  HTML::OutputFooter(true);
-}
-
-//死者の投票ページ出力
-function OutputVoteDeadUser(){
-  //投票済みチェック
-  if (DB::$SELF->IsDrop())     OutputVoteResult('蘇生辞退：投票済み');
-  if (DB::$ROOM->IsOpenCast()) OutputVoteResult('蘇生辞退：投票不要です');
-
-  OutputVotePageHeader();
-  $url = RQ::$get->back_url;
-  $str = <<<EOF
-<input type="hidden" name="situation" value="REVIVE_REFUSE">
-<span class="vote-message">%s</span>
-<div class="vote-page-link" align="right"><table><tr>
-<td>%s</td>
-<td><input type="submit" value="%s"></form></td>
-</tr></table></div>%s
-EOF;
-  printf($str, VoteMessage::$CAUTION, $url, VoteMessage::$REVIVE_REFUSE, "\n");
-  HTML::OutputFooter(true);
-}
-
-//身代わり君 (霊界) の投票ページ出力
-function OutputVoteDummyBoy(){
-  OutputVotePageHeader();
-  $str = <<<EOF
-<span class="vote-message">%s</span>
-<div class="vote-page-link" align="right"><table><tr>
-<td>%s</td>
-<td>
-<input type="hidden" name="situation" value="RESET_TIME">
-<input type="submit" value="%s"></form>
-</td>%s
-EOF;
-  printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, VoteMessage::$RESET_TIME, "\n");
-
-  //蘇生辞退ボタン表示判定
-  if (! DB::$SELF->IsDrop() && DB::$ROOM->IsOption('not_open_cast') && ! DB::$ROOM->IsOpenCast()) {
-    $url = ;
-    $str = <<<EOF
-<td>
-<form method="POST" action="%s">
-<input type="hidden" name="vote" value="on">
-<input type="hidden" name="situation" value="REVIVE_REFUSE">
-<input type="submit" value="%s">
-</form>
-</td>%s
-EOF;
-    printf($str, RQ::$get->post_url, VoteMessage::$REVIVE_REFUSE, "\n");
-  }
-  echo "</tr></table></div>\n";
-  HTML::OutputFooter(true);
+  VoteHTML::OutputResult('投票完了');
 }
 
 //投票済みチェック
 function CheckAlreadyVote($action, $not_action = ''){
-  if (CheckSelfVoteNight($action, $not_action)) OutputVoteResult('夜：投票済み');
+  if (CheckSelfVoteNight($action, $not_action)) VoteHTML::OutputResult('夜：投票済み');
 }

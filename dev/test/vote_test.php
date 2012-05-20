@@ -372,9 +372,9 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = 7;
 #DB::$ROOM->scene = 'beforegame';
-#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'day';
 #DB::$ROOM->scene = 'night';
-DB::$ROOM->scene = 'aftergame';
+#DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 if (DB::$ROOM->date == 1) {
@@ -383,7 +383,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 #DB::$SELF = DB::$USER->ByID(1);
-DB::$SELF = DB::$USER->ByID(25);
+DB::$SELF = DB::$USER->ByID(13);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -407,27 +407,34 @@ if ($vote_view_mode) { //投票表示モード
       VoteNight();
     }
     else { //ここに来たらロジックエラー
-      OutputVoteError('投票コマンドエラー', '投票先を指定してください');
+      VoteHTML::OutputError('投票コマンドエラー', '投票先を指定してください');
     }
   }
   else {
     RQ::$get->post_url = 'vote_test.php';
-    switch(DB::$ROOM->scene) {
-    case 'beforegame':
-      //OutputVoteBeforeGame();
-      break;
+    #DB::$SELF->last_load_scene = DB::$ROOM->scene;
 
-    case 'day':
-      //OutputVoteDay();
-      break;
+    if (DB::$SELF->IsDead()) {
+      DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
+    }
+    else {
+      switch(DB::$ROOM->scene) {
+      case 'beforegame':
+	VoteHTML::OutputBeforeGame();
+	break;
 
-    case 'night':
-      OutputVoteNight();
-      break;
+      case 'day':
+	VoteHTML::OutputDay();
+	break;
 
-    default: //ここに来たらロジックエラー
-      OutputVoteError('投票シーンエラー');
-      break;
+      case 'night':
+	VoteHTML::OutputNight();
+	break;
+
+      default: //ここに来たらロジックエラー
+	VoteHTML::OutputError('投票シーンエラー');
+	break;
+      }
     }
   }
   DB::$SELF = DB::$USER->ByID(1);

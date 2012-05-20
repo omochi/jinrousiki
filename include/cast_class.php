@@ -9,7 +9,7 @@ class Cast {
     $role_list = CastConfig::$role_list[$user_count]; //人数に応じた配役リストを取得
     if (is_null($role_list)) { //リストの有無をチェック
       $str = $user_count . '人は設定されていません';
-      OutputVoteResult($error_header . $str . $error_footer, true);
+      VoteHTML::OutputResult($error_header . $str . $error_footer, true);
     }
     //PrintData(DB::$ROOM->option_list);
 
@@ -198,11 +198,11 @@ class Cast {
 
     if (@$role_list['human'] < 0) { //村人の人数をチェック
       $str = '「村人」の人数がマイナスになってます';
-      OutputVoteResult($error_header . $str . $error_footer, true);
+      VoteHTML::OutputResult($error_header . $str . $error_footer, true);
     }
     if (@$role_list['wolf'] < 0) { //人狼の人数をチェック
       $str = '「人狼」の人数がマイナスになってます';
-      OutputVoteResult($error_header . $str . $error_footer, true);
+      VoteHTML::OutputResult($error_header . $str . $error_footer, true);
     }
 
     //役職名を格納した配列を生成
@@ -218,7 +218,7 @@ class Cast {
 	return $now_role_list;
       }
       $str = '村人 (' . $user_count . ') と配役の数 (' . $role_count . ') が一致していません';
-      OutputVoteResult($error_header . $str . $error_footer, true);
+      VoteHTML::OutputResult($error_header . $str . $error_footer, true);
     }
 
     return $now_role_list;

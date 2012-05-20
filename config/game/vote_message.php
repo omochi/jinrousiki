@@ -1,15 +1,14 @@
 <?php
 //-- 投票画面専用メッセージ --//
 class VoteMessage {
-  //OutputVoteBeforeGame()
+  //beforegame
   static public $KICK_DO    = '対象をキックするに一票';	//KICK 投票ボタン
   static public $GAME_START = 'ゲームを開始するに一票';	//ゲーム開始ボタン
 
-  //OutputVoteDay()
+  //day
   static public $VOTE_DO = '対象を処刑するに一票';	//処刑投票ボタン
 
-  //OutputVoteNight()
-  //投票ボタン
+  //night
   static public $CAUTION           = '* 投票先の変更はできません。慎重に！';	//注意事項
   static public $WOLF_EAT          = '対象を喰い殺す (先着)';	//人狼
   static public $MAGE_DO           = '対象を占う';		//占い師

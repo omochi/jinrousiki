@@ -4,32 +4,97 @@
  * @author enogu
  */
 class OptionForm {
-  function GenerateRow(RoomOptionItem $item) {
-    if ($item->enabled) {
-      $type = $this->GetType($item);
-      if (! empty($type)) {
-	$item->LoadMessages();
-	echo <<<HTML
+  static function Output() {
+    self::GenerateRow('room_name');
+    self::GenerateRow('room_comment');
+    self::GenerateRow('max_user');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('wish_role');
+    self::GenerateRow('real_time');
+    self::GenerateRow('wait_morning');
+    self::GenerateRow('open_vote');
+    self::GenerateRow('seal_message');
+    self::GenerateRow('open_day');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('dummy_boy_selector');
+    self::GenerateRow('gm_password');
+    self::GenerateRow('gerd');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('not_open_cast_selector');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('poison');
+    self::GenerateRow('assassin');
+    self::GenerateRow('wolf');
+    self::GenerateRow('boss_wolf');
+    self::GenerateRow('poison_wolf');
+    self::GenerateRow('possessed_wolf');
+    self::GenerateRow('sirius_wolf');
+    self::GenerateRow('fox');
+    self::GenerateRow('child_fox');
+    self::GenerateRow('cupid');
+    self::GenerateRow('medium');
+    self::GenerateRow('mania');
+    self::GenerateRow('decide');
+    self::GenerateRow('authority');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('liar');
+    self::GenerateRow('gentleman');
+    self::GenerateRow('sudden_death');
+    self::GenerateRow('perverseness');
+    self::GenerateRow('deep_sleep');
+    self::GenerateRow('mind_open');
+    self::GenerateRow('blinder');
+    self::GenerateRow('critical');
+    self::GenerateRow('joker');
+    self::GenerateRow('death_note');
+    self::GenerateRow('detective');
+    self::GenerateRow('weather');
+    self::GenerateRow('festival');
+    self::GenerateRow('replace_human_selector');
+    self::GenerateRow('change_common_selector');
+    self::GenerateRow('change_mad_selector');
+    self::GenerateRow('change_cupid_selector');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('special_role');
+
+    self::HorizontalRule();
+
+    self::GenerateRow('topping');
+    self::GenerateRow('boost_rate');
+
+    self::GenerateRow('chaos_open_cast');
+    self::GenerateRow('sub_role_limit');
+    self::GenerateRow('secret_sub_role');
+  }
+
+  function GenerateRow($name) {
+    $item = OptionManager::GetClass($name);
+    if (! $item->enable || ! isset($item->formtype)) return;
+
+    $type = $item->formtype;
+    $item->LoadMessages();
+    echo <<<HTML
   <tr>
   <td><label for="{$item->name}">{$item->caption}：</label></td>
   <td>
 HTML;
-	$this->$type($item);
-	echo <<<HTML
+    self::$type($item);
+    echo <<<HTML
   </td>
   </tr>
 HTML;
-      }
-    }
-  }
-
-  function GetType(RoomOptionItem $item) {
-    if ($item instanceof Option_real_time) {
-      return 'realtime';
-    }
-    else {
-      return $item->formtype;
-    }
   }
 
   function HorizontalRule() {
@@ -45,8 +110,9 @@ HTML;
 <span class="explain">$footer</span>
 HTML;
   }
+
   function password(RoomOptionItem $item) {
-    $this->textbox($item, 'password');
+    self::textbox($item, 'password');
   }
 
   function checkbox(RoomOptionItem $item, $type = 'checkbox') {
@@ -59,8 +125,9 @@ HTML;
 
 HTML;
   }
+
   function radio(RoomOptionItem $item) {
-    $this->checkbox($item, 'radio');
+    self::checkbox($item, 'radio');
   }
 
   function select(RoomOptionItem $item) {
@@ -109,7 +176,7 @@ HTML;
 	  $child->formname = $item->formname;
 	  $child->formvalue = $key;
 	}
-	$this->$type($child);
+	self::$type($child);
 	echo "<br>\n";
       }
     }
