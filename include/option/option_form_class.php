@@ -4,6 +4,9 @@
  * @author enogu
  */
 class OptionForm {
+  const TEXTBOX         = '<input type="%s" id="%s" name="%s" size="%d" value="">%s';
+  const TEXTBOX_EXPLAIN = " <span class=\"explain\">%s</span>\n";
+
   static function Output() {
     self::GenerateRow('room_name');
     self::GenerateRow('room_comment');
@@ -81,45 +84,47 @@ class OptionForm {
 
   function GenerateRow($name) {
     $item = OptionManager::GetClass($name);
-    if (! $item->enable || ! isset($item->formtype)) return;
-
-    $type = $item->formtype;
+    if (! $item->enable || ! (isset($item->type)|| isset($item->formtype))) return;
+    //if (! $item->enable || ! isset($item->type)) return;
     $item->LoadMessages();
-    echo <<<HTML
+    switch ($item->type) {
+    case 'textbox':
+    case 'password':
+      $str = self::GenerateTextbox($item);
+      break;
+
+    default:
+      $type = $item->formtype;
+      $str = self::$type($item);
+      break;
+    }
+    $format = <<<EOF
   <tr>
-  <td><label for="{$item->name}">{$item->caption}：</label></td>
-  <td>
-HTML;
-    self::$type($item);
-    echo <<<HTML
-  </td>
+  <td><label for="%s">%s：</label></td>
+  <td>%s</td>
   </tr>
-HTML;
+EOF;
+    printf($format, $item->name, $item->GetCaption(), $str);
   }
 
   function HorizontalRule() {
     echo '<tr><td colspan="2"><hr></td></tr>';
   }
 
-  function textbox(RoomOptionItem $item, $type = 'textbox') {
-    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
-    $footer = Text::LineToBR($footer);
-    $size = isset($item->size) ? 'size="'.$item->size.'"' : '';
-    echo <<<HTML
-<input type="{$type}" id="{$item->name}" name="{$item->formname}" {$size} value="{$item->value}">
-<span class="explain">$footer</span>
-HTML;
-  }
-
-  function password(RoomOptionItem $item) {
-    self::textbox($item, 'password');
+  //テキストボックス生成
+  function GenerateTextbox(TextRoomOptionItem $item) {
+    $size    = sprintf('%s_input', $item->name);
+    $str     = $item->GetExplain();
+    $explain = isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '';
+    return sprintf(self::TEXTBOX, $item->type, $item->name, $item->formname, RoomConfig::$$size,
+		   $explain);
   }
 
   function checkbox(RoomOptionItem $item, $type = 'checkbox') {
     $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
     $footer = Text::LineToBR($footer);
     $checked = $item->value ? ' checked' : '';
-    echo <<<HTML
+    return <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
 <span class="explain">{$footer}</span>
 
@@ -127,7 +132,7 @@ HTML;
   }
 
   function radio(RoomOptionItem $item) {
-    self::checkbox($item, 'radio');
+    return self::checkbox($item, 'radio');
   }
 
   function select(RoomOptionItem $item) {
@@ -147,7 +152,7 @@ HTML;
       $options .= "<option value=\"{$code}\" {$selected}>{$label}</option>\n";
     }
     $explain = Text::LineToBR($item->explain);
-    echo <<<HTML
+    return <<<HTML
 <select id="{$item->name}" name="{$item->formname}">
 <optgroup label="{$item->label}">
 {$options}</optgroup>
@@ -159,15 +164,14 @@ HTML;
   function realtime(Option_real_time $item) {
     $checked = $item->value ? ' checked' : '';
     $explain = Text::LineToBR($item->explain);
-    echo <<<HTML
+    return <<<HTML
 <input type="checkbox" id="{$item->name}" name="{$item->formname}" value="on"{$checked}>
 <span class='explain'>({$explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)</span>
-</td>
-
 HTML;
   }
 
   function group(RoomOptionItem $item) {
+    $str  = '';
     foreach ($item->GetItems() as $key => $child) {
       $type = $child->formtype;
       if (! empty($type)) {
@@ -176,9 +180,9 @@ HTML;
 	  $child->formname = $item->formname;
 	  $child->formvalue = $key;
 	}
-	self::$type($child);
-	echo "<br>\n";
+	$str .= self::$type($child) . "<br>\n";
       }
     }
+    return $str;
   }
 }

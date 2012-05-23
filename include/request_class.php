@@ -14,13 +14,13 @@ class RQ {
   }
 
   //インスタンス取得
-  static function Get(){ return self::$get; }
+  static function Get() { return self::$get; }
 
   //テストデータ取得
-  static function GetTest(){ return self::$get->GetTest(); }
+  static function GetTest() { return self::$get->GetTest(); }
 
   //テスト村データ取得
-  static function GetTestRoom(){ return self::$get->GetTestRoom(); }
+  static function GetTestRoom() { return self::$get->GetTestRoom(); }
 
   //インスタンス代入
   static function Set($key, $value){
@@ -38,32 +38,32 @@ class RQ {
   }
 
   //データ展開
-  static function ToArray(){ return self::$get->ToArray(); }
+  static function ToArray() { return self::$get->ToArray(); }
 }
 
 //-- 引数解析の基底クラス --//
 class RequestBase {
   //テストデータ取得
-  public function GetTest(){ return $this->TestItems; }
+  public function GetTest() { return $this->TestItems; }
 
   //テスト村データ取得
-  public function GetTestRoom(){ return $this->TestItems->test_room; }
+  public function GetTestRoom() { return $this->TestItems->test_room; }
 
   //仮想村判定
-  public function IsVirtualRoom(){
+  public function IsVirtualRoom() {
     $data = $this->GetTest();
     return isset($data) && $data->is_virtual_room;
   }
 
   //データ展開
-  public function ToArray(){
+  public function ToArray() {
     $stack = array();
     foreach ($this as $key => $value) $stack[$key] = $value;
     return $stack;
   }
 
   //引数解析
-  protected function GetItems($items){
+  public function GetItems($items){
     $spec_list = func_get_args();
     $processor = array_shift($spec_list);
     $src_list  = @array('get' => $_GET, 'post' => $_POST, 'file' => $_FILES['file']);
@@ -109,28 +109,28 @@ class RequestBase {
   protected function IsOn($arg){ return $arg == 'on'; }
 
   //村番号判定
-  protected function IsRoomNo($arg){
+  protected function IsRoomNo($arg) {
     $room_no = intval($arg);
     if ($room_no < 1) HTML::OutputResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $room_no;
   }
 
   //ページセット
-  protected function SetPage($arg){
+  protected function SetPage($arg) {
     if ($arg == 'all') return $arg;
     $int = intval($arg);
     return $int > 0 ? $int : 1;
   }
 
   //テスト用パラメータセット
-  protected function AttachTestParameters(){
+  protected function AttachTestParameters() {
     if (ServerConfig::$debug_mode) $this->TestItems = new RequestTestParams();
   }
 }
 
 //-- テスト用パラメータ設定クラス --//
 class RequestTestParams extends RequestBase {
-  function __construct(){
+  function __construct() {
     $this->GetItems(null, 'post.test_users', 'post.test_room', 'post.test_mode');
     $this->is_virtual_room = isset($this->test_users);
   }
@@ -138,7 +138,7 @@ class RequestTestParams extends RequestBase {
 
 //-- game 用共通クラス --//
 class RequestBaseGame extends RequestBase {
-  function __construct(){
+  function __construct() {
     $this->GetItems('intval', 'get.room_no', 'get.auto_reload');
     $min = min(GameConfig::$auto_reload_list);
     if ($this->auto_reload != 0 && $this->auto_reload < $min) $this->auto_reload = $min;
@@ -148,7 +148,7 @@ class RequestBaseGame extends RequestBase {
 
 //-- game play 用共通クラス --//
 class RequestBaseGamePlay extends RequestBaseGame {
-  function __construct(){
+  function __construct() {
     parent::__construct();
     $this->GetItems('IsOn', 'get.list_down', 'get.play_sound');
   }
@@ -156,7 +156,7 @@ class RequestBaseGamePlay extends RequestBaseGame {
 
 //-- icon 用共通クラス --//
 class RequestBaseIcon extends RequestBase {
-  function __construct(){
+  function __construct() {
     Text::EncodePostData();
     $this->GetItems('intval', 'post.icon_no');
     $this->GetItems('Escape', 'post.icon_name', 'post.appearance',
@@ -164,7 +164,7 @@ class RequestBaseIcon extends RequestBase {
     $this->GetItems('Exists', 'post.search');
   }
 
-  protected function GetIconData(){
+  protected function GetIconData() {
     $this->GetItems('IsOn', 'sort_by_name');
     $this->GetItems('Escape', 'appearance', 'category', 'author', 'keyword');
     $this->GetItems('Exists', 'search');
@@ -174,7 +174,7 @@ class RequestBaseIcon extends RequestBase {
 
 //-- login.php --//
 class RequestLogin extends RequestBase {
-  function __construct(){
+  function __construct() {
     Text::EncodePostData();
     $this->GetItems('intval', 'get.room_no');
     $this->GetItems('IsOn', 'post.login_manually');
@@ -185,7 +185,7 @@ class RequestLogin extends RequestBase {
 
 //-- user_manager.php --//
 class RequestUserManager extends RequestBaseIcon {
-  function __construct(){
+  function __construct() {
     Text::EncodePostData();
     $this->GetItems('IsRoomNo', 'get.room_no');
     $this->GetItems('intval', 'post.icon_no', 'get.user_no');
@@ -206,7 +206,7 @@ class RequestUserManager extends RequestBaseIcon {
 
 //-- game_frame.php --//
 class RequestGameFrame extends RequestBaseGamePlay {
-  function __construct(){
+  function __construct() {
     parent::__construct();
     $this->GetItems('IsOn', 'get.dead_mode');
 
@@ -219,7 +219,7 @@ class RequestGameFrame extends RequestBaseGamePlay {
 
 //-- game_up.php --//
 class RequestGameUp extends RequestBaseGamePlay {
-  function __construct(){
+  function __construct() {
     parent::__construct();
     $this->GetItems('IsOn', 'get.dead_mode', 'get.heaven_mode');
 
@@ -234,7 +234,7 @@ class RequestGameUp extends RequestBaseGamePlay {
 
 //-- game_play.php --//
 class RequestGamePlay extends RequestBaseGamePlay {
-  function __construct(){
+  function __construct() {
     Text::EncodePostData();
     parent::__construct();
     $this->GetItems('IsOn', 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
@@ -247,14 +247,14 @@ class RequestGamePlay extends RequestBaseGamePlay {
 
 //-- game_log.php --//
 class RequestGameLog extends RequestBase {
-  function __construct(){
+  function __construct() {
     $this->GetItems('IsRoomNo', 'get.room_no');
     $this->GetItems('intval', 'get.date', 'get.user_no');
     $this->GetItems(null, 'get.scene');
     if ($this->IsInvalidScene()) HTML::OutputResult('引数エラー', '無効な引数です');
   }
 
-  private function IsInvalidScene(){
+  private function IsInvalidScene() {
     switch ($this->scene) {
     case 'beforegame':
       return $this->date != 0;
@@ -282,7 +282,7 @@ class RequestGameVote extends RequestBaseGamePlay {
     target_no    : 投票先の user_no (キューピッドがいるため単純に整数型にキャストしてはだめ)
     situation    : 投票の分類 (Kick・処刑・占い・人狼襲撃など)
   */
-  function __construct(){
+  function __construct() {
     parent::__construct();
     $this->GetItems('intval', 'post.revote_count');
     $this->GetItems('IsOn', 'post.vote');
@@ -300,7 +300,7 @@ class RequestGameVote extends RequestBaseGamePlay {
 
 //-- old_log.php --//
 class RequestOldLog extends RequestBase {
-  function __construct(){
+  function __construct() {
     $this->GetItems('intval', 'get.db_no');
     $this->GetItems('IsOn', 'get.watch');
     if ($this->is_room = isset($_GET['room_no'])) {
@@ -318,7 +318,7 @@ class RequestOldLog extends RequestBase {
 
 //-- icon_view.php --//
 class RequestIconView extends RequestBaseIcon {
-  function __construct(){
+  function __construct() {
     $this->GetIconData();
     $this->GetItems('intval', 'get.icon_no');
     $this->GetItems(null, 'get.category', 'get.appearance', 'get.author');
@@ -328,7 +328,7 @@ class RequestIconView extends RequestBaseIcon {
 
 //-- icon_edit.php --//
 class RequestIconEdit extends RequestBaseIcon {
-  function __construct(){
+  function __construct() {
     parent::__construct();
     $this->GetItems('IsOn', 'post.disable');
     $this->GetItems('Escape', 'post.password');
@@ -337,7 +337,7 @@ class RequestIconEdit extends RequestBaseIcon {
 
 //-- icon_upload.php --//
 class RequestIconUpload extends RequestBaseIcon {
-  function __construct(){
+  function __construct() {
     parent::__construct();
     $this->GetItems('intval', 'file.size');
     $this->GetItems(null, 'post.command', 'file.type', 'file.tmp_name');
@@ -346,14 +346,14 @@ class RequestIconUpload extends RequestBaseIcon {
 
 //-- shared_room.php --//
 class RequestSharedRoom extends RequestBase {
-  function __construct(){
+  function __construct() {
     $this->GetItems('intval', 'get.id');
   }
 }
 
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase {
-  function __construct(){
+  function __construct() {
     Text::EncodePostData();
     $this->GetItems('Escape', 'post.name', 'post.caption', 'post.user', 'post.password');
   }

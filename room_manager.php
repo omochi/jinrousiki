@@ -8,7 +8,7 @@ if (! DB::ConnectInHeader()) return false;
 MaintenanceRoom();
 Text::EncodePostData();
 if (@$_POST['command'] == 'CREATE_ROOM') {
-  $INIT_CONF->LoadFile('message', 'user_icon_class');
+  $INIT_CONF->LoadFile('message', 'request_class', 'user_icon_class');
   $INIT_CONF->LoadClass('ROOM_OPT', 'TWITTER');
   CreateRoom();
 }
@@ -56,40 +56,39 @@ function CreateRoom(){
   if (Security::CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
     HTML::OutputResult('村作成 [入力エラー]', '無効なアクセスです。');
   }
+  RQ::Load();
   //PrintData($ROOM_OPT);
 
   //-- 入力データのエラーチェック --//
-  //村の名前・説明のデータチェック
-  foreach (array('room_name', 'room_comment') as $str) {
-    $$str = $_POST[$str];
-    Text::Escape($$str);
+  foreach (array('room_name', 'room_comment') as $str) { //村の名前・説明のデータチェック
+    RQ::$get->GetItems('Escape', 'post.' . $str);
+    $$str = RQ::$get->$str;
     if ($$str == '') { //未入力チェック
-      OutputRoomAction('empty', false, $ROOM_OPT->GetCaption($str));
-      return false;
+      return OutputRoomAction('empty', OptionManager::GenerateCaption($str), false);
     }
     //文字列チェック
     if (strlen($$str) > RoomConfig::$$str || preg_match(RoomConfig::$ng_word, $$str)) {
-      OutputRoomAction('comment', false, $ROOM_OPT->GetCaption($str));
-      return false;
+      return OutputRoomAction('comment', OptionManager::GenerateCaption($str), false);
     }
   }
 
   //最大人数チェック
-  $max_user = @(int)$_POST['max_user'];
+  RQ::$get->GetItems('intval', 'post.max_user');
+  $max_user = RQ::$get->max_user;
   if (! in_array($max_user, RoomConfig::$max_user_list)) {
     HTML::OutputResult('村作成 [入力エラー]', '無効な最大人数です。');
   }
 
-  if (! DB::Lock('room')) { //トランザクション開始
-    OutputRoomAction('busy');
-    return false;
-  }
+  if (! DB::Lock('room')) return OutputRoomAction('busy'); //トランザクション開始
 
   $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
   if (! ServerConfig::$debug_mode) { //デバッグモード時は村作成制限をスキップ
     $str = 'room_password'; //パスワードチェック
-    if (isset(ServerConfig::$$str) && @$_POST[$str] != ServerConfig::$$str) {
-      HTML::OutputResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
+    if (isset(ServerConfig::$$str)) {
+      RQ::$get->GetItems('Escape', 'post.' . $str);
+      if (RQ::$get->$str != ServerConfig::$$str) {
+	HTML::OutputResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
+      }
     }
 
     if (Security::CheckBlackList()) { //ブラックリストチェック
@@ -100,20 +99,17 @@ function CreateRoom(){
     $time  = DB::FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
     if (isset($time) &&
 	Time::Get() - Time::ConvertTimeStamp($time, false) <= RoomConfig::$establish_wait) {
-      OutputRoomAction('establish_wait');
-      return false;
+      return OutputRoomAction('establish_wait');
     }
 
     //最大稼働数チェック
     if (DB::Count("SELECT room_no {$query}") >= RoomConfig::$max_active_room) {
-      OutputRoomAction('full');
-      return false;
+      return OutputRoomAction('full');
     }
 
     //同一ユーザの連続作成チェック
     if (DB::Count("SELECT room_no {$query} AND establisher_ip = '{$ip_address}'") > 0) {
-      OutputRoomAction('over_establish');
-      return false;
+      return OutputRoomAction('over_establish');
     }
   }
 
@@ -182,11 +178,7 @@ function CreateRoom(){
   if ($ROOM_OPT->real_time) {
     //制限時間チェック
     list($day, $night) = $ROOM_OPT->real_time;
-    if ($day <= 0 || 99 < $day || $night <= 0 || 99 < $night) {
-      OutputRoomAction('time');
-      return false;
-    }
-
+    if ($day <= 0 || 99 < $day || $night <= 0 || 99 < $night) return OutputRoomAction('time');
     $ROOM_OPT->LoadPostParams('wait_morning');
   }
 
@@ -195,7 +187,6 @@ function CreateRoom(){
   $room_no     = DB::FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
   $game_option = $ROOM_OPT->GetOptionString(RoomOption::GAME_OPTION);
   $option_role = $ROOM_OPT->GetOptionString(RoomOption::ROLE_OPTION);
-  $status      = false;
   //PrintData($_POST, 'Post');
   //PrintData($ROOM_OPT);
   //PrintData($game_option, 'GameOption');
@@ -215,15 +206,14 @@ function CreateRoom(){
 
       //身代わり君を入村させる
       if ($ROOM_OPT->dummy_boy &&
-	  DB::Count('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0){
+	  DB::Count('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0) {
         if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
 			     1, $ROOM_OPT->gerd ? UserIcon::GERD : 0)) break;
       }
 
       if (ServerConfig::$secret_room) { //村情報非表示モードの処理
         DB::Commit();
-        OutputRoomAction('success', false, $room_name);
-        return true;
+        return OutputRoomAction('success', $room_name, false);
       }
     }
 
@@ -231,16 +221,15 @@ function CreateRoom(){
     //OutputSiteSummary(); //RSS更新 //テスト中
 
     DB::Commit();
-    OutputRoomAction('success', false, $room_name);
-    $status = true;
+    return OutputRoomAction('success', $room_name, false);
   } while (false);
 
-  if (! $status) OutputRoomAction('busy');
-  return true;
+  return OutputRoomAction('busy');
 }
 
 //結果出力 (CreateRoom() 用)
-function OutputRoomAction($type, $rollback = true, $str = ''){
+function OutputRoomAction($type, $str = '', $rollback = true) {
+  $status = false;
   switch ($type) {
   case 'empty':
     HTML::OutputResultHeader('村作成 [入力エラー]');
@@ -300,10 +289,12 @@ function OutputRoomAction($type, $rollback = true, $str = ''){
     HTML::OutputResultHeader('村作成', ServerConfig::$site_root);
     echo $str . ' 村を作成しました。トップページに飛びます。';
     echo '切り替わらないなら <a href="' . ServerConfig::$site_root . '">ここ</a> 。';
+    $status = true;
     break;
   }
   if ($rollback) DB::Rollback();
   HTML::OutputFooter();
+  return $status;
 }
 
 //村(room)のwaitingとplayingのリストを出力する

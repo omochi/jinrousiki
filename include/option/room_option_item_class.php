@@ -5,7 +5,7 @@ abstract class RoomOptionItem {
   public $value;
 
   public $collect = 'SetOption';
-
+  public $type;
   /*
   public $formtype;
   public $formname;
@@ -152,18 +152,8 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
  * テキスト型の村立てオプション項目を提供します。
  */
 abstract class TextRoomOptionItem extends RoomOptionItem {
-  public $size;
-  public $footer;
+  public $collect = null;
+  public $type = 'textbox';
 
-  function  __construct($group) {
-    parent::__construct($group);
-    $this->formtype = 'textbox';
-  }
-
-  function GetCaption() { return $this->caption; }
-
-  function  LoadMessages() {
-    $size = "{$this->name}_input";
-    if (isset(RoomConfig::$$size)) $this->size = RoomConfig::$$size;
-  }
+  function __construct() { parent::__construct(RoomOption::NOT_OPTION); }
 }
