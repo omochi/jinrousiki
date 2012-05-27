@@ -1,6 +1,9 @@
 <?php
+/*
+  ◆投票した票数を公表する (open_vote)
+*/
 class Option_open_vote extends CheckRoomOptionItem {
-  function  __construct() { parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return '投票した票数を公表する'; }
 

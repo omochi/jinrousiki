@@ -1,8 +1,8 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('game_option_config', 'icon_class', 'session_class', 'user_class',
+$INIT_CONF->LoadFile('icon_class', 'session_class', 'user_class', 'room_option_class',
 		     'game_vote_functions');
-$INIT_CONF->LoadClass('ROLES', 'ROOM_OPT');
+$INIT_CONF->LoadClass('ROLES');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGameVote', true);

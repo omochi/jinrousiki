@@ -1,6 +1,5 @@
 <?php
-$INIT_CONF->LoadFile('image_class');
-$INIT_CONF->LoadClass('ROOM_OPT');
+$INIT_CONF->LoadFile('image_class', 'room_option_class');
 
 class SiteSummary extends FeedEngine {
   public $room_info = array();

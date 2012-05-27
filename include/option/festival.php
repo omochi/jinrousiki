@@ -1,6 +1,9 @@
 <?php
+/*
+  ◆お祭り村 (festival)
+*/
 class Option_festival extends CheckRoomOptionItem {
-  function  __construct() { parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return 'お祭り村'; }
 

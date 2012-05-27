@@ -1,6 +1,12 @@
 <?php
 class RoomOption extends OptionParser {
-  static $icon_order = array(
+  const NOT_OPTION  = '';
+  const GAME_OPTION = 'game_option';
+  const ROLE_OPTION = 'role_option';
+
+  static $game_option = array();
+  static $role_option = array();
+  static $icon_order  = array(
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'wait_morning', 'open_vote',
     'seal_message', 'open_day', 'not_open_cast', 'auto_open_cast', 'poison', 'assassin', 'wolf',
     'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid',
@@ -14,19 +20,22 @@ class RoomOption extends OptionParser {
     'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
     'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
 
-  static $definitions = array();
+  //登録されたオプションを取得
+  static function GetOption($type) { return implode(' ', self::$$type); }
 
-  /*
-    これらのプロパティは設定されたオプションのゲーム用/役職用の分割に使用されている。
-    詳しくはGetOptionStringメソッドを見よ。
-    異なるパラメータで同じクラスのグローバル変数を複数生成できるようになった場合、
-    またはroomテーブルのオプション属性が統合された場合、
-    これらのプロパティを使用する必要はなくなると思われる。(2012-01-15 enogu)
-  */
-  const NOT_OPTION  = '';
-  const GAME_OPTION = 'game_option';
-  const ROLE_OPTION = 'role_option';
-  public $groups = array();
+  //オプションを登録
+  static function SetOption($type, $name) {
+    RQ::$get->$name = true;
+    if (! in_array($name, self::$$type)) array_push(self::$$type, $name);
+  }
+
+  //フォームからの入力値を取得
+  static function LoadPost($name) {
+    foreach (func_get_args() as $option) {
+      $filter = OptionManager::GetClass($option);
+      if (isset($filter)) $filter->LoadPost();
+    }
+  }
 
   static function SetGroup($group, $item) {
     $item->group = $group;
@@ -35,21 +44,6 @@ class RoomOption extends OptionParser {
         self::SetGroup($group, $child);
       }
     }
-  }
-
-  static function Get($item) {
-    if (!isset(self::$definitions[$item])) {
-      $file = dirname(__FILE__)."/{$item}.php";
-      if (file_exists($file)) {
-	require_once($file);
-	$class = 'Option_'.$item;
-	self::$definitions[$item] = new $class();
-      }
-      else {
-	self::$definitions[$item] = null;
-      }
-    }
-    return self::$definitions[$item];
   }
 
   static function Wrap($option) {
@@ -65,56 +59,13 @@ class RoomOption extends OptionParser {
     return $result;
   }
 
-  function  __construct($value = '') {
-    parent::__construct($value);
-  }
-
-  function LoadPostParams($target = null) {
-    $items = is_array($target) ? $target : func_get_args();
-    $all = empty($items);
-    foreach ($_POST as $key => $value) {
-      $def = self::Get($key);
-      if (isset($def) && ($all || in_array($def->name, $items))) {
-        $def->CollectPostParam($this);
-      }
-    }
-  }
-
-  function Set($item, $name, $value) {
-    if ($item instanceof RoomOptionItem) {
-      $this->groups[$item->group][$name] = true;
-    }
-    else {
-      $this->groups[$item][$name] = true;
-    }
-    parent::__set($name, $value);
-  }
-
-  function GetCaption($name) {
-    return is_object($object = self::Get($name)) ? $object->GetCaption() : false;
-  }
-
-  function GetMessage($name) {
-    if (isset(self::$definitions[$name])) {
-      return self::$definitions[$name]->description;
-    }
-    return false;
-  }
-
-  function GetOptionString($type = null) {
-    if (! isset($type)) {
-      return $this->ToString();
-    }
-    elseif (isset($this->groups[$type])) {
-      return $this->ToString(array_keys($this->groups[$type]));
-    }
-  }
+  function __construct($value = '') { parent::__construct($value); }
 
   /** ゲームオプションの画像タグを作成する */
   function GenerateImageList() {
     $str = '';
     foreach (self::$icon_order as $option) {
-      $define = self::Get($option);
+      $define = OptionManager::GetClass($option);
       if (! isset($define, $this->$option)) continue;
       $define->LoadMessages();
       $footer = '';

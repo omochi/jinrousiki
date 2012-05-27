@@ -1,4 +1,7 @@
 <?php
+/*
+  ◆GM ログインパスワード (gm_password)
+*/
 class Option_gm_password extends TextRoomOptionItem {
   public $type = 'password';
 

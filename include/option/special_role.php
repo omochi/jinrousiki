@@ -1,13 +1,15 @@
 <?php
-/**
- * 特殊配役モード(special_role)
- * 使用可能なモードは/config/game_option.phpの$special_role_listを参照してください。
- * @author enogu
- */
+/*
+  ◆特殊配役モード (セレクタ)
+  ○仕様
+  ・モードリスト：GameOptionCofing::$special_role_list
+*/
 class Option_special_role extends SelectorRoomOptionItem {
+  public $group = RoomOption::GAME_OPTION;
+
   function __construct() {
-    parent::__construct(RoomOption::GAME_OPTION);
-    $this->collect = 'CollectValue';
+    parent::__construct();
+    $this->item_list = GameOptionConfig::${$this->items_source};
   }
 
   function GetCaption() { return '特殊配役モード'; }
@@ -15,10 +17,4 @@ class Option_special_role extends SelectorRoomOptionItem {
   function GetExplain() {
     return '詳細は<a href="info/game_option.php">ゲームオプション</a>を参照してください';
   }
-
-  function LoadMessages() {
-    parent::LoadMessages();
-    $this->label = 'モード名';
-  }
 }
-?>

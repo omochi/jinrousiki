@@ -4,7 +4,7 @@
  * @author enogu
  */
 class OptionForm {
-  const TEXTBOX         = '<input type="%s" id="%s" name="%s" size="%d" value="">%s';
+  const TEXTBOX         = '<input type="%s" name="%s" id="%s" size="%d" value="">%s';
   const TEXTBOX_EXPLAIN = " <span class=\"explain\">%s</span>\n";
 
   static function Output() {
@@ -100,11 +100,11 @@ class OptionForm {
     }
     $format = <<<EOF
   <tr>
-  <td><label for="%s">%s：</label></td>
-  <td>%s</td>
-  </tr>
+    <td><label for="%s">%s：</label></td>
+    <td>%s</td>
+  </tr>%s
 EOF;
-    printf($format, $item->name, $item->GetCaption(), $str);
+    printf($format, $item->name, $item->GetCaption(), $str, "\n");
   }
 
   function HorizontalRule() {
@@ -116,7 +116,7 @@ EOF;
     $size    = sprintf('%s_input', $item->name);
     $str     = $item->GetExplain();
     $explain = isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '';
-    return sprintf(self::TEXTBOX, $item->type, $item->name, $item->formname, RoomConfig::$$size,
+    return sprintf(self::TEXTBOX, $item->type, $item->name, $item->name, RoomConfig::$$size,
 		   $explain);
   }
 
@@ -127,7 +127,6 @@ EOF;
     return <<<HTML
 <input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
 <span class="explain">{$footer}</span>
-
 HTML;
   }
 

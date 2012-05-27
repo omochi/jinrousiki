@@ -1,10 +1,9 @@
 <?php
-class Option_chaos_open_cast_camp extends CheckRoomOptionItem {
-  function  __construct() {
-    parent::__construct(RoomOption::ROLE_OPTION);
-    $this->formtype = 'radio';
-  }
-
+/*
+  ◆陣営通知 (chaos_open_cast_camp)
+*/
+OptionManager::Load('chaos_open_cast_none');
+class Option_chaos_open_cast_camp extends Option_chaos_open_cast_none {
   function GetName() { return '陣営通知'; }
 
   function GetCaption() { return '配役を通知する:陣営通知'; }

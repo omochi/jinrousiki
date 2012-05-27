@@ -1,10 +1,11 @@
 <?php
+//-- 村作成オプションの基底クラス --//
 abstract class RoomOptionItem {
   public $name;
   public $enable;
+
   public $value;
 
-  public $collect = 'SetOption';
   public $type;
   /*
   public $formtype;
@@ -14,34 +15,33 @@ abstract class RoomOptionItem {
   public $explain;
   */
 
-  function  __construct($group) {
+  function __construct($group = null) {
     $this->name = array_pop(explode('Option_', get_class($this)));
-    RoomOption::SetGroup($group, $this);
+
+    if (isset($group)) RoomOption::SetGroup($group, $this);
+
     $enable  = sprintf('%s_enable',  $this->name);
     $default = sprintf('default_%s', $this->name);
     $this->enable = isset(GameOptionConfig::$$enable) ? GameOptionConfig::$$enable : true;
     if (isset(GameOptionConfig::$$default)) {
       $this->value = GameOptionConfig::$$default;
     }
+
     $this->formname = $this->name;
-    $this->formvalue = $this->value;
+    if (! isset($this->formvalue)) $this->formvalue = $this->value;
   }
 
-  function SetOption(RoomOption $option, $value) {
-    $option->Set($this, $this->name, $value);
-  }
-
-  function CollectPostParam(RoomOption $option) {
-    if (isset($_POST[$this->name]) && isset($this->collect)) {
-      call_user_func_array(array($this, $this->collect), array($option, $_POST[$this->name]));
-    }
-  }
-
+  //オプション名取得
   function GetName() { return $this->GetCaption(); }
 
+  //キャプション取得
   abstract function GetCaption();
 
+  //説明文取得
   function GetExplain() { return $this->GetCaption(); }
+
+  //フォームデータ取得
+  abstract function LoadPost();
 
   function LoadMessages() {
     $this->caption = $this->GetCaption();
@@ -63,27 +63,14 @@ abstract class RoomOptionItem {
  * チェックボックス型の標準的な村立てオプション項目を提供します。
  */
 abstract class CheckRoomOptionItem extends RoomOptionItem {
-  function  __construct($group) {
-    parent::__construct($group);
-    $this->formtype = 'checkbox';
-    $this->formvalue = 'on';
-  }
+  public $group = RoomOption::ROLE_OPTION;
+  public $formtype = 'checkbox';
+  public $formvalue = 'on';
 
-  function SetOption(RoomOption $option, $value) {
-    $checked = $value == $this->formvalue && !empty($this->formvalue);
-    $option->Set($this, $this->name, $checked);
-  }
-
-  function SetOptionAsKeyValue(RoomOption $option, $value) {
-    $checked = $value == $this->formvalue && !empty($this->formvalue);
-    if ($checked) {
-      $option->Set($this, $this->name, $this->formvalue);
-    }
-  }
-
-  function SetOptionAsValue(RoomOption $option, $value) {
-    $checked = $value == $this->formvalue && !empty($this->formvalue);
-    $option->Set($this, $this->formvalue, $checked);
+  function LoadPost() {
+    RQ::$get->Parse('IsOn', 'post.' . $this->name);
+    if (RQ::$get->{$this->name}) array_push(RoomOption::${$this->group}, $this->name);
+    return RQ::$get->{$this->name};
   }
 }
 
@@ -91,27 +78,28 @@ abstract class CheckRoomOptionItem extends RoomOptionItem {
  * セレクタ型の村立てオプション項目を提供します。
  */
 abstract class SelectorRoomOptionItem extends RoomOptionItem {
-  public $label;
+  public $group = RoomOption::ROLE_OPTION;
+  public $type  = 'selector';
+
+  public $formtype = 'select';
+
+  public $label = 'モード名';
   public $items;
   public $items_source;
   public $conf_name;
 
-  function  __construct($group) {
-    parent::__construct($group);
-    $this->formtype = 'select';
-    $this->items_source = "{$this->name}_items";
+  function __construct() {
+    parent::__construct();
+    $this->items_source = sprintf('%s_list', $this->name);
   }
 
-  function CollectValue(RoomOption $option, $value) {
-    $items = $this->GetItems();
-    if (isset($items[$value]) && !empty($value)) {
-      $child = $items[$value];
-      if ($child instanceof RoomOptionItem) {
-	$option->Set($this, $child->name, true);
-      }
-      else {
-	$option->Set($this, $value, true);
-      }
+  function LoadPost() {
+    if (! isset($_POST[$this->name]) || empty($_POST[$this->name])) return false;
+    $post = $_POST[$this->name];
+
+    if (in_array($post, $this->item_list)) {
+      RQ::$get->$post = true;
+      array_push(RoomOption::${$this->group}, $post);
     }
   }
 
@@ -128,7 +116,7 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
 	    }
 	  }
 	  else if (is_string($value)) {
-	    $item = RoomOption::Get($value);
+	    $item = OptionManager::GetClass($value);
 	    if (isset($item) && $item->enable) {
 	      $this->items[$item->name] = $item;
 	    }
@@ -152,8 +140,8 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
  * テキスト型の村立てオプション項目を提供します。
  */
 abstract class TextRoomOptionItem extends RoomOptionItem {
-  public $collect = null;
+  public $group = RoomOption::NOT_OPTION;
   public $type = 'textbox';
 
-  function __construct() { parent::__construct(RoomOption::NOT_OPTION); }
+  function LoadPost() { RQ::$get->Parse('Escape', 'post.' . $this->name); }
 }

@@ -2,9 +2,8 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadClass('ROOM_OPT');
-$INIT_CONF->LoadFile('room_config', 'game_option_config', 'chaos_config', 'role_data_class',
-		     'cast_class', 'game_vote_functions');
+$INIT_CONF->LoadFile('chaos_config', 'role_data_class', 'cast_class', 'room_option_class',
+		     'game_vote_functions');
 
 HTML::OutputHeader('配役テストツール', 'role_table', true);
 OutputRoleTestForm();
@@ -43,7 +42,7 @@ if (@$_POST['command'] == 'role_test') {
   //置換系
   foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
     if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
-    if (array_search(@$_POST[$option], GameOptionConfig::${$option.'_items'}) !== false) {
+    if (array_search(@$_POST[$option], GameOptionConfig::${$option.'_selector_list'}) !== false) {
       $stack->option_role[] = $_POST[$option];
     }
   }
@@ -51,7 +50,7 @@ if (@$_POST['command'] == 'role_test') {
   //闇鍋用オプション
   foreach (array('topping', 'boost_rate') as $option) {
     if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
-    if (array_key_exists($_POST[$option], GameOptionConfig::${$option.'_items'})) {
+    if (array_key_exists($_POST[$option], GameOptionConfig::${$option.'_list'})) {
       $stack->option_role[] = $option . ':' . $_POST[$option];
     }
   }
@@ -122,7 +121,7 @@ EOF;
 
   foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
     $count = 0;
-    foreach (GameOptionConfig::${$option.'_items'} as $key => $mode) {
+    foreach (GameOptionConfig::${$option.'_selector_list'} as $key => $mode) {
       if (++$count % 10 == 0) echo "<br>\n";
       if (is_int($key)) {
 	$checked = '';
@@ -145,7 +144,7 @@ EOF;
 
   foreach (array('topping', 'boost_rate') as $option) {
     $count = 0;
-    foreach (GameOptionConfig::${$option.'_items'} as $key => $mode) {
+    foreach (GameOptionConfig::${$option.'_list'} as $key => $mode) {
       if (++$count % 10 == 0) echo "<br>\n";
       $checked = $key == '' ? ' checked' : '';
       $label = $option . '_' . $key;

@@ -22,8 +22,7 @@ DB::$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 //シーンに応じた追加クラスをロード
 if (DB::$ROOM->IsBeforeGame()) { //ゲームオプション表示
-  $INIT_CONF->LoadFile('room_config', 'cast_config', 'image_class');
-  $INIT_CONF->LoadClass('ROOM_OPT');
+  $INIT_CONF->LoadFile('cast_config', 'image_class', 'room_option_class');
   RQ::$get->retrive_type = DB::$ROOM->scene;
 }
 elseif (! DB::$ROOM->heaven_mode && DB::$ROOM->IsDay()) {

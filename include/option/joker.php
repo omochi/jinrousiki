@@ -2,9 +2,10 @@
 /*
   ◆ジョーカー村 (joker)
   ○仕様
+  ・配役：誰か一人にジョーカー
 */
 class Option_joker extends CheckRoomOptionItem {
-  function __construct(){ parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return 'ババ抜き村'; }
 

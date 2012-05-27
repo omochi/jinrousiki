@@ -1,29 +1,41 @@
 <?php
+/*
+  ◆配役を通知する (セレクタ)
+*/
 class Option_chaos_open_cast extends SelectorRoomOptionItem {
-  function  __construct() {
-    parent::__construct(RoomOption::ROLE_OPTION);
-    $this->formtype = 'group';
-    $this->collect = 'CollectValue';
+  public $formtype = 'group';
+  public $item_list = array();
+
+  function __construct() {
+    parent::__construct();
+    foreach (array('camp', 'role', 'full') as $name) {
+      $class  = sprintf('%s_%s', $this->name, $name);
+      $filter = OptionManager::GetClass($class);
+      if (isset($filter) && $filter->enable) $this->item_list[$class] = $name;
+    }
   }
 
-  function  GetItems() {
-    $items = array(''     => new Option_chaos_open_cast_none(),
-		   'camp' => RoomOption::Get('chaos_open_cast_camp'),
-		   'role' => RoomOption::Get('chaos_open_cast_role'),
-		   'full' => RoomOption::Get('chaos_open_cast_full'));
+  function GetCaption() { return '配役を通知する'; }
+
+  function GetItems() {
+    $items = array(''     => OptionManager::GetClass('chaos_open_cast_none'),
+		   'camp' => OptionManager::GetClass('chaos_open_cast_camp'),
+		   'role' => OptionManager::GetClass('chaos_open_cast_role'),
+		   'full' => OptionManager::GetClass('chaos_open_cast_full'));
     if (isset($items[$this->value])) $items[$this->value]->value = true;
     return $items;
   }
 
-  function GetCaption() { return '配役を通知する'; }
-}
+  function LoadPost() {
+    if (! isset($_POST[$this->name])) return false;
+    $post = $_POST[$this->name];
 
-class Option_chaos_open_cast_none extends CheckRoomOptionItem {
-  function  __construct() {
-    parent::__construct(RoomOption::ROLE_OPTION);
-    $this->formtype = 'radio';
-    $this->collect = null;
+    foreach ($this->item_list as $option => $value) {
+      if ($value == $post) {
+	RQ::$get->$option = true;
+	array_push(RoomOption::${$this->group}, $option);
+	break;
+      }
+    }
   }
-
-  function GetCaption() { return '通知なし'; }
 }

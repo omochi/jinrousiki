@@ -1,6 +1,9 @@
 <?php
+/*
+  ◆天啓封印 (seal_message)
+*/
 class Option_seal_message extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return '天啓封印'; }
 

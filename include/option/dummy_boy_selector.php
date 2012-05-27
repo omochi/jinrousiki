@@ -1,9 +1,14 @@
 <?php
+/*
+  ◆初日の夜は身代わり君 (セレクタ)
+*/
 class Option_dummy_boy_selector extends SelectorRoomOptionItem {
-  function  __construct() {
-    parent::__construct(RoomOption::GAME_OPTION);
-    $this->formtype = 'group';
-    $this->collect = 'CollectValue';
+  public $group = RoomOption::GAME_OPTION;
+  public $formtype = 'group';
+  public $item_list = array('dummy_boy' => 'on', 'gm_login' => 'gm_login');
+
+  function __construct() {
+    parent::__construct();
     $this->value = GameOptionConfig::$default_dummy_boy;
   }
 
@@ -11,20 +16,34 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 
   function GetExplain() { return '配役は<a href="info/rule.php">ルール</a>を確認して下さい'; }
 
-  function  GetItems() {
+  function GetItems() {
     $items = array(''         => new Option_no_dummy_boy(),
-		   'on'       => RoomOption::Get('dummy_boy'),
-		   'gm_login' => RoomOption::Get('gm_login'));
+		   'on'       => OptionManager::GetClass('dummy_boy'),
+		   'gm_login' => OptionManager::GetClass('gm_login'));
     if (isset($items[$this->value])) $items[$this->value]->value = true;
     return $items;
   }
+
+  function LoadPost() {
+    if (! isset($_POST[$this->name])) return false;
+    $post = $_POST[$this->name];
+
+    foreach ($this->item_list as $option => $value) {
+      if ($post == $value) {
+	RQ::$get->$option = true;
+	array_push(RoomOption::${$this->group}, $option);
+	break;
+      }
+    }
+  }
 }
 
+/*
+  ◆身代わり君なし
+*/
 class Option_no_dummy_boy extends CheckRoomOptionItem {
-  function  __construct() {
-    parent::__construct(RoomOption::GAME_OPTION);
-    $this->formtype = 'radio';
-  }
+  public $group = RoomOption::GAME_OPTION;
+  public $formtype = 'radio';
 
   function GetCaption() { return '身代わり君なし'; }
 }

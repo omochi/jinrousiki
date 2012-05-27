@@ -1,7 +1,13 @@
 <?php
+/*
+  ◆初日の夜は身代わり君 (dummy_boy)
+  ○仕様
+*/
 class Option_dummy_boy extends CheckRoomOptionItem {
+  public $group = RoomOption::GAME_OPTION;
+
   function __construct() {
-    parent::__construct(RoomOption::GAME_OPTION);
+    parent::__construct();
     $this->formtype = 'radio';
   }
 

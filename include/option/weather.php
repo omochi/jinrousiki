@@ -1,6 +1,9 @@
 <?php
+/*
+  ◆天候あり (weather)
+*/
 class Option_weather extends CheckRoomOptionItem {
-  function  __construct() { parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return '天候あり'; }
 

@@ -5,7 +5,7 @@
   ・配役：解答者付加 (出題者以外)
 */
 class Option_quiz extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return 'クイズ村'; }
 

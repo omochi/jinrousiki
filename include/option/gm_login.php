@@ -1,9 +1,10 @@
 <?php
+/*
+  ◆身代わり君は GM (gm_login)
+*/
 class Option_gm_login extends CheckRoomOptionItem {
-  function __construct() {
-    parent::__construct(RoomOption::GAME_OPTION);
-    $this->formtype = 'radio';
-  }
+  public $group = RoomOption::GAME_OPTION;
+  public $formtype = 'radio';
 
   function GetCaption() { return '身代わり君は GM'; }
 

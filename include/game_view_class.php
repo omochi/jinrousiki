@@ -113,11 +113,7 @@ EOF;
       $INIT_CONF->LoadFile('winner_message');
     }
     else {
-      if (DB::$ROOM->IsPlaying() && ! DB::$ROOM->IsRealTime()) { //会話で時間経過制
-	$INIT_CONF->LoadFile('time_config');
-      }
-      $INIT_CONF->LoadFile('room_config', 'cast_config', 'image_class');
-      $INIT_CONF->LoadClass('ROOM_OPT');
+      $INIT_CONF->LoadFile('cast_config', 'image_class', 'room_option_class');
     }
 
     //ユーザ情報を取得

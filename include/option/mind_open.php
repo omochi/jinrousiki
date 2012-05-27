@@ -2,9 +2,10 @@
 /*
   ◆白夜村 (mind_open)
   ○仕様
+  ・配役：全員に公開者
 */
 class Option_mind_open extends CheckRoomOptionItem {
-  function __construct(){ parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return '白夜村'; }
 

@@ -2,9 +2,10 @@
 /*
   ◆静寂村 (deep_sleep)
   ○仕様
+  ・配役：全員に爆睡者
 */
 class Option_deep_sleep extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::GAME_OPTION); }
+  public $group = RoomOption::GAME_OPTION;
 
   function GetCaption() { return '静寂村'; }
 

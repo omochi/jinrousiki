@@ -26,7 +26,6 @@ class InitializeConfig {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'ROOM_OPT'               => 'room_option_class',
     'ROLES'                  => 'role_class',
     'TIME_CALC'              => array('time_config', 'room_config', 'game_config', 'cast_config',
 				      'role_data_class', 'image_class', 'info_functions'),
@@ -48,6 +47,7 @@ class InitializeConfig {
     'icon_class'             => 'icon_config',
     'user_icon_class'        => 'user_icon_config',
     'sound_class'            => 'sound_config',
+    'room_manager_class'     => array('room_option_class', 'image_class'),
     'login_class'            => 'session_class',
     'game_view_class'        => array('icon_class', 'talk_class'),
     'game_log_class'         => array('session_class', 'talk_class'),
@@ -61,7 +61,8 @@ class InitializeConfig {
     'game_play_functions'    => array('user_class', 'image_class'),
     'game_vote_functions'    => 'game_functions',
     'icon_functions'         => array('icon_class', 'user_icon_class'),
-    'oldlog_functions'       => array('oldlog_config', 'cast_config', 'image_class'),
+    'oldlog_functions'       => array('oldlog_config', 'cast_config', 'image_class',
+				      'room_option_class'),
     'setup_class'            => array('setup_config', 'version', 'database_class'),
     'test/objection'         => array('game_config', 'sound_class')
   );
@@ -70,17 +71,15 @@ class InitializeConfig {
   public $depend_class = array(
     'game_view_class'     => 'ROLES',
     'game_log_class'      => 'ROLES',
-    'oldlog_functions'    => 'ROOM_OPT',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'TWITTER'       => 'TwitterConfig',
-    'ROOM_OPT'      => 'RoomOption',
-    'COOKIE'        => 'CookieDataSet',
-    'ROLES'         => 'RoleManager',
-    'TIME_CALC'     => 'TimeCalculation',
-    'PAPARAZZI'     => 'Paparazzi'
+    'TWITTER'   => 'TwitterConfig',
+    'COOKIE'    => 'CookieDataSet',
+    'ROLES'     => 'RoleManager',
+    'TIME_CALC' => 'TimeCalculation',
+    'PAPARAZZI' => 'Paparazzi'
   );
 
   function __construct() {
