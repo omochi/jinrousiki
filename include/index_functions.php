@@ -15,8 +15,8 @@ class IndexHTML {
 
   //ヘッダー出力
   static function OutputHeader(){
-    HTML::OutputHeader(ServerConfig::$title . ServerConfig::$comment, 'index', true);
-    if (ServerConfig::$back_page != '') printf(self::BACK_PAGE, ServerConfig::$back_page);
+    HTML::OutputHeader(ServerConfig::TITLE . ServerConfig::COMMENT, 'index', true);
+    if (ServerConfig::BACK_PAGE != '') printf(self::BACK_PAGE, ServerConfig::BACK_PAGE);
   }
 
   //メニュー出力
@@ -49,8 +49,8 @@ class IndexHTML {
     //スレッド情報を取得
     $url = sprintf(self::BBS_URL, BBSConfig::RAW_URL, BBSConfig::THREAD, BBSConfig::SIZE);
     if (($data = @file_get_contents($url)) == '') return;
-    if (BBSConfig::ENCODE != ServerConfig::$encode) {
-      $data = mb_convert_encoding($data, ServerConfig::$encode, BBSConfig::ENCODE);
+    if (BBSConfig::ENCODE != ServerConfig::ENCODE) {
+      $data = mb_convert_encoding($data, ServerConfig::ENCODE, BBSConfig::ENCODE);
     }
 
     $str = '';
@@ -67,7 +67,7 @@ class IndexHTML {
   //フッター出力
   function OutputFooter(){
     $str = sprintf(self::VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::DEVELOPER);
-    if (ServerConfig::$admin) $str .= sprintf(self::ADMIN, ServerConfig::$admin);
+    if (ServerConfig::ADMIN) $str .= sprintf(self::ADMIN, ServerConfig::ADMIN);
     printf(self::FOOTER, $str);
     HTML::OutputFooter();
   }

@@ -159,7 +159,7 @@ EOF;
 
     //IP アドレスチェック
     $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
-    if (! ServerConfig::$debug_mode) {
+    if (! ServerConfig::DEBUG_MODE) {
       $query = sprintf("%s ip_address = '%s'", $query_count, $ip_address);
       if (GameConfig::$entry_one_ip_address && DB::Count($query) > 0) {
 	HTML::OutputResult('村人登録 [多重登録エラー]', '多重登録はできません。');
@@ -224,7 +224,7 @@ EOF;
 
     DB::$ROOM->ParseOption(true);
 
-    HTML::OutputHeader(ServerConfig::$title . '[村人登録]', 'entry_user');
+    HTML::OutputHeader(ServerConfig::TITLE . '[村人登録]', 'entry_user');
     HTML::OutputJavaScript('submit_icon_search');
     HTML::OutputBodyHeader();
 

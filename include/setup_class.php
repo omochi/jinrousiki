@@ -2,9 +2,10 @@
 //データベース初期セットアップ用クラス
 class SetupDB {
   //データベース作成
-  static function CreateDatabase(){
-    $result = DB::FetchBool(sprintf('CREATE DATABASE %s DEFAULT CHARSET utf8', DB::$name));
-    printf("データベース作成: %s: %s<br>\n", DB::$name, $result ? '成功' : '失敗');
+  static function CreateDatabase() {
+    $name   = DatabaseConfig::NAME;
+    $result = DB::FetchBool(sprintf('CREATE DATABASE %s DEFAULT CHARSET utf8', $name));
+    printf("データベース作成: %s: %s<br>\n", $name, $result ? '成功' : '失敗');
     DB::Reconnect();
   }
 
@@ -15,15 +16,15 @@ class SetupDB {
   }
 
   //インデックス再生成
-  static function CreateIndex($table, $index, $value){
+  static function CreateIndex($table, $index, $value) {
     $query  = 'ALTER TABLE %s DROP INDEX %s, ADD INDEX %s (%s)';
     $result = DB::FetchBool(sprintf($query, $table, $index, $index, $value));
     printf("インデックス再生成: %s (%s): %s <br>\n", $index, $table, $result ? '成功' : '失敗');
   }
 
   //必要なテーブルがあるか確認する
-  static function CheckTable(){
-    $revision = ServerConfig::$last_updated_revision; //前回のパッケージのリビジョン番号を取得
+  static function CheckTable() {
+    $revision = ServerConfig::REVISION; //前回のパッケージのリビジョン番号を取得
     if ($revision >= ScriptInfo::REVISION) {
       echo '初期設定はすでに完了しています';
       return;
@@ -59,7 +60,7 @@ EOF;
       //管理者を登録
       $items  = 'room_no, user_no, uname, handle_name, icon_no, profile, password, role, live';
       $str    = "0, 0, 'system', 'システム', 1, 'ゲームマスター', '%s', 'GM', 'live'";
-      $values = sprintf($str, ServerConfig::$system_password);
+      $values = sprintf($str, ServerConfig::PASSWORD);
       DB::Insert($table, $items, $values);
     }
 
@@ -204,7 +205,8 @@ EOF;
       }
     }
 
-    DB::FetchBool(sprintf('GRANT ALL ON %s.* TO %s', DB::$name, DB::$user), true);
+    $query = sprintf('GRANT ALL ON %s.* TO %s', DatabaseConfig::NAME, DatabaseConfig::USER);
+    DB::FetchBool($query, true);
     echo "初期設定の処理が終了しました<br>\n";
   }
 }

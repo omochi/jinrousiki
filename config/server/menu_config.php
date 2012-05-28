@@ -1,5 +1,5 @@
 <?php
-//メニューリンク表示設定
+//-- メニューリンク表示設定 --//
 class MenuConfig {
   static public $list = array(
     'SourceForge'		=> 'http://sourceforge.jp/projects/jinrousiki/',

@@ -4,7 +4,7 @@ class RoomManager {
   //村のメンテナンス処理
   /* call する位置を調整して、他のサーバから起動されないようにする */
   static function Maintenance() {
-    if (ServerConfig::$disable_maintenance) return; //スキップ判定
+    if (ServerConfig::DISABLE_MAINTENANCE) return; //スキップ判定
 
     //一定時間更新の無い村は廃村にする
     $query = "UPDATE room SET status = 'finished', scene = 'aftergame' " .
@@ -32,7 +32,7 @@ EOF;
   static function Create() {
     global $TWITTER;
 
-    if (ServerConfig::$disable_establish) {
+    if (ServerConfig::DISABLE_ESTABLISH) {
       HTML::OutputResult('村作成 [制限事項]', '村作成はできません');
     }
     if (Security::CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
@@ -61,11 +61,12 @@ EOF;
     if (! DB::Lock('room')) return self::OutputResult('busy'); //トランザクション開始
 
     $ip_address = @$_SERVER['REMOTE_ADDR']; //処理実行ユーザの IP を取得
-    if (! ServerConfig::$debug_mode) { //デバッグモード時は村作成制限をスキップ
-      $str = 'room_password'; //パスワードチェック
-      if (isset(ServerConfig::$$str)) {
+    if (! ServerConfig::DEBUG_MODE) { //デバッグモード時は村作成制限をスキップ
+      $room_password = ServerConfig::ROOM_PASSWORD;
+      if (isset($room_password)) { //パスワードチェック
+	$str = 'room_password';
 	RQ::$get->Parse('Escape', 'post.' . $str);
-	if (RQ::$get->$str != ServerConfig::$$str) {
+	if (RQ::$get->$str != ServerConfig::ROOM_PASSWORD) {
 	  HTML::OutputResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
 	}
       }
@@ -117,7 +118,7 @@ EOF;
       //身代わり君関連のチェック
       if (RQ::$get->dummy_boy) {
 	$dummy_boy_handle_name = '身代わり君';
-	$dummy_boy_password    = ServerConfig::$system_password;
+	$dummy_boy_password    = ServerConfig::PASSWORD;
 	RoomOption::LoadPost('gerd');
       }
       elseif (RQ::$get->gm_login) {
@@ -161,7 +162,7 @@ EOF;
     //HTML::OutputFooter(true); //テスト用
 
     do {
-      if (! ServerConfig::$dry_run_mode) {
+      if (! ServerConfig::DRY_RUN) {
 	//村作成
 	$items  = 'room_no, name, comment, max_user, game_option, ' .
 	  'option_role, status, date, scene, vote_count, scene_start_time, last_update_time, ' .
@@ -179,7 +180,7 @@ EOF;
 			       1, RQ::$get->gerd ? UserIcon::GERD : 0)) break;
 	}
 
-	if (ServerConfig::$secret_room) { //村情報非表示モードの処理
+	if (ServerConfig::SECRET_ROOM) { //村情報非表示モードの処理
 	  DB::Commit();
 	  return self::OutputResult('success', RQ::$get->room_name, false);
 	}
@@ -197,10 +198,10 @@ EOF;
 
   //稼働中の村のリストを出力する
   static function OutputList() {
-    if (ServerConfig::$secret_room) return; //シークレットテストモード
+    if (ServerConfig::SECRET_ROOM) return; //シークレットテストモード
 
     /* RSS (テスト中)
-    if (! ServerConfig::$debug_mode){
+    if (! ServerConfig::DEBUG_MODE){
       $filename = JINRO_ROOT.'/rss/rooms.rss';
       if (file_exists($filename)){
 	$rss = FeedEngine::Initialize('site_summary.php');
@@ -223,7 +224,7 @@ EOF;
       "FROM room WHERE status IN ('waiting', 'playing') ORDER BY room_no DESC";
     foreach (DB::FetchAssoc($query) as $stack) {
       extract($stack);
-      $delete     = ServerConfig::$debug_mode ? $delete_header . $room_no . $delete_footer : '';
+      $delete     = ServerConfig::DEBUG_MODE ? $delete_header . $room_no . $delete_footer : '';
       $status_img = Image::Room()->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
       $option_img = RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
 	Image::GenerateMaxUser($max_user);
@@ -239,7 +240,7 @@ EOF;
 
   //部屋作成画面を出力
   static function OutputCreate() {
-    if (ServerConfig::$disable_establish) {
+    if (ServerConfig::DISABLE_ESTABLISH) {
       echo '村作成はできません';
       return;
     }
@@ -251,7 +252,7 @@ EOF;
 
 EOF;
     OptionForm::Output();
-    $password = is_null(ServerConfig::$room_password) ? '' :
+    $password = is_null(ServerConfig::ROOM_PASSWORD) ? '' :
       '<label for="room_password">村作成パスワード</label>：' .
       '<input type="password" id="room_password" name="room_password" size="20">　';
     echo <<<EOF
@@ -321,9 +322,9 @@ EOF;
       break;
 
     case 'success':
-      HTML::OutputResultHeader('村作成', ServerConfig::$site_root);
+      HTML::OutputResultHeader('村作成', ServerConfig::SITE_ROOT);
       echo $str . ' 村を作成しました。トップページに飛びます。';
-      echo '切り替わらないなら <a href="' . ServerConfig::$site_root . '">ここ</a> 。';
+      echo '切り替わらないなら <a href="' . ServerConfig::SITE_ROOT . '">ここ</a> 。';
       $status = true;
       break;
     }

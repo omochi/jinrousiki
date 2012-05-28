@@ -145,7 +145,7 @@ class RequestBase {
 
   //テスト用パラメータセット
   protected function AttachTestParameters() {
-    if (ServerConfig::$debug_mode) $this->TestItems = new RequestTestParams();
+    if (ServerConfig::DEBUG_MODE) $this->TestItems = new RequestTestParams();
   }
 }
 

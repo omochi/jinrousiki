@@ -32,7 +32,7 @@ class FeedEngine {
   }
 
   function decode($value) {
-    return mb_convert_encoding($value, ServerConfig::$encoding, 'auto');
+    return mb_convert_encoding($value, ServerConfig::ENCODE, 'auto');
   }
 
   function Import($url) {
@@ -83,6 +83,6 @@ XML_RDF;
 {$item_contents}
 </rdf:RDF>
 XML_RDF;
-    return mb_convert_encoding($document, 'UTF-8', ServerConfig::$encoding);
+    return mb_convert_encoding($document, 'UTF-8', ServerConfig::ENCODE);
   }
 }

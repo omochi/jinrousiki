@@ -1,4 +1,5 @@
 <?php
+//-- ゲームオプション設定 --//
 class GameOptionConfig {
   //-- 基本設定 --//
   static $wish_role_enable  = true; //役割希望制

@@ -68,13 +68,13 @@ class TwitterConfigBase {
     if ($this->disable) return;
 
     $message = $this->GenerateMessage($id, $name, $comment);
-    if (ServerConfig::$encode != 'UTF-8') { //Twitter は UTF-8
-      $message = mb_convert_encoding($message, 'UTF-8', ServerConfig::$encode);
+    if (ServerConfig::ENCODE != 'UTF-8') { //Twitter は UTF-8
+      $message = mb_convert_encoding($message, 'UTF-8', ServerConfig::ENCODE);
     }
     if (mb_strlen($message) > 140) $message = mb_substr($message, 0, 139);
 
     if ($this->add_url) {
-      $url = ServerConfig::$site_root;
+      $url = ServerConfig::SITE_ROOT;
       if ($this->direct_url) $url .= 'login.php?room_no=' . $id;
       if ($this->short_url) {
 	$short_url = @file_get_contents('http://tinyurl.com/api-create.php?url=' . $url);

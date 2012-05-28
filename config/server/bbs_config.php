@@ -1,5 +1,5 @@
 <?php
-//告知スレッド表示設定
+//-- 告知スレッド表示設定 --//
 class BBSConfig {
   const DISABLE  = true; //表示無効設定 (true:無効にする / false:しない)
   const TITLE    = '告知スレッド情報'; //表示名

@@ -4,7 +4,7 @@ class GameView {
   //出力
   static function Output(){
     self::Load();
-    HTML::OutputHeader(ServerConfig::$title . '[観戦]', 'game_view');
+    HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
     if (GameConfig::$auto_reload && RQ::$get->auto_reload > 0) { //自動更新
       printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
     }

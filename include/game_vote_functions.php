@@ -7,7 +7,7 @@ class VoteHTML {
   //結果出力
   static function OutputResult($str, $reset = false) {
     if ($reset) DB::$ROOM->DeleteVote(); //今までの投票を全部削除
-    $title = ServerConfig::$title . ' [投票結果]';
+    $title = ServerConfig::TITLE . ' [投票結果]';
     HTML::OutputResult($title, self::GenerateResult($str));
   }
 
@@ -229,7 +229,7 @@ EOF;
 
   //ヘッダ出力
   private function OutputHeader() {
-    HTML::OutputHeader(ServerConfig::$title . ' [投票]', 'game');
+    HTML::OutputHeader(ServerConfig::TITLE . ' [投票]', 'game');
     HTML::OutputCSS(sprintf('%s/game_vote', JINRO_CSS));
     echo '<link rel="stylesheet" id="scene">'."\n";
     $css = empty(DB::$ROOM->scene) ? null : sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene);
@@ -396,7 +396,7 @@ function AggregateVoteGameStart($force_start = false){
     foreach ($uname_list as $uname) {
       do {
 	$role = DB::$USER->GetRole($uname); //希望役職を取得
-	if ($role == '' || mt_rand(1, 100) > CastConfig::$wish_role_rate) break;
+	if ($role == '' || mt_rand(1, 100) > CastConfig::WISH_ROLE_RATE) break;
 	$fix_role = $role;
 
 	if ($wish_group) { //特殊村はグループ単位で希望処理を行なう

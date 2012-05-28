@@ -139,8 +139,8 @@ function OutputSharedRoom($id){
 
   //部屋情報を取得
   if (($data = @file_get_contents($url.'room_manager.php')) == '') return false;
-  if ($encode != '' && $encode != ServerConfig::$encode) {
-    $data = mb_convert_encoding($data, ServerConfig::$encode, $encode);
+  if ($encode != '' && $encode != ServerConfig::ENCODE) {
+    $data = mb_convert_encoding($data, ServerConfig::ENCODE, $encode);
   }
   if (ord($data{0}) == '0xef' && ord($data{1}) == '0xbb' && ord($data{2}) == '0xbf') { //BOM 消去
     $data = substr($data, 3);

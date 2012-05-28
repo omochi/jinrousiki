@@ -3,7 +3,7 @@
 class GameFrame {
   //出力
   static function Output(){
-    HTML::OutputFrameHeader(ServerConfig::$title . '[プレイ]');
+    HTML::OutputFrameHeader(ServerConfig::TITLE . '[プレイ]');
     $option = 'border="1" frameborder="1" framespacing="1" bordercolor="#C0C0C0"';
     if (RQ::$get->dead_mode) {
       $format = <<<EOF

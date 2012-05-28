@@ -4,7 +4,7 @@ $INIT_CONF->LoadFile('index_functions');
 IndexHTML::OutputHeader();
 ?>
 <a href="./"><img src="img/top_title.jpg" title="汝は人狼なりや？" alt="汝は人狼なりや？"></a>
-<div class="comment"><?php echo ServerConfig::$comment; ?></div>
+<div class="comment"><?php echo ServerConfig::COMMENT; ?></div>
 <noscript>&lt;&lt; JavaScriptを有効にしてください &gt;&gt;</noscript>
 <table class="main"><tr>
 <td>

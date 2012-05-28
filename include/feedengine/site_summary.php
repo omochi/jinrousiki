@@ -5,7 +5,7 @@ class SiteSummary extends FeedEngine {
   public $room_info = array();
 
   function Build() {
-    $this->SetChannel(ServerConfig::$title, ServerConfig::$site_root, ServerConfig::$comment);
+    $this->SetChannel(ServerConfig::TITLE, ServerConfig::SITE_ROOT, ServerConfig::COMMENT);
     $rooms = RoomDataSet::LoadOpeningRooms();
     foreach ($rooms->rows as $room) {
       $title = "{$room->name}村";

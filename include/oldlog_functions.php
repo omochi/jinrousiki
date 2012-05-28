@@ -2,11 +2,11 @@
 //-- クラス定義 --//
 //-- ページ送りリンク生成クラス --//
 class PageLinkBuilder {
-  function __construct($file, $page, $count, $title = 'Page', $type = 'page'){
+  function __construct($file, $page, $count, $title = 'Page', $type = 'page') {
     $this->view_total = $count;
-    $this->view_page  = OldlogConfig::$page;
-    $this->view_count = OldlogConfig::$view;
-    $this->reverse    = OldlogConfig::$reverse;
+    $this->view_page  = OldLogConfig::PAGE;
+    $this->view_count = OldLogConfig::VIEW;
+    $this->reverse    = OldLogConfig::REVERSE;
 
     $this->file   = $file;
     $this->url    = '<a href="' . $file . '.php?';
@@ -17,7 +17,7 @@ class PageLinkBuilder {
   }
 
   //表示するページのアドレスをセット
-  private function SetPage($page){
+  private function SetPage($page) {
     $total = ceil($this->view_total / $this->view_count);
     $start = $page == 'all' ? 1 : $page;
     if ($total - $start < $this->view_page) { //残りページが少ない場合は表示開始位置をずらす
@@ -37,13 +37,15 @@ class PageLinkBuilder {
   }
 
   //オプションを追加する
-  function AddOption($type, $value = 'on'){ $this->option[$type] = $type . '=' . $value; }
+  function AddOption($type, $value = 'on') {
+    $this->option[$type] = $type . '=' . $value;
+  }
 
   //ページリンクを生成する
-  function Generate(){
+  function Generate() {
     $url_stack = array('[' . $this->title . ']');
     if ($this->file == 'index') $url_stack[] = '[<a href="index.html">new</a>]';
-    if ($this->page->start > 1 && $this->page->total > $this->view_page){
+    if ($this->page->start > 1 && $this->page->total > $this->view_page) {
       $url_stack[] = $this->GenerateTag(1, '[1]...');
       $url_stack[] = $this->GenerateTag($this->page->start - 1, '&lt;&lt;');
     }
@@ -52,13 +54,13 @@ class PageLinkBuilder {
       $url_stack[] = $this->GenerateTag($i);
     }
 
-    if ($this->page->end < $this->page->total){
+    if ($this->page->end < $this->page->total) {
       $url_stack[] = $this->GenerateTag($this->page->end + 1, '&gt;&gt;');
       $url_stack[] = $this->GenerateTag($this->page->total, '...[' . $this->page->total . ']');
     }
     if ($this->file != 'index') $url_stack[] = $this->GenerateTag('all');
 
-    if ($this->file == 'old_log'){
+    if ($this->file == 'old_log') {
       $this->AddOption('reverse', $this->set_reverse ? 'off' : 'on');
       $url_stack[] = '[表示順]';
       $url_stack[] = $this->set_reverse ? '新↓古' : '古↓新';
@@ -69,7 +71,7 @@ class PageLinkBuilder {
   }
 
   //ページ送り用のリンクタグを作成する
-  protected function GenerateTag($page, $title = null, $force = false){
+  protected function GenerateTag($page, $title = null, $force = false) {
     if ($page == $this->page->set && ! $force) return '[' . $page . ']';
     if (is_null($title)) $title = '[' . $page . ']';
     if ($this->file == 'index') {
@@ -84,22 +86,22 @@ class PageLinkBuilder {
   }
 
   //ページリンクを出力する
-  function Output(){ echo $this->Generate(); }
+  function Output() { echo $this->Generate(); }
 }
 
 //-- 関数 --//
 //過去ログ一覧生成
-function GenerateFinishedRooms($page){
+function GenerateFinishedRooms($page) {
   //村数の確認
-  $title = ServerConfig::$title . ' [過去ログ]';
+  $title = ServerConfig::TITLE . ' [過去ログ]';
   $query = "SELECT room_no FROM room WHERE status = 'finished'";
   $room_count = DB::Count($query);
-  if ($room_count < 1){
+  if ($room_count < 1) {
     HTML::OutputResult($title, 'ログはありません。<br>'."\n" . '<a href="./">←戻る</a>'."\n");
   }
 
   //ページリンクデータの生成
-  $is_reverse = empty(RQ::$get->reverse) ? OldLogConfig::$reverse : (RQ::$get->reverse == 'on');
+  $is_reverse = empty(RQ::$get->reverse) ? OldLogConfig::REVERSE : (RQ::$get->reverse == 'on');
   if (RQ::$get->generate_index) {
     $max = RQ::$get->max_room_no;
     if (is_int($max) && $max > 0 && $room_count > $max) $room_count = $max;
@@ -137,8 +139,8 @@ EOF;
   //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
   $current_time = Time::Get(); // 現在時刻の取得
   $query .= ' ORDER BY room_no ' . ($is_reverse ? 'DESC' : 'ASC');
-  if (RQ::$get->page != 'all'){
-    $view = OldLogConfig::$view;
+  if (RQ::$get->page != 'all') {
+    $view = OldLogConfig::VIEW;
     $query .= sprintf(' LIMIT %d, %d', $view * (RQ::$get->page - 1), $view);
   }
   foreach (DB::FetchArray($query) as $room_no) {
@@ -194,15 +196,15 @@ EOF;
 }
 
 //過去ログ一覧表示
-function OutputFinishedRooms($page){ echo GenerateFinishedRooms($page); }
+function OutputFinishedRooms($page) { echo GenerateFinishedRooms($page); }
 
 //過去ログ一覧のHTML化処理
-function GenerateLogIndex(){
+function GenerateLogIndex() {
   RQ::$get->reverse = 'off';
   if (RQ::$get->max_room_no < 1) return false;
   $header = sprintf('../log/%sindex', RQ::$get->prefix);
   $footer = '</body></html>'."\n";
-  $end_page = ceil((RQ::$get->max_room_no - RQ::$get->min_room_no + 1) / OldLogConfig::$view);
+  $end_page = ceil((RQ::$get->max_room_no - RQ::$get->min_room_no + 1) / OldLogConfig::VIEW);
   for ($i = 1; $i <= $end_page; $i++) {
     RQ::$get->page = $i;
     $index = RQ::$get->index_no - $i + 1;
@@ -211,9 +213,9 @@ function GenerateLogIndex(){
 }
 
 //指定の部屋番号のログを生成する
-function GenerateOldLog(){
-  $base_title = ServerConfig::$title . ' [過去ログ]'; //
-  if (! DB::$ROOM->IsFinished() || ! DB::$ROOM->IsAfterGame()){ //閲覧判定
+function GenerateOldLog() {
+  $base_title = ServerConfig::TITLE . ' [過去ログ]';
+  if (! DB::$ROOM->IsFinished() || ! DB::$ROOM->IsAfterGame()) { //閲覧判定
     $url = RQ::$get->generate_index ? 'index.html' : 'old_log.php';
     $str = 'まだこの部屋のログは閲覧できません。<br>'."\n".'<a href="'.$url.'">←戻る</a>'."\n";
     HTML::OutputResult($base_title, $str);
@@ -239,11 +241,11 @@ EOF;
 }
 
 //指定の部屋番号のログを出力する
-function OutputOldLog(){ echo GenerateOldLog(); }
+function OutputOldLog() { echo GenerateOldLog(); }
 
 //通常のログ表示順を表現します。
-function LayoutTalkLog(){
-  if (RQ::$get->reverse_log){
+function LayoutTalkLog() {
+  if (RQ::$get->reverse_log) {
     $str = GenerateDateTalkLog(0, 'beforegame');
     for($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= GenerateDateTalkLog($i, '');
     $str .= GenerateWinner() . GenerateDateTalkLog(DB::$ROOM->last_date, 'aftergame');
@@ -257,7 +259,7 @@ function LayoutTalkLog(){
 }
 
 //霊界のみのログ表示順を表現します。
-function LayoutHeaven(){
+function LayoutHeaven() {
   $str = '';
   if (RQ::$get->reverse_log) {
     for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= GenerateDateTalkLog($i, 'heaven_only');
@@ -269,9 +271,7 @@ function LayoutHeaven(){
 }
 
 //指定の日付の会話ログを生成
-function GenerateDateTalkLog($set_date, $set_scene){
-  global $ROLES;
-
+function GenerateDateTalkLog($set_date, $set_scene) {
   //シーンに合わせた会話ログを取得するためのクエリを生成
   $flag_border_game = false;
   $query_select = 'scene, location, uname, action, sentence, font_type';
@@ -279,13 +279,13 @@ function GenerateDateTalkLog($set_date, $set_scene){
   $query_where  = sprintf('room_no = %d AND ', DB::$ROOM->id);
   if (RQ::$get->time) $query_select .= ', time';
 
-  switch ($set_scene){
+  switch ($set_scene) {
   case 'beforegame':
     $table_class = $set_scene;
     $query_table  .= '_' . $set_scene;
     $query_select .= ', handle_name, color';
     $query_where  .= "scene = '{$set_scene}'";
-    if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode){
+    if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
       DB::$USER->ResetRoleList();
       unset(DB::$ROOM->event);
     }
@@ -296,7 +296,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
     $table_class = $set_scene;
     $query_table .= '_' . $set_scene;
     $query_where .= "scene = '{$set_scene}'";
-    if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode){
+    if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
       DB::$USER->ResetRoleList();
       unset(DB::$ROOM->event);
     }
@@ -315,7 +315,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
     $scene_list = array("'day'", "'night'");
     if (RQ::$get->heaven_talk) $scene_list[] = "'heaven'";
     $query_where .= "date = {$set_date} AND scene IN (" . implode(',', $scene_list) . ')';
-    if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode){
+    if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
       DB::$USER->ResetRoleList();
       DB::$USER->SetEvent(true);
     }
@@ -337,7 +337,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
 
   //出力
   $str = '';
-  if ($flag_border_game && ! RQ::$get->reverse_log){
+  if ($flag_border_game && ! RQ::$get->reverse_log) {
     DB::$ROOM->date = $set_date + 1;
     DB::$ROOM->scene = 'day';
     $str .= GenerateLastWords() . GenerateDeadMan();//死亡者を出力
@@ -352,8 +352,8 @@ function GenerateDateTalkLog($set_date, $set_scene){
   if (RQ::$get->reverse_log) OutputTimeStamp($builder);
   //if (DB::$ROOM->watch_mode) $builder->AddSystemTalk(DB::$ROOM->date . print_r(DB::$ROOM->event, true));
 
-  foreach ($talk_list as $talk){
-    switch ($talk->scene){
+  foreach ($talk_list as $talk) {
+    switch ($talk->scene) {
     case 'day':
       if (DB::$ROOM->IsDay() || $talk->type == 'dummy_boy') break;
       $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
@@ -374,7 +374,7 @@ function GenerateDateTalkLog($set_date, $set_scene){
   if (! RQ::$get->reverse_log) OutputTimeStamp($builder);
   $str .= $builder->RefreshTalk();
 
-  if ($flag_border_game && RQ::$get->reverse_log){
+  if ($flag_border_game && RQ::$get->reverse_log) {
     //突然死で勝敗が決定したケース
     if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= GenerateVoteResult();
 
@@ -386,16 +386,16 @@ function GenerateDateTalkLog($set_date, $set_scene){
 }
 
 //指定の日付の会話ログを出力
-function OutputDateTalkLog($set_date, $set_scene){
+function OutputDateTalkLog($set_date, $set_scene) {
   echo GenerateDateTalkLog($set_date, $set_scene);
 }
 
 //シーン切り替え時のログ出力
-function GenerateSceneChange($set_date){
+function GenerateSceneChange($set_date) {
   $str = '';
   if (RQ::$get->heaven_only) return $str;
   DB::$ROOM->date = $set_date;
-  if (RQ::$get->reverse_log){
+  if (RQ::$get->reverse_log) {
     DB::$ROOM->scene = 'night';
     $str .= GenerateVoteResult() . GenerateDeadMan();
   }

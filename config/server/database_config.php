@@ -3,18 +3,13 @@
 class DatabaseConfig {
   //データベースサーバのホスト名 hostname:port
   //ポート番号を省略するとデフォルトポートがセットされます。(MySQL:3306)
-  static $host = 'localhost';
-
-  //データベースのユーザ名
-  #static $user = 'xxxx';
-  static $user = 'grayran';
-
-  //データベースサーバのパスワード
-  #static $password = 'xxxxxxxx';
-  static $password = 'satorituri';
-
-  //データベース名
-  static $name = 'jinrou';
+  const HOST     = 'localhost';
+  const NAME     = 'jinrou';	//データベース名
+  #const USER     = 'xxxx';	//ユーザ名
+  const USER     = 'grayran';
+  #const PASSWORD = 'xxxxxxxx';	//パスワード
+  const PASSWORD = 'satorituri';
+  const ENCODE   = 'utf8';	//文字コード
 
   //サブデータベースのリスト (サーバによってはサブのデータベースを作れないので注意)
   /*
@@ -24,7 +19,4 @@ class DatabaseConfig {
         old_log.php?db_no=2 => log_b のデータベースのログを表示
   */
   static $name_list = array();
-
-  //文字コード
-  static $encode = 'utf8';
 }

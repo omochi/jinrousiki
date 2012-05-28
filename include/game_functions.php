@@ -224,7 +224,7 @@ function OutputGamePageHeader(){
   if (RQ::$get->play_sound)      $url_header .= '&play_sound=on';
   if (RQ::$get->list_down)       $url_header .= '&list_down=on';
 
-  $title = ServerConfig::$title . ' [プレイ]';
+  $title = ServerConfig::TITLE . ' [プレイ]';
   $anchor_header = '<br>'."\n";
   /*
     Mac に JavaScript でエラーを吐くブラウザがあった当時のコード
@@ -401,7 +401,7 @@ function GeneratePlayerList(){
 
     //HN を追加
     $str .= sprintf('%s<font color="%s">◆</font>%s', $td_header, $user->color, $user->handle_name);
-    if (ServerConfig::$debug_mode) $str .= sprintf(' (%d)', $id);
+    if (ServerConfig::DEBUG_MODE) $str .= sprintf(' (%d)', $id);
 
     if ($open_data) { //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
       $str .= '<br>　(' . str_replace($trip_from, $trip_to, $user->uname); //トリップ対応

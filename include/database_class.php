@@ -1,6 +1,6 @@
 <?php
 //-- データベース基底クラス --//
-class DB extends DatabaseConfig {
+class DB {
   public  static $ROOM = null;
   public  static $USER = null;
   public  static $SELF = null;
@@ -13,46 +13,47 @@ class DB extends DatabaseConfig {
     $header : HTML ヘッダ出力情報 [true: 出力済み    / false: 未出力]
     $exit   : エラー処理          [true: exit を返す / false で終了]
   */
-  private function __construct($id = null, $header = false, $exit = true){
+  private function __construct($id = null, $header = false, $exit = true) {
     //error_reporting(E_ALL);
     //データベースサーバにアクセス
-    if (! ($db_handle = mysql_connect(self::$host, self::$user, self::$password))) {
-      return self::OutputConnectError($header, $exit, 'MySQL サーバ', self::$host);
+    $host = DatabaseConfig::HOST;
+    if (! ($db_handle = mysql_connect($host, DatabaseConfig::USER, DatabaseConfig::PASSWORD))) {
+      return self::Output($header, $exit, 'MySQL サーバ', $host);
     }
 
     //データベース名設定
-    $name = isset($id) ? @self::$name_list[is_int($id) ? $id - 1 : $id] : null;
-    if (is_null($name)) $name = self::$name;
+    $name = isset($id) ? @DatabaseConfig::$name_list[is_int($id) ? $id - 1 : $id] : null;
+    if (is_null($name)) $name = DatabaseConfig::NAME;
     if (! mysql_select_db($name, $db_handle)) { //データベース接続
-      return self::OutputConnectError($header, $exit, 'データベース', $name);
+      return self::Output($header, $exit, 'データベース', $name);
     }
 
-    mysql_set_charset(self::$encode); //文字コード設定
-    if (self::$encode == 'utf8') self::Execute('SET NAMES utf8');
+    mysql_set_charset(DatabaseConfig::ENCODE); //文字コード設定
+    if (DatabaseConfig::ENCODE == 'utf8') self::Execute('SET NAMES utf8');
 
     return self::$instance = $db_handle;
   }
 
   //データベース接続
-  static function Connect($id = null){
+  static function Connect($id = null) {
     if (is_null(self::$instance)) new self($id);
     return isset(self::$instance);
   }
 
   //データベース接続 (ヘッダ出力あり)
-  static function ConnectInHeader(){
+  static function ConnectInHeader() {
     if (is_null(self::$instance)) new self(null, true, false);
     return isset(self::$instance);
   }
 
   //データベース再接続
-  static function Reconnect(){
+  static function Reconnect() {
     new self(null, true);
     return isset(self::$instance);
   }
 
   //データベース切断
-  static function Disconnect(){
+  static function Disconnect() {
     if (empty(self::$instance)) return;
     if (self::$transaction) self::Rollback();
     mysql_close(self::$instance);
@@ -60,31 +61,31 @@ class DB extends DatabaseConfig {
   }
 
   //トランザクション開始
-  static function Transaction(){
+  static function Transaction() {
     if (self::$transaction) return true; //トランザクション中ならスキップ
     return self::$transaction = self::FetchBool('START TRANSACTION', true);
   }
 
   //カウンタロック処理
-  static function Lock($type){
+  static function Lock($type) {
     $query = sprintf("SELECT count FROM count_limit WHERE type = '%s' FOR UPDATE", $type);
     return self::Transaction() && self::FetchBool($query);
   }
 
   //ロールバック処理
-  static function Rollback(){
+  static function Rollback() {
     self::$transaction = false; //必要なら事前にフラグ判定を行う
     return self::FetchBool('ROLLBACK', true);
   }
 
   //コミット処理
-  static function Commit(){
+  static function Commit() {
     self::$transaction = false;
     return self::FetchBool('COMMIT', true);
   }
 
   //SQL 実行
-  static function Execute($query, $quiet = false){
+  static function Execute($query, $quiet = false) {
     if (($sql = mysql_query($query)) !== false) return $sql;
     if ($quiet) return false;
 
@@ -93,7 +94,7 @@ class DB extends DatabaseConfig {
 
     //Execute() を call した関数と位置を取得して「SQLエラー」として返す
     $trace_stack = array_shift($backtrace);
-    $stack = array($trace_stack['line'], $error, $query);
+    $stack       = array($trace_stack['line'], $error, $query);
     $trace_stack = array_shift($backtrace);
     array_unshift($stack, $trace_stack['function'] . '()');
     PrintData(implode(': ', $stack), 'SQLエラー');
@@ -106,17 +107,17 @@ class DB extends DatabaseConfig {
   }
 
   //コミット付き実行
-  static function ExecuteCommit($query){
+  static function ExecuteCommit($query) {
     return self::FetchBool($query) && self::Commit();
   }
 
   //実行結果を bool で受け取る
-  static function FetchBool($query, $quiet = false){
+  static function FetchBool($query, $quiet = false) {
     return self::Execute($query, $quiet) !== false;
   }
 
   //単体の値を取得
-  static function FetchResult($query){
+  static function FetchResult($query) {
     if (($sql = self::Execute($query)) === false) return false;
 
     $data = mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false;
@@ -126,7 +127,7 @@ class DB extends DatabaseConfig {
   }
 
   //該当するデータの行数を取得
-  static function Count($query){
+  static function Count($query) {
     if (($sql = self::Execute($query)) === false) return 0;
 
     $data = mysql_num_rows($sql);
@@ -136,7 +137,7 @@ class DB extends DatabaseConfig {
   }
 
   //一次元の配列を取得
-  static function FetchArray($query){
+  static function FetchArray($query) {
     $stack = array();
     if (($sql = self::Execute($query)) === false) return $stack;
 
@@ -148,7 +149,7 @@ class DB extends DatabaseConfig {
   }
 
   //連想配列を取得
-  static function FetchAssoc($query, $shift = false){
+  static function FetchAssoc($query, $shift = false) {
     $stack = array();
     if (($sql = self::Execute($query)) === false) return $stack;
 
@@ -159,7 +160,7 @@ class DB extends DatabaseConfig {
   }
 
   //オブジェクト形式の配列を取得
-  static function FetchObject($query, $class, $shift = false){
+  static function FetchObject($query, $class, $shift = false) {
     $stack = array();
     if (($sql = self::Execute($query)) === false) return $stack;
 
@@ -170,13 +171,13 @@ class DB extends DatabaseConfig {
   }
 
   //データベース登録
-  static function Insert($table, $items, $values){
+  static function Insert($table, $items, $values) {
     return self::FetchBool("INSERT INTO {$table}({$items}) VALUES({$values})");
   }
 
   //ユーザ登録処理
   static function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $icon_no = 0,
-			     $profile = null, $sex = 'male', $role = null, $session_id = null){
+			     $profile = null, $sex = 'male', $role = null, $session_id = null) {
     $crypt_password = Text::CryptPassword($password);
     $items  = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live';
     $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
@@ -201,7 +202,7 @@ class DB extends DatabaseConfig {
   }
 
   //村削除
-  static function DeleteRoom($room_no){
+  static function DeleteRoom($room_no) {
     $query = 'DELETE FROM %s WHERE room_no = %d';
     $stack  = array('room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame',
 		    'system_message', 'result_ability', 'result_dead', 'result_lastwords',
@@ -213,7 +214,7 @@ class DB extends DatabaseConfig {
   }
 
   //最適化
-  static function Optimize($name = null){
+  static function Optimize($name = null) {
     $tables = 'room, user_entry, talk, talk_beforegame, talk_aftergame, system_message' .
       'result_lastwords, vote';
     $query = is_null($name) ? $tables : $name;
@@ -221,7 +222,7 @@ class DB extends DatabaseConfig {
   }
 
   //データベース接続エラー出力 ($header, $exit は Connect() 参照)
-  private function OutputConnectError($header, $exit, $title, $type){
+  private function Output($header, $exit, $title, $type) {
     $title .= '接続失敗';
     $str = $title . ': ' . $type;
     if ($header) {

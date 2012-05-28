@@ -224,7 +224,7 @@ if (! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
 if (Security::CheckValue($_REQUEST) || Security::CheckValue($_SERVER)) die;
 
 //デバッグ用ツールをロード
-ServerConfig::$debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');
+ServerConfig::DEBUG_MODE ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');
 
 //PrintData($INIT_CONF); //テスト用
 
@@ -238,13 +238,13 @@ ServerConfig::$debug_mode ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->Loa
 //-- マルチバイト入出力指定 --//
 if (extension_loaded('mbstring')) {
   mb_language('ja');
-  mb_internal_encoding(ServerConfig::$encode);
+  mb_internal_encoding(ServerConfig::ENCODE);
   mb_http_input('auto');
-  mb_http_output(ServerConfig::$encode);
+  mb_http_output(ServerConfig::ENCODE);
 }
 
 //-- ヘッダ強制指定 --//
-if (ServerConfig::$set_header_encode && ! headers_sent()) { //ヘッダ未送信時にセットする
-  header(sprintf('Content-type: text/html; charset=%s', ServerConfig::$encode));
+if (ServerConfig::SET_HEADER_ENCODE && ! headers_sent()) { //ヘッダ未送信時にセットする
+  header(sprintf('Content-type: text/html; charset=%s', ServerConfig::ENCODE));
   header('Content-Language: ja');
 }

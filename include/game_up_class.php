@@ -3,7 +3,7 @@
 class GameUp {
   //出力
   static function Output(){
-    HTML::OutputHeader(ServerConfig::$title . '[発言]', 'game_up');
+    HTML::OutputHeader(ServerConfig::TITLE . '[発言]', 'game_up');
     HTML::OutputJavaScript('game_up');
     $format = <<<EOF
 <link rel="stylesheet" id="scene">

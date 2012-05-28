@@ -2,7 +2,7 @@
 //-- テキスト処理クラス --//
 class Text {
   //パスワード暗号化
-  static function CryptPassword($str) { return sha1(ServerConfig::$salt . $str); }
+  static function CryptPassword($str) { return sha1(ServerConfig::SALT . $str); }
 
   //トリップ変換
   /*
@@ -25,7 +25,7 @@ class Text {
 	$name = mb_substr($str, 0, $trip_start);
 	$key  = mb_substr($str, $trip_start + 1);
 	//PrintData(sprintf('%s, name: %s, key: %s', $trip_start, $name, $key), 'Trip Start');
-	$key = mb_convert_encoding($key, 'SJIS', ServerConfig::$encode); //文字コードを変換
+	$key = mb_convert_encoding($key, 'SJIS', ServerConfig::ENCODE); //文字コードを変換
 
 	if (GameConfig::$trip_2ch && strlen($key) >= 12) {
 	  $trip_mark = substr($key, 0, 1);
@@ -94,8 +94,8 @@ class Text {
   static function EncodePostData() {
     foreach ($_POST as $key => $value) {
       $encode = @mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-      if ($encode != '' && $encode != ServerConfig::$encode) {
-	$_POST[$key] = mb_convert_encoding($value, ServerConfig::$encode, $encode);
+      if ($encode != '' && $encode != ServerConfig::ENCODE) {
+	$_POST[$key] = mb_convert_encoding($value, ServerConfig::ENCODE, $encode);
       }
     }
   }
@@ -110,7 +110,7 @@ class Security {
 	if (strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
       }
     }
-    $url = ServerConfig::$site_root . $page;
+    $url = ServerConfig::SITE_ROOT . $page;
     return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
   }
 
@@ -163,18 +163,18 @@ class Time {
   //TZ 補正をかけた時刻を返す (環境変数 TZ を変更できない環境想定？)
   static function Get() {
     $time = time();
-    if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
+    if (ServerConfig::ADJUST_TIME) $time += ServerConfig::OFFSET_SECONDS;
     return $time;
     /*
     // ミリ秒対応のコード(案) 2009-08-08 enogu
     $preg = '/([0-9]+)( [0-9]+)?/i';
-    return preg_replace($preg, '$$2.$$1', microtime()) + ServerConfig::$offset_seconds; // ミリ秒
+    return preg_replace($preg, '$$2.$$1', microtime()) + ServerConfig::OFFSET_SECONDS; // ミリ秒
     */
   }
 
   //TZ 補正をかけた日時を返す
   static function GetDate($format, $time) {
-    return ServerConfig::$adjust_time_difference ? gmdate($format, $time) : date($format, $time);
+    return ServerConfig::ADJUST_TIME ? gmdate($format, $time) : date($format, $time);
   }
 
   //時間 (秒) を変換する
@@ -201,7 +201,7 @@ class Time {
   //TIMESTAMP 形式の時刻を変換する
   static function ConvertTimeStamp($time_stamp, $date = true) {
     $time = strtotime($time_stamp);
-    if (ServerConfig::$adjust_time_difference) $time += ServerConfig::$offset_seconds;
+    if (ServerConfig::ADJUST_TIME) $time += ServerConfig::OFFSET_SECONDS;
     return $date ? self::GetDate('Y/m/d (D) H:i:s', $time) : $time;
   }
 }
@@ -225,7 +225,7 @@ class HTML {
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <title>%s</title>%s
 EOF;
-    $data = sprintf($str, ServerConfig::$encode, $title, "\n");
+    $data = sprintf($str, ServerConfig::ENCODE, $title, "\n");
     if (is_null($css)) $css = 'action';
     $data .= self::LoadCSS(sprintf('%s/%s', JINRO_CSS, $css));
     if ($close) $data .= self::GenerateBodyHeader();
@@ -306,7 +306,7 @@ EOF;
 <title>%s</title>
 </head>%s
 EOF;
-    printf($str, ServerConfig::$encode, $title, "\n");
+    printf($str, ServerConfig::ENCODE, $title, "\n");
   }
 
   //フレーム HTML フッタ出力
