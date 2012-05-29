@@ -3,14 +3,12 @@
 function ConvertSay(&$say){
   if ($say == '') return null; //リロード時なら処理スキップ
   //文字数・行数チェック
-  if (strlen($say) > GameConfig::$say_limit ||
-      substr_count($say, "\n") >= GameConfig::$say_line_limit) {
+  if (strlen($say) > GameConfig::LIMIT_SAY ||
+      substr_count($say, "\n") >= GameConfig::LIMIT_SAY_LINE) {
     $say = '';
     return false;
   }
-  if (GameConfig::$replace_talk) { //発言置換モード
-    $say = strtr($say, GameConfig::$replace_talk_list);
-  }
+  if (GameConfig::REPLACE_TALK) $say = strtr($say, GameConfig::$replace_talk_list); //発言置換モード
 
   //死者・ゲームプレイ中以外なら以降はスキップ
   if (DB::$SELF->IsDead() || ! DB::$ROOM->IsPlaying()) return null;

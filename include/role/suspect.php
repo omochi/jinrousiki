@@ -7,12 +7,12 @@
 */
 class Role_suspect extends Role {
   public $display_role = 'human';
-  function __construct(){ parent::__construct(); }
+  function __construct() { parent::__construct(); }
 
-  function ConvertSay(){
+  function ConvertSay() {
     if (! DB::$ROOM->IsDay()) return false; //スキップ判定
 
-    $rate = GameConfig::$cute_wolf_rate * (DB::$ROOM->IsEvent('boost_cute') ? 5 : 1);
+    $rate = GameConfig::CUTE_WOLF_RATE * (DB::$ROOM->IsEvent('boost_cute') ? 5 : 1);
     //PrintData($rate, $this->role);
     if (mt_rand(1, 100) > $rate) return false;
 

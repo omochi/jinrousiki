@@ -14,17 +14,17 @@ class TimeCalculation {
   public $establish_wait; //次の村を立てられるまでの待ち時間
 
   function __construct(){
-    $day_seconds   = floor(12 * 60 * 60 / TimeConfig::$day);
-    $night_seconds = floor( 6 * 60 * 60 / TimeConfig::$night);
+    $day_seconds   = floor(12 * 60 * 60 / TimeConfig::DAY);
+    $night_seconds = floor( 6 * 60 * 60 / TimeConfig::NIGHT);
 
     $this->spend_day      = Time::Convert($day_seconds);
     $this->spend_night    = Time::Convert($night_seconds);
-    $this->silence_day    = Time::Convert(TimeConfig::$silence_pass * $day_seconds);
-    $this->silence_night  = Time::Convert(TimeConfig::$silence_pass * $night_seconds);
-    $this->silence        = Time::Convert(TimeConfig::$silence);
-    $this->sudden_death   = Time::Convert(TimeConfig::$sudden_death);
-    $this->alert          = Time::Convert(TimeConfig::$alert);
-    $this->alert_distance = Time::Convert(TimeConfig::$alert_distance);
+    $this->silence_day    = Time::Convert(TimeConfig::SILENCE_PASS * $day_seconds);
+    $this->silence_night  = Time::Convert(TimeConfig::SILENCE_PASS * $night_seconds);
+    $this->silence        = Time::Convert(TimeConfig::SILENCE);
+    $this->sudden_death   = Time::Convert(TimeConfig::SUDDEN_DEATH);
+    $this->alert          = Time::Convert(TimeConfig::ALERT);
+    $this->alert_distance = Time::Convert(TimeConfig::ALERT_DISTANCE);
     $this->die_room       = Time::Convert(RoomConfig::$die_room);
     $this->establish_wait = Time::Convert(RoomConfig::$establish_wait);
   }

@@ -31,7 +31,7 @@ class VoteHTML {
       if ($count > 0 && $count % 5 == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
       $count++;
 
-      $checkbox = ! $user->IsDummyBoy() && (GameConfig::$self_kick || ! $user->IsSelf()) ?
+      $checkbox = ! $user->IsDummyBoy() && (GameConfig::SELF_KICK || ! $user->IsSelf()) ?
 	$header . $id . '" value="' . $id . '">'."\n" : '';
       echo $user->GenerateVoteTag($path . $user->icon_filename, $checkbox);
     }
@@ -51,7 +51,7 @@ class VoteHTML {
 </td>
 </tr></table></div>%s
 EOF;
-    printf($str, GameConfig::$kick, RQ::$get->back_url, VoteMessage::$KICK_DO, RQ::$get->post_url,
+    printf($str, GameConfig::KICK, RQ::$get->back_url, VoteMessage::$KICK_DO, RQ::$get->post_url,
 	   VoteMessage::$GAME_START, "\n");
     if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
   }
@@ -728,7 +728,7 @@ function AggregateVoteDay(){
       }
 
       //毒の対象オプションをチェックして初期候補者リストを作成後に対象者を取得
-      $stack = GameConfig::$poison_only_voter ? $voter_list : $live_uname_list;
+      $stack = GameConfig::POISON_ONLY_VOTER ? $voter_list : $live_uname_list;
       $user  = $ROLES->actor->$role || DB::$ROOM->IsEvent($role) ? new User($role) : $vote_target;
       $poison_target_list = $ROLES->LoadMain($user)->GetPoisonVoteTarget($stack);
       //PrintData($poison_target_list, 'Target [poison]');
@@ -1474,5 +1474,5 @@ function AggregateVoteNight($skip = false){
 
 //ランダムメッセージを挿入する
 function InsertRandomMessage(){
-  if (GameConfig::$random_message) DB::$ROOM->Talk(GetRandom(Message::$random_message_list));
+  if (GameConfig::RANDOM_MESSAGE) DB::$ROOM->Talk(GetRandom(Message::$random_message_list));
 }

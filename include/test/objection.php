@@ -20,7 +20,7 @@ class ObjectionTest {
 <input type="image" name="objimage" src="%s" border="0"> (%s)
 </form></td></tr>%s
 EOF;
-    $image = JINRO_ROOT . '/' . GameConfig::$objection_image;
+    $image = JINRO_ROOT . '/' . GameConfig::OBJECTION_IMAGE;
     $stack = array(
       'entry'            => '入村',
       'full'             => '定員',

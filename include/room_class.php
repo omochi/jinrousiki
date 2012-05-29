@@ -82,7 +82,7 @@ class Room {
 
     $query = "SELECT {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
       " AND scene = '{$scene}' ORDER BY id DESC";
-    if (! $this->IsPlaying()) $query .= ' LIMIT 0, ' . GameConfig::$display_talk_limit;
+    if (! $this->IsPlaying()) $query .= ' LIMIT 0, ' . GameConfig::LIMIT_TALK;
     return DB::FetchObject($query, 'Talk');
   }
 

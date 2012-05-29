@@ -2,12 +2,12 @@
 //-- ユーザ登録処理クラス --//
 class UserManager {
   //ユーザ登録
-  static function Entry(){
+  static function Entry() {
     extract(RQ::ToArray()); //引数を展開
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
     if ($user_no > 0) $back_url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
     $back_url = sprintf('<br><a href="%s">戻る</a>', $url); //バックリンク
-    if (GameConfig::$trip && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
+    if (GameConfig::TRIP && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
 
     //記入漏れチェック
     $title = '村人登録 [入力エラー]';
@@ -25,13 +25,13 @@ class UserManager {
     //文字数制限チェック
     $format = '%sは%d文字まで' . $back_url;
     $limit_list = array(
-      array('str' => $uname,        'name' => 'ユーザ名',     'config' => 'entry_uname_limit'),
-      array('str' => $handle_uname, 'name' => '村人の名前',   'config' => 'entry_uname_limit'),
-      array('str' => $profile,      'name' => 'プロフィール', 'config' => 'entry_profile_limit'));
+      array('str' => $uname,        'name' => 'ユーザ名',     'config' => GameConfig::LIMIT_UNAME),
+      array('str' => $handle_uname, 'name' => '村人の名前',   'config' => GameConfig::LIMIT_UNAME),
+      array('str' => $profile,      'name' => 'プロフィール', 'config' => GameConfig::LIMIT_PROFILE)
+			);
     foreach ($limit_list as $limit) {
-      $config = GameConfig::${$limit['config']};
-      if (strlen($limit['str']) > $config) {
-	HTML::OutputResult($title, sprintf($format, $limit['name'], $config));
+      if (strlen($limit['str']) > $limit['config']) {
+	HTML::OutputResult($title, sprintf($format, $limit['name'], $limit['config']));
       }
     }
 
@@ -161,7 +161,7 @@ EOF;
     $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
     if (! ServerConfig::DEBUG_MODE) {
       $query = sprintf("%s ip_address = '%s'", $query_count, $ip_address);
-      if (GameConfig::$entry_one_ip_address && DB::Count($query) > 0) {
+      if (GameConfig::LIMIT_IP && DB::Count($query) > 0) {
 	HTML::OutputResult('村人登録 [多重登録エラー]', '多重登録はできません。');
       }
       elseif (Security::CheckBlackList()) {
@@ -196,7 +196,7 @@ EOF;
   }
 
   //ユーザ登録画面表示
-  static function Output(){
+  static function Output() {
     extract(RQ::ToArray()); //引数を展開
     if ($user_no > 0) { //登録情報変更モード
       $query = 'SELECT * FROM user_entry WHERE room_no = %d AND user_no = %d';
@@ -255,7 +255,7 @@ EOF;
 </tr>
 EOF;
     }
-    elseif (GameConfig::$trip) {
+    elseif (GameConfig::TRIP) {
       $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>

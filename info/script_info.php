@@ -116,7 +116,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 再投票が何度も続くとゲームが進まなくなります。<br>
 この場合、やむを得ず引き分けとすることが必要です。<br>
-[ <?php echo GameConfig::$draw ?>回 ] 再投票が続いた場合は自動的に引き分けとなり、ゲームは終了します。
+[ <?php echo GameConfig::DRAW; ?>回 ] 再投票が続いた場合は自動的に引き分けとなり、ゲームは終了します。
 </div>
 
 <h3 id="difference_deadman">死亡者の順序がランダム表示</h3>
@@ -148,13 +148,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_poison_vote">埋毒者を吊った際に巻き添えにする対象を限定可能 [Ver. 1.3.1～ / Ver. 1.4.0 α12～]</h3>
 <div>
 サーバ管理者がゲーム設定を変更する事で埋毒者を吊った際に巻き添えにする対象を限定する事が可能です。<br>
-現在の設定は [ <?php echo (GameConfig::$poison_only_voter ? '投票者' : '生存者全員') ?>からランダム ] です。
+現在の設定は [ <?php echo GameConfig::POISON_ONLY_VOTER ? '投票者' : '生存者全員'; ?>からランダム ] です。
 </div>
 
 <h3 id="difference_poison_eat">人狼が埋毒者を襲撃した際に巻き添えになる対象を限定可能 [Ver. 1.3.0～]</h3>
 <div>
 サーバ管理者がゲーム設定を変更する事で人狼が埋毒者を襲撃した際に巻き添えになる対象を限定する事が可能です。<br>
-現在の設定は [ <?php echo (GameConfig::$poison_only_eater ? '襲撃者固定' : '人狼全員からランダム') ?> ] です。
+現在の設定は [ <?php echo GameConfig::POISON_ONLY_EATER ? '襲撃者固定' : '人狼全員からランダム'; ?> ] です。
 </div>
 
 <h3 id="difference_common_talk">共有者の夜の会話が可能になりました</h3>
@@ -194,7 +194,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 ゲーム前、ゲーム中の昼に右上に「異議あり」のボタンがあります。<br>
 このボタンを押すと特殊なメッセージと音で皆に知らせることができます。<br>
 ボタンに右にカッコ内で表示されている数字は残り回数です。<br>
-[ <?php echo GameConfig::$objection ?> 回 ] 「異議あり」を使用すると二度と使えなくなります。
+[ <?php echo GameConfig::OBJECTION; ?> 回 ] 「異議あり」を使用すると二度と使えなくなります。
 </div>
 
 <h3 id="difference_last_words">遺言</h3>
@@ -207,7 +207,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。<br>
 死亡後は遺言のセットはできません。<br>
 サーバ管理者が設定することで遺言の設定をゲーム開始前の限定できます。<br>
-現在の設定は [ 遺言制限<?php echo (GameConfig::$limit_last_words ? 'あり' : 'なし') ?> ] です。
+現在の設定は [ 遺言制限<?php echo GameConfig::LIMIT_LAST_WORDS ? 'あり' : 'なし'; ?> ] です。
 </div>
 <h4>Ver. 2.0.0 RC1～</h4>
 <div>
@@ -240,7 +240,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 多重登録を防ぐために同じ村に同じ IP アドレスで複数登録することはできません。<br>
 この機能はスクリプトの設定で有効、無効を設定することができます。<br>
 一つのグローバル IP アドレスでルータを用いて複数の人が参加したい場合は管理人さんに相談してください。<br>
-現在の設定は [ 登録<?php echo (GameConfig::$entry_one_ip_address ? "不可" : "可能") ?> ] になっています。
+現在の設定は [ 登録<?php echo GameConfig::LIMIT_IP ? '不可' : '可能'; ?> ] になっています。
 </div>
 
 <h3 id="difference_die_room">自動廃村</h3>
@@ -266,10 +266,10 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 村を作成するときに「<a href="game_option.php#real_time">リアルタイム制</a>」にチェックを入れると、ゲーム中の仮想時間 (昼12時間、夜6時間) が発言により消費されるのではなく固定された実時間で消費されていきます。<br>
 設定される時間は村を作成する人が決定することができます
-(デフォルト 昼： [ <?php echo TimeConfig::$default_day ?>分 ]　夜： [ <?php echo TimeConfig::$default_night ?>分 ])。<br>
+(デフォルト 昼： [ <?php echo TimeConfig::DEFAULT_DAY; ?>分 ]　夜： [ <?php echo TimeConfig::DEFAULT_NIGHT; ?>分 ])。<br>
 その村に設定された制限時間を知るには、ゲーム一覧のゲームオプションアイコン、リアルタイム制用 <?php echo
-Image::Room()->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::$default_day .
-			'分　夜： ' . TimeConfig::$default_night . '分') ?> にマウスポインタを合わせることで表示されます。
+Image::Room()->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::DEFAULT_DAY .
+			'分　夜： ' . TimeConfig::DEFAULT_NIGHT . '分'); ?> にマウスポインタを合わせることで表示されます。
 </div>
 <h4>Ver. 1.4.0 β4～</h4>
 <div>
@@ -290,7 +290,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
 
 <h3 id="difference_wait_morning">早朝待機制オプション [Ver. 1.4.0 β17～]</h3>
 <div>
-村を作成するときに「<a href="game_option.php#wait_morning">早朝待機制</a>」にチェックを入れると、夜明け後 [ <?php echo TimeConfig::$wait_morning ?>秒 ] の間は発言ができません。<br>
+村を作成するときに「<a href="game_option.php#wait_morning">早朝待機制</a>」にチェックを入れると、夜明け後 [ <?php echo TimeConfig::WAIT_MORNING; ?>秒 ] の間は発言ができません。<br>
 これにより、昼の発言開始のタイミングを揃えることができます。
 </div>
 
@@ -298,7 +298,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
 <div>
 村人登録時に、ユーザ名の入力欄にユーザ名に続けて「#任意の文字列」と入力することでトリップ変換されます。<br>
 また、ユーザ名の「#」の右側のトリップ入力専用欄を使用することで「#」の入力の手間を省くことができます。<br>
-現在の設定は [ トリップ使用<?php echo (GameConfig::$trip ? '可' : '不可') ?> ] になっています。
+現在の設定は [ トリップ使用<?php echo GameConfig::TRIP ? '可' : '不可'; ?> ] になっています。
 </div>
 <h4>Ver. 1.5.0 β6～</h4>
 <div>
@@ -308,7 +308,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
 <h3 id="difference_kick">キック投票</h3>
 <div>
 村人登録後に急な用事が入って抜けなければならなくなったり、応答がなくなってしまったなどの理由で開始前に村から去ってもらうためには、KICK 投票をする必要があります。<br>
-現在の設定は [ <?php echo GameConfig::$kick ?>票 ] 必要で、[ 自己投票<?php echo (GameConfig::$self_kick ? '可' : '不可') ?> ] になっています。
+現在の設定は [ <?php echo GameConfig::KICK; ?>票 ] 必要で、[ 自己投票<?php echo GameConfig::SELF_KICK ? '可' : '不可'; ?> ] になっています。
 </div>
 <h4>Ver. 1.4.0 α21～</h4>
 <div>

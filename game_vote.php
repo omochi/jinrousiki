@@ -87,11 +87,11 @@ DB::Disconnect();
 
 //-- 関数 --//
 //ゲーム開始投票の処理
-function VoteGameStart(){
+function VoteGameStart() {
   CheckSituation('GAMESTART');
   $str = 'ゲーム開始';
   if (DB::$SELF->IsDummyBoy(true)) { //出題者以外の身代わり君
-    if (GameConfig::$power_gm) { //強権モードによる強制開始処理
+    if (GameConfig::POWER_GM) { //強権モードによる強制開始処理
       if (! AggregateVoteGameStart(true)) $str .= '：開始人数に達していません。';
       DB::Commit();
       VoteHTML::OutputResult($str);
@@ -118,7 +118,7 @@ function VoteGameStart(){
 }
 
 //開始前の Kick 投票の処理
-function VoteKick(){
+function VoteKick() {
   CheckSituation('KICK_DO'); //コマンドチェック
   $str = 'Kick 投票：';
   $target = DB::$USER->ByID(RQ::$get->target_no); //投票先のユーザ情報を取得
@@ -126,7 +126,7 @@ function VoteKick(){
     VoteHTML::OutputResult($str . '投票先が指定されていないか、すでに Kick されています');
   }
   if ($target->IsDummyBoy()) VoteHTML::OutputResult($str . '身代わり君には投票できません');
-  if (! GameConfig::$self_kick && $target->IsSelf()) {
+  if (! GameConfig::SELF_KICK && $target->IsSelf()) {
     VoteHTML::OutputResult($str . '自分には投票できません');
   }
 
@@ -146,7 +146,7 @@ function VoteKick(){
     $vote_count = AggregateVoteKick($target); //集計処理
     DB::Commit();
     $add_str = '投票完了：%s さん：%d 人目 (Kick するには %d 人以上の投票が必要です)';
-    $str .= sprintf($add_str, $target->handle_name, $vote_count, GameConfig::$kick);
+    $str .= sprintf($add_str, $target->handle_name, $vote_count, GameConfig::KICK);
     VoteHTML::OutputResult($str);
   }
   else {
@@ -155,7 +155,7 @@ function VoteKick(){
 }
 
 //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
-function AggregateVoteKick($target){
+function AggregateVoteKick($target) {
   CheckSituation('KICK_DO'); //コマンドチェック
 
   //今回投票した相手にすでに投票している人数を取得
@@ -165,8 +165,8 @@ function AggregateVoteKick($target){
   }
 
   //規定数以上の投票があった / キッカーが身代わり君 / 自己 KICK が有効の場合に処理
-  if ($vote_count < GameConfig::$kick && ! DB::$SELF->IsDummyBoy() &&
-      ! (GameConfig::$self_kick && $target->IsSelf())) {
+  if ($vote_count < GameConfig::KICK && ! DB::$SELF->IsDummyBoy() &&
+      ! (GameConfig::SELF_KICK && $target->IsSelf())) {
     return $vote_count;
   }
   $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
@@ -184,7 +184,7 @@ function AggregateVoteKick($target){
 }
 
 //死者の投票処理
-function VoteHeaven(){
+function VoteHeaven() {
   CheckSituation('REVIVE_REFUSE'); //コマンドチェック
   if (DB::$SELF->IsDrop())     VoteHTML::OutputResult('蘇生辞退：投票済み'); //投票済みチェック
   if (DB::$ROOM->IsOpenCast()) VoteHTML::OutputResult('蘇生辞退：投票不要です'); //霊界公開判定
@@ -201,7 +201,7 @@ function VoteHeaven(){
 }
 
 //最終更新時刻リセット投票処理 (身代わり君専用)
-function VoteResetTime(){
+function VoteResetTime() {
   CheckSituation('RESET_TIME'); //コマンドチェック
 
   //-- 投票処理 --//
@@ -215,6 +215,6 @@ function VoteResetTime(){
 }
 
 //投票済みチェック
-function CheckAlreadyVote($action, $not_action = ''){
+function CheckAlreadyVote($action, $not_action = '') {
   if (CheckSelfVoteNight($action, $not_action)) VoteHTML::OutputResult('夜：投票済み');
 }

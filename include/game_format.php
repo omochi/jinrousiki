@@ -77,7 +77,7 @@ class DocumentBuilder {
     if ($user_class != '') $user_class = ' ' . $user_class;
     if ($say_class  != '') $say_class  = ' ' . $say_class;
     Text::LineToBR($str);
-    if (GameConfig::$quote_words) $str = '「' . $str . '」';
+    if (GameConfig::QUOTE_TALK) $str = '「' . $str . '」';
 
     $this->cache .= <<<EOF
 <tr class="user-talk{$row_class}">

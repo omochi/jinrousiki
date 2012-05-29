@@ -2,7 +2,7 @@
 //error_reporting(E_ALL);
 //-- 定数を定義 --//
 /*
-  ServerConfig->site_root を使って CSS や画像等をロードする仕様にすると
+  ServerConfig::SITE_ROOT を使って CSS や画像等をロードする仕様にすると
   ローカルに保存する場合や、ログを別のサーバに移す場合に手間がかかるので
   JINRO_ROOT で相対パスを定義して共通で使用する仕様に変更しました。
   絶対パスが返る dirname() を使ったパスの定義を行わないで下さい。

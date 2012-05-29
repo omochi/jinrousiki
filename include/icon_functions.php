@@ -22,8 +22,8 @@ class IconDB {
     $sort    = RQ::$get->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name';
     $query   = sprintf($format, implode(' AND ', $where), $sort);
     if (RQ::$get->page != 'all') {
-      $limit = max(0, Icon::VIEW * (RQ::$get->page - 1));
-      $query .= sprintf(' LIMIT %d, %d', $limit, Icon::VIEW);
+      $limit = max(0, IconConfig::VIEW * (RQ::$get->page - 1));
+      $query .= sprintf(' LIMIT %d, %d', $limit, IconConfig::VIEW);
     }
     return DB::FetchAssoc($query);
   }
@@ -253,8 +253,8 @@ HTML;
 
     //ユーザアイコンのテーブルから一覧を取得
     $CONF = new StdClass();
-    $CONF->view       = Icon::VIEW;
-    $CONF->page       = Icon::PAGE;
+    $CONF->view       = IconConfig::VIEW;
+    $CONF->page       = IconConfig::PAGE;
     $CONF->url        = $base_url;
     $CONF->count      = IconDB::GetCount($where);
     $CONF->current    = RQ::$get->page;

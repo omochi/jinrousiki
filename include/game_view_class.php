@@ -5,7 +5,7 @@ class GameView {
   static function Output(){
     self::Load();
     HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
-    if (GameConfig::$auto_reload && RQ::$get->auto_reload > 0) { //自動更新
+    if (GameConfig::AUTO_RELOAD && RQ::$get->auto_reload > 0) { //自動更新
       printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
     }
     echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
@@ -25,7 +25,7 @@ EOF;
     $url = sprintf('<a href="game_view.php?room_no=%d', RQ::$get->room_no);
     $auto_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
     printf('%s%s">[更新]</a>'."\n", $url, $auto_reload);
-    if (GameConfig::$auto_reload) OutputAutoReloadLink($url); //自動更新設定
+    if (GameConfig::AUTO_RELOAD) OutputAutoReloadLink($url); //自動更新設定
 
     printf('%s" target="_blank">別ページ</a>'."\n".'<a href="./">[戻る]</a>', $url); //別ページ
     if (DB::$ROOM->IsFinished()) OutputLogLink(); //ログ

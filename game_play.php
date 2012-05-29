@@ -92,7 +92,7 @@ ob_end_flush();
 
 //-- 関数 --//
 //必要なクッキーをまとめて登録 (ついでに最新の異議ありの状態を取得して配列に格納)
-function SendCookie(&$objection_list){
+function SendCookie(&$objection_list) {
   //-- 夜明け --//
   setcookie('scene', DB::$ROOM->scene, DB::$ROOM->system_time + 3600); //シーンを登録
 
@@ -115,7 +115,7 @@ function SendCookie(&$objection_list){
   if (DB::$ROOM->IsAfterGame()) return; //ゲーム終了ならスキップ
 
   //「異議」ありセット判定
-  if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::$objection &&
+  if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
       (DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
     DB::$SELF->objection++;
     DB::$SELF->Update('objection', DB::$SELF->objection);
@@ -132,9 +132,9 @@ function SendCookie(&$objection_list){
 }
 
 //遺言登録
-function EntryLastWords($say){
+function EntryLastWords($say) {
   //スキップ判定
-  if ((GameConfig::$limit_last_words && DB::$ROOM->IsPlaying()) || DB::$ROOM->IsFinished()) {
+  if ((GameConfig::LIMIT_LAST_WORDS && DB::$ROOM->IsPlaying()) || DB::$ROOM->IsFinished()) {
     return false;
   }
 
@@ -152,7 +152,7 @@ function EntryLastWords($say){
 }
 
 //発言
-function Say($say){
+function Say($say) {
   global $ROLES;
 
   if (! DB::$ROOM->IsPlaying()) return Write($say, DB::$ROOM->scene, null, 0, true); //ゲーム開始前後
@@ -203,7 +203,7 @@ function Say($say){
 }
 
 //ゲーム停滞のチェック
-function CheckSilence(){
+function CheckSilence() {
   if (! DB::$ROOM->IsPlaying()) return true; //スキップ判定
 
   //経過時間を取得
@@ -222,11 +222,11 @@ function CheckSilence(){
     if ($left_time > 0) { //制限時間超過判定
       //最終発言時刻からの差分を取得
       $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-      if (DB::FetchResult($query) <= TimeConfig::$silence) return DB::Rollback(); //沈黙判定
+      if (DB::FetchResult($query) <= TimeConfig::SILENCE) return DB::Rollback(); //沈黙判定
 
       //沈黙メッセージを発行してリセット
       $str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . Message::$silence;
-      DB::$ROOM->Talk($str, null, '', '', null, null, null, TimeConfig::$silence_pass);
+      DB::$ROOM->Talk($str, null, '', '', null, null, null, TimeConfig::SILENCE_PASS);
       DB::$ROOM->UpdateTime();
       return DB::Commit();
     }
@@ -256,19 +256,19 @@ function CheckSilence(){
     }
 
     //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
-    $str = 'あと' . Time::Convert(TimeConfig::$sudden_death) . 'で' .
+    $str = 'あと' . Time::Convert(TimeConfig::SUDDEN_DEATH) . 'で' .
       Message::$sudden_death_announce;
     if (DB::$ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
-      DB::$ROOM->sudden_death = TimeConfig::$sudden_death;
+      DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH;
       return DB::Commit(); //ロック解除
     }
   }
 
   //最終発言時刻からの差分を取得
   /*  DB::$ROOM から推定値を計算する場合 (リアルタイム制限定 + 再投票などがあると大幅にずれる) */
-  //DB::$ROOM->sudden_death = TimeConfig::$sudden_death - (DB::$ROOM->system_time - $end_time);
+  //DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - (DB::$ROOM->system_time - $end_time);
   $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-  DB::$ROOM->sudden_death = TimeConfig::$sudden_death - DB::FetchResult($query);
+  DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - DB::FetchResult($query);
 
   //制限時間前ならスキップ (この段階でロックしているのは非リアルタイム制のみ)
   if (DB::$ROOM->sudden_death > 0) return DB::$ROOM->IsRealTime() ? true : DB::Rollback();
@@ -283,11 +283,11 @@ function CheckSilence(){
 
     //制限時間を再計算
     $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-    DB::$ROOM->sudden_death = TimeConfig::$sudden_death - DB::FetchResult($query);
+    DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - DB::FetchResult($query);
     if (DB::$ROOM->sudden_death > 0) return DB::Rollback();
   }
 
-  if (abs(DB::$ROOM->sudden_death) > TimeConfig::$server_disconnect) { //サーバダウン検出
+  if (abs(DB::$ROOM->sudden_death) > TimeConfig::SERVER_DISCONNECT) { //サーバダウン検出
     DB::$ROOM->UpdateTime(); //突然死タイマーをリセット
     DB::$ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
     return DB::Commit(); //ロック解除
@@ -324,7 +324,7 @@ function CheckSilence(){
 }
 
 //超過時間セット
-function SetSuddenDeathTime(){
+function SetSuddenDeathTime() {
   //最終発言時刻からの差分を取得
   $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
   $last_update_time = DB::FetchResult($query);
@@ -333,11 +333,11 @@ function SetSuddenDeathTime(){
   DB::$ROOM->IsRealTime() ?
     GameTime::GetRealPass($left_time) :
     GameTime::GetTalkPass($left_time, true);
-  if ($left_time == 0) DB::$ROOM->sudden_death = TimeConfig::$sudden_death - $last_update_time;
+  if ($left_time == 0) DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - $last_update_time;
 }
 
 //村名前、番地、何日目、日没まで～時間を出力(勝敗がついたら村の名前と番地、勝敗を出力)
-function OutputGameHeader(){
+function OutputGameHeader() {
   global $COOKIE, $OBJECTION;
 
   $url_frame  = '<a target="_top" href="game_frame.php';
@@ -487,7 +487,7 @@ EOF;
       $str = '設定時間： 昼 <span>%d分</span> / 夜 <span>%d分</span>';
       printf($str, DB::$ROOM->real_time->day, DB::$ROOM->real_time->night);
     }
-    printf('　突然死：<span>%s</span></td>', Time::Convert(TimeConfig::$sudden_death));
+    printf('　突然死：<span>%s</span></td>', Time::Convert(TimeConfig::SUDDEN_DEATH));
   }
   if (DB::$ROOM->IsPlaying()) {
     if (DB::$ROOM->IsRealTime()) { //リアルタイム制
@@ -512,8 +512,8 @@ EOF;
 (%d)</form></td>%s
 EOF;
     $url   = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list;
-    $image = GameConfig::$objection_image;
-    $count = GameConfig::$objection - DB::$SELF->objection;
+    $image = GameConfig::OBJECTION_IMAGE;
+    $count = GameConfig::OBJECTION - DB::$SELF->objection;
     printf($str, $url, $image, $count, "\n");
   }
   echo "</tr></table>\n";
@@ -537,7 +537,7 @@ EOF;
 }
 
 //昼の自分の未投票チェック
-function CheckSelfVoteDay(){
+function CheckSelfVoteDay() {
   $str = '<div class="self-vote">投票 ' . (DB::$ROOM->revote_count + 1) . ' 回目：';
   if (is_null(DB::$SELF->target_no)) {
     $str .= '<font color="#FF0000">まだ投票していません</font></div>'."\n" .
@@ -550,7 +550,7 @@ function CheckSelfVoteDay(){
 }
 
 //自分の遺言を出力
-function OutputSelfLastWords(){
+function OutputSelfLastWords() {
   if (DB::$ROOM->IsAfterGame()) return false; //ゲーム終了後は表示しない
 
   $query = 'SELECT last_words FROM user_entry' . DB::$ROOM->GetQuery(false) .

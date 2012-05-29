@@ -7,8 +7,8 @@ class GameTime {
     $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間
     $pass_time  = DB::$ROOM->system_time - $start_time;
     if (DB::$ROOM->IsOption('wait_morning') && DB::$ROOM->IsDay()) { //早朝待機制
-      $base_time += TimeConfig::$wait_morning; //制限時間を追加する
-      DB::$ROOM->event->wait_morning = $pass_time <= TimeConfig::$wait_morning; //待機判定
+      $base_time += TimeConfig::WAIT_MORNING; //制限時間を追加する
+      DB::$ROOM->event->wait_morning = $pass_time <= TimeConfig::WAIT_MORNING; //待機判定
     }
     if (($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
     return $start_time + $base_time;
@@ -21,14 +21,14 @@ class GameTime {
     $spend_time = (int)DB::FetchResult($query);
 
     if (DB::$ROOM->IsDay()) { //昼は12時間
-      $base_time = TimeConfig::$day;
+      $base_time = TimeConfig::DAY;
       $full_time = 12;
     } else { //夜は6時間
-      $base_time = TimeConfig::$night;
+      $base_time = TimeConfig::NIGHT;
       $full_time = 6;
     }
     if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
-    $base_left_time = $silence ? TimeConfig::$silence_pass : $left_time; //仮想時間の計算
+    $base_left_time = $silence ? TimeConfig::SILENCE_PASS : $left_time; //仮想時間の計算
     return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
   }
 
@@ -52,9 +52,9 @@ EOF;
 	   $end_date, self::GetJavaScriptDate(DB::$ROOM->system_time),
 	   $end_date, self::GetJavaScriptDate(DB::$ROOM->scene_start_time),
 	   isset($type) ? 'true' : 'false',
-	   isset($type) && class_exists(Sound) ? Sound::GenerateJavaScript($type) : '',
+	   isset($type) && class_exists(Sound) ? Sound::Generate($type) : '',
 	   $flag ? 'true' : 'false',
-	   TimeConfig::$alert_distance,
+	   TimeConfig::ALERT_DISTANCE,
 	   '//--></script>'."\n");
   }
 
@@ -68,16 +68,16 @@ EOF;
 
 //-- 基礎関数 --//
 //配列からランダムに一つ取り出す
-function GetRandom($array){ return $array[array_rand($array)]; }
+function GetRandom($array) { return $array[array_rand($array)]; }
 
 //-- 役職関連 --//
 //巫女の判定結果 (システムメッセージ)
-function InsertMediumMessage(){
+function InsertMediumMessage() {
   $flag  = false; //巫女の出現判定
   $stack = array();
   foreach (DB::$USER->rows as $user) {
     $flag |= $user->IsRoleGroup('medium');
-    if ($user->suicide_flag){
+    if ($user->suicide_flag) {
       $virtual_user = DB::$USER->ByVirtual($user->user_no);
       $id = $virtual_user->user_no;
       $stack[$id] = array('target' => $virtual_user->handle_name, 'result' => $user->GetCamp());
@@ -91,13 +91,13 @@ function InsertMediumMessage(){
 }
 
 //恋人の後追い死処理
-function LoversFollowed($sudden_death = false){
+function LoversFollowed($sudden_death = false) {
   $cupid_list      = array(); //キューピッドのID => 恋人のID
   $lost_cupid_list = array(); //恋人が死亡したキューピッドのリスト
   $checked_list    = array(); //処理済キューピッドのID
 
   foreach (DB::$USER->rows as $user) { //キューピッドと死んだ恋人のリストを作成
-    foreach ($user->GetPartner('lovers', true) as $id){
+    foreach ($user->GetPartner('lovers', true) as $id) {
       $cupid_list[$id][] = $user->user_no;
       if ($user->dead_flag || $user->revive_flag) $lost_cupid_list[$id] = $id;
     }
@@ -113,8 +113,8 @@ function LoversFollowed($sudden_death = false){
       if ($sudden_death) DB::$ROOM->Talk($user->handle_name . Message::$lovers_followed);
       $user->suicide_flag = true;
 
-      foreach ($user->GetPartner('lovers') as $id){ //後追いした恋人のキューピッドのIDを取得
-	if (! (in_array($id, $checked_list) || in_array($id, $lost_cupid_list))){ //連鎖判定
+      foreach ($user->GetPartner('lovers') as $id) { //後追いした恋人のキューピッドのIDを取得
+	if (! (in_array($id, $checked_list) || in_array($id, $lost_cupid_list))) { //連鎖判定
 	  $lost_cupid_list[] = $id;
 	}
       }
@@ -123,7 +123,7 @@ function LoversFollowed($sudden_death = false){
 }
 
 //勝敗をチェック
-function CheckWinner($check_draw = false){
+function CheckWinner($check_draw = false) {
   if (DB::$ROOM->test_mode) return false;
 
   //コピー能力者がいるのでキャッシュを更新するかクエリから引くこと
@@ -138,21 +138,21 @@ function CheckWinner($check_draw = false){
   $vampire = false;
   $living_id_list = array(); //生存者の ID リスト
   $infected_list  = array(); //吸血鬼 => 感染者リスト
-  foreach (DB::$USER->GetLivingUsers(true) as $uname){
+  foreach (DB::$USER->GetLivingUsers(true) as $uname) {
     $user = DB::$USER->ByUname($uname);
     $user->ReparseRoles();
     if (! $user->IsRole('psycho_infected')) $living_id_list[] = $user->user_no;
-    if ($user->IsRole('infected')){
+    if ($user->IsRole('infected')) {
       foreach ($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->user_no;
     }
   }
-  if (count($living_id_list) == 1){
+  if (count($living_id_list) == 1) {
     $vampire = DB::$USER->ByID(array_shift($living_id_list))->IsRoleGroup('vampire');
   }
   else {
-    foreach ($infected_list as $id => $stack){
+    foreach ($infected_list as $id => $stack) {
       $diff_list = array_diff($living_id_list, $stack);
-      if (count($diff_list) == 1 && in_array($id, $diff_list)){
+      if (count($diff_list) == 1 && in_array($id, $diff_list)) {
 	$vampire = true;
 	break;
       }
@@ -178,7 +178,7 @@ function CheckWinner($check_draw = false){
   elseif (DB::$ROOM->IsQuiz() && $quiz == 0) { //クイズ村 GM 死亡
     $winner = 'quiz_dead';
   }
-  elseif ($check_draw && DB::$ROOM->revote_count >= GameConfig::$draw) { //引き分け
+  elseif ($check_draw && DB::$ROOM->revote_count >= GameConfig::DRAW) { //引き分け
     $winner = 'draw';
   }
 
@@ -194,13 +194,13 @@ function CheckWinner($check_draw = false){
 
 //-- 投票関連 --//
 //夜の自分の投票先取得
-function GetSelfVoteNight($type, $not_type = ''){
+function GetSelfVoteNight($type, $not_type = '') {
   $query = DB::$ROOM->GetQueryHeader('vote', 'type', 'target_no') .
     sprintf(" AND date = %d AND vote_count = %d AND ", DB::$ROOM->date, DB::$ROOM->vote_count);
-  if ($type == 'WOLF_EAT'){
+  if ($type == 'WOLF_EAT') {
     $query .= sprintf("type = '%s'", $type);
   }
-  elseif ($not_type != ''){
+  elseif ($not_type != '') {
     $str = "user_no = %d AND type IN ('%s', '%s')";
     $query .= sprintf($str, DB::$SELF->user_no, $type, $not_type);
   }
@@ -211,13 +211,13 @@ function GetSelfVoteNight($type, $not_type = ''){
 }
 
 //夜の自分の投票済みチェック
-function CheckSelfVoteNight($situation, $not_situation = ''){
+function CheckSelfVoteNight($situation, $not_situation = '') {
   return count(GetSelfVoteNight($situation, $not_situation)) > 0;
 }
 
 //-- 出力関連 --//
 //HTMLヘッダー出力
-function OutputGamePageHeader(){
+function OutputGamePageHeader() {
   //引数を格納
   $url_header = sprintf('game_frame.php?room_no=%d', DB::$ROOM->id);
   if (RQ::$get->auto_reload > 0) $url_header .= sprintf('&auto_reload=%d', RQ::$get->auto_reload);
@@ -229,7 +229,7 @@ function OutputGamePageHeader(){
   /*
     Mac に JavaScript でエラーを吐くブラウザがあった当時のコード
     現在の Safari・Firefox では不要なので false でスキップしておく
-    //if (preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])){
+    //if (preg_match('/Mac( OS|intosh|_PowerPC)/i', $_SERVER['HTTP_USER_AGENT'])) {
   */
   if (false) {
     $sentence = '';
@@ -295,7 +295,7 @@ function OutputGamePageHeader(){
 
       if ($novote_flag) {
 	$query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-	if (TimeConfig::$alert > TimeConfig::$sudden_death - DB::FetchResult($query)) { //警告判定
+	if (TimeConfig::ALERT > TimeConfig::SUDDEN_DEATH - DB::FetchResult($query)) { //警告判定
 	  $alert_flag = true;
 	  $sound_type = 'alert';
 	}
@@ -313,7 +313,7 @@ function OutputGamePageHeader(){
 }
 
 //自動更新のリンクを出力
-function OutputAutoReloadLink($url){
+function OutputAutoReloadLink($url) {
   $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::$get->auto_reload > 0 ? '手動' : '【手動】');
   foreach (GameConfig::$auto_reload_list as $time) {
     $name  = $time . '秒';
@@ -324,14 +324,14 @@ function OutputAutoReloadLink($url){
 }
 
 //ログへのリンクを出力
-function OutputLogLink(){
+function OutputLogLink() {
   $url = 'old_log.php?room_no=' . DB::$ROOM->id;
   echo GenerateLogLink($url, true, "<br>\n" . (DB::$ROOM->view_mode ? '[ログ]' : '[全体ログ]')) .
     GenerateLogLink($url . '&add_role=on', false, "<br>\n[役職表示ログ]");
 }
 
 //ゲームオプション画像を出力
-function OutputGameOption(){
+function OutputGameOption() {
   $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
   extract(DB::FetchAssoc($query, true));
   echo '<div class="game-option">ゲームオプション：' .
@@ -340,7 +340,7 @@ function OutputGameOption(){
 }
 
 //日付と生存者の人数を出力
-function OutputTimeTable(){
+function OutputTimeTable() {
   echo '<table class="time-table"><tr>'."\n"; //ヘッダを表示
 
   if (DB::$ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
@@ -350,7 +350,7 @@ function OutputTimeTable(){
 }
 
 //プレイヤー一覧生成
-function GeneratePlayerList(){
+function GeneratePlayerList() {
   //PrintData(DB::$ROOM->event);
   //キャッシュデータをセット
   $beforegame = DB::$ROOM->IsBeforeGame();
@@ -420,10 +420,10 @@ function GeneratePlayerList(){
 }
 
 //プレイヤー一覧出力
-function OutputPlayerList(){ echo GeneratePlayerList(); }
+function OutputPlayerList() { echo GeneratePlayerList(); }
 
 //勝敗結果の生成
-function GenerateWinner($id = 0){
+function GenerateWinner($id = 0) {
   global $ROLES;
 
   //-- 村の勝敗結果 --//
@@ -527,7 +527,7 @@ EOF;
     break;
   }
   if ($id > 0) {
-    switch ($result){
+    switch ($result) {
     case 'win':
       return '勝利';
 
@@ -546,10 +546,10 @@ EOF;
 }
 
 //勝敗結果の出力
-function OutputWinner(){ echo GenerateWinner(); }
+function OutputWinner() { echo GenerateWinner(); }
 
 //投票の集計生成
-function GenerateVoteResult(){
+function GenerateVoteResult() {
   if (! DB::$ROOM->IsPlaying()) return null; //ゲーム中以外は出力しない
   if (DB::$ROOM->IsEvent('blind_vote') && ! DB::$ROOM->IsOpenData()) return null; //傘化けの判定
 
@@ -559,13 +559,13 @@ function GenerateVoteResult(){
 }
 
 //投票の集計出力
-function OutputVoteList(){
+function OutputVoteList() {
   if (is_null($str = GenerateVoteResult())) return false;
   echo $str;
 }
 
 //再投票の時、メッセージを表示
-function OutputRevoteList(){
+function OutputRevoteList() {
   global $COOKIE;
 
   if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
@@ -579,14 +579,14 @@ function OutputRevoteList(){
     sprintf(' AND vote_count = %d AND user_no = %d', DB::$ROOM->vote_count, DB::$SELF->user_no);
   if (DB::FetchResult($query) == 0) {
     $str = '<div class="revote">%s (%d回%s)</div><br>'."\n";
-    printf($str, Message::$revote, GameConfig::$draw, Message::$draw_announce);
+    printf($str, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
   }
 
   echo GetVoteList(DB::$ROOM->date); //投票結果を出力
 }
 
 //指定した日付の投票結果をロードして GenerateVoteList() に渡す
-function GetVoteList($date){
+function GetVoteList($date) {
   if (DB::$ROOM->personal_mode) return null; //スキップ判定
   //指定された日付の投票結果を取得
   $query = DB::$ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
@@ -595,13 +595,13 @@ function GetVoteList($date){
 }
 
 //投票データから結果を生成する
-function GenerateVoteList($raw_data, $date){
+function GenerateVoteList($raw_data, $date) {
   if (count($raw_data) < 1) return null; //投票総数
 
   $open_vote   = DB::$ROOM->IsOpenData() || DB::$ROOM->IsOption('open_vote'); //投票数開示判定
   $header      = '<td class="vote-name">';
   $table_stack = array();
-  foreach ($raw_data as $raw){ //個別投票データのパース
+  foreach ($raw_data as $raw) { //個別投票データのパース
     extract($raw);
     $stack = array('<tr>' .  $header . $handle_name, '<td>' . $poll . ' 票',
 		   '<td>投票先' . ($open_vote ? ' ' . $vote . ' 票' : '') . ' →',
@@ -613,7 +613,7 @@ function GenerateVoteList($raw_data, $date){
   $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
   $footer = ' 回目)</td>';
   $str    = '';
-  foreach ($table_stack as $count => $stack){
+  foreach ($table_stack as $count => $stack) {
     array_unshift($stack, '<table class="vote-list">', $header . $count . $footer);
     $stack[] = '</table>'."\n";
     $str .= implode("\n", $stack);
@@ -622,7 +622,7 @@ function GenerateVoteList($raw_data, $date){
 }
 
 //会話ログ出力
-function OutputTalkLog(){
+function OutputTalkLog() {
   $builder = new DocumentBuilder();
   $builder->BeginTalk('talk');
   foreach (DB::$ROOM->LoadTalk() as $talk) OutputTalk($talk, $builder); //会話出力
@@ -631,7 +631,7 @@ function OutputTalkLog(){
 }
 
 //会話出力
-function OutputTalk($talk, &$builder){
+function OutputTalk($talk, &$builder) {
   global $ROLES;
 
   //PrintData($talk);
@@ -697,7 +697,7 @@ function OutputTalk($talk, &$builder){
 
   case 'dummy_boy': //身代わり君専用システムメッセージ
     $str = sprintf('◆%s　%s', $real_user->handle_name, $talk->sentence);
-    if (GameConfig::$quote_words) $str = sprintf('「%s」', $str);
+    if (GameConfig::QUOTE_TALK) $str = sprintf('「%s」', $str);
     if (isset($talk->time)) $str .= sprintf(' <span class="date-time">%s</span>', $talk->date_time);
     return $builder->AddSystemTalk($str, 'dummy-boy');
   }
@@ -836,7 +836,7 @@ function OutputTalk($talk, &$builder){
 }
 
 //天国の霊話ログ出力
-function OutputHeavenTalkLog(){
+function OutputHeavenTalkLog() {
   //出力条件をチェック
   //if (DB::$SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
@@ -856,7 +856,7 @@ function OutputHeavenTalkLog(){
 }
 
 //[村立て / ゲーム開始 / ゲーム終了] 時刻を出力
-function OutputTimeStamp($builder){
+function OutputTimeStamp($builder) {
   $talk = new Talk();
   if (DB::$ROOM->IsBeforeGame()) { //村立て時刻を取得して表示
     $type = 'establish_datetime';
@@ -883,7 +883,7 @@ function OutputTimeStamp($builder){
 }
 
 //前日の能力発動結果を出力
-function OutputAbilityAction(){
+function OutputAbilityAction() {
   //昼間で役職公開が許可されているときのみ表示
   if (! DB::$ROOM->IsDay() || ! (DB::$SELF->IsDummyBoy() || DB::$ROOM->IsOpenCast())) return false;
 
@@ -920,7 +920,7 @@ function OutputAbilityAction(){
   foreach ($stack_list as $stack) {
     list($actor, $target) = explode("\t", $stack['message']);
     echo $header.DB::$USER->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
-    switch ($stack['type']){
+    switch ($stack['type']) {
     case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
     case 'FAIRY_DO':
     case 'DUELIST_DO':
@@ -930,7 +930,7 @@ function OutputAbilityAction(){
 
     case 'SPREAD_WIZARD_DO': //テストコード (現在は不使用)
       $str_stack = array();
-      foreach (explode(' ', $target) as $id){
+      foreach (explode(' ', $target) as $id) {
 	$str_stack[] = DB::$USER->ByID($id)->GenerateShortRoleName(false, true);
       }
       $target = 'は '.implode(' ', $str_stack);
@@ -941,7 +941,7 @@ function OutputAbilityAction(){
       break;
     }
 
-    switch ($stack['type']){
+    switch ($stack['type']) {
     case 'GUARD_DO':
     case 'REPORTER_DO':
     case 'ASSASSIN_DO':
@@ -1024,7 +1024,7 @@ function OutputAbilityAction(){
 }
 
 //死亡者の遺言を生成
-function GenerateLastWords($shift = false){
+function GenerateLastWords($shift = false) {
   //スキップ判定
   if (! (DB::$ROOM->IsPlaying() || DB::$ROOM->log_mode) || DB::$ROOM->personal_mode) return null;
 
@@ -1058,19 +1058,19 @@ EOF;
 }
 
 //死亡者の遺言を出力
-function OutputLastWords($shift = false){
+function OutputLastWords($shift = false) {
   if (is_null($str = GenerateLastWords($shift))) return false;
   echo $str;
 }
 
 //前の日の 狼が食べた、狐が占われて死亡、投票結果で死亡のメッセージ
-function GenerateDeadMan(){
+function GenerateDeadMan() {
   //ゲーム中以外は出力しない
   if (! DB::$ROOM->IsPlaying()) return null;
 
   $yesterday = DB::$ROOM->date - 1;
 
-  if (DB::$ROOM->test_mode){
+  if (DB::$ROOM->test_mode) {
     $stack_list = RQ::GetTest()->result_dead;
   }
   else {
@@ -1086,24 +1086,24 @@ function GenerateDeadMan(){
   }
 
   $str = GenerateWeatherReport();
-  foreach ($stack_list as $stack){
+  foreach ($stack_list as $stack) {
     $str .= GenerateDeadManType($stack['handle_name'], $stack['type'], $stack['result']);
   }
 
   //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
-  if ($yesterday < 1 || DB::$ROOM->log_mode || DB::$ROOM->test_mode || (DB::$ROOM->date == 2 && DB::$ROOM->Isday())){
+  if ($yesterday < 1 || DB::$ROOM->log_mode || DB::$ROOM->test_mode || (DB::$ROOM->date == 2 && DB::$ROOM->Isday())) {
     return $str;
   }
   $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
   $query = sprintf("date = %d AND scene = '%s'", $yesterday, DB::$ROOM->scene);
-  foreach (DB::FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack){
+  foreach (DB::FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack) {
     $str .= GenerateDeadManType($stack['handle_name'], $stack['type'], $stack['result']);
   }
   return $str;
 }
 
 //天候メッセージの生成
-function GenerateWeatherReport(){
+function GenerateWeatherReport() {
   if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
     return '';
   }
@@ -1113,7 +1113,7 @@ function GenerateWeatherReport(){
 }
 
 //死者のタイプ別に死亡メッセージを生成
-function GenerateDeadManType($name, $type, $result){
+function GenerateDeadManType($name, $type, $result) {
   if (isset($name)) $name .= ' ';
   $base   = true;
   $class  = null;
@@ -1122,7 +1122,7 @@ function GenerateDeadManType($name, $type, $result){
   $open_reason = DB::$ROOM->IsOpenData();
   $show_reason = $open_reason || DB::$SELF->IsLiveRole('yama_necromancer');
   $str = '<table class="dead-type">'."\n";
-  switch ($type){
+  switch ($type) {
   case 'VOTE_KILLED':
   case 'BLIND_VOTE':
     $base  = false;
@@ -1191,20 +1191,20 @@ function GenerateDeadManType($name, $type, $result){
 }
 
 //死者のタイプ別に死亡メッセージを生成
-function GenerateDeadManTypeOld($name, $type){
+function GenerateDeadManTypeOld($name, $type) {
   //タイプの解析
   $base_type    = $type;
   $parsed_type  = explode('_', $type);
   $footer_type  = array_pop($parsed_type);
   $implode_type = implode('_', $parsed_type);
-  switch ($footer_type){
+  switch ($footer_type) {
   case 'day':
   case 'night':
     $base_type = $implode_type;
     break;
 
   default:
-    switch ($implode_type){
+    switch ($implode_type) {
     case 'SUDDEN_DEATH':
     case 'FLOWERED':
     case 'CONSTELLATION':
@@ -1223,7 +1223,7 @@ function GenerateDeadManTypeOld($name, $type){
   $open_reason = DB::$ROOM->IsOpenData();
   $show_reason = $open_reason || DB::$SELF->IsLiveRole('yama_necromancer');
   $str = '<table class="dead-type">'."\n";
-  switch ($base_type){
+  switch ($base_type) {
   case 'VOTE_KILLED':
     $base  = false;
     $class = 'vote';
@@ -1297,7 +1297,7 @@ function GenerateDeadManTypeOld($name, $type){
 }
 
 //前日に死亡メッセージの出力
-function OutputDeadMan(){
+function OutputDeadMan() {
   if (is_null($str = GenerateDeadMan())) return false;
   echo $str;
 }

@@ -1,6 +1,6 @@
 <?php
 //-- アイコン基底クラス --//
-class Icon extends IconConfig {
+class Icon {
   private static $path      = null;
   private static $dead_path = null;
   private static $wolf_path = null;
@@ -8,7 +8,7 @@ class Icon extends IconConfig {
 
   //パス取得
   static function GetPath(){
-    if (is_null(self::$path)) self::$path = sprintf('%s/%s/', JINRO_ROOT, self::PATH);
+    if (is_null(self::$path)) self::$path = sprintf('%s/%s/', JINRO_ROOT, IconConfig::PATH);
     return self::$path;
   }
 
@@ -30,7 +30,7 @@ class Icon extends IconConfig {
   //タグ取得
   static function GetTag(){
     if (is_null(self::$tag)) {
-      self::$tag = sprintf('width="%d" height="%d"', self::WIDTH, self::HEIGHT);
+      self::$tag = sprintf('width="%d" height="%d"', IconConfig::WIDTH, IconConfig::HEIGHT);
     }
     return self::$tag;
   }

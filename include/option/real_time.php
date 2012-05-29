@@ -22,7 +22,7 @@ class Option_real_time extends CheckRoomOptionItem {
 
   function LoadMessages(){
     parent::LoadMessages();
-    $this->defaultDayTime   = TimeConfig::$default_day;
-    $this->defaultNightTime = TimeConfig::$default_night;
+    $this->defaultDayTime   = TimeConfig::DEFAULT_DAY;
+    $this->defaultNightTime = TimeConfig::DEFAULT_NIGHT;
   }
 }

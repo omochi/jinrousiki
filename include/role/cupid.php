@@ -27,7 +27,7 @@ class Role_cupid extends Role {
 
   function SetVoteNight(){
     parent::SetVoteNight();
-    $this->SetStack(DB::$USER->GetUserCount() < GameConfig::$cupid_self_shoot, 'self_shoot');
+    $this->SetStack(DB::$USER->GetUserCount() < GameConfig::CUPID_SELF_SHOOT, 'self_shoot');
   }
 
   function GetVoteCheckbox($user, $id, $live){

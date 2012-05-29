@@ -17,7 +17,7 @@ class Text {
     テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
   */
   static function ConvertTrip($str) {
-    if (GameConfig::$trip) {
+    if (GameConfig::TRIP) {
       if (get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
       //トリップ関連のキーワードを置換
       $str = str_replace(array('◆', '＃'), array('◇', '#'), $str);
@@ -27,7 +27,7 @@ class Text {
 	//PrintData(sprintf('%s, name: %s, key: %s', $trip_start, $name, $key), 'Trip Start');
 	$key = mb_convert_encoding($key, 'SJIS', ServerConfig::ENCODE); //文字コードを変換
 
-	if (GameConfig::$trip_2ch && strlen($key) >= 12) {
+	if (GameConfig::TRIP_2ch && strlen($key) >= 12) {
 	  $trip_mark = substr($key, 0, 1);
 	  if ($trip_mark == '#' || $trip_mark == '$') {
 	    if (preg_match('|^#([[:xdigit:]]{16})([./0-9A-Za-z]{0,2})$|', $key, $stack)) {

@@ -13,9 +13,9 @@ class Role_valkyrja_duelist extends Role {
   public $check_self_shoot = true;
   public $self_shoot = false;
   public $shoot_count = 2;
-  function __construct(){ parent::__construct(); }
+  function __construct() { parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $id = $this->GetActor()->user_no;
     $stack = array();
     foreach (DB::$USER->rows as $user) {
@@ -24,29 +24,29 @@ class Role_valkyrja_duelist extends Role {
     OutputPartner($stack, $this->partner_header);
   }
 
-  function OutputAction(){ OutputVoteMessage('duelist-do', 'duelist_do', $this->action); }
+  function OutputAction() { OutputVoteMessage('duelist-do', 'duelist_do', $this->action); }
 
-  function IsVote(){ return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->date == 1; }
 
-  function SetVoteNight(){
+  function SetVoteNight() {
     parent::SetVoteNight();
-    $flag = $this->check_self_shoot && DB::$USER->GetUserCount() < GameConfig::$cupid_self_shoot;
+    $flag = $this->check_self_shoot && DB::$USER->GetUserCount() < GameConfig::CUPID_SELF_SHOOT;
     $this->SetStack($flag, 'self_shoot');
   }
 
-  function GetVoteCheckbox($user, $id, $live){
+  function GetVoteCheckbox($user, $id, $live) {
     return $this->IsVoteCheckbox($user, $live) ?
       '<input type="checkbox" name="target_no[]"' .
       ($this->IsSelfShoot() && $this->IsActor($user->uname) ? ' checked' : '') .
       ' id="' . $id . '" value="' . $id . '">'."\n" : '';
   }
 
-  function IsVoteCheckbox($user, $live){ return $live && ! $user->IsDummyBoy(); }
+  function IsVoteCheckbox($user, $live) { return $live && ! $user->IsDummyBoy(); }
 
   //自分撃ち判定
-  function IsSelfShoot(){ return $this->GetStack('self_shoot') || $this->self_shoot; }
+  function IsSelfShoot() { return $this->GetStack('self_shoot') || $this->self_shoot; }
 
-  function VoteNight(){
+  function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = $this->GetVoteNightTargetCount();
@@ -73,10 +73,10 @@ class Role_valkyrja_duelist extends Role {
   }
 
   //投票人数取得
-  function GetVoteNightTargetCount(){ return $this->shoot_count; }
+  function GetVoteNightTargetCount() { return $this->shoot_count; }
 
   //決闘者陣営の投票処理
-  function VoteNightAction($list){
+  function VoteNightAction($list) {
     $role  = $this->GetActor()->GetID($this->partner_role);
     $stack = array();
     foreach ($list as $user) {
@@ -89,16 +89,16 @@ class Role_valkyrja_duelist extends Role {
   }
 
   //役職追加処理
-  protected function AddDuelistRole($user){}
+  protected function AddDuelistRole($user) {}
 
   //勝利判定
-  function Win($winner){
+  function Win($winner) {
     $actor  = $this->GetActor();
     $id     = $actor->user_no;
     $target = 0;
     $count  = 0;
     foreach (DB::$USER->rows as $user) {
-      if ($user->IsPartner($this->partner_role, $id)){
+      if ($user->IsPartner($this->partner_role, $id)) {
 	$target++;
 	if ($user->IsLive()) $count++;
       }
