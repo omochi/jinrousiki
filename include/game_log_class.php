@@ -1,7 +1,7 @@
 <?php
 //-- GameLog 出力クラス --//
 class GameLog {
-  static function Output(){
+  static function Output() {
     global $INIT_CONF;
 
     //-- データ収集 --//
@@ -45,7 +45,7 @@ class GameLog {
     }
 
     //-- ログ出力 --//
-    OutputGamePageHeader();
+    GameHTML::OutputHeader();
     $format = '<h1>ログ閲覧 %s</h1>'."\n";
     switch (RQ::$get->scene) {
     case 'beforegame':
@@ -72,7 +72,7 @@ class GameLog {
 
     if (RQ::$get->scene == 'heaven') {
       DB::$ROOM->heaven_mode = true; //念のためセット
-      OutputHeavenTalkLog();
+      Talk::OutputHeaven();
       HTML::OutputFooter(true);
     }
 
@@ -84,16 +84,16 @@ class GameLog {
       DB::$SELF->live = 'live';
       OutputAbility();
     }
-    OutputTalkLog();
+    Talk::Output();
     if (DB::$ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示
-      OutputAbilityAction();
-      OutputLastWords();
-      OutputDeadMan();
+      GameHTML::OutputAbilityAction();
+      LastWords::Output();
+      GameHTML::OutputDead();
     }
     elseif (DB::$ROOM->IsAfterGame()) {
-      OutputLastWords(true); //遺言 (昼終了時限定)
+      LastWords::Output(true); //遺言 (昼終了時限定)
     }
-    if (DB::$ROOM->IsNight()) OutputVoteList(); //投票結果
+    if (DB::$ROOM->IsNight()) VoteResult::Output();
     HTML::OutputFooter(true);
   }
 }

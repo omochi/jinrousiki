@@ -5,9 +5,9 @@
   ・仲間表示：共有者系
 */
 class Role_common extends Role {
-  function __construct(){ parent::__construct(); }
+  function __construct() { parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($this->IsActor($user->uname)) continue;
@@ -17,13 +17,13 @@ class Role_common extends Role {
   }
 
   //仲間判定
-  protected function IsCommonPartner($user){ return $user->IsCommon(true); }
+  protected function IsCommonPartner($user) { return $user->IsCommon(true); }
 
   //囁き
-  function Whisper($builder, $voice){
+  function Whisper(TalkBuilder $builder, $voice) {
     if (! $builder->flag->common_whisper) return false; //スキップ判定
     $str = Message::$common_talk;
-    $builder->RawAddTalk('', '共有者の小声', $str, $voice, '', 'talk-common', 'say-common');
+    $builder->AddRaw('', '共有者の小声', $str, $voice, '', 'talk-common', 'say-common');
     return true;
   }
 }

@@ -2,7 +2,7 @@
 //-- GameView 出力クラス --//
 class GameView {
   //出力
-  static function Output(){
+  static function Output() {
     self::Load();
     HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
     if (GameConfig::AUTO_RELOAD && RQ::$get->auto_reload > 0) { //自動更新
@@ -25,10 +25,10 @@ EOF;
     $url = sprintf('<a href="game_view.php?room_no=%d', RQ::$get->room_no);
     $auto_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
     printf('%s%s">[更新]</a>'."\n", $url, $auto_reload);
-    if (GameConfig::AUTO_RELOAD) OutputAutoReloadLink($url); //自動更新設定
+    if (GameConfig::AUTO_RELOAD) GameHTML::OutputAutoReloadLink($url); //自動更新設定
 
     printf('%s" target="_blank">別ページ</a>'."\n".'<a href="./">[戻る]</a>', $url); //別ページ
-    if (DB::$ROOM->IsFinished()) OutputLogLink(); //ログ
+    if (DB::$ROOM->IsFinished()) GameHTML::OutputLogLink(); //ログ
 
     //ログインフォーム
     $login_form = <<<EOF
@@ -52,8 +52,8 @@ EOF;
       printf($user_entry, DB::$ROOM->id, "\n");
     }
     echo '</tr></table>'."\n";
-    if (! DB::$ROOM->IsFinished()) OutputGameOption(); //ゲームオプション
-    OutputTimeTable(); //経過日数と生存人数
+    if (! DB::$ROOM->IsFinished()) RoomOption::Output(); //ゲームオプション
+    GameHTML::OutputTimeTable(); //経過日数と生存人数
 
     switch (DB::$ROOM->scene) {
     case 'day': //昼
@@ -89,18 +89,18 @@ EOF;
       }
     }
 
-    OutputPlayerList();
-    if (DB::$ROOM->IsFinished()) OutputWinner();
-    if (DB::$ROOM->IsPlaying())  OutputRevoteList();
-    OutputTalkLog();
-    OutputLastWords();
-    OutputDeadMan();
-    OutputVoteList();
+    GameHTML::OutputPlayer();
+    if (DB::$ROOM->IsFinished()) Winner::Output();
+    if (DB::$ROOM->IsPlaying())  VoteResult::OutputRevote();
+    Talk::Output();
+    LastWords::Output();
+    GameHTML::OutputDead();
+    VoteResult::Output();
     HTML::OutputFooter();
   }
 
   //データ収集
-  private function Load(){
+  private function Load() {
     global $INIT_CONF;
 
     DB::Connect();

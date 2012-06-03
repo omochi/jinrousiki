@@ -132,7 +132,7 @@ class UserManager {
       DB::$ROOM->TalkBeforeGame($str, $target->uname, $target->handle_name, $target->color);
 
       $format = 'UPDATE user_entry SET %s WHERE room_no = %d AND user_no = %d';
-      $query  = sprintf($query, implode(', ', $stack), $room_no, $user_no);
+      $query  = sprintf($format, implode(', ', $stack), $room_no, $user_no);
       if (DB::ExecuteCommit($query)) {
 	$str = <<<EOF
 登録データを変更しました。<br>

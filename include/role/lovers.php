@@ -4,11 +4,11 @@
   ○仕様
 */
 class Role_lovers extends Role {
-  function __construct(){ parent::__construct(); }
+  function __construct() { parent::__construct(); }
 
-  protected function OutputImage(){ return; }
+  protected function OutputImage() { return; }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $target = $this->GetActor()->partner_list;
     $stack  = array();
     foreach (DB::$USER->rows as $user) {
@@ -24,11 +24,11 @@ class Role_lovers extends Role {
   }
 
   //囁き (恋耳鳴)
-  function Whisper($builder, $voice){
+  function Whisper(TalkBuilder $builder, $voice) {
     if (! $builder->flag->sweet_ringing) return false; //スキップ判定
     $str = Message::$lovers_talk;
     foreach ($builder->filter as $filter) $filter->FilterWhisper($voice, $str); //フィルタリング処理
-    $builder->RawAddTalk('', '恋人の囁き', $str, $voice);
+    $builder->AddRaw('', '恋人の囁き', $str, $voice);
     return true;
   }
 }

@@ -1,18 +1,17 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('message', 'game_option_config', 'image_class', 'user_icon_class',
-		     'option/room_option_class', 'option/room_option_item_class', 'option_class',
+$INIT_CONF->LoadFile('message', 'image_class', 'user_icon_class', 'room_option_class',
 		     'info_functions');
 $INIT_CONF->LoadClass('TIME_CALC');
 
 //-- 関数定義 --//
 //村の最大人数設定出力
 function OutputMaxUser(){
-  $str = '[ ' . implode('人・', RoomConfig::$max_user_list);
   $min_user = min(array_keys(CastConfig::$role_list));
-  $str .= '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>';
-  $str .= "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
+  $str = '[ ' . implode('人・', RoomConfig::$max_user_list) .
+    '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>' .
+    "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
   echo $str;
 }
 
@@ -226,7 +225,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_active_room">同時稼働できる村の数 [Ver. 1.4.0 α19～]</h3>
 <div>
 サーバ負荷の調整のため、同時稼働できる村の数をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo RoomConfig::$max_active_room ?>村 ] までです。
+現在の設定は [ <?php echo RoomConfig::MAX_ACTIVE_ROOM; ?>村 ] までです。
 </div>
 
 <h3 id="difference_establish_wait">次の村を立てられるまでの待ち時間 [Ver. 1.4.0 β1～]</h3>

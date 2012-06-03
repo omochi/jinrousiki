@@ -2,7 +2,6 @@
 require_once('include/init.php');
 $INIT_CONF->LoadFile('time_config', 'icon_class', 'talk_class', 'session_class',
 		     'game_play_functions');
-$INIT_CONF->LoadClass('ROLES');
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay', true);
@@ -67,25 +66,25 @@ elseif (DB::$ROOM->dead_mode && DB::$ROOM->IsPlaying() && DB::$SELF->IsDummyBoy(
 
 //-- データ出力 --//
 ob_start();
-OutputGamePageHeader();
+GameHTML::OutputHeader();
 OutputGameHeader();
 if ($say_limit === false) echo '<font color="#FF0000">' . Message::$say_limit . '</font><br>';
 if (! DB::$ROOM->heaven_mode) {
-  if (! RQ::$get->list_down) OutputPlayerList();
+  if (! RQ::$get->list_down) GameHTML::OutputPlayer();
   OutputAbility();
   if (DB::$ROOM->IsDay() && DB::$SELF->IsLive() && DB::$ROOM->date != 1) CheckSelfVoteDay();
-  if (DB::$ROOM->IsPlaying()) OutputRevoteList();
+  if (DB::$ROOM->IsPlaying()) VoteResult::OutputRevote();
 }
 
-(DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) ? OutputHeavenTalkLog() : OutputTalkLog(); //会話ログを出力
+(DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) ? Talk::OutputHeaven() : Talk::Output();
 
 if (! DB::$ROOM->heaven_mode) {
-  if (DB::$SELF->IsDead()) OutputAbilityAction(); //能力発揮結果
-  OutputLastWords();
-  OutputDeadMan();
-  OutputVoteList();
+  if (DB::$SELF->IsDead()) GameHTML::OutputAbilityAction();
+  LastWords::Output();
+  GameHTML::OutputDead();
+  VoteResult::Output();
   if (! DB::$ROOM->dead_mode) OutputSelfLastWords();
-  if (RQ::$get->list_down) OutputPlayerList();
+  if (RQ::$get->list_down) GameHTML::OutputPlayer();
 }
 HTML::OutputFooter();
 ob_end_flush();
@@ -319,7 +318,7 @@ function CheckSilence() {
   DB::$ROOM->UpdateVoteCount(true); //投票回数を更新
   DB::$ROOM->UpdateTime(); //制限時間リセット
   //DB::$ROOM->DeleteVote(); //投票リセット
-  if (CheckWinner()) DB::$USER->ResetJoker(); //勝敗チェック
+  if (Winner::Check()) DB::$USER->ResetJoker(); //勝敗チェック
   return DB::Commit(); //ロック解除
 }
 
@@ -404,7 +403,7 @@ EOF;
 
   if (! DB::$ROOM->IsFinished()) { //ゲーム終了後は自動更新しない
     $url_header = $url_frame . $url_room . $url_dead . $url_heaven . $url_list;
-    OutputAutoReloadLink($url_header . $url_sound);
+    GameHTML::OutputAutoReloadLink($url_header . $url_sound);
 
     $url = $url_header . $url_reload;
     printf("[音でお知らせ](%s)\n",
@@ -421,7 +420,7 @@ EOF;
   printf($url, $url_room, $url_list, "\n");
 
   if (DB::$ROOM->IsFinished()) {
-    OutputLogLink();
+    GameHTML::OutputLogLink();
   }
   elseif (DB::$ROOM->IsBeforegame()) {
     $url = '<a target="_blank" href="user_manager.php%s&user_no=%d">登録情報変更</a>'."\n";
@@ -462,6 +461,7 @@ EOF;
     echo 'ゲームを開始するには全員がゲーム開始に投票する必要があります';
     echo '<span>(投票した人は村人リストの背景が赤くなります)</span>'."\n";
     echo '</div>'."\n";
+    RoomOption::Output(); //ゲームオプション表示
     break;
 
   case 'day':
@@ -473,13 +473,11 @@ EOF;
     break;
 
   case 'aftergame': //勝敗結果を出力して処理終了
-    OutputWinner();
+    Winner::Output();
     return;
   }
 
-  if (DB::$ROOM->IsBeforeGame()) OutputGameOption(); //ゲームオプションを説明
-
-  OutputTimeTable(); //経過日数と生存人数を出力
+  GameHTML::OutputTimeTable(); //経過日数と生存人数を出力
   $left_time = 0;
   if (DB::$ROOM->IsBeforeGame()) {
     echo '<td class="real-time">';
@@ -489,7 +487,7 @@ EOF;
     }
     printf('　突然死：<span>%s</span></td>', Time::Convert(TimeConfig::SUDDEN_DEATH));
   }
-  if (DB::$ROOM->IsPlaying()) {
+  elseif (DB::$ROOM->IsPlaying()) {
     if (DB::$ROOM->IsRealTime()) { //リアルタイム制
       GameTime::GetRealPass($left_time);
       echo '<td class="real-time"><form name="realtime_form">'."\n";

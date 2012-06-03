@@ -9,15 +9,15 @@ class RoomManager {
     //一定時間更新の無い村は廃村にする
     $query = "UPDATE room SET status = 'finished', scene = 'aftergame' " .
       "WHERE STATUS IN ('waiting', 'playing') AND last_update_time < UNIX_TIMESTAMP() - " .
-      RoomConfig::$die_room;
+      RoomConfig::DIE_ROOM;
     /*
     //RSS更新 (廃村が 0 の時も必要な処理なので false に限定していない)
     OutputSiteSummary();
     */
     DB::Execute($query);
 
-    //終了した部屋のセッションIDのデータをクリアする
-    $second = RoomConfig::$clear_session_id;
+    //終了した部屋のセッションデータを削除する
+    $second = RoomConfig::KEEP_SESSION;
     $query = <<<EOF
 UPDATE user_entry INNER JOIN room ON user_entry.session_id IS NOT NULL AND
   user_entry.room_no = room.room_no AND room.status = 'finished' AND
@@ -48,7 +48,7 @@ EOF;
       }
       //文字列チェック
       if (strlen(RQ::$get->$str) > RoomConfig::$$str ||
-	  preg_match(RoomConfig::$ng_word, RQ::$get->$str)) {
+	  preg_match(RoomConfig::NG_WORD, RQ::$get->$str)) {
 	return self::OutputResult('comment', OptionManager::GenerateCaption($str), false);
       }
     }
@@ -78,12 +78,12 @@ EOF;
       $query = "FROM room WHERE status IN ('waiting', 'playing')"; //チェック用の共通クエリ
       $time  = DB::FetchResult("SELECT MAX(establish_datetime) {$query}"); //連続作成制限チェック
       if (isset($time) &&
-	  Time::Get() - Time::ConvertTimeStamp($time, false) <= RoomConfig::$establish_wait) {
+	  Time::Get() - Time::ConvertTimeStamp($time, false) <= RoomConfig::ESTABLISH_WAIT) {
 	return self::OutputResult('establish_wait');
       }
 
       //最大稼働数チェック
-      if (DB::Count("SELECT room_no {$query}") >= RoomConfig::$max_active_room) {
+      if (DB::Count("SELECT room_no {$query}") >= RoomConfig::MAX_ACTIVE_ROOM) {
 	return self::OutputResult('full');
       }
 
@@ -179,14 +179,9 @@ EOF;
 	  if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
 			       1, RQ::$get->gerd ? UserIcon::GERD : 0)) break;
 	}
-
-	if (ServerConfig::SECRET_ROOM) { //村情報非表示モードの処理
-	  DB::Commit();
-	  return self::OutputResult('success', RQ::$get->room_name, false);
-	}
       }
 
-      $TWITTER->Send($room_no, RQ::$get->room_name, RQ::$get->room_comment); //Twitter 投稿処理
+      JinroTwitter::Send($room_no, RQ::$get->room_name, RQ::$get->room_comment); //Twitter 投稿処理
       //OutputSiteSummary(); //RSS更新 //テスト中
 
       DB::Commit();

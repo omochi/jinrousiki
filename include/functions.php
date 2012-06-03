@@ -66,8 +66,7 @@ class Text {
     return self::Escape($str); //特殊文字のエスケープ
   }
 
-  //-- 更新系 --//
-
+  /* 更新系 */
   //特殊文字のエスケープ処理
   //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
   static function Escape(&$str, $trim = true) {
@@ -232,29 +231,7 @@ EOF;
     return $data;
   }
 
-  //共通 HTML ヘッダ出力
-  static function OutputHeader($title, $css = null, $close = false) {
-    echo self::GenerateHeader($title, $css, $close);
-  }
-
-  //CSS 読み込み
-  static function LoadCSS($path) { return sprintf(self::CSS, $path); }
-
-  //CSS 出力
-  static function OutputCSS($path) { echo self::LoadCSS($path); }
-
-  //JavaScript 読み込み
-  static function LoadJavaScript($file, $path = null) {
-    if (is_null($path)) $path = JINRO_ROOT . '/javascript';
-    return sprintf(self::JS, $path, $file);
-  }
-
-  //JavaScript 出力
-  static function OutputJavaScript($file, $path = null) {
-    echo self::LoadJavaScript($file, $path);
-  }
-
-  //ページジャンプ用 JavaScript 出力
+  //ページジャンプ用 JavaScript 生成
   static function GenerateSetLocation() {
     $str = <<<EOF
 <script type="text/javascript"><!--
@@ -270,15 +247,51 @@ EOF;
     return $str . self::HEADER;
   }
 
+  //ログへのリンク生成
+  static function GenerateLogLink($url, $watch = false, $header = '', $footer = '') {
+    $str = <<<EOF
+{$header} <a target="_top" href="{$url}"{$footer}>正</a>
+<a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
+<a target="_top" href="{$url}&heaven_talk=on"{$footer}>霊</a>
+<a target="_top" href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>逆&amp;霊</a>
+<a target="_top" href="{$url}&heaven_only=on"{$footer} >逝</a>
+<a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
+EOF;
+
+    if ($watch){
+      $str .= <<<EOF
+
+<a target="_top" href="{$url}&watch=on"{$footer}>観</a>
+<a target="_top" href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
+EOF;
+    }
+    return $str;
+  }
+
+  //CSS 読み込み
+  static function LoadCSS($path) { return sprintf(self::CSS, $path); }
+
+  //JavaScript 読み込み
+  static function LoadJavaScript($file, $path = null) {
+    if (is_null($path)) $path = JINRO_ROOT . '/javascript';
+    return sprintf(self::JS, $path, $file);
+  }
+
+  //共通 HTML ヘッダ出力
+  static function OutputHeader($title, $css = null, $close = false) {
+    echo self::GenerateHeader($title, $css, $close);
+  }
+
+  //CSS 出力
+  static function OutputCSS($path) { echo self::LoadCSS($path); }
+
+  //JavaScript 出力
+  static function OutputJavaScript($file, $path = null) {
+    echo self::LoadJavaScript($file, $path);
+  }
+
   //HTML ヘッダクローズ出力
   static function OutputBodyHeader($css = null) { echo self::GenerateBodyHeader($css); }
-
-  //HTML フッタ出力
-  static function OutputFooter($exit = false) {
-    DB::Disconnect();
-    echo self::FOOTER;
-    if ($exit) exit;
-  }
 
   //結果ページ HTML ヘッダ出力
   static function OutputResultHeader($title, $url = '') {
@@ -294,6 +307,13 @@ EOF;
     self::OutputResultHeader($title, $url);
     echo $body . "<br>\n";
     self::OutputFooter(true);
+  }
+
+  //HTML フッタ出力
+  static function OutputFooter($exit = false) {
+    DB::Disconnect();
+    echo self::FOOTER;
+    if ($exit) exit;
   }
 
   //共有フレーム HTML ヘッダ出力
@@ -407,25 +427,4 @@ function GeneratePageLink($CONFIG, $page, $title = null){
   $attrs = implode(' ', $attributes);
   if (is_null($title)) $title = '[' . $page . ']';
   return '<a href="' . $url . '" ' . $attrs . '>' . $title . '</a>';
-}
-
-//ログへのリンクを生成
-function GenerateLogLink($url, $watch = false, $header = '', $footer = ''){
-  $str = <<<EOF
-{$header} <a target="_top" href="{$url}"{$footer}>正</a>
-<a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
-<a target="_top" href="{$url}&heaven_talk=on"{$footer}>霊</a>
-<a target="_top" href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>逆&amp;霊</a>
-<a target="_top" href="{$url}&heaven_only=on"{$footer} >逝</a>
-<a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
-EOF;
-
-  if ($watch){
-    $str .= <<<EOF
-
-<a target="_top" href="{$url}&watch=on"{$footer}>観</a>
-<a target="_top" href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
-EOF;
-  }
-  return $str;
 }

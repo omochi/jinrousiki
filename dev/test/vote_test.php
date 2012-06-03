@@ -113,7 +113,7 @@ RQ::GetTest()->test_users[13]->live = 'live';
 RQ::GetTest()->test_users[14]->uname = 'gold';
 RQ::GetTest()->test_users[14]->handle_name = '金';
 RQ::GetTest()->test_users[14]->sex = 'female';
-RQ::GetTest()->test_users[14]->role = 'stargazer_fox';
+RQ::GetTest()->test_users[14]->role = 'leader_common';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->uname = 'frame';
@@ -315,7 +315,7 @@ RQ::GetTest()->vote->night = array(
   #array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
   #array('user_no' => 13, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
   #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
-  array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
+  #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
   #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
   #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
   #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
@@ -359,7 +359,7 @@ RQ::GetTest()->system_message = array(
 );
 RQ::GetTest()->event = array();
 
-//-- 仮想発現をセット --//
+//-- 仮想発言をセット --//
 RQ::$get->say = '';
 #RQ::$get->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
 RQ::$get->font_type = 'weak'; 'normal';
@@ -372,8 +372,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = 7;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
@@ -382,8 +382,8 @@ if (DB::$ROOM->date == 1) {
 }
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
-#DB::$SELF = DB::$USER->ByID(1);
-DB::$SELF = DB::$USER->ByID(13);
+DB::$SELF = DB::$USER->ByID(1);
+#DB::$SELF = DB::$USER->ByID(23);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -401,10 +401,10 @@ if ($vote_view_mode) { //投票表示モード
       HTML::OutputResult('空投票', '投票先を指定してください');
     }
     elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
-      //VoteDay();
+      //Vote::VoteDay();
     }
     elseif (DB::$ROOM->IsNight()) { //夜の投票処理
-      VoteNight();
+      Vote::VoteNight();
     }
     else { //ここに来たらロジックエラー
       VoteHTML::OutputError('投票コマンドエラー', '投票先を指定してください');
@@ -438,7 +438,7 @@ if ($vote_view_mode) { //投票表示モード
     }
   }
   DB::$SELF = DB::$USER->ByID(1);
-  OutputPlayerList();
+  GameHTML::OutputPlayer();
   HTML::OutputFooter(true);
 }
 HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
@@ -447,65 +447,87 @@ if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();
   $INIT_CONF->LoadFile('talk_class');
-  //$query = 'SELECT uname, sentence, font_type, location FROM talk' . $this->GetQuery(! $heaven) .
   RQ::$get->add_role = false;
   RQ::GetTest()->talk_data = new StdClass();
-  RQ::GetTest()->talk_data->day = array(
-    array('uname' => 'moon', 'location' => 'day', 'font_type' => 'normal', 'sentence' => '●かー'),
-    array('uname' => 'light_blue', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'えっ'),
-    array('uname' => 'green', 'location' => 'day system', 'font_type' => null,
-	  'sentence' => 'OBJECTION	緑'),
-    array('uname' => 'dark_gray', 'location' => 'day', 'font_type' => 'weak', 'sentence' => 'チラッ'),
-    array('uname' => 'yellow', 'location' => 'day', 'font_type' => 'strong',
-	  'sentence' => "占いCO\n黒は●"),
-    array('uname' => 'light_gray', 'location' => 'day', 'font_type' => 'normal', 'sentence' => 'おはよう'),
-    array('uname' => 'system', 'location' => 'day system', 'font_type' => null,
-	  'sentence' => 'MORNING	' . DB::$ROOM->date),
+  //昼の発言
+  $stack = array(
+    array('uname' => 'moon',
+	  'font_type' => 'normal', 'sentence' => '●かー'),
+    array('uname' => 'light_blue',
+	  'font_type' => 'weak', 'sentence' => 'えっ'),
+    array('uname' => 'green',
+	  'location' => 'system', 'action' => 'OBJECTION'),
+    array('uname' => 'dark_gray',
+	  'font_type' => 'weak', 'sentence' => 'チラッ'),
+    array('uname' => 'yellow',
+	  'font_type' => 'strong', 'sentence' => "占いCO\n黒は●"),
+    array('uname' => 'light_gray',
+	  'font_type' => 'normal', 'sentence' => 'おはよう'),
+    array('uname' => 'system',
+	  'location' => 'system', 'action' => 'MORNING', 'sentence' => DB::$ROOM->date),
   );
-  RQ::GetTest()->talk_data->night = array(
-    array('uname' => 'cloud', 'location' => 'night self_talk', 'font_type' => 'normal',
-	  'sentence' => '吸血鬼なんだ'),
-    array('uname' => 'light_blue', 'location' => 'night self_talk', 'font_type' => 'weak',
-	  'sentence' => 'えっ'),
-    array('uname' => 'moon', 'location' => 'night self_talk', 'font_type' => 'normal',
-	  'sentence' => 'あーうー'),
-    array('uname' => 'gold', 'location' => 'night common', 'font_type' => 'normal',
+  foreach ($stack as &$list) {
+    $list['scene'] = 'day';
+  }
+  RQ::GetTest()->talk_data->day = $stack;
+
+  $stack = array(
+    array('uname' => 'cloud',
+	  'font_type' => 'normal', 'sentence' => '吸血鬼なんだ'),
+    array('uname' => 'light_blue',
+	  'font_type' => 'weak', 'sentence' => 'えっ'),
+    array('uname' => 'moon',
+	  'font_type' => 'normal', 'sentence' => 'あーうー'),
+    array('uname' => 'gold',
+	  'location' => 'common', 'font_type' => 'normal',
 	  'sentence' => 'やあやあ'),
-    array('uname' => 'rose', 'location' => 'night self_talk', 'font_type' => 'strong',
-	  'sentence' => '誰吸血しようかな'),
-    array('uname' => 'frame', 'location' => 'night self_talk', 'font_type' => 'normal',
-	  'sentence' => 'どうしよう'),
-    array('uname' => 'black', 'location' => 'night fox', 'font_type' => 'weak',
+    array('uname' => 'rose',
+	  'font_type' => 'strong', 'sentence' => '誰吸血しようかな'),
+    array('uname' => 'frame',
+	  'font_type' => 'normal', 'sentence' => 'どうしよう'),
+    array('uname' => 'black',
+	  'location' => 'fox', 'font_type' => 'weak',
 	  'sentence' => '占い師早く死んで欲しいなぁ'),
-    array('uname' => 'cherry', 'location' => 'night mad', 'font_type' => 'weak', 'sentence' => 'やあ'),
-    array('uname' => 'green', 'location' => 'night self_talk', 'font_type' => 'normal',
-	  'sentence' => 'てすてす'),
-    array('uname' => 'dark_gray', 'location' => 'night self_talk', 'font_type' => 'weak',
-	  'sentence' => 'チラッ'),
-    array('uname' => 'yellow', 'location' => 'night self_talk', 'font_type' => 'strong',
-	  'sentence' => "占いCO\n黒は●"),
-    array('uname' => 'light_gray', 'location' => 'night wolf', 'font_type' => 'normal',
+    array('uname' => 'cherry',
+	  'location' => 'mad', 'font_type' => 'weak',
+	  'sentence' => 'やあ'),
+    array('uname' => 'green',
+	  'font_type' => 'normal', 'sentence' => 'てすてす'),
+    array('uname' => 'dark_gray',
+	  'font_type' => 'weak', 'sentence' => 'チラッ'),
+    array('uname' => 'yellow',
+	  'font_type' => 'strong', 'sentence' => "占いCO\n黒は●"),
+    array('uname' => 'light_gray',
+	  'location' => 'wolf', 'font_type' => 'normal',
 	  'sentence' => '生き延びたか'),
-    array('uname' => 'system', 'location' => 'night system', 'font_type' => null, 'sentence' => 'NIGHT')
+    array('uname' => 'system', 'action' => 'NIGHT')
   );
+  foreach ($stack as &$list) {
+    $list['scene'] = 'night';
+    if (! isset($list['location'])) {
+      $list['location'] = $list['uname'] == 'system' ? 'system' : 'self_talk';
+    }
+  }
+  RQ::GetTest()->talk_data->night = $stack;
+
   RQ::GetTest()->talk = array();
   foreach (RQ::GetTest()->talk_data->{DB::$ROOM->scene} as $stack) {
-    RQ::GetTest()->talk[] = new Talk($stack);
+    RQ::GetTest()->talk[] = new TalkParser($stack);
   }
   //PrintData(RQ::GetTest()->talk);
-  OutputPlayerList();
+  GameHTML::OutputPlayer();
   if (DB::$SELF->user_no > 0) OutputAbility();
-  OutputTalkLog();
+  Talk::Output();
   HTML::OutputFooter(true);
 }
 HTML::OutputBodyHeader();
 $role_view_mode = false;
 if ($role_view_mode) { //画像表示モード
-  foreach (array_keys(RoleData::$main_role_list) as $role) $ROLE_IMG->Output($role);
-  #foreach (array_keys(RoleData::$sub_role_list)  as $role) $ROLE_IMG->Output($role);
-  #foreach (array_keys(RoleData::$main_role_list) as $role) $ROLE_IMG->Output('result_'.$role);
+  foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output($role);
+  #foreach (array_keys(RoleData::$sub_role_list)  as $role) Image::Role()->Output($role);
+  #foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output('result_'.$role);
   $header = 'prediction_weather_';
-  #foreach (RoleData::$weather_list as $stack) $ROLE_IMG->Output($header.$stack['event']);
+  #foreach (RoleData::$weather_list as $stack) Image::Role()->Output($header.$stack['event']);
   HTML::OutputFooter(true);
 }
 $cast_view_mode = false;
@@ -531,7 +553,7 @@ if ($cast_view_mode) { //配役情報表示モード
   echo '</table>';
   HTML::OutputFooter(true);
 }
-OutputPlayerList(); //プレイヤーリスト
+GameHTML::OutputPlayer();
 OutputAbility();
 if (RQ::$get->say != '') { //発言変換テスト
   ConvertSay(RQ::$get->say);
@@ -544,9 +566,9 @@ if (DB::$ROOM->IsDay()) { //昼の投票テスト
   foreach (RQ::GetTest()->vote_target_day as $stack) {
     DB::$SELF = DB::$USER->ByID($stack['id']);
     RQ::$get->target_no = $stack['target_no'];
-    VoteDay();
+    Vote::VoteDay();
   }
-  $vote_message_list = AggregateVoteDay();
+  $vote_message_list = Vote::AggregateDay();
   if (! is_array($vote_message_list)) $vote_message_list = array();
   $stack = array();
   foreach ($vote_message_list as $uname => $vote_data) {
@@ -554,7 +576,7 @@ if (DB::$ROOM->IsDay()) { //昼の投票テスト
     $vote_data['count'] = DB::$ROOM->revote_count + 1;
     $stack[] = $vote_data;
   }
-  echo GenerateVoteList($stack, DB::$ROOM->date);
+  echo VoteResult::Parse($stack, DB::$ROOM->date);
   DB::$ROOM->date++;
   DB::$ROOM->log_mode = false; //イベント確認用
   DB::$ROOM->scene = 'day'; //イベント確認用
@@ -563,14 +585,14 @@ if (DB::$ROOM->IsDay()) { //昼の投票テスト
 }
 elseif (DB::$ROOM->IsNight()) { // 夜の投票テスト
   //PrintData(RQ::GetTest()->vote->night);
-  AggregateVoteNight();
+  Vote::AggregateNight();
 }
 elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
   $INIT_CONF->LoadFile('winner_message');
   DB::$ROOM->log_mode = false;
-  DB::$ROOM->personal_mode = true; false;
-  OutputWinner();
-  HTML::OutputFooter(); //HTMLフッタ
+  DB::$ROOM->personal_mode = false;
+  Winner::Output();
+  HTML::OutputFooter();
 }
 //PrintData(RQ::GetTest()->system_message, 'System');
 //PrintData(RQ::GetTest()->result_ability, 'Ability');
@@ -618,16 +640,16 @@ do {
 			  'message' =>  $uname . "\t" . $target_uname);
     RQ::GetTest()->ability_action_list = $stack_list;
   }
-  OutputAbilityAction();
+  GameHTML::OutputAbilityAction();
 
   //PrintData(RQ::GetTest()->system_message, 'SystemMessage');
   DB::$ROOM->LoadEvent();
   DB::$USER->SetEvent();
   //PrintData(DB::$ROOM->event);
-  OutputDeadMan();
+  GameHTML::OutputDead();
 
   //DB::$ROOM->status = 'finished';
-  OutputPlayerList(); //プレイヤーリスト
+  GameHTML::OutputPlayer();
   OutputAbility();
   //foreach (array(5, 18, 2, 9, 13, 14, 23) as $id) {
   foreach (range(1, 25) as $id) {

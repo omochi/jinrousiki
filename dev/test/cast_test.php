@@ -157,15 +157,15 @@ DB::$ROOM->log_mode  = true;
 DB::$ROOM->scene = 'beforegame';
 DB::$ROOM->vote = array();
 
-DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+DB::$USER = new UserDataSet(RQ::$get);
 DB::$SELF = DB::$USER->ByID(1);
 
 //-- データ出力 --//
 HTML::OutputHeader('配役テスト', 'game', true);
-OutputPlayerList(); //プレイヤーリスト
-AggregateVoteGameStart(); //配役処理
+GameHTML::OutputPlayer();
+Vote::AggregateGameStart();
 DB::$ROOM->date++;
 DB::$ROOM->scene = 'night';
 foreach (DB::$USER->rows as $user) $user->ReparseRoles();
-OutputPlayerList(); //プレイヤーリスト
-HTML::OutputFooter(); //HTMLフッタ
+GameHTML::OutputPlayer();
+HTML::OutputFooter();

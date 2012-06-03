@@ -13,7 +13,7 @@ class TimeCalculation {
   public $die_room;       //自動廃村になるまでの時間
   public $establish_wait; //次の村を立てられるまでの待ち時間
 
-  function __construct(){
+  function __construct() {
     $day_seconds   = floor(12 * 60 * 60 / TimeConfig::DAY);
     $night_seconds = floor( 6 * 60 * 60 / TimeConfig::NIGHT);
 
@@ -25,8 +25,8 @@ class TimeCalculation {
     $this->sudden_death   = Time::Convert(TimeConfig::SUDDEN_DEATH);
     $this->alert          = Time::Convert(TimeConfig::ALERT);
     $this->alert_distance = Time::Convert(TimeConfig::ALERT_DISTANCE);
-    $this->die_room       = Time::Convert(RoomConfig::$die_room);
-    $this->establish_wait = Time::Convert(RoomConfig::$establish_wait);
+    $this->die_room       = Time::Convert(RoomConfig::DIE_ROOM);
+    $this->establish_wait = Time::Convert(RoomConfig::ESTABLISH_WAIT);
   }
 }
 

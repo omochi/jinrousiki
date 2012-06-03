@@ -157,10 +157,11 @@ EOF;
     else {
       $base_url = 'old_log.php?room_no=' . $ROOM->id;
       if (is_int(RQ::$get->db_no) && RQ::$get->db_no > 0) $base_url .= '&db_no=' . RQ::$get->db_no;
-      $login = $current_time - strtotime($ROOM->finish_datetime) > RoomConfig::$clear_session_id ?
-	'' : '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
-      $log_link = GenerateLogLink($base_url, true, '(') . ' )' .
-	GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room) . ' )';
+      $login = $current_time - strtotime($ROOM->finish_datetime) > RoomConfig::KEEP_SESSION ? '' :
+	'<a href="login.php?room_no=' . $ROOM->id . '"' . $dead_room . ">[再入村]</a>\n";
+      $base = HTML::GenerateLogLink($base_url, true, '(');
+      $add  = HTML::GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead_room);
+      $log_link = $base . ' )' . $add . ' )';
     }
     $max_user    = Image::GenerateMaxUser($ROOM->max_user);
     $game_option = RoomOption::Wrap($ROOM->game_option, $ROOM->option_role)->GenerateImageList();
@@ -221,12 +222,12 @@ function GenerateOldLog() {
     HTML::OutputResult($base_title, $str);
   }
   if (DB::$ROOM->watch_mode) {
-    DB::$ROOM->status    = 'playing';
-    DB::$ROOM->scene = 'day';
+    DB::$ROOM->status = 'playing';
+    DB::$ROOM->scene  = 'day';
   }
   $title  = sprintf('[%d番地] %s - %s', DB::$ROOM->id, DB::$ROOM->name, $base_title);
   $option = RoomOption::Wrap(DB::$ROOM->game_option->row, DB::$ROOM->option_role->row)->GenerateImageList();
-  $log    = GeneratePlayerList() . (RQ::$get->heaven_only ? LayoutHeaven() : LayoutTalkLog());
+  $log    = GameHTML::GeneratePlayer() . (RQ::$get->heaven_only ? LayoutHeaven() : LayoutTalkLog());
   $link = '<a href="#beforegame">前</a>'."\n";
   for($i = 1; $i <= DB::$ROOM->last_date ; $i++) $link .= '<a href="#date'.$i.'">'.$i.'</a>'."\n";
   $link .= '<a href="#aftergame">後</a>'."\n";
@@ -247,12 +248,12 @@ function OutputOldLog() { echo GenerateOldLog(); }
 function LayoutTalkLog() {
   if (RQ::$get->reverse_log) {
     $str = GenerateDateTalkLog(0, 'beforegame');
-    for($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= GenerateDateTalkLog($i, '');
-    $str .= GenerateWinner() . GenerateDateTalkLog(DB::$ROOM->last_date, 'aftergame');
+    for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= GenerateDateTalkLog($i, '');
+    $str .= Winner::Generate() . GenerateDateTalkLog(DB::$ROOM->last_date, 'aftergame');
   }
   else {
-    $str = GenerateDateTalkLog(DB::$ROOM->last_date, 'aftergame') . GenerateWinner();
-    for($i = DB::$ROOM->last_date; $i > 0; $i--) $str .= GenerateDateTalkLog($i, '');
+    $str = GenerateDateTalkLog(DB::$ROOM->last_date, 'aftergame') . Winner::Generate();
+    for ($i = DB::$ROOM->last_date; $i > 0; $i--) $str .= GenerateDateTalkLog($i, '');
     $str .= GenerateDateTalkLog(0, 'beforegame');
   }
   return $str;
@@ -326,7 +327,7 @@ function GenerateDateTalkLog($set_date, $set_scene) {
   $query .= ' ORDER BY id' . (RQ::$get->reverse_log ? '' : ' DESC'); //ログの表示順
 
   //PrintData($query, $set_scene);
-  $talk_list = DB::FetchObject($query, 'Talk');
+  $talk_list = DB::FetchObject($query, 'TalkParser');
 
   //-- 仮想稼動モードテスト用 --//
   //DB::$SELF = DB::$USER->rows[3];
@@ -340,47 +341,46 @@ function GenerateDateTalkLog($set_date, $set_scene) {
   if ($flag_border_game && ! RQ::$get->reverse_log) {
     DB::$ROOM->date = $set_date + 1;
     DB::$ROOM->scene = 'day';
-    $str .= GenerateLastWords() . GenerateDeadMan();//死亡者を出力
+    $str .= LastWords::Generate() . GameHTML::GenerateDead(); //死亡者を出力
   }
   DB::$ROOM->date = $set_date;
   DB::$ROOM->scene = $table_class;
   if ($set_scene != 'heaven_only') DB::$ROOM->SetWeather();
 
-  $builder = new DocumentBuilder();
   $id = DB::$ROOM->IsPlaying() ? 'date' . DB::$ROOM->date : DB::$ROOM->scene;
-  $builder->BeginTalk('talk ' . $table_class, $id);
-  if (RQ::$get->reverse_log) OutputTimeStamp($builder);
-  //if (DB::$ROOM->watch_mode) $builder->AddSystemTalk(DB::$ROOM->date . print_r(DB::$ROOM->event, true));
+  $builder = new TalkBuilder('talk ' . $table_class, $id);
+  if (RQ::$get->reverse_log) $builder->GenerateTimeStamp();
+  //if (DB::$ROOM->watch_mode) $builder->AddSystem(DB::$ROOM->date . print_r(DB::$ROOM->event, true));
 
   foreach ($talk_list as $talk) {
     switch ($talk->scene) {
     case 'day':
       if (DB::$ROOM->IsDay() || $talk->type == 'dummy_boy') break;
-      $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
+      $str .= $builder->Refresh() . GenerateSceneChange($set_date);
       DB::$ROOM->scene = $talk->scene;
-      $builder->BeginTalk('talk ' . $talk->scene);
+      $builder->Begin('talk ' . $talk->scene);
       break;
 
     case 'night':
       if (DB::$ROOM->IsNight() || $talk->type == 'dummy_boy') break;
-      $str .= $builder->RefreshTalk() . GenerateSceneChange($set_date);
+      $str .= $builder->Refresh() . GenerateSceneChange($set_date);
       DB::$ROOM->scene = $talk->scene;
-      $builder->BeginTalk('talk ' . $talk->scene);
+      $builder->Begin('talk ' . $talk->scene);
       break;
     }
-    OutputTalk($talk, $builder); //会話出力
+    $builder->Generate($talk); //会話生成
   }
 
-  if (! RQ::$get->reverse_log) OutputTimeStamp($builder);
-  $str .= $builder->RefreshTalk();
+  if (! RQ::$get->reverse_log) $builder->GenerateTimeStamp();
+  $str .= $builder->Refresh();
 
   if ($flag_border_game && RQ::$get->reverse_log) {
     //突然死で勝敗が決定したケース
-    if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= GenerateVoteResult();
+    if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= VoteResult::Generate();
 
     DB::$ROOM->date = $set_date + 1;
     DB::$ROOM->scene = 'day';
-    $str .= GenerateDeadMan() . GenerateLastWords(); //遺言を出力
+    $str .= GameHTML::GenerateDead() . LastWords::Generate(); //遺言を出力
   }
   return $str;
 }
@@ -397,10 +397,10 @@ function GenerateSceneChange($set_date) {
   DB::$ROOM->date = $set_date;
   if (RQ::$get->reverse_log) {
     DB::$ROOM->scene = 'night';
-    $str .= GenerateVoteResult() . GenerateDeadMan();
+    $str .= VoteResult::Generate() . GameHTML::GenerateDead();
   }
   else {
-    $str .= GenerateDeadMan() . GenerateVoteResult();
+    $str .= GameHTML::GenerateDead() . VoteResult::Generate();
   }
   return $str;
 }

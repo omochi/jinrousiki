@@ -29,7 +29,6 @@ class InitializeConfig {
     'ROLES'                  => 'role_class',
     'TIME_CALC'              => array('time_config', 'room_config', 'game_config', 'cast_config',
 				      'role_data_class', 'image_class', 'info_functions'),
-    'TWITTER'                => array('twitter_config', 'twitter'),
     'PAPARAZZI'              => 'paparazzi_class',
     'server_config'          => array('system_class', 'functions'), //常時ロードされる
     'chaos_config'           => 'cast_config',
@@ -41,25 +40,25 @@ class InitializeConfig {
     'room_option_class'      => array('option_class', 'room_option_item_class'),
     'room_option_item_class' => array('room_config', 'time_config', 'game_option_config'),
     'option_form_class'      => 'room_option_class',
-    'user_class'             => array('game_config', 'message', 'role_data_class', 'game_functions'),
-    'talk_class'             => 'user_class',
-    'role_class'             => 'game_format',
+    'user_class'             => array('role_data_class', 'game_functions'),
+    'talk_class'             => array('game_config', 'message', 'user_class'),
     'icon_class'             => 'icon_config',
     'user_icon_class'        => 'user_icon_config',
     'sound_class'            => 'sound_config',
+    'twitter_class'          => array('twitter_config', 'twitter'),
     'room_manager_class'     => array('room_option_class', 'image_class'),
     'login_class'            => 'session_class',
     'game_view_class'        => array('icon_class', 'talk_class'),
     'game_log_class'         => array('session_class', 'talk_class'),
-    'user_manager_class'     => array('room_config', 'room_class', 'user_class', 'session_class',
-				      'icon_functions'),
+    'user_manager_class'     => array('room_config', 'game_config', 'message', 'room_class',
+				      'user_class', 'session_class', 'icon_functions'),
     'icon_view_class'        => 'icon_functions',
     'icon_edit_class'        => 'icon_functions',
     'icon_upload_class'      => array('session_class', 'icon_functions'),
     'paparazzi_class'        => 'paparazzi',
     'index_functions'        => array('menu_config', 'bbs_config', 'version', 'option_form_class'),
     'game_play_functions'    => array('user_class', 'image_class'),
-    'game_vote_functions'    => 'game_functions',
+    'game_vote_functions'    => array('game_config', 'message', 'game_functions'),
     'icon_functions'         => array('icon_class', 'user_icon_class'),
     'oldlog_functions'       => array('oldlog_config', 'cast_config', 'image_class',
 				      'room_option_class'),
@@ -69,13 +68,11 @@ class InitializeConfig {
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   public $depend_class = array(
-    'game_view_class'     => 'ROLES',
-    'game_log_class'      => 'ROLES',
+    'talk_class' => 'ROLES',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'TWITTER'   => 'TwitterConfig',
     'COOKIE'    => 'CookieDataSet',
     'ROLES'     => 'RoleManager',
     'TIME_CALC' => 'TimeCalculation',

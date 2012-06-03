@@ -36,12 +36,12 @@ class Role_wolf extends Role {
   function OutputAction() { OutputVoteMessage('wolf-eat', 'wolf_eat', $this->action); }
 
   //遠吠え
-  function Howl($builder, $voice) {
+  function Howl(TalkBuilder $builder, $voice) {
     if (! $builder->flag->wolf_howl) return false; //スキップ判定
 
     $str = Message::$wolf_howl;
     foreach ($builder->filter as $filter) $filter->FilterWhisper($voice, $str); //フィルタリング処理
-    $builder->RawAddTalk('', '狼の遠吠え', $str, $voice);
+    $builder->AddRaw('', '狼の遠吠え', $str, $voice);
     return true;
   }
 

@@ -3,18 +3,17 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
 $DISABLE_TWITTER_TEST = true; //false にすると使用可能になる
-if($DISABLE_TWITTER_TEST){
+if ($DISABLE_TWITTER_TEST) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
-$INIT_CONF->LoadClass('room_config');
-$INIT_CONF->LoadClass('TWITTER');
+$INIT_CONF->LoadFile('twitter_class');
 
 //-- 投稿テスト用データ --//
-$room_no      = 'xxx';
-$room_name    = 'Twitter投稿テスト';
-$room_comment = 'Twitter投稿テストです';
+$room_no      = '1';
+$room_name    = 'Twitter 投稿テスト';
+$room_comment = 'Twitter 投稿テストです';
 
 //-- 表示 --//
-HTML::OutputHeader('Twitter投稿テストツール', 'game', true);
-if ($TWITTER->Send($room_no, $room_name, $room_comment)) echo 'Twitter投稿成功'."\n";
+HTML::OutputHeader('Twitter 投稿テストツール', 'game', true);
+if (JinroTwitter::Send($room_no, $room_name, $room_comment)) echo "Twitter 投稿成功<br>\n";
 HTML::OutputFooter();

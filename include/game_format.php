@@ -1,5 +1,6 @@
 <?php
 //-- 発言処理の基底クラス --//
+/* TalkBuilder に移行 */
 class DocumentBuilder {
   public $actor;
   public $flag;

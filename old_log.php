@@ -6,7 +6,6 @@ DB::Connect(RQ::$get->db_no);
 ob_start();
 if (RQ::$get->is_room) {
   $INIT_CONF->LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
-  $INIT_CONF->LoadClass('ROLES');
 
   DB::$ROOM = new Room(RQ::$get);
   DB::$ROOM->LoadOption();

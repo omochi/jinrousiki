@@ -59,6 +59,15 @@ class RoomOption extends OptionParser {
     return $result;
   }
 
+  //ゲームオプション画像出力
+  static function Output() {
+    $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
+    extract(DB::FetchAssoc($query, true));
+    echo '<div class="game-option">ゲームオプション：' .
+      self::Wrap($game_option, $option_role)->GenerateImageList() .
+      Image::GenerateMaxUser($max_user) . '</div>'."\n";
+  }
+
   function __construct($value = '') { parent::__construct($value); }
 
   /** ゲームオプションの画像タグを作成する */

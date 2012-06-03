@@ -29,7 +29,7 @@ if (@$_POST['command'] == 'role_test') {
     printf($str, $i);
     $role_list = Cast::GetRoleList($user_count);
     if ($role_list == '') break;
-    PrintData(GenerateRoleNameList(array_count_values($role_list), true));
+    PrintData(Vote::GenerateRoleNameList(array_count_values($role_list), true));
   }
 }
 HTML::OutputFooter(true);

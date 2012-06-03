@@ -183,8 +183,8 @@ if(false){
 HTML::OutputHeader('表示テスト', 'game');
 HTML::OutputBodyHeader(sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene));
 //PrintData(DB::$ROOM->scene, $_GET['scene']);
-OutputPlayerList(); //プレイヤーリスト
-HTML::OutputFooter(true); //HTMLフッタ
+GameHTML::OutputPlayer();
+HTML::OutputFooter(true);
 
 //PrintData(DB::$USER->rows[1]);
 //PrintData($dead_list);
@@ -275,4 +275,4 @@ foreach(array_keys($t_dead_list) as $id){
   echo '<a href="view_test.php?scene=night&t_dead=' . $id . '">' . $id . '</a> /'."\n";
 }
 
-HTML::OutputFooter(); //HTMLフッタ
+HTML::OutputFooter();
