@@ -7,13 +7,12 @@
 class Role_agitate_mad extends Role {
   public $mix_in = 'decide';
   public $sudden_death = 'AGITATED';
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
+  function SetVoteDay($uname) {
     if ($this->IsRealActor()) $this->AddStack($uname);
   }
 
-  function DecideVoteKill(){
+  function DecideVoteKill() {
     if ($this->DecideVoteKillSame()) return;
     $uname = $this->GetVoteKill();
     foreach ($this->GetStack('max_voted') as $target_uname) { //$target_uname は仮想ユーザ

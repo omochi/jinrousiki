@@ -8,39 +8,40 @@ class Role_possessed_mad extends Role {
   public $action     = 'POSSESSED_DO';
   public $not_action = 'POSSESSED_NOT_DO';
   public $ignore_message = '初日は憑依できません';
-  function __construct(){ parent::__construct(); }
 
   //Mixin あり
-  function OutputResult(){
+  function OutputResult() {
     //現在の憑依先
-    if (DB::$ROOM->date > 2 && ! $this->GetActor()->IsActive()) OutputPossessedTarget();
+    if (DB::$ROOM->date > 2 && ! $this->GetActor()->IsActive()) RoleHTML::OutputPossessed();
   }
 
-  function OutputAction(){
+  function OutputAction() {
     if ($this->GetActor()->IsActive()) {
-      OutputVoteMessage('wolf-eat', 'possessed_do', $this->action, $this->not_action);
+      RoleHTML::OutputVote('wolf-eat', 'possessed_do', $this->action, $this->not_action);
     }
   }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
-  function IsMindReadPossessed($user){ return $user->IsSame($this->GetViewer()->uname); }
+  function IsMindReadPossessed(User $user) { return $user->IsSame($this->GetViewer()->uname); }
 
-  function IgnoreVote(){
+  function IgnoreVote() {
     if (! is_null($str = parent::IgnoreVote())) return $str;
     return $this->GetActor()->IsActive() ? null : '能力喪失しています';
   }
 
-  function GetVoteIconPath($user, $live){ return Icon::GetFile($user->icon_filename); }
+  function GetVoteIconPath(User $user, $live) { return Icon::GetFile($user->icon_filename); }
 
-  function IsVoteCheckbox($user, $live){
+  function IsVoteCheckbox(User $user, $live) {
     return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();
   }
 
-  function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : null; }
+  function IgnoreVoteNight(User $user, $live) {
+    return $live ? '死者以外には投票できません' : null;
+  }
 
   //憑依情報セット
-  function SetPossessed($user){
+  function SetPossessed(User $user) {
     global $ROLES;
 
     foreach ($ROLES->LoadFilter('guard_curse') as $filter) { //厄神の護衛判定
@@ -58,10 +59,10 @@ class Role_possessed_mad extends Role {
   }
 
   //無効陣営判定
-  function IgnorePossessed($camp){ return $camp == 'fox' || $camp == 'lovers'; }
+  function IgnorePossessed($camp) { return $camp == 'fox' || $camp == 'lovers'; }
 
   //憑依情報登録
-  function Possessed(){
+  function Possessed() {
     $stack = $this->GetStack('possessed_dead');
     foreach ($stack as $uname => $target_uname) {
       if (count(array_keys($stack, $target_uname)) == 1) { //競合判定

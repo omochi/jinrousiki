@@ -341,7 +341,7 @@ function GenerateDateTalkLog($set_date, $set_scene) {
   if ($flag_border_game && ! RQ::$get->reverse_log) {
     DB::$ROOM->date = $set_date + 1;
     DB::$ROOM->scene = 'day';
-    $str .= LastWords::Generate() . GameHTML::GenerateDead(); //死亡者を出力
+    $str .= GameHTML::GenerateLastWords() . GameHTML::GenerateDead(); //死亡者を出力
   }
   DB::$ROOM->date = $set_date;
   DB::$ROOM->scene = $table_class;
@@ -376,11 +376,11 @@ function GenerateDateTalkLog($set_date, $set_scene) {
 
   if ($flag_border_game && RQ::$get->reverse_log) {
     //突然死で勝敗が決定したケース
-    if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= VoteResult::Generate();
+    if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= GameHTML::GenerateVote();
 
     DB::$ROOM->date = $set_date + 1;
     DB::$ROOM->scene = 'day';
-    $str .= GameHTML::GenerateDead() . LastWords::Generate(); //遺言を出力
+    $str .= GameHTML::GenerateDead() . GameHTML::GenerateLastWords(); //遺言を出力
   }
   return $str;
 }
@@ -397,10 +397,10 @@ function GenerateSceneChange($set_date) {
   DB::$ROOM->date = $set_date;
   if (RQ::$get->reverse_log) {
     DB::$ROOM->scene = 'night';
-    $str .= VoteResult::Generate() . GameHTML::GenerateDead();
+    $str .= GameHTML::GenerateVote() . GameHTML::GenerateDead();
   }
   else {
-    $str .= GameHTML::GenerateDead() . VoteResult::Generate();
+    $str .= GameHTML::GenerateDead() . GameHTML::GenerateVote();
   }
   return $str;
 }

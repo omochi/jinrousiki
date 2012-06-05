@@ -7,18 +7,19 @@
 class Role_voodoo_killer extends Role {
   public $action = 'VOODOO_KILLER_DO';
   public $result = 'VOODOO_KILLER_SUCCESS';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date > 1 && ! DB::$ROOM->IsOption('seal_message')) {
-      OutputSelfAbilityResult($this->result);
+      $this->OutputAbilityResult($this->result);
     }
   }
 
-  function OutputAction(){ OutputVoteMessage('mage-do', 'voodoo_killer_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('mage-do', 'voodoo_killer_do', $this->action);
+  }
 
   //占い
-  function Mage($user){
+  function Mage($user) {
     //呪殺判定 (呪い所持者・憑依能力者)
     if ($user->IsLive(true) && ($user->IsRoleGroup('cursed') || $user->IsPossessedGroup())) {
       DB::$USER->Kill($user->user_no, 'CURSED');
@@ -32,7 +33,7 @@ class Role_voodoo_killer extends Role {
   }
 
   //成功結果登録
-  function SaveSuccess(){
+  function SaveSuccess() {
     foreach ($this->GetStack($this->role . '_success') as $target_uname => $flag) {
       $target = DB::$USER->GetHandleName($target_uname, true);
       foreach (array_keys($this->GetStack(), $target_uname) as $uname) { //成功者を検出

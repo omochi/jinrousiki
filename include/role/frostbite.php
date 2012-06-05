@@ -10,7 +10,7 @@ class Role_frostbite extends Role_febris {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    OutputAbilityResult($this->role . '_header', DB::$ROOM->date, $this->role . '_footer');
+    RoleHTML::OutputAbilityResult($this->role . '_header', DB::$ROOM->date, $this->role . '_footer');
   }
 
   function IsSuddenDeath(){ return parent::IsSuddenDeath() && $this->GetVotedCount() == 0; }

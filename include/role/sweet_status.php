@@ -4,13 +4,11 @@
   ○仕様
 */
 class Role_sweet_status extends Role {
-  function __construct(){ parent::__construct(); }
-
-  protected function OutputImage(){
+  protected function OutputImage() {
     if (DB::$ROOM->date == 2) parent::OutputImage();
   }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $stack = array();
     $actor = $this->GetActor();
     if ($actor->IsRole('lovers')) return; //恋人持ちなら処理委託
@@ -22,6 +20,6 @@ class Role_sweet_status extends Role {
 	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
       }
     }
-    OutputPartner($stack, 'partner_header', 'lovers_footer');
+    RoleHTML::OutputPartner($stack, 'partner_header', 'lovers_footer');
   }
 }

@@ -11,7 +11,7 @@ class Role_soul_vampire extends Role_vampire {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    if (DB::$ROOM->date > 2) OutputSelfAbilityResult($this->result);
+    if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
   protected function InfectVampire($user){

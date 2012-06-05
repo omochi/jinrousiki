@@ -209,7 +209,7 @@ class RoleManager {
   //特殊勝敗判定 (ジョーカー系)
   public $joker_list = array('joker', 'rival');
 
-  function __construct(){
+  function __construct() {
     $this->path = JINRO_INC . '/role';
     $this->stack  = new StdClass();
     $this->loaded = new StdClass();
@@ -217,7 +217,7 @@ class RoleManager {
     $this->loaded->class = array();
   }
 
-  function Load($type, $shift = false, $virtual = false){
+  function Load($type, $shift = false, $virtual = false) {
     $stack = array();
     $virtual |= $type == 'main_role';
     foreach ($this->GetList($type) as $role) {
@@ -229,7 +229,7 @@ class RoleManager {
     return $shift ? array_shift($filter) : $filter;
   }
 
-  function LoadFile($name){
+  function LoadFile($name) {
     if (is_null($name) || ! file_exists($file = $this->path . '/' . $name . '.php')) return false;
     if (in_array($name, $this->loaded->file)) return true;
     require_once($file);
@@ -237,7 +237,7 @@ class RoleManager {
     return true;
   }
 
-  function LoadClass($name, $class){
+  function LoadClass($name, $class) {
     if (is_null($name) ||
 	(array_key_exists($name, $this->loaded->class) && is_object($this->loaded->class[$name]))) {
       return false;
@@ -246,33 +246,33 @@ class RoleManager {
     return true;
   }
 
-  function LoadMix($name){
+  function LoadMix($name) {
     if (! $this->LoadFile($name)) return null;
     $class = 'Role_' . $name;
     return new $class();
   }
 
-  function LoadFilter($type){
+  function LoadFilter($type) {
     return $this->GetFilter($this->GetList($type));
   }
 
-  function LoadMain($user){
+  function LoadMain($user) {
     $this->actor = $user;
     return $this->Load('main_role', true);
   }
 
-  function SetClass($role){
+  function SetClass($role) {
     $this->LoadFile($role);
     return $this->LoadClass($role, 'Role_' . $role);
   }
 
-  function GetList($type){
+  function GetList($type) {
     $stack = $type == 'main_role' ? array($this->actor->GetMainRole(true)) :
       $this->{$type . '_list'};
     return is_array($stack) ? $stack : array();
   }
 
-  function GetFilter($list){
+  function GetFilter($list) {
     $stack = array();
     foreach ($list as $key) { //順番依存があるので配列関数を使わないで処理する
       if (! array_key_exists($key, $this->loaded->class)) continue;
@@ -328,7 +328,7 @@ abstract class Role {
       (isset($this->$property) ? $this->$property : null);
   }
 
-  //function __get($name){ return null; } //メモ
+  //function __get($name) { return null; } //メモ
 
   //-- 汎用関数 --//
   //ユーザ取得
@@ -399,6 +399,255 @@ abstract class Role {
 
   //能力結果表示
   protected function OutputResult() {}
+
+  //能力発動結果表示
+  protected function OutputAbilityResult($action) {
+    $header = null;
+    $footer = 'result_';
+    $limit  = false;
+    switch ($action) {
+    case 'MAGE_RESULT':
+    case 'CHILD_FOX_RESULT':
+      $type   = 'mage';
+      $header = 'mage_result';
+      $limit  = true;
+      break;
+
+    case 'VOODOO_KILLER_SUCCESS':
+      $type   = 'mage';
+      $footer = 'voodoo_killer_';
+      $limit  = true;
+      break;
+
+    case 'NECROMANCER_RESULT':
+    case 'SOUL_NECROMANCER_RESULT':
+    case 'PSYCHO_NECROMANCER_RESULT':
+    case 'EMBALM_NECROMANCER_RESULT':
+    case 'ATTEMPT_NECROMANCER_RESULT':
+    case 'DUMMY_NECROMANCER_RESULT':
+    case 'MIMIC_WIZARD_RESULT':
+    case 'SPIRITISM_WIZARD_RESULT':
+    case 'MONK_FOX_RESULT':
+      $type = 'necromancer';
+      break;
+
+    case 'EMISSARY_NECROMANCER_RESULT':
+      $type   = 'priest';
+      $header = 'emissary_necromancer_header';
+      $footer = 'priest_footer';
+      break;
+
+    case 'MEDIUM_RESULT':
+      $type   = 'necromancer';
+      $header = 'medium';
+      break;
+
+    case 'PRIEST_RESULT':
+    case 'DUMMY_PRIEST_RESULT':
+    case 'PRIEST_JEALOUSY_RESULT':
+      $type   = 'priest';
+      $header = 'priest_header';
+      $footer = 'priest_footer';
+      break;
+
+    case 'BISHOP_PRIEST_RESULT':
+      $type   = 'priest';
+      $header = 'bishop_priest_header';
+      $footer = 'priest_footer';
+      break;
+
+    case 'DOWSER_PRIEST_RESULT':
+      $type   = 'priest';
+      $header = 'dowser_priest_header';
+      $footer = 'dowser_priest_footer';
+      break;
+
+    case 'WEATHER_PRIEST_RESULT':
+      $type   = 'weather_priest';
+      $header = 'weather_priest_header';
+      break;
+
+    case 'CRISIS_PRIEST_RESULT':
+      $type   = 'crisis_priest';
+      $header = 'side_';
+      $footer = 'crisis_priest_result';
+      break;
+
+    case 'HOLY_PRIEST_RESULT':
+      $type   = 'priest';
+      $header = 'holy_priest_header';
+      $footer = 'dowser_priest_footer';
+      $limit  = true;
+      break;
+
+    case 'BORDER_PRIEST_RESULT':
+      $type   = 'priest';
+      $header = 'border_priest_header';
+      $footer = 'priest_footer';
+      $limit  = true;
+      break;
+
+    case 'GUARD_SUCCESS':
+    case 'GUARD_HUNTED':
+      $type   = 'mage';
+      $footer = 'guard_';
+      $limit  = true;
+      break;
+
+    case 'REPORTER_SUCCESS':
+      $type   = 'reporter';
+      $header = 'reporter_result_header';
+      $footer = 'reporter_result_footer';
+      $limit  = true;
+      break;
+
+    case 'ANTI_VOODOO_SUCCESS':
+      $type   = 'mage';
+      $footer = 'anti_voodoo_';
+      $limit  = true;
+      break;
+
+    case 'POISON_CAT_RESULT':
+      $type   = 'mage';
+      $footer = 'poison_cat_';
+      $limit  = true;
+      break;
+
+    case 'PHARMACIST_RESULT':
+      $type   = 'mage';
+      $footer = 'pharmacist_';
+      $limit  = true;
+      break;
+
+    case 'ASSASSIN_RESULT':
+      $type   = 'mage';
+      $header = 'assassin_result';
+      $limit  = true;
+      break;
+
+    case 'CLAIRVOYANCE_RESULT':
+      $type   = 'reporter';
+      $header = 'clairvoyance_result_header';
+      $footer = 'clairvoyance_result_footer';
+      $limit  = true;
+      break;
+
+    case 'SEX_WOLF_RESULT':
+    case 'SHARP_WOLF_RESULT':
+    case 'TONGUE_WOLF_RESULT':
+      $type   = 'mage';
+      $header = 'wolf_result';
+      $limit  = true;
+      break;
+
+    case 'FOX_EAT':
+      $type   = 'fox';
+      $header = 'fox_';
+      $limit  = true;
+      break;
+
+    case 'VAMPIRE_RESULT':
+      $type   = 'mage';
+      $header = 'vampire_result';
+      $limit  = true;
+      break;
+
+    case 'MANIA_RESULT':
+    case 'PATRON_RESULT':
+      $type  = 'mage';
+      $limit = true;
+      break;
+
+    case 'SYMPATHY_RESULT':
+      $type   = 'mage';
+      $header = 'sympathy_result';
+      $limit  = ! DB::$SELF->IsRole('ark_angel');
+      break;
+
+    case 'PRESAGE_RESULT':
+      $type   = 'reporter';
+      $header = 'presage_result_header';
+      $footer = 'reporter_result_footer';
+      $limit  = true;
+      break;
+
+    default:
+      return false;
+    }
+
+    $target_date = DB::$ROOM->date - 1;
+    if (DB::$ROOM->test_mode) {
+      $stack = RQ::GetTest()->result_ability;
+      $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : array();
+      $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
+      //PrintData($stack, $user_no);
+      if ($limit) {
+	$limit_stack = array();
+	foreach ($stack as $list) {
+	  if ($list['user_no'] == DB::$SELF->user_no) $limit_stack[] = $list;
+	}
+	$stack = $limit_stack;
+	//PrintData($stack, $user_no);
+      }
+      $result_list = $stack;
+    }
+    else {
+      $str = 'SELECT DISTINCT target, result FROM result_ability WHERE room_no = %d ' .
+	"AND date = %d AND type = '%s'";
+      $query = sprintf($str, DB::$ROOM->id, $target_date, $action);
+      if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->user_no);
+      $result_list = DB::FetchAssoc($query);
+    }
+    //PrintData($result_list);
+
+    switch ($type) {
+    case 'mage':
+    case 'guard':
+      foreach ($result_list as $result) {
+	RoleHTML::OutputAbilityResult($header, $result['target'], $footer . $result['result']);
+      }
+      break;
+
+    case 'necromancer':
+      if (is_null($header)) $header = 'necromancer';
+      foreach ($result_list as $result) {
+	$target = $result['target'];
+	RoleHTML::OutputAbilityResult($header . '_result', $target, $footer . $result['result']);
+      }
+      break;
+
+    case 'priest':
+      foreach ($result_list as $result) {
+	RoleHTML::OutputAbilityResult($header, $result['result'], $footer);
+      }
+      break;
+
+    case 'weather_priest':
+      foreach ($result_list as $result) {
+	RoleHTML::OutputAbilityResult($header, null, $result['result']);
+      }
+      break;
+
+    case 'crisis_priest':
+      foreach ($result_list as $result) {
+	RoleHTML::OutputAbilityResult($header . $result['result'], null, $footer);
+      }
+      break;
+
+    case 'reporter':
+      foreach ($result_list as $result) {
+	$target = $result['target'] . ' さんは ' . $result['result'];
+	RoleHTML::OutputAbilityResult($header, $target, $footer);
+      }
+      break;
+
+    case 'fox':
+      foreach ($result_list as $result) {
+	RoleHTML::OutputAbilityResult($header . $result['result'], null);
+      }
+      break;
+    }
+  }
 
   //投票能力表示
   function OutputAction() {}
@@ -480,18 +729,18 @@ abstract class Role {
   function GetVoteTargetUser() { return DB::$USER->rows; }
 
   //投票のアイコンパス取得
-  function GetVoteIconPath($user, $live) {
+  function GetVoteIconPath(User $user, $live) {
     return $live ? Icon::GetFile($user->icon_filename) : Icon::GetDead();
   }
 
   //投票のチェックボックス取得
-  function GetVoteCheckbox($user, $id, $live) {
+  function GetVoteCheckbox(User $user, $id, $live) {
     return $this->IsVoteCheckbox($user, $live) ?
       $this->GetVoteCheckboxHeader() . ' id="' . $id . '" value="' . $id . '">'."\n" : '';
   }
 
   //投票対象判定
-  protected function IsVoteCheckbox($user, $live) {
+  protected function IsVoteCheckbox(User $user, $live) {
     return $live && ! $this->IsActor($user->uname);
   }
 
@@ -521,7 +770,7 @@ abstract class Role {
   function GetVoteNightTarget() { return RQ::$get->target_no; }
 
   //投票スキップ判定 (夜)
-  function IgnoreVoteNight($user, $live) {
+  function IgnoreVoteNight(User $user, $live) {
     return ! $live || $this->IsActor($user->uname) ? '自分・死者には投票できません' : null;
   }
 
@@ -550,4 +799,66 @@ abstract class Role {
 
   //死亡判定
   protected function IsDead($strict = false) { return $this->GetActor()->IsDead($strict); }
+}
+
+//-- HTML 生成クラス (Role 拡張) --//
+class RoleHTML {
+  //仲間表示
+  static function OutputPartner($list, $header, $footer = null) {
+    if (count($list) < 1) return false; //仲間がいなければ表示しない
+    $list[] = '</td>';
+    $str = '<table class="ability-partner"><tr>'."\n" .
+      Image::Role()->Generate($header, null, true) ."\n" .
+      '<td>　' . implode('さん　', $list) ."\n";
+    if ($footer) $str .= Image::Role()->Generate($footer, null, true) ."\n";
+    echo $str . '</tr></table>'."\n";
+  }
+
+  //現在の憑依先表示
+  static function OutputPossessed() {
+    $type = 'possessed_target';
+    if (is_null($stack = DB::$SELF->GetPartner($type))) return;
+
+    $target = DB::$USER->ByID($stack[max(array_keys($stack))])->handle_name;
+    if ($target != '') self::OutputAbilityResult('partner_header', $target, $type);
+  }
+
+  //夜の未投票メッセージ出力
+  static function OutputVote($class, $sentence, $type, $not_type = '') {
+    $stack = DB::$ROOM->test_mode ? array() : GetSelfVoteNight($type, $not_type);
+    if (count($stack) < 1) {
+      $str = Message::${'ability_' . $sentence};
+    }
+    elseif ($type == 'WOLF_EAT' || $type == 'CUPID_DO' || $type == 'DUELIST_DO') {
+      $str = '投票済み';
+    }
+    elseif ($type == 'SPREAD_WIZARD_DO') {
+      $str_stack = array();
+      foreach (explode(' ', $stack['target_no']) as $id) {
+	$user = DB::$USER->ByVirtual($id);
+	$str_stack[$user->user_no] = $user->handle_name;
+      }
+      ksort($str_stack);
+      $str = implode('さん ', $str_stack) . 'さんに投票済み';
+    }
+    elseif ($not_type != '' && $stack['type'] == $not_type) {
+      $str = 'キャンセル投票済み';
+    }
+    elseif ($type == 'POISON_CAT_DO' || $type == 'POSSESSED_DO') {
+      $str = DB::$USER->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
+    }
+    else {
+      $str = DB::$USER->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
+    }
+    echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
+  }
+
+  //能力発動結果を表示する
+  static function OutputAbilityResult($header, $target, $footer = null) {
+    $str = '<table class="ability-result"><tr>'."\n";
+    if (isset($header)) $str .= Image::Role()->Generate($header, null, true) ."\n";
+    if (isset($target)) $str .= '<td>' . $target . '</td>'."\n";
+    if (isset($footer)) $str .= Image::Role()->Generate($footer, null, true) ."\n";
+    echo $str . '</tr></table>'."\n";
+  }
 }

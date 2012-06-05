@@ -8,9 +8,8 @@
 class Role_saint extends Role {
   public $mix_in = 'decide';
   public $display_role = 'human';
-  function __construct(){ parent::__construct(); }
 
-  function DecideVoteKill(){
+  function DecideVoteKill() {
     if ($this->IsVoteKill()) return;
     $stack = array();
     $target_stack = array();

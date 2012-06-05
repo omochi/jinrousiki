@@ -5,5 +5,4 @@
 */
 RoleManager::LoadFile('wolf');
 class Role_cursed_wolf extends Role_wolf {
-  function __construct(){ parent::__construct(); }
 }

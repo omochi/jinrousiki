@@ -6,12 +6,10 @@
 */
 RoleManager::LoadFile('psycho_mage');
 class Role_sex_mage extends Role_psycho_mage {
-  function __construct(){ parent::__construct(); }
-
-  function GetMageResult($user){ return $this->DistinguishSex($user); }
+  function GetMageResult($user) { return $this->DistinguishSex($user); }
 
   //性別鑑定
-  function DistinguishSex($user){
+  function DistinguishSex($user) {
     return $user->IsOgre() ? 'ogre' :
       ($user->IsRoleGroup('chiroptera', 'fairy', 'gold') ? 'chiroptera' : 'sex_' . $user->sex);
   }

@@ -7,9 +7,7 @@
 */
 RoleManager::LoadFile('angel');
 class Role_scarlet_angel extends Role_angel {
-  function __construct(){ parent::__construct(); }
-
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     parent::OutputPartner();
     if (! DB::$ROOM->IsNight()) return;
     $stack = array();
@@ -19,8 +17,8 @@ class Role_scarlet_angel extends Role_angel {
 	$stack[] = $user->handle_name;
       }
     }
-    OutputPartner($stack, 'unconscious_list');
+    RoleHTML::OutputPartner($stack, 'unconscious_list');
   }
 
-  protected function IsSympathy($lovers_a, $lovers_b){ return true; }
+  protected function IsSympathy($lovers_a, $lovers_b) { return true; }
 }

@@ -56,11 +56,11 @@ EOF;
     GameHTML::OutputTimeTable(); //経過日数と生存人数
 
     switch (DB::$ROOM->scene) {
-    case 'day': //昼
+    case 'day':
       $time_message = '日没まで ';
       break;
 
-    case 'night': //夜
+    case 'night':
       $time_message = '夜明けまで ';
       break;
     }
@@ -91,11 +91,11 @@ EOF;
 
     GameHTML::OutputPlayer();
     if (DB::$ROOM->IsFinished()) Winner::Output();
-    if (DB::$ROOM->IsPlaying())  VoteResult::OutputRevote();
+    if (DB::$ROOM->IsPlaying())  GameHTML::OutputRevote();
     Talk::Output();
-    LastWords::Output();
+    GameHTML::OutputLastWords();
     GameHTML::OutputDead();
-    VoteResult::Output();
+    GameHTML::OutputVote();
     HTML::OutputFooter();
   }
 

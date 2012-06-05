@@ -14,22 +14,21 @@ class Role_poison_cat extends Role {
   public $ignore_message = '初日は蘇生できません';
   public $revive_rate = 25;
   public $missfire_rate;
-  function __construct(){ parent::__construct(); }
 
   //Mixin あり
-  function OutputResult(){
+  function OutputResult() {
     if (DB::$ROOM->date > 2 && ! DB::$ROOM->IsOpenCast() && ! DB::$ROOM->IsOption('seal_message')) {
-      OutputSelfAbilityResult('POISON_CAT_RESULT');
+      $this->OutputAbilityResult('POISON_CAT_RESULT');
     }
   }
 
-  function OutputAction(){
-    OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
+  function OutputAction() {
+    RoleHTML::OutputVote('revive-do', $this->submit, $this->action, $this->not_action);
   }
 
-  function IsVote(){ return DB::$ROOM->date > 1 && ! DB::$ROOM->IsOpenCast(); }
+  function IsVote() { return DB::$ROOM->date > 1 && ! DB::$ROOM->IsOpenCast(); }
 
-  function IgnoreVote(){
+  function IgnoreVote() {
     if (! is_null($str = parent::IgnoreVote())) return $str;
     if (DB::$ROOM->IsOpenCast()) {
       return '「霊界で配役を公開しない」オプションがオフの時は投票できません';
@@ -39,16 +38,16 @@ class Role_poison_cat extends Role {
     return method_exists($self, $method) ? $class->$method() : null;
   }
 
-  function GetVoteIconPath($user, $live){ return Icon::GetFile($user->icon_filename); }
+  function GetVoteIconPath($user, $live) { return Icon::GetFile($user->icon_filename); }
 
-  function IsVoteCheckbox($user, $live){
+  function IsVoteCheckbox($user, $live) {
     return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();
   }
 
-  function IgnoreVoteNight($user, $live){ return $live ? '死者以外には投票できません' : null; }
+  function IgnoreVoteNight($user, $live) { return $live ? '死者以外には投票できません' : null; }
 
   //蘇生
-  function Revive($user){
+  function Revive($user) {
     $target = $this->GetReviveTarget($user);
     $result = is_null($target) || ! $this->ReviveUser($target) ? 'failed' : 'success';
     if ($result == 'success') {
@@ -68,7 +67,7 @@ class Role_poison_cat extends Role {
   }
 
   //蘇生対象者取得
-  function GetReviveTarget($user){
+  function GetReviveTarget($user) {
     //蘇生データ取得
     $event  = DB::$ROOM->IsEvent('full_revive') ? 100 : (DB::$ROOM->IsEvent('no_revive') ? 0 : null);
     $class  = $this->GetClass($method = 'GetReviveRate');
@@ -106,10 +105,10 @@ class Role_poison_cat extends Role {
   }
 
   //蘇生率取得
-  function GetReviveRate(){ return $this->revive_rate; }
+  function GetReviveRate() { return $this->revive_rate; }
 
   //蘇生率強化判定
-  protected function IsBoostRevive(){
+  protected function IsBoostRevive() {
     $data = 'boost_revive';
     if (! is_null($flag = $this->GetStack($data))) return $flag;
     $flag = false;
@@ -124,7 +123,7 @@ class Role_poison_cat extends Role {
   }
 
   //蘇生実行
-  function ReviveUser($user){
+  function ReviveUser($user) {
     if ($user->IsPossessedGroup()) { //憑依能力者対応
       if ($user->revive_flag) return true; //蘇生済みならスキップ
 
@@ -179,5 +178,5 @@ class Role_poison_cat extends Role {
   }
 
   //蘇生後処理
-  function ReviveAction(){}
+  function ReviveAction() {}
 }

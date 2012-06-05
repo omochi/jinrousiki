@@ -5,7 +5,6 @@
 */
 class Role_wolf extends Role {
   public $action = 'WOLF_EAT';
-  function __construct() { parent::__construct(); }
 
   protected function OutputPartner() {
     $wolf_list        = array();
@@ -27,13 +26,17 @@ class Role_wolf extends Role {
       }
     }
     if ($this->GetActor()->IsWolf(true)) {
-      OutputPartner($wolf_list, 'wolf_partner'); //人狼
-      OutputPartner($mad_list, 'mad_partner'); //囁き狂人
+      RoleHTML::OutputPartner($wolf_list, 'wolf_partner'); //人狼
+      RoleHTML::OutputPartner($mad_list, 'mad_partner'); //囁き狂人
     }
-    if (DB::$ROOM->IsNight()) OutputPartner($unconscious_list, 'unconscious_list'); //無意識
+    if (DB::$ROOM->IsNight()) {
+      RoleHTML::OutputPartner($unconscious_list, 'unconscious_list'); //無意識
+    }
   }
 
-  function OutputAction() { OutputVoteMessage('wolf-eat', 'wolf_eat', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('wolf-eat', 'wolf_eat', $this->action);
+  }
 
   //遠吠え
   function Howl(TalkBuilder $builder, $voice) {
@@ -54,7 +57,7 @@ class Role_wolf extends Role {
     return $stack;
   }
 
-  function GetVoteIconPath($user, $live) {
+  function GetVoteIconPath(User $user, $live) {
     return ! $live ? Icon::GetDead() :
       ($this->IsWolfPartner($user->user_no) ?
        Icon::GetWolf() : Icon::GetFile($user->icon_filename));
@@ -63,14 +66,14 @@ class Role_wolf extends Role {
   //仲間狼判定
   function IsWolfPartner($id) { return DB::$USER->ByReal($id)->IsWolf(true); }
 
-  function IsVoteCheckbox($user, $live) {
+  function IsVoteCheckbox(User $user, $live) {
     return parent::IsVoteCheckbox($user, $live) && $this->IsWolfEatTarget($user->user_no);
   }
 
   //仲間狼襲撃可能判定
   function IsWolfEatTarget($id) { return ! $this->IsWolfPartner($id); }
 
-  function IgnoreVoteNight($user, $live) {
+  function IgnoreVoteNight(User $user, $live) {
     if (! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
     if (! $this->IsWolfEatTarget($user->user_no)) return '狼同士には投票できません'; //仲間狼判定
     //クイズ村は GM 以外無効
@@ -82,7 +85,7 @@ class Role_wolf extends Role {
   }
 
   //人狼襲撃失敗判定
-  function WolfEatSkip($user) {
+  function WolfEatSkip(User $user) {
     global $ROLES;
 
     if ($user->IsWolf()) { //人狼系判定 (例：銀狼出現)
@@ -107,16 +110,16 @@ class Role_wolf extends Role {
   }
 
   //人狼襲撃失敗処理
-  function WolfEatSkipAction($user) {}
+  function WolfEatSkipAction(User $user) {}
 
   //妖狐襲撃処理
-  function FoxEatAction($user) {}
+  function FoxEatAction(User $user) {}
 
   //人狼襲撃処理
-  function WolfEatAction($user) {}
+  function WolfEatAction(User $user) {}
 
   //人狼襲撃死亡処理
-  function WolfKill($user) { DB::$USER->Kill($user->user_no, 'WOLF_KILLED'); }
+  function WolfKill(User $user) { DB::$USER->Kill($user->user_no, 'WOLF_KILLED'); }
 
   //毒対象者選出 (襲撃)
   function GetPoisonEatTarget() {

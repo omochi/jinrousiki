@@ -7,13 +7,12 @@
 RoleManager::LoadFile('wolf');
 class Role_tongue_wolf extends Role_wolf {
   public $result = 'TONGUE_WOLF_RESULT';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
-    if (DB::$ROOM->date > 1) OutputSelfAbilityResult($this->result);
+  protected function OutputResult() {
+    if (DB::$ROOM->date > 1) $this->OutputAbilityResult($this->result);
   }
 
-  function WolfKill($user){
+  function WolfKill(User $user) {
     parent::WolfKill($user);
     $actor = $this->GetWolfVoter();
     if (! $actor->IsActive()) return; //能力失効判定

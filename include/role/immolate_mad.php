@@ -7,12 +7,11 @@
 */
 class Role_immolate_mad extends Role {
   public $ability = 'muster_ability';
-  function __construct(){ parent::__construct(); }
 
-  function WolfEatReaction(){
+  function WolfEatReaction() {
     $this->GetActor()->AddRole($this->ability);
     return false;
   }
 
-  function Win($winner){ return $this->GetActor()->IsRole($this->ability); }
+  function Win($winner) { return $this->GetActor()->IsRole($this->ability); }
 }

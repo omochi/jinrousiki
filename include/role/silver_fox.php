@@ -6,7 +6,5 @@
 */
 RoleManager::LoadFile('fox');
 class Role_silver_fox extends Role_fox {
-  function __construct(){ parent::__construct(); }
-
-  protected function OutputPartner(){ return; }
+  protected function OutputPartner() { return; }
 }

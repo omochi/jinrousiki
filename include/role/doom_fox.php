@@ -7,15 +7,14 @@
 RoleManager::LoadFile('fox');
 class Role_doom_fox extends Role_fox {
   public $mix_in = 'assassin';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){ $this->filter->OutputAction(); }
+  function OutputAction() { $this->filter->OutputAction(); }
 
-  function IsVote(){ return $this->filter->IsVote(); }
+  function IsVote() { return $this->filter->IsVote(); }
 
-  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+  function SetVoteNight() { $this->filter->SetVoteNight(); }
 
-  function Assassin($user){
+  function Assassin(User $user) {
     if ($user->IsLive(true)) $user->AddDoom(4, 'death_warrant');
   }
 }

@@ -8,5 +8,4 @@ class Role_howl_fox extends Role_child_fox {
   public $mix_in = 'silver_wolf';
   public $action = null;
   public $result = null;
-  function __construct(){ parent::__construct(); }
 }

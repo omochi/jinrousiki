@@ -13,34 +13,41 @@ class Role_revive_fox extends Role_fox {
   public $submit     = 'revive_do';
   public $not_submit = 'revive_not_do';
   public $ignore_message = '初日は蘇生できません';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date > 2 && ! DB::$ROOM->IsOption('seal_message')) {
-      OutputSelfAbilityResult('POISON_CAT_RESULT');
+      $this->OutputAbilityResult('POISON_CAT_RESULT');
     }
     parent::OutputResult();
   }
 
-  function OutputAction(){
+  function OutputAction() {
     if ($this->GetActor()->IsActive() && ! DB::$ROOM->IsOpenCast()) {
-      OutputVoteMessage('revive-do', $this->submit, $this->action, $this->not_action);
+      RoleHTML::OutputVote('revive-do', $this->submit, $this->action, $this->not_action);
     }
   }
 
-  function IsVote(){ return $this->filter->IsVote(); }
+  function IsVote() { return $this->filter->IsVote(); }
 
-  function SetVoteNight(){ $this->filter->SetVoteNight(); }
+  function SetVoteNight() { $this->filter->SetVoteNight(); }
 
-  function IgnoreVoteAction(){ return $this->GetActor()->IsActive() ? null : '能力喪失しています'; }
+  function IgnoreVoteAction() {
+    return $this->GetActor()->IsActive() ? null : '能力喪失しています';
+  }
 
-  function GetVoteIconPath($user, $live){ return $this->filter->GetVoteIconPath($user, $live); }
+  function GetVoteIconPath(User $user, $live) {
+    return $this->filter->GetVoteIconPath($user, $live);
+  }
 
-  function IsVoteCheckbox($user, $live){ return $this->filter->IsVoteCheckbox($user, $live); }
+  function IsVoteCheckbox(User $user, $live) {
+    return $this->filter->IsVoteCheckbox($user, $live);
+  }
 
-  function IgnoreVoteNight($user, $live){ return $this->filter->IgnoreVoteNight($user, $live); }
+  function IgnoreVoteNight(User $user, $live) {
+    return $this->filter->IgnoreVoteNight($user, $live);
+  }
 
-  function GetReviveRate(){ return 100; }
+  function GetReviveRate() { return 100; }
 
-  function ReviveAction(){ $this->GetActor()->LostAbility(); }
+  function ReviveAction() { $this->GetActor()->LostAbility(); }
 }

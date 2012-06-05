@@ -45,7 +45,7 @@ class Role_soul_mania extends Role_mania {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    if (DB::$ROOM->date == 2) OutputSelfAbilityResult($this->result);
+    if (DB::$ROOM->date == 2) $this->OutputAbilityResult($this->result);
   }
 
   protected function GetManiaRole($user){ return $user->DistinguishRoleGroup(); }

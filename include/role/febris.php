@@ -14,7 +14,7 @@ class Role_febris extends Role_chicken {
   protected function OutputImage(){ return; }
 
   protected function OutputResult(){
-    OutputAbilityResult($this->role . '_header', DB::$ROOM->date, 'sudden_death_footer');
+    RoleHTML::OutputAbilityResult($this->role . '_header', DB::$ROOM->date, 'sudden_death_footer');
   }
 
   function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->IsDoom(); }

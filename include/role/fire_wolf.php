@@ -7,15 +7,13 @@
 */
 RoleManager::LoadFile('wolf');
 class Role_fire_wolf extends Role_wolf {
-  function __construct(){ parent::__construct(); }
-
-  function FoxEatAction($user){
+  function FoxEatAction(User $user) {
     if (! $this->GetWolfVoter()->IsActive()) return false;
     $user->AddRole('black_wisp');
     $this->GetWolfVoter()->LostAbility();
   }
 
-  function WolfEatAction($user){
+  function WolfEatAction(User $user) {
     if (! $this->GetWolfVoter()->IsActive()) return false;
     $user->AddRole('black_wisp');
     $user->wolf_eat = true; //襲撃は成功扱い

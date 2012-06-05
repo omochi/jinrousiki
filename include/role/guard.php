@@ -9,20 +9,21 @@
 class Role_guard extends Role {
   public $action = 'GUARD_DO';
   public $ignore_message = '初日は護衛できません';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date < 1 || DB::$ROOM->IsOption('seal_message')) return;
-    OutputSelfAbilityResult('GUARD_SUCCESS'); //護衛結果
-    OutputSelfAbilityResult('GUARD_HUNTED');  //狩り結果
+    $this->OutputAbilityResult('GUARD_SUCCESS'); //護衛結果
+    $this->OutputAbilityResult('GUARD_HUNTED');  //狩り結果
   }
 
-  function OutputAction(){ OutputVoteMessage('guard-do', 'guard_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('guard-do', 'guard_do', $this->action);
+  }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
   //護衛先セット
-  function SetGuard($uname){
+  function SetGuard($uname) {
     global $ROLES;
 
     if (DB::$ROOM->IsEvent('no_contact')) return false; //スキップ判定 (花曇)
@@ -34,7 +35,7 @@ class Role_guard extends Role {
   }
 
   //護衛
-  function Guard($user, $flag = false){
+  function Guard($user, $flag = false) {
     global $ROLES;
 
     $stack = array(); //護衛者検出
@@ -63,10 +64,10 @@ class Role_guard extends Role {
   }
 
   //護衛者検出
-  function GetGuard($uname, &$list){ $list = array_keys($this->GetStack('guard'), $uname); }
+  function GetGuard($uname, &$list) { $list = array_keys($this->GetStack('guard'), $uname); }
 
   //護衛制限判定
-  private function IsGuardLimited($user){
+  private function IsGuardLimited($user) {
     return $user->IsRole(
       'emissary_necromancer', 'reporter', 'detective_common', 'sacrifice_common', 'spell_common',
       'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard', 'doll_master') ||
@@ -76,13 +77,13 @@ class Role_guard extends Role {
   }
 
   //護衛失敗判定
-  function GuardFailed(){ return false; }
+  function GuardFailed() { return false; }
 
   //護衛処理
-  function GuardAction($user, $flag){}
+  function GuardAction($user, $flag) {}
 
   //狩り
-  function Hunt($user){
+  function Hunt($user) {
     //対象が身代わり死していた場合はスキップ
     if (in_array($user->uname, $this->GetStack('sacrifice')) || ! $this->IsHunt($user)) {
       return false;
@@ -95,7 +96,7 @@ class Role_guard extends Role {
   }
 
   //狩り対象判定
-  protected function IsHunt($user){
+  protected function IsHunt($user) {
     return $user->IsRole(
       'phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox', 'trap_fox',
       'cursed_fox', 'cursed_angel', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',

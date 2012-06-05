@@ -10,7 +10,7 @@ class Role_incubate_poison extends Role_poison {
   function __construct(){ parent::__construct(); }
 
   function OutputResult(){
-    if (DB::$ROOM->date > 4) OutputAbilityResult($this->ability, null);
+    if (DB::$ROOM->date > 4) RoleHTML::OutputAbilityResult($this->ability, null);
   }
 
   function IsPoisonTarget($user){ return $user->IsRoleGroup('wolf', 'fox'); }

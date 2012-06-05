@@ -11,22 +11,21 @@ class Role_critical_fox extends Role_child_fox {
   public $mix_in = 'critical_mad';
   public $action = null;
   public $result = null;
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($this->IsActor($user->uname) || $user->IsFox(true)) continue;
       if ($user->IsChildFox() || $user->IsRoleGroup('scarlet')) $stack[] = $user->handle_name;
     }
-    OutputPartner($stack, 'child_fox_partner');
+    RoleHTML::OutputPartner($stack, 'child_fox_partner');
   }
 
-  function SetVoteAction($user){
+  function SetVoteAction(User $user) {
     if (! $user->IsAvoid() && $user->IsFox()) $user->AddRole('critical_luck');
   }
 
-  function Win($winner){
+  function Win($winner) {
     foreach (DB::$USER->rows as $user) {
       if ($user->IsLive() && $user->IsFox() && ! $user->IsChildFox()) return false;
     }

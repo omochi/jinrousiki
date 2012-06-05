@@ -10,5 +10,5 @@ class Role_mind_presage extends Role {
 
   protected function OutputImage(){ return; }
 
-  protected function OutputResult(){ OutputSelfAbilityResult('PRESAGE_RESULT'); }
+  protected function OutputResult(){ $this->OutputAbilityResult('PRESAGE_RESULT'); }
 }

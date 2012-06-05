@@ -8,13 +8,12 @@ RoleManager::LoadFile('wolf');
 class Role_sex_wolf extends Role_wolf {
   public $mix_in = 'sex_mage';
   public $result = 'SEX_WOLF_RESULT';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
-    if (DB::$ROOM->date > 1) OutputSelfAbilityResult($this->result);
+  protected function OutputResult() {
+    if (DB::$ROOM->date > 1) $this->OutputAbilityResult($this->result);
   }
 
-  function WolfEatAction($user){
+  function WolfEatAction(User $user) {
     $result = $this->DistinguishSex($user);
     $target = DB::$USER->GetHandleName($user->uname, true);
     DB::$ROOM->ResultAbility($this->result, $result, $target, $this->GetWolfVoter()->user_no);

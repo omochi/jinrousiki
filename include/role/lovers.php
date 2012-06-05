@@ -4,8 +4,6 @@
   ○仕様
 */
 class Role_lovers extends Role {
-  function __construct() { parent::__construct(); }
-
   protected function OutputImage() { return; }
 
   protected function OutputPartner() {
@@ -20,7 +18,7 @@ class Role_lovers extends Role {
 	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
       }
     }
-    OutputPartner($stack, 'partner_header', 'lovers_footer');
+    RoleHTML::OutputPartner($stack, 'partner_header', 'lovers_footer');
   }
 
   //囁き (恋耳鳴)

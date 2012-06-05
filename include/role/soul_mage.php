@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('mage');
 class Role_soul_mage extends Role_mage {
-  function __construct(){ parent::__construct(); }
-
-  function GetMageResult($user){
+  function GetMageResult($user) {
     if (array_key_exists($user->uname, $this->GetStack('possessed'))) { //憑依キャンセル判定
       $user->possessed_cancel = true;
     }

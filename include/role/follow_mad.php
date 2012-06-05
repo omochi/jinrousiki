@@ -6,13 +6,12 @@
 */
 class Role_follow_mad extends Role {
   public $sudden_death = 'FOLLOWED';
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
+  function SetVoteDay($uname) {
     if ($this->IsRealActor()) $this->AddStack($uname);
   }
 
-  function Followed($user_list){
+  function Followed($user_list) {
     if (! is_array($stack = $this->GetStack())) return;
 
     $count = 0; //能力発動カウント

@@ -11,20 +11,21 @@ class Role_wizard extends Role {
     'mage' => 'MAGE_DO', 'psycho_mage' => 'MAGE_DO', 'guard' => 'GUARD_DO',
     'assassin' => 'ASSASSIN_DO', 'sex_mage' => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED');
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date > 2) {
-      foreach ($this->result_list as $result) OutputSelfAbilityResult($result);
+      foreach ($this->result_list as $result) $this->OutputAbilityResult($result);
     }
   }
 
-  function OutputAction(){ OutputVoteMessage('wizard-do', 'wizard_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('wizard-do', 'wizard_do', $this->action);
+  }
 
-  function IsVote(){ return parent::IsVote() && DB::$ROOM->date > 1; }
+  function IsVote() { return parent::IsVote() && DB::$ROOM->date > 1; }
 
   //魔法セット (返り値：昼：魔法 / 夜：投票タイプ)
-  function SetWizard(){
+  function SetWizard() {
     $list  = $this->GetWizard();
     $stack = is_null($this->action) ? $list : array_keys($list);
     $role  = DB::$ROOM->IsEvent('full_wizard') ? array_shift($stack) :
@@ -34,5 +35,5 @@ class Role_wizard extends Role {
   }
 
   //魔法リスト取得
-  protected function GetWizard(){ return $this->wizard_list; }
+  protected function GetWizard() { return $this->wizard_list; }
 }

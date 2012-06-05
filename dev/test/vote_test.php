@@ -516,7 +516,7 @@ if ($talk_view_mode) { //発言表示モード
   }
   //PrintData(RQ::GetTest()->talk);
   GameHTML::OutputPlayer();
-  if (DB::$SELF->user_no > 0) OutputAbility();
+  if (DB::$SELF->user_no > 0) PlayHTML::OutputAbility();
   Talk::Output();
   HTML::OutputFooter(true);
 }
@@ -554,10 +554,10 @@ if ($cast_view_mode) { //配役情報表示モード
   HTML::OutputFooter(true);
 }
 GameHTML::OutputPlayer();
-OutputAbility();
+PlayHTML::OutputAbility();
 if (RQ::$get->say != '') { //発言変換テスト
-  ConvertSay(RQ::$get->say);
-  Write(RQ::$get->say, 'day', 0);
+  Play::ConvertSay(RQ::$get->say);
+  Play::Talk(RQ::$get->say, 'day', 0);
 }
 if (DB::$ROOM->IsDay()) { //昼の投票テスト
   $self_id = DB::$SELF->user_no;
@@ -576,7 +576,7 @@ if (DB::$ROOM->IsDay()) { //昼の投票テスト
     $vote_data['count'] = DB::$ROOM->revote_count + 1;
     $stack[] = $vote_data;
   }
-  echo VoteResult::Parse($stack, DB::$ROOM->date);
+  echo GameHTML::ParseVote($stack, DB::$ROOM->date);
   DB::$ROOM->date++;
   DB::$ROOM->log_mode = false; //イベント確認用
   DB::$ROOM->scene = 'day'; //イベント確認用
@@ -650,10 +650,10 @@ do {
 
   //DB::$ROOM->status = 'finished';
   GameHTML::OutputPlayer();
-  OutputAbility();
+  PlayHTML::OutputAbility();
   //foreach (array(5, 18, 2, 9, 13, 14, 23) as $id) {
   foreach (range(1, 25) as $id) {
-    DB::$SELF = DB::$USER->ByID($id); OutputAbility();
+    DB::$SELF = DB::$USER->ByID($id); PlayHTML::OutputAbility();
   }
   //var_dump(DB::$USER->IsOpenCast());
 } while(false);

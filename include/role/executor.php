@@ -8,13 +8,12 @@
 class Role_executor extends Role {
   public $mix_in = 'decide';
   public $display_role = 'human';
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteDay($uname){
+  function SetVoteDay($uname) {
     if ($this->IsRealActor()) $this->AddStack($uname);
   }
 
-  function DecideVoteKill(){
+  function DecideVoteKill() {
     if ($this->IsVoteKill() || ! is_array($this->GetStack())) return;
     $stack = array();
     foreach ($this->GetMaxVotedUname() as $uname) {

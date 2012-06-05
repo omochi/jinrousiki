@@ -6,12 +6,10 @@
 */
 RoleManager::LoadFile('psycho_mage');
 class Role_stargazer_mage extends Role_psycho_mage {
-  function __construct(){ parent::__construct(); }
-
-  function GetMageResult($user){ return $this->Stargazer($user); }
+  function GetMageResult($user) { return $this->Stargazer($user); }
 
   //投票能力鑑定
-  function Stargazer($user){
+  function Stargazer($user) {
     return (array_key_exists($user->user_no, DB::$ROOM->vote) || $user->IsWolf()) ?
       'stargazer_mage_ability' : 'stargazer_mage_nothing';
   }

@@ -5,14 +5,12 @@
   ・投票数：+1 (座敷童子生存 / 天候「疎雨」)
 */
 class Role_human extends Role {
-  function __construct(){ parent::__construct(); }
-
-  function FilterVoteDo(&$number){
+  function FilterVoteDo(&$number) {
     if ($this->IsBrownie()) $number++;
   }
 
   //投票数増加判定
-  private function IsBrownie(){
+  private function IsBrownie() {
     if (is_null($flag = $this->GetStack())) {
       $role = 'brownie';
       $flag = DB::$ROOM->IsEvent($role); //天候判定

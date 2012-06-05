@@ -11,29 +11,28 @@
 RoleManager::LoadFile('ogre');
 class Role_sacrifice_ogre extends Role_ogre {
   public $mix_in = 'protected';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     /* 2日目の時点で洗脳者が発生する特殊イベントを実装したら対応すること */
     if (DB::$ROOM->date < 2) return;
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsRole('psycho_infected')) $stack[] = $user->handle_name;
     }
-    OutputPartner($stack, 'psycho_infected_list');
+    RoleHTML::OutputPartner($stack, 'psycho_infected_list');
   }
 
-  function Win($winner){ return $winner != 'human' && $this->IsLive(); }
+  function Win($winner) { return $winner != 'human' && $this->IsLive(); }
 
-  function GetResistRate(){ return 0; }
+  function GetResistRate() { return 0; }
 
-  protected function GetReduceRate(){ return 3 / 5; }
+  protected function GetReduceRate() { return 3 / 5; }
 
-  protected function IgnoreAssassin($user){ return $user->IsCamp('vampire'); }
+  protected function IgnoreAssassin($user) { return $user->IsCamp('vampire'); }
 
-  protected function Assassin($user){ $user->AddRole('psycho_infected'); }
+  protected function Assassin($user) { $user->AddRole('psycho_infected'); }
 
-  function IsSacrifice($user){
+  function IsSacrifice($user) {
     return ! $this->IsActor($user->uname) && $user->IsRole('psycho_infected');
   }
 }

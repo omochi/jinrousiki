@@ -13,7 +13,7 @@ class Role_death_warrant extends Role_febris {
 
   protected function OutputResult(){
     if (($date = $this->GetActor()->GetDoomDate($this->role)) >= DB::$ROOM->date) {
-      OutputAbilityResult($this->role . '_header', $date, 'sudden_death_footer');
+      RoleHTML::OutputAbilityResult($this->role . '_header', $date, 'sudden_death_footer');
     }
   }
 }

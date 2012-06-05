@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('wolf');
 class Role_emerald_wolf extends Role_wolf {
-  function __construct(){ parent::__construct(); }
-
-  function WolfEatSkipAction($user){
+  function WolfEatSkipAction(User $user) {
     $role = $this->GetWolfVoter()->GetID('mind_friend');
     $this->GetWolfVoter()->AddRole($role);
     $user->AddRole($role);

@@ -12,6 +12,6 @@ class Role_copied extends Role {
   protected function OutputImage(){ return; }
 
   protected function OutputResult(){
-    if ($this->display_date == DB::$ROOM->date) OutputSelfAbilityResult($this->result);
+    if ($this->display_date == DB::$ROOM->date) $this->OutputAbilityResult($this->result);
   }
 }

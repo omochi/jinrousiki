@@ -5,18 +5,16 @@
   ・人狼襲撃：羊皮
 */
 class Role_mind_sheep extends Role {
-  function __construct(){ parent::__construct(); }
+  protected function IgnoreAbility() { return DB::$ROOM->date < 2; }
 
-  protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
-
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $stack = array();
-    foreach($this->GetActor()->GetPartner($this->role, true) as $id){
+    foreach($this->GetActor()->GetPartner($this->role, true) as $id) {
       $stack[$id] = DB::$USER->ById($id)->handle_name;
     }
     ksort($stack);
-    OutputPartner($stack, 'shepherd_patron_list');
+    RoleHTML::OutputPartner($stack, 'shepherd_patron_list');
   }
 
-  function WolfEatCounter($user){ $user->AddDoom(1, 'sheep_wisp'); }
+  function WolfEatCounter($user) { $user->AddDoom(1, 'sheep_wisp'); }
 }

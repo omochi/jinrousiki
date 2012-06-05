@@ -8,18 +8,17 @@ RoleManager::LoadFile('fox');
 class Role_emerald_fox extends Role_fox {
   public $mix_in = 'mage';
   public $action = 'MAGE_DO';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){
-    if ($this->GetActor()->IsActive()) OutputVoteMessage('mage-do', 'mage_do', $this->action);
+  function OutputAction() {
+    if ($this->GetActor()->IsActive()) RoleHTML::OutputVote('mage-do', 'mage_do', $this->action);
   }
 
-  function IgnoreVote(){
+  function IgnoreVote() {
     if (! is_null($str = parent::IgnoreVote())) return $str;
     return $this->GetActor()->IsActive() ? null : '能力喪失しています';
   }
 
-  function Mage($user){
+  function Mage(User $user) {
     if ($this->IsJammer($user) || $this->IsCursed($user) || ! $user->IsFox() ||
 	! ($user->IsChildFox() || $user->IsLonely())) {
       return false;

@@ -8,16 +8,17 @@ class Role_mage extends Role {
   public $action = 'MAGE_DO';
   public $result = 'MAGE_RESULT';
   public $mage_failed = 'failed';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
-    if (DB::$ROOM->date > 1) OutputSelfAbilityResult($this->result);
+  protected function OutputResult() {
+    if (DB::$ROOM->date > 1) $this->OutputAbilityResult($this->result);
   }
 
-  function OutputAction(){ OutputVoteMessage('mage-do', 'mage_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('mage-do', 'mage_do', $this->action);
+  }
 
   //占い
-  function Mage($user){
+  function Mage($user) {
     if ($this->IsJammer($user)) {
       return $this->SaveMageResult($user, $this->mage_failed, $this->result);
     }
@@ -26,7 +27,7 @@ class Role_mage extends Role {
   }
 
   //占い失敗判定
-  function IsJammer($user){
+  function IsJammer($user) {
     $uname   = $this->GetUname();
     $half    = DB::$ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月
     $phantom = $user->IsLive(true) && $user->IsRoleGroup('phantom') && $user->IsActive(); //幻系
@@ -46,7 +47,7 @@ class Role_mage extends Role {
   }
 
   //呪返し判定
-  function IsCursed($user){
+  function IsCursed($user) {
     if ($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))) {
       $actor = $this->GetActor();
       foreach ($this->GetGuardCurse() as $filter) { //厄神の護衛判定
@@ -59,7 +60,7 @@ class Role_mage extends Role {
   }
 
   //厄払いフィルタ取得
-  protected function GetGuardCurse(){
+  protected function GetGuardCurse() {
     global $ROLES;
     if (! is_array($stack = $this->GetStack($data = 'guard_curse'))) {
       $stack = $ROLES->LoadFilter($data);
@@ -69,7 +70,7 @@ class Role_mage extends Role {
   }
 
   //占い結果取得
-  function GetMageResult($user){
+  function GetMageResult($user) {
     if (array_key_exists($user->uname, $this->GetStack('possessed'))) { //憑依キャンセル判定
       $user->possessed_cancel = true;
     }
@@ -85,7 +86,7 @@ class Role_mage extends Role {
   }
 
   //占い判定
-  function DistinguishMage($user, $reverse = false){
+  function DistinguishMage($user, $reverse = false) {
     //鬼火系判定
     if ($user->IsDoomRole('sheep_wisp')) return $reverse ? 'wolf' : 'human';
     if ($user->IsRole('wisp'))           return 'ogre';
@@ -106,7 +107,7 @@ class Role_mage extends Role {
   }
 
   //占い結果登録
-  function SaveMageResult($user, $result, $action){
+  function SaveMageResult($user, $result, $action) {
     $target = DB::$USER->GetHandleName($user->uname, true);
     DB::$ROOM->ResultAbility($action, $result, $target, $this->GetActor()->user_no);
   }

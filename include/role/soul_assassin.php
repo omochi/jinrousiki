@@ -10,7 +10,7 @@ class Role_soul_assassin extends Role_assassin {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    if (DB::$ROOM->date > 2) OutputSelfAbilityResult($this->result);
+    if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
   function Assassin($user){

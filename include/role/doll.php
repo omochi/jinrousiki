@@ -7,9 +7,8 @@
 */
 class Role_doll extends Role {
   public $display_doll = false;
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $stack = array();
     if ($this->display_doll) $doll_stack = array(); //人形表示判定
     foreach (DB::$USER->rows as $user) {
@@ -19,11 +18,11 @@ class Role_doll extends Role {
       }
       if ($this->display_doll && $this->IsDoll($user)) $doll_stack[] = $user->handle_name;
     }
-    OutputPartner($stack, 'doll_master_list'); //人形遣い枠
-    if ($this->display_doll) OutputPartner($doll_stack, 'doll_partner'); //人形
+    RoleHTML::OutputPartner($stack, 'doll_master_list'); //人形遣い枠
+    if ($this->display_doll) RoleHTML::OutputPartner($doll_stack, 'doll_partner'); //人形
   }
 
-  function Win($winner){
+  function Win($winner) {
     $this->SetStack('doll', 'class');
     foreach (DB::$USER->rows as $user) {
       if ($user->IsLiveRole('doll_master')) return false;
@@ -32,5 +31,5 @@ class Role_doll extends Role {
   }
 
   //人形判定
-  function IsDoll($user){ return $user->IsRoleGroup('doll') && ! $user->IsRole('doll_master'); }
+  function IsDoll($user) { return $user->IsRoleGroup('doll') && ! $user->IsRole('doll_master'); }
 }

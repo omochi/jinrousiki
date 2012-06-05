@@ -14,7 +14,7 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    if (DB::$ROOM->date > 2) OutputSelfAbilityResult($this->result);
+    if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
   function IsVote(){ return DB::$ROOM->date > 1; }

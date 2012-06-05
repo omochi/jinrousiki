@@ -6,17 +6,18 @@
 class Role_jammer_mad extends Role {
   public $action = 'JAMMER_MAD_DO';
   public $submit = 'jammer_do';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){ OutputVoteMessage('wolf-eat', $this->submit, $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('wolf-eat', $this->submit, $this->action);
+  }
 
   //妨害対象セット
-  function SetJammer($user){
+  function SetJammer(User $user) {
     if ($this->IsJammer($user)) $this->AddStack($user->uname, 'jammer');
   }
 
   //妨害対象セット成立判定 (Mixin あり)
-  function IsJammer($user){
+  function IsJammer(User $user) {
     global $ROLES;
 
     $filter_list = $ROLES->LoadFilter('guard_curse'); //厄払い

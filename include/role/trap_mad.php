@@ -9,43 +9,42 @@ class Role_trap_mad extends Role {
   public $submit     = 'trap_do';
   public $not_submit = 'trap_not_do';
   public $ignore_message = '初日は罠を設置できません';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){
+  function OutputAction() {
     if ($this->IsVoteTrap()) {
-      OutputVoteMessage('wolf-eat', $this->submit, $this->action, $this->not_action);
+      RoleHTML::OutputVote('wolf-eat', $this->submit, $this->action, $this->not_action);
     }
   }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
   //罠能力判定
-  protected function IsVoteTrap(){ return $this->GetActor()->IsActive(); }
+  protected function IsVoteTrap() { return $this->GetActor()->IsActive(); }
 
-  function IgnoreVote(){
+  function IgnoreVote() {
     if (! is_null($str = parent::IgnoreVote())) return $str;
     return $this->IsVoteTrap() ? null : '能力喪失しています';
   }
 
-  function IsVoteCheckbox($user, $live){ return $live; }
+  function IsVoteCheckbox(User $user, $live) { return $live; }
 
-  function IgnoreVoteNight($user, $live){ return $live ? null : '死者には投票できません'; }
+  function IgnoreVoteNight(User $user, $live) { return $live ? null : '死者には投票できません'; }
 
   //罠設置
-  function SetTrap($uname){
+  function SetTrap($uname) {
     //人狼に狙われていたら自己設置以外は無効
     if ($this->IsActor($this->GetWolfTarget()->uname) && ! $this->IsActor($uname)) return;
     $this->SetTrapAction($this->GetActor(), $uname);
   }
 
   //罠設置後処理
-  protected function SetTrapAction($user, $uname){
+  protected function SetTrapAction(User $user, $uname) {
     $this->AddStack($uname, 'trap', $user->uname);
     $user->LostAbility();
   }
 
   //罠能力者の罠判定
-  function TrapToTrap(){
+  function TrapToTrap() {
     //罠師が自分自身以外に罠を仕掛けた場合、設置先に罠があった場合は死亡
     $stack = $this->GetStack('trap');
     $count = array_count_values($stack);
@@ -55,7 +54,7 @@ class Role_trap_mad extends Role {
       }
     }
 
-    foreach($this->GetStack('snow_trap') as $uname => $target_uname){ //雪女の罠死判定
+    foreach($this->GetStack('snow_trap') as $uname => $target_uname) { //雪女の罠死判定
       if ($uname != $target_uname && in_array($target_uname, $stack)) {
 	$this->AddSuccess($uname, 'trapped');
       }
@@ -63,25 +62,25 @@ class Role_trap_mad extends Role {
   }
 
   //罠死判定
-  function TrapKill($user, $uname){
+  function TrapKill(User $user, $uname) {
     if ($flag = $this->IsTrap($uname)) DB::$USER->Kill($user->user_no, 'TRAPPED');
     return $flag;
   }
 
   //罠死リスト判定
-  function DelayTrap($user, $uname){
+  function DelayTrap(User $user, $uname) {
     if ($flag = $this->IsTrap($uname)) $this->AddSuccess($user->uname, 'trapped');
     return $flag;
   }
 
   //罠判定
-  protected function IsTrap($uname){ return in_array($uname, $this->GetStack('trap')); }
+  protected function IsTrap($uname) { return in_array($uname, $this->GetStack('trap')); }
 
   //罠死+凍傷リスト判定
-  function TrapStack($user, $uname){ return $this->TrapKill($user, $uname); }
+  function TrapStack(User $user, $uname) { return $this->TrapKill($user, $uname); }
 
   //罠死リストの死亡処理
-  function DelayTrapKill(){
+  function DelayTrapKill() {
     foreach ($this->GetStack('trapped') as $uname => $flag) {
       DB::$USER->Kill(DB::$USER->UnameToNumber($uname), 'TRAPPED');
     }

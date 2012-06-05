@@ -10,27 +10,28 @@ class Role_cupid extends Role {
   public $ignore_message = '初日以外は投票できません';
   public $self_shoot = false;
   public $shoot_count = 2;
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $id = $this->GetActor()->user_no;
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;
     }
-    OutputPartner($stack, 'cupid_pair');
+    RoleHTML::OutputPartner($stack, 'cupid_pair');
   }
 
-  function OutputAction(){ OutputVoteMessage('cupid-do', 'cupid_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('cupid-do', 'cupid_do', $this->action);
+  }
 
-  function IsVote(){ return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->date == 1; }
 
-  function SetVoteNight(){
+  function SetVoteNight() {
     parent::SetVoteNight();
     $this->SetStack(DB::$USER->GetUserCount() < GameConfig::CUPID_SELF_SHOOT, 'self_shoot');
   }
 
-  function GetVoteCheckbox($user, $id, $live){
+  function GetVoteCheckbox($user, $id, $live) {
     return $live && ! $user->IsDummyBoy() ?
       '<input type="checkbox" name="target_no[]"' .
       ($this->IsSelfShoot() && $this->IsActor($user->uname) ? ' checked' : '') .
@@ -38,9 +39,9 @@ class Role_cupid extends Role {
   }
 
   //自分撃ち判定
-  function IsSelfShoot(){ return $this->GetStack('self_shoot') || $this->self_shoot; }
+  function IsSelfShoot() { return $this->GetStack('self_shoot') || $this->self_shoot; }
 
-  function VoteNight(){
+  function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = $this->GetVoteNightTargetCount();
@@ -68,10 +69,10 @@ class Role_cupid extends Role {
   }
 
   //投票人数取得
-  function GetVoteNightTargetCount(){ return $this->shoot_count; }
+  function GetVoteNightTargetCount() { return $this->shoot_count; }
 
   //キューピッドの投票処理
-  function VoteNightAction($list, $flag){
+  function VoteNightAction($list, $flag) {
     $role  = $this->GetActor()->GetID('lovers');
     $stack = array();
     foreach ($list as $user) {
@@ -85,5 +86,5 @@ class Role_cupid extends Role {
   }
 
   //役職追加処理
-  protected function AddCupidRole($user, $flag){}
+  protected function AddCupidRole($user, $flag) {}
 }

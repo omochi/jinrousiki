@@ -9,6 +9,6 @@ class Role_mind_sympathy extends Role {
   protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
 
   protected function OutputResult(){
-    if (DB::$ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
+    if (DB::$ROOM->date == 2) $this->OutputAbilityResult('SYMPATHY_RESULT');
   }
 }

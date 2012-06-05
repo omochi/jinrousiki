@@ -11,15 +11,14 @@ class Role_ogre extends Role {
   public $resist_rate = 30;
   public $reduce_rate =  5;
   public $ignore_message = '初日は人攫いできません';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){
-    OutputVoteMessage('ogre-do', 'ogre_do', $this->action, $this->not_action);
+  function OutputAction() {
+    RoleHTML::OutputVote('ogre-do', 'ogre_do', $this->action, $this->not_action);
   }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
-  function Win($winner){
+  function Win($winner) {
     if ($this->IsDead()) return false;
     if ($winner == 'wolf') return true;
     foreach (DB::$USER->rows as $user) {
@@ -28,13 +27,13 @@ class Role_ogre extends Role {
     return false;
   }
 
-  function SetVoteNight(){
+  function SetVoteNight() {
     parent::SetVoteNight();
     if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');
   }
 
   //人攫い情報セット
-  function SetAssassin($user){
+  function SetAssassin($user) {
     global $ROLES;
 
     foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
@@ -67,26 +66,26 @@ class Role_ogre extends Role {
   }
 
   //人攫い失敗判定
-  protected function IgnoreAssassin($user){ return false; }
+  protected function IgnoreAssassin($user) { return false; }
 
   //天候情報取得
-  protected function GetEvent(){
+  protected function GetEvent() {
     return DB::$ROOM->IsEvent('full_ogre') ? 100 : (DB::$ROOM->IsEvent('seal_ogre') ? 0 : null);
   }
 
   //人攫い成功減衰率取得
-  protected function GetReduceRate(){ return 1 / $this->reduce_rate; }
+  protected function GetReduceRate() { return 1 / $this->reduce_rate; }
 
   //人攫い
-  protected function Assassin($user){ $this->AddSuccess($user->user_no, 'ogre'); }
+  protected function Assassin($user) { $this->AddSuccess($user->user_no, 'ogre'); }
 
   //人攫い死
-  function AssassinKill(){
+  function AssassinKill() {
     foreach ($this->GetStack() as $id => $flag) DB::$USER->Kill($id, 'OGRE_KILLED');
   }
 
   //人狼襲撃耐性判定
-  function WolfEatResist(){
+  function WolfEatResist() {
     $rand = mt_rand(1, 100);
     //$rand = 5; //テスト用
     $rate = $this->GetResistRate();
@@ -95,7 +94,7 @@ class Role_ogre extends Role {
   }
 
   //人狼襲撃耐性率取得
-  function GetResistRate(){
+  function GetResistRate() {
     $event = $this->GetEvent();
     return is_null($event) ? $this->resist_rate : $event;
   }

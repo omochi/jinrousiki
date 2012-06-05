@@ -7,7 +7,6 @@
 */
 class Role_suspect extends Role {
   public $display_role = 'human';
-  function __construct() { parent::__construct(); }
 
   function ConvertSay() {
     if (! DB::$ROOM->IsDay()) return false; //スキップ判定

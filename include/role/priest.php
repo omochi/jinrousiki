@@ -11,7 +11,7 @@ class Role_priest extends Role {
   //Mixin あり
   function OutputResult(){
     if (is_null($role = $this->GetOutputRole())) return;
-    OutputSelfAbilityResult($this->GetEvent($role));
+    $this->OutputAbilityResult($this->GetEvent($role));
   }
 
   //司祭結果表示役職取得

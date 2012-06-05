@@ -8,9 +8,8 @@
 class Role_vampire extends Role {
   public $action = 'VAMPIRE_DO';
   public $ignore_message = '初日は襲撃できません';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     /* 2日目の時点で感染者・洗脳者が発生する特殊イベントを実装したら対応すること */
     if (DB::$ROOM->date < 2) return;
     $id = $this->GetActor()->user_no;
@@ -22,16 +21,18 @@ class Role_vampire extends Role {
       if ($user->IsPartner($partner, $id)) $partner_list[] = $user->handle_name;
       if ($user->IsRole($role)) $role_list[] = $user->handle_name;
     }
-    OutputPartner($partner_list, $partner . '_list');
-    OutputPartner($role_list, $role . '_list');
+    RoleHTML::OutputPartner($partner_list, $partner . '_list');
+    RoleHTML::OutputPartner($role_list, $role . '_list');
   }
 
-  function OutputAction(){ OutputVoteMessage('vampire-do', 'vampire_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('vampire-do', 'vampire_do', $this->action);
+  }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
   //吸血対象セット
-  function SetInfect($user){
+  function SetInfect($user) {
     global $ROLES;
 
     $actor = $this->GetActor();
@@ -61,19 +62,19 @@ class Role_vampire extends Role {
   }
 
   //吸血リスト登録
-  protected function SetInfectTarget($uname){
+  protected function SetInfectTarget($uname) {
     $stack = $this->GetStack('vampire');
     $stack[$this->GetVoter()->uname][] = $uname;
     $this->SetStack($stack, 'vampire');
   }
 
   //対吸血処理
-  protected function InfectVampire($user){
+  protected function InfectVampire($user) {
     $this->AddSuccess($this->GetActor()->user_no, 'vampire_kill');
   }
 
   //吸血死＆吸血処理
-  function VampireKill(){
+  function VampireKill() {
     global $ROLES;
 
     foreach ($this->GetStack('vampire_kill') as $id => $flag) { //吸血死処理
@@ -87,5 +88,5 @@ class Role_vampire extends Role {
   }
 
   //吸血処理
-  function Infect($user){ $user->AddRole($this->GetActor()->GetID('infected')); }
+  function Infect($user) { $user->AddRole($this->GetActor()->GetID('infected')); }
 }

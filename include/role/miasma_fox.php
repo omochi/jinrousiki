@@ -9,9 +9,8 @@ RoleManager::LoadFile('child_fox');
 class Role_miasma_fox extends Role_child_fox {
   public $action = null;
   public $result = null;
-  function __construct(){ parent::__construct(); }
 
-  function VoteKillCounter($list){
+  function VoteKillCounter($list) {
     $stack = array();
     foreach ($list as $uname) {
       $user = DB::$USER->ByRealUname($uname);
@@ -20,5 +19,5 @@ class Role_miasma_fox extends Role_child_fox {
     if (count($stack) > 0) DB::$USER->ByID(GetRandom($stack))->AddDoom(1, 'febris');
   }
 
-  function WolfEatCounter($user){ $user->AddDoom(1, 'febris'); }
+  function WolfEatCounter(User $user) { $user->AddDoom(1, 'febris'); }
 }

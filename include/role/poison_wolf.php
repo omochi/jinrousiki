@@ -8,9 +8,8 @@
 RoleManager::LoadFile('wolf');
 class Role_poison_wolf extends Role_wolf {
   public $mix_in = 'poison';
-  function __construct(){ parent::__construct(); }
 
-  function IsPoisonTarget($user){ return ! $user->IsWolf(); }
+  function IsPoisonTarget(User $user) { return ! $user->IsWolf(); }
 
-  function AvoidPoisonEat($user){ return $user->IsWolf(); }
+  function AvoidPoisonEat(User $user) { return $user->IsWolf(); }
 }

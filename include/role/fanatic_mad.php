@@ -4,9 +4,7 @@
   ○仕様
 */
 class Role_fanatic_mad extends Role {
-  function __construct(){ parent::__construct(); }
-
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsRole('possessed_wolf')) {
@@ -16,6 +14,6 @@ class Role_fanatic_mad extends Role {
 	$stack[] = $user->handle_name;
       }
     }
-    OutputPartner($stack, 'wolf_partner');
+    RoleHTML::OutputPartner($stack, 'wolf_partner');
   }
 }

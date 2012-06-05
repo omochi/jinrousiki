@@ -13,7 +13,6 @@ class Role_valkyrja_duelist extends Role {
   public $check_self_shoot = true;
   public $self_shoot = false;
   public $shoot_count = 2;
-  function __construct() { parent::__construct(); }
 
   protected function OutputPartner() {
     $id = $this->GetActor()->user_no;
@@ -21,10 +20,12 @@ class Role_valkyrja_duelist extends Role {
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($this->partner_role, $id)) $stack[] = $user->handle_name;
     }
-    OutputPartner($stack, $this->partner_header);
+    RoleHTML::OutputPartner($stack, $this->partner_header);
   }
 
-  function OutputAction() { OutputVoteMessage('duelist-do', 'duelist_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('duelist-do', 'duelist_do', $this->action);
+  }
 
   function IsVote() { return DB::$ROOM->date == 1; }
 

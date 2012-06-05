@@ -6,14 +6,15 @@
 class Role_dream_eater_mad extends Role {
   public $action = 'DREAM_EAT';
   public $ignore_message = '初日は襲撃できません';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){ OutputVoteMessage('wolf-eat', 'dream_eat', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('wolf-eat', 'dream_eat', $this->action);
+  }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
   //夢食い処理
-  function DreamEat($user){
+  function DreamEat(User $user) {
     global $ROLES;
 
     $actor = $this->GetActor();

@@ -8,21 +8,20 @@ class Role_assassin extends Role {
   public $action     = 'ASSASSIN_DO';
   public $not_action = 'ASSASSIN_NOT_DO';
   public $ignore_message = '初日は暗殺できません';
-  function __construct(){ parent::__construct(); }
 
-  function OutputAction(){
-    OutputVoteMessage('assassin-do', 'assassin_do', $this->action, $this->not_action);
+  function OutputAction() {
+    RoleHTML::OutputVote('assassin-do', 'assassin_do', $this->action, $this->not_action);
   }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
-  function SetVoteNight(){
+  function SetVoteNight() {
     parent::SetVoteNight();
     if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');
   }
 
   //暗殺先セット
-  function SetAssassin($user){
+  function SetAssassin($user) {
     global $ROLES;
 
     $actor = $this->GetActor();
@@ -33,7 +32,7 @@ class Role_assassin extends Role {
       if ($filter->GuardAssassin($user->uname)) return;
     }
     if ($user->IsRoleGroup('escaper')) return; //逃亡者は無効
-    if ($user->IsRefrectAssassin()){ //反射判定
+    if ($user->IsRefrectAssassin()) { //反射判定
       $this->AddSuccess($actor->user_no, 'assassin');
       return;
     }
@@ -42,13 +41,13 @@ class Role_assassin extends Role {
   }
 
   //暗殺処理 (protected)
-  function Assassin($user){
+  function Assassin($user) {
     if ($flag = $user->IsLive(true)) $this->AddSuccess($user->user_no, 'assassin');
     return $flag;
   }
 
   //暗殺死処理
-  function AssassinKill(){
+  function AssassinKill() {
     foreach ($this->GetStack() as $id => $flag) DB::$USER->Kill($id, 'ASSASSIN_KILLED');
   }
 }

@@ -4,9 +4,7 @@
   ○仕様
 */
 class Role_whisper_mad extends Role {
-  function __construct(){ parent::__construct(); }
-
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     $wolf = array();
     $mad  = array();
     foreach (DB::$USER->rows as $user) {
@@ -21,7 +19,7 @@ class Role_whisper_mad extends Role {
 	$mad[] = $user->handle_name;
       }
     }
-    OutputPartner($wolf, 'wolf_partner');
-    OutputPartner($mad, 'mad_partner');
+    RoleHTML::OutputPartner($wolf, 'wolf_partner');
+    RoleHTML::OutputPartner($mad, 'mad_partner');
   }
 }

@@ -6,15 +6,14 @@
 */
 class Role_eccentricer extends Role {
   public $ability = 'muster_ability';
-  function __construct(){ parent::__construct(); }
 
-  function OutputResult(){
-    if ($this->IsLost()) OutputAbilityResult($this->ability, null);
+  function OutputResult() {
+    if ($this->IsLost()) RoleHTML::OutputAbilityResult($this->ability, null);
   }
 
-  function FilterVoteDo(&$number){
+  function FilterVoteDo(&$number) {
     if (! $this->IsLost()) $number++;
   }
 
-  private function IsLost(){ return DB::$ROOM->date > 4; }
+  private function IsLost() { return DB::$ROOM->date > 4; }
 }

@@ -82,18 +82,18 @@ class GameLog {
       $INIT_CONF->LoadFile('game_play_functions');
       DB::$SELF = DB::$USER->ByID(RQ::$get->user_no);
       DB::$SELF->live = 'live';
-      OutputAbility();
+      PlayHTML::OutputAbility();
     }
     Talk::Output();
     if (DB::$ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示
       GameHTML::OutputAbilityAction();
-      LastWords::Output();
+      GameHTML::OutputLastWords();
       GameHTML::OutputDead();
     }
     elseif (DB::$ROOM->IsAfterGame()) {
-      LastWords::Output(true); //遺言 (昼終了時限定)
+      GameHTML::OutputLastWords(true); //遺言 (昼終了時限定)
     }
-    if (DB::$ROOM->IsNight()) VoteResult::Output();
+    if (DB::$ROOM->IsNight()) GameHTML::OutputVote();
     HTML::OutputFooter(true);
   }
 }

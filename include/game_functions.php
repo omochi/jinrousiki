@@ -66,126 +66,6 @@ EOF;
   }
 }
 
-//-- 投票結果処理クラス --//
-class VoteResult {
-  //投票結果生成
-  static function Generate() {
-    if (! DB::$ROOM->IsPlaying()) return null; //ゲーム中以外は出力しない
-    if (DB::$ROOM->IsEvent('blind_vote') && ! DB::$ROOM->IsOpenData()) return null; //傘化け判定
-
-    //昼なら前日、夜ならの今日の集計を表示
-    $date = (DB::$ROOM->IsDay() && ! DB::$ROOM->log_mode) ? DB::$ROOM->date - 1 : DB::$ROOM->date;
-    return self::Load($date);
-  }
-
-  //投票データを整形する
-  static function Parse($raw_data, $date) {
-    if (count($raw_data) < 1) return null; //投票総数
-
-    $open_vote   = DB::$ROOM->IsOpenData() || DB::$ROOM->IsOption('open_vote'); //投票数開示判定
-    $header      = '<td class="vote-name">';
-    $table_stack = array();
-    foreach ($raw_data as $raw) { //個別投票データのパース
-      extract($raw);
-      $stack = array('<tr>' .  $header . $handle_name, '<td>' . $poll . ' 票',
-		     '<td>投票先' . ($open_vote ? ' ' . $vote . ' 票' : '') . ' →',
-		     $header . $target_name, '</tr>');
-      $table_stack[$count][] = implode('</td>', $stack);
-    }
-    if (! RQ::$get->reverse_log) krsort($table_stack); //正順なら逆転させる
-
-    $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
-    $footer = ' 回目)</td>';
-    $str    = '';
-    foreach ($table_stack as $count => $stack) {
-      array_unshift($stack, '<table class="vote-list">', $header . $count . $footer);
-      $stack[] = '</table>'."\n";
-      $str .= implode("\n", $stack);
-    }
-    return $str;
-  }
-
-  //投票結果出力
-  static function Output() {
-    if (is_null($str = self::Generate())) return false;
-    echo $str;
-  }
-
-  //再投票メッセージ出力
-  static function OutputRevote() {
-    global $COOKIE;
-
-    if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
-	DB::$ROOM->vote_count > $COOKIE->vote_times) {
-      Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
-    }
-    if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ
-
-    //投票済みチェック
-    $query = DB::$ROOM->GetQuery(true, 'vote') .
-      sprintf(' AND vote_count = %d AND user_no = %d', DB::$ROOM->vote_count, DB::$SELF->user_no);
-    if (DB::FetchResult($query) == 0) {
-      $str = '<div class="revote">%s (%d回%s)</div><br>'."\n";
-      printf($str, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
-    }
-
-    echo self::Load(DB::$ROOM->date); //投票結果を出力
-  }
-
-  //指定した日付の投票結果をロードして Parse() に渡す
-  private function Load($date) {
-    if (DB::$ROOM->personal_mode) return null; //スキップ判定
-    //指定された日付の投票結果を取得
-    $query = DB::$ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
-				       'vote', 'poll') . " AND date = {$date} ORDER BY count, id";
-    return self::Parse(DB::FetchAssoc($query), $date);
-  }
-}
-
-//-- 遺言処理クラス --//
-class LastWords {
-  //死亡者の遺言生成
-  static function Generate($shift = false) {
-    //スキップ判定
-    if (! (DB::$ROOM->IsPlaying() || DB::$ROOM->log_mode) || DB::$ROOM->personal_mode) return null;
-
-    $query = DB::$ROOM->GetQueryHeader('result_lastwords', 'handle_name', 'message') .
-      ' AND date = ';
-    $date  = DB::$ROOM->date - ($shift ? 0 : 1); //基本は前日
-    $stack = DB::FetchAssoc($query . $date);
-    if (count($stack) < 1) return null;
-    shuffle($stack); //表示順はランダム
-
-    $str = '';
-    foreach ($stack as $list) {
-      extract($list);
-      Text::LineToBR($message);
-      $str .= <<<EOF
-<tr>
-<td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
-<td class="lastwords-body">{$message}</td>
-</tr>
-
-EOF;
-    }
-
-    $format = <<<EOF
-<table class="system-lastwords"><tr>
-<td>%s</td>
-</tr></table>
-<table class="lastwords">
-%s</table>%s
-EOF;
-    return sprintf($format, Message::$lastwords, $str, "\n");
-  }
-
-  //死亡者の遺言出力
-  static function Output($shift = false) {
-    if (is_null($str = self::Generate($shift))) return false;
-    echo $str;
-  }
-}
-
 //-- 勝敗判定処理クラス --//
 class Winner {
   //勝敗チェック
@@ -388,6 +268,33 @@ EOF;
 
 //-- HTML 生成クラス (Game 拡張) --//
 class GameHTML {
+  //投票データを整形する
+  static function ParseVote($raw_data, $date) {
+    if (count($raw_data) < 1) return null; //投票総数
+
+    $open_vote   = DB::$ROOM->IsOpenData() || DB::$ROOM->IsOption('open_vote'); //投票数開示判定
+    $header      = '<td class="vote-name">';
+    $table_stack = array();
+    foreach ($raw_data as $raw) { //個別投票データのパース
+      extract($raw);
+      $stack = array('<tr>' .  $header . $handle_name, '<td>' . $poll . ' 票',
+		     '<td>投票先' . ($open_vote ? ' ' . $vote . ' 票' : '') . ' →',
+		     $header . $target_name, '</tr>');
+      $table_stack[$count][] = implode('</td>', $stack);
+    }
+    if (! RQ::$get->reverse_log) krsort($table_stack); //正順なら逆転させる
+
+    $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
+    $footer = ' 回目)</td>';
+    $str    = '';
+    foreach ($table_stack as $count => $stack) {
+      array_unshift($stack, '<table class="vote-list">', $header . $count . $footer);
+      $stack[] = '</table>'."\n";
+      $str .= implode("\n", $stack);
+    }
+    return $str;
+  }
+
   //プレイヤー一覧生成
   static function GeneratePlayer() {
     //PrintData(DB::$ROOM->event);
@@ -499,6 +406,51 @@ class GameHTML {
       $str .= self::ParseDead($stack['handle_name'], $stack['type'], $stack['result']);
     }
     return $str;
+  }
+
+  //遺言生成
+  static function GenerateLastWords($shift = false) {
+    //スキップ判定
+    if (! (DB::$ROOM->IsPlaying() || DB::$ROOM->log_mode) || DB::$ROOM->personal_mode) return null;
+
+    $query = DB::$ROOM->GetQueryHeader('result_lastwords', 'handle_name', 'message') .
+      ' AND date = ';
+    $date  = DB::$ROOM->date - ($shift ? 0 : 1); //基本は前日
+    $stack = DB::FetchAssoc($query . $date);
+    if (count($stack) < 1) return null;
+    shuffle($stack); //表示順はランダム
+
+    $str = '';
+    foreach ($stack as $list) {
+      extract($list);
+      Text::LineToBR($message);
+      $str .= <<<EOF
+<tr>
+<td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
+<td class="lastwords-body">{$message}</td>
+</tr>
+
+EOF;
+    }
+
+    $format = <<<EOF
+<table class="system-lastwords"><tr>
+<td>%s</td>
+</tr></table>
+<table class="lastwords">
+%s</table>%s
+EOF;
+    return sprintf($format, Message::$lastwords, $str, "\n");
+  }
+
+  //投票結果生成
+  static function GenerateVote() {
+    if (! DB::$ROOM->IsPlaying()) return null; //ゲーム中以外は出力しない
+    if (DB::$ROOM->IsEvent('blind_vote') && ! DB::$ROOM->IsOpenData()) return null; //傘化け判定
+
+    //昼なら前日、夜ならの今日の集計を表示
+    $date = (DB::$ROOM->IsDay() && ! DB::$ROOM->log_mode) ? DB::$ROOM->date - 1 : DB::$ROOM->date;
+    return self::LoadVote($date);
   }
 
   //ヘッダ出力
@@ -778,14 +730,46 @@ class GameHTML {
     echo $str;
   }
 
-  //天候メッセージ生成
-  private function GenerateWeather() {
-    if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
-      return '';
+  //遺言出力
+  static function OutputLastWords($shift = false) {
+    if (is_null($str = self::GenerateLastWords($shift))) return false;
+    echo $str;
+  }
+
+  //投票結果出力
+  static function OutputVote() {
+    if (is_null($str = self::GenerateVote())) return false;
+    echo $str;
+  }
+
+  //再投票メッセージ出力
+  static function OutputRevote() {
+    global $COOKIE;
+
+    if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
+	DB::$ROOM->vote_count > $COOKIE->vote_times) {
+      Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
     }
-    $weather = RoleData::$weather_list[DB::$ROOM->event->weather];
-    $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
-    return sprintf($str, $weather['name'], $weather['caption']);
+    if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ
+
+    //投票済みチェック
+    $query = DB::$ROOM->GetQuery(true, 'vote') .
+      sprintf(' AND vote_count = %d AND user_no = %d', DB::$ROOM->vote_count, DB::$SELF->user_no);
+    if (DB::FetchResult($query) == 0) {
+      $str = '<div class="revote">%s (%d回%s)</div><br>'."\n";
+      printf($str, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
+    }
+
+    echo self::LoadVote(DB::$ROOM->date); //投票結果を出力
+  }
+
+  //指定した日付の投票結果をロードして ParseVote() に渡す
+  private function LoadVote($date) {
+    if (DB::$ROOM->personal_mode) return null; //スキップ判定
+    //指定された日付の投票結果を取得
+    $query = DB::$ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
+				       'vote', 'poll') . " AND date = {$date} ORDER BY count, id";
+    return self::ParseVote(DB::FetchAssoc($query), $date);
   }
 
   //死亡メッセージパース
@@ -864,6 +848,16 @@ class GameHTML {
     $str .= sprintf('<td>%s%s</td>', $name, Message::${$base ? 'deadman' : $action});
     if (isset($reason)) $str .= sprintf("</tr>\n<tr><td>(%s%s)</td>", $name, Message::$$reason);
     return $str."</tr>\n</table>\n";
+  }
+
+  //天候メッセージ生成
+  private function GenerateWeather() {
+    if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
+      return '';
+    }
+    $weather = RoleData::$weather_list[DB::$ROOM->event->weather];
+    $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
+    return sprintf($str, $weather['name'], $weather['caption']);
   }
 }
 

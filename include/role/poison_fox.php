@@ -9,7 +9,6 @@ RoleManager::LoadFile('fox');
 class Role_poison_fox extends Role_fox {
   public $mix_in = 'poison';
   public $resist_wolf = false;
-  function __construct(){ parent::__construct(); }
 
-  function IsPoisonTarget($user){ return ! $user->IsFox(); }
+  function IsPoisonTarget(User $user) { return ! $user->IsFox(); }
 }

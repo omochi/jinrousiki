@@ -7,9 +7,8 @@
 */
 class Role_fox extends Role {
   public $resist_wolf = true;
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputPartner(){
+  protected function OutputPartner() {
     if ($this->GetActor()->IsLonely()) return;
     $fox_list       = array();
     $child_fox_list = array();
@@ -25,16 +24,16 @@ class Role_fox extends Role {
 	$child_fox_list[] = $user->handle_name;
       }
     }
-    OutputPartner($fox_list, 'fox_partner'); //妖狐系
-    OutputPartner($child_fox_list, 'child_fox_partner'); //子狐系
+    RoleHTML::OutputPartner($fox_list, 'fox_partner'); //妖狐系
+    RoleHTML::OutputPartner($child_fox_list, 'child_fox_partner'); //子狐系
   }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if ($this->resist_wolf && DB::$ROOM->date > 1 && ! DB::$ROOM->IsOption('seal_message')) {
-      OutputSelfAbilityResult('FOX_EAT'); //人狼襲撃
+      $this->OutputAbilityResult('FOX_EAT'); //人狼襲撃
     }
   }
 
   //人狼襲撃カウンター
-  function FoxEatCounter($user){}
+  function FoxEatCounter(User $user) {}
 }

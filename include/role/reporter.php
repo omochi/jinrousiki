@@ -8,18 +8,19 @@ class Role_reporter extends Role {
   public $action = 'REPORTER_DO';
   public $result = 'REPORTER_SUCCESS';
   public $ignore_message = '初日の尾行はできません';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
-    if (DB::$ROOM->date > 2) OutputSelfAbilityResult($this->result);
+  protected function OutputResult() {
+    if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
-  function OutputAction(){ OutputVoteMessage('guard-do', 'reporter_do', $this->action); }
+  function OutputAction() {
+    RoleHTML::OutputVote('guard-do', 'reporter_do', $this->action);
+  }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
   //尾行
-  function Report($user){
+  function Report($user) {
     $target = $this->GetWolfTarget();
     if ($user->IsSame($target->uname)) { //尾行成功
       if (! $user->wolf_eat) return; //人狼襲撃が失敗していたらスキップ

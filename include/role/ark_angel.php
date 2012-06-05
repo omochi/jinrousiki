@@ -10,7 +10,7 @@ class Role_ark_angel extends Role_angel {
   function __construct(){ parent::__construct(); }
 
   protected function OutputResult(){
-    if (DB::$ROOM->date == 2) OutputSelfAbilityResult('SYMPATHY_RESULT');
+    if (DB::$ROOM->date == 2) $this->OutputAbilityResult('SYMPATHY_RESULT');
   }
 
   protected function IsSympathy($lovers_a, $lovers_b){ return false; }

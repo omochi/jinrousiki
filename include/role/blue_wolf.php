@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('wolf');
 class Role_blue_wolf extends Role_wolf {
-  function __construct(){ parent::__construct(); }
-
-  function FoxEatAction($user){
+  function FoxEatAction(User $user) {
     if (! $user->IsLonely()) $user->AddRole('mind_lonely');
   }
 }
