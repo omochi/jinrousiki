@@ -33,13 +33,13 @@ class Role_dummy_chiroptera extends Role {
 
   function SetVoteNight() { $this->filter->SetVoteNight(); }
 
-  function GetVoteCheckbox($user, $id, $live) {
+  function GetVoteCheckbox(User $user, $id, $live) {
     return $this->filter->GetVoteCheckbox($user, $id, $live);
   }
 
   function CheckVoteNight() { $this->filter->CheckVoteNight(); }
 
-  function VoteNightAction($list, $flag) {
+  function VoteNightAction(array $list, $flag) {
     $stack = array();
     foreach ($list as $user) {
       $stack[] = $user->handle_name;

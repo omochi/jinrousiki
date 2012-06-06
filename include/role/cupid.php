@@ -31,7 +31,7 @@ class Role_cupid extends Role {
     $this->SetStack(DB::$USER->GetUserCount() < GameConfig::CUPID_SELF_SHOOT, 'self_shoot');
   }
 
-  function GetVoteCheckbox($user, $id, $live) {
+  function GetVoteCheckbox(User $user, $id, $live) {
     return $live && ! $user->IsDummyBoy() ?
       '<input type="checkbox" name="target_no[]"' .
       ($this->IsSelfShoot() && $this->IsActor($user->uname) ? ' checked' : '') .
@@ -72,7 +72,7 @@ class Role_cupid extends Role {
   function GetVoteNightTargetCount() { return $this->shoot_count; }
 
   //キューピッドの投票処理
-  function VoteNightAction($list, $flag) {
+  function VoteNightAction(array $list, $flag) {
     $role  = $this->GetActor()->GetID('lovers');
     $stack = array();
     foreach ($list as $user) {
@@ -86,5 +86,5 @@ class Role_cupid extends Role {
   }
 
   //役職追加処理
-  protected function AddCupidRole($user, $flag) {}
+  protected function AddCupidRole(User $user, $flag) {}
 }

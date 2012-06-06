@@ -8,11 +8,10 @@
 RoleManager::LoadFile('cupid');
 class Role_sweet_cupid extends Role_cupid {
   public $mix_in = 'critical_mad';
-  function __construct(){ parent::__construct(); }
 
-  protected function AddCupidRole($user, $flag){
+  protected function AddCupidRole(User $user, $flag) {
     $user->AddRole($this->GetActor()->GetID('mind_friend'));
   }
 
-  function SetVoteAction($user){ $user->AddRole('sweet_ringing'); }
+  function SetVoteAction(User $user) { $user->AddRole('sweet_ringing'); }
 }

@@ -6,7 +6,5 @@
 */
 RoleManager::LoadFile('cupid');
 class Role_minstrel_cupid extends Role_cupid {
-  function __construct(){ parent::__construct(); }
-
-  function IsMindRead(){ return DB::$ROOM->date > 1 && $this->GetTalkFlag('lovers'); }
+  function IsMindRead() { return DB::$ROOM->date > 1 && $this->GetTalkFlag('lovers'); }
 }

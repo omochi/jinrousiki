@@ -61,7 +61,7 @@ EOF;
 //-- 「福引」クラス --//
 class Lottery {
   //「福引き」を一定回数行ってリストに追加する
-  static function AddRandom(&$list, $random_list, $count) {
+  static function AddRandom(array &$list, array $random_list, $count) {
     $total = count($random_list) - 1;
     for (; $count > 0; $count--) {
       $role = $random_list[mt_rand(0, $total)];
@@ -70,10 +70,10 @@ class Lottery {
   }
 
   //「比」の配列から一つ引く
-  static function Get($list) { return GetRandom(self::GenerateRandomList($list)); }
+  static function Get(array $list) { return GetRandom(self::GenerateRandomList($list)); }
 
   //「比」の配列から「福引き」を作成する
-  static function GenerateRandomList($list) {
+  static function GenerateRandomList(array $list) {
     $stack = array();
     foreach ($list as $role => $rate) {
       for (; $rate > 0; $rate--) $stack[] = $role;
@@ -82,7 +82,7 @@ class Lottery {
   }
 
   //「比」から「確率」に変換する (テスト用)
-  static function RateToProbability($list) {
+  static function RateToProbability(array $list) {
     $stack = array();
     $total = array_sum($list);
     foreach ($list as $role => $rate) {
@@ -92,7 +92,7 @@ class Lottery {
   }
 
   //闇鍋モードの配役リスト取得
-  static function GetChaosRateList($list, $filter) {
+  static function GetChaosRateList(array $list, array $filter) {
     foreach ($filter as $role => $rate) { //出現率補正
       if (isset($list[$role])) $list[$role] = round($list[$role] * $rate);
     }

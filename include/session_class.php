@@ -5,29 +5,29 @@ class Session {
   private static $user_no = null;
 
   //セッションスタート
-  private function __construct(){
+  private function __construct() {
     session_start();
     return self::Set();
   }
 
   //ID 取得
-  static function Get($uniq = false){
+  static function Get($uniq = false) {
     if (is_null(self::$id)) new self();
     return $uniq ? self::GetUniq() : self::$id;
   }
 
   //認証したユーザの ID 取得
-  static function GetUser(){ return self::$user_no; }
+  static function GetUser() { return self::$user_no; }
 
   //ID リセット
-  static function Reset(){
+  static function Reset() {
     if (is_null(self::$id)) new self();
     session_regenerate_id();
     return self::Set();
   }
 
   //認証
-  static function Certify($exit = true){
+  static function Certify($exit = true) {
     //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = %d AND session_id = '%s'" .
@@ -43,7 +43,7 @@ class Session {
   }
 
   //認証 (game_play 専用)
-  static function CertifyGamePlay(){
+  static function CertifyGamePlay() {
     if (self::Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
@@ -61,12 +61,12 @@ class Session {
   }
 
   //ID セット
-  private function Set(){
+  private function Set() {
     return self::$id = session_id();
   }
 
   //DB に登録されているセッション ID と被らないようにする
-  private function GetUniq(){
+  private function GetUniq() {
     $query = "SELECT room_no FROM user_entry WHERE session_id = '%s'";
     do {
       self::Reset();
@@ -75,7 +75,7 @@ class Session {
   }
 
   //エラー出力
-  private function OutputCertifyError(){
+  private function OutputCertifyError() {
     $title = 'セッション認証エラー';
     $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
     HTML::OutputResult($title, $body);

@@ -6,25 +6,25 @@ class Image {
   private static $winner = null;
 
   //村
-  static function Room(){
+  static function Room() {
     if (is_null(self::$room)) self::$room = new RoomImage();
     return self::$room;
   }
 
   //役職
-  static function Role(){
+  static function Role() {
     if (is_null(self::$role)) self::$role = new RoleImage();
     return self::$role;
   }
 
   //勝利画像
-  static function Winner(){
+  static function Winner() {
     if (is_null(self::$winner)) self::$winner = new WinnerImage();
     return self::$winner;
   }
 
   //最大人数の画像生成
-  static function GenerateMaxUser($number){
+  static function GenerateMaxUser($number) {
     return in_array($number, RoomConfig::$max_user_list) && self::Room()->Exists("max{$number}") ?
       self::Room()->Generate("max{$number}", "最大{$number}人") : "(最大{$number}人)";
   }
@@ -39,10 +39,10 @@ class ImageManager {
   const TABLE = '<td>%s</td>';
 
   //画像の存在確認
-  function Exists($name){ return file_exists($this->GetPath($name)); }
+  function Exists($name) { return file_exists($this->GetPath($name)); }
 
   //画像タグ生成
-  function Generate($name, $alt = null, $table = false){
+  function Generate($name, $alt = null, $table = false) {
     $css = $this->class == '' ? '' : sprintf(self::CSS, $this->class);
     if (isset($alt)) {
       Text::Escape($alt);
@@ -56,10 +56,10 @@ class ImageManager {
   }
 
   //画像出力
-  function Output($name){ echo $this->Generate($name) . "<br>\n"; }
+  function Output($name) { echo $this->Generate($name) . "<br>\n"; }
 
   //画像のファイルパス取得
-  private function GetPath($name){
+  private function GetPath($name) {
     return sprintf(self::PATH, JINRO_IMG, $this->path, $name, $this->extension);
   }
 }
@@ -88,7 +88,7 @@ class WinnerImage extends ImageManager {
   public $extension = 'gif';
   public $class     = 'winner';
 
-  function Generate($name, $alt = null, $table = null){
+  function Generate($name, $alt = null, $table = null) {
     switch ($name) {
     case 'human':
       $alt = '村人勝利';

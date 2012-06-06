@@ -6,7 +6,8 @@
 */
 class Role_poison_chiroptera extends Role {
   public $mix_in = 'poison';
-  function __construct(){ parent::__construct(); }
 
-  function IsPoisonTarget($user){ return $user->IsRoleGroup('wolf', 'fox', 'chiroptera', 'fairy'); }
+  function IsPoisonTarget(User $user) {
+    return $user->IsRoleGroup('wolf', 'fox', 'chiroptera', 'fairy');
+  }
 }

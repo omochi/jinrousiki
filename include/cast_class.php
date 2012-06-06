@@ -394,7 +394,7 @@ class Cast {
   }
 
   //配役フィルタリング処理
-  private function FilterRole($count, $filter) {
+  private function FilterRole($count, array $filter) {
     $stack = array();
     foreach (CastConfig::$role_list[$count] as $key => $value) {
       $role = 'human';

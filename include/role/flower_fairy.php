@@ -7,9 +7,8 @@
 RoleManager::LoadFile('fairy');
 class Role_flower_fairy extends Role_fairy {
   public $result = 'FLOWERED';
-  function __construct(){ parent::__construct(); }
 
-  function FairyAction($user){
+  function FairyAction(User $user) {
     $handle_name = DB::$USER->GetHandleName($user->uname);
     DB::$ROOM->ResultDead($handle_name, $this->result, GetRandom(range('A', 'Z')));
   }

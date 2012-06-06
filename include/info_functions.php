@@ -32,7 +32,7 @@ class TimeCalculation {
 
 //-- 関数定義 --//
 //情報一覧ページ HTML ヘッダ出力
-function OutputInfoPageHeader($title, $level = 0, $css = 'info'){
+function OutputInfoPageHeader($title, $level = 0, $css = 'info') {
   $top  = str_repeat('../', $level + 1);
   $info = $level == 0 ? './' : str_repeat('../', $level);
   HTML::OutputHeader(sprintf('[%s]', $title), 'info/' . $css, true);
@@ -47,7 +47,7 @@ EOF;
 }
 
 //役職情報ページ HTML ヘッダ出力
-function OutputRolePageHeader($title){
+function OutputRolePageHeader($title) {
   HTML::OutputHeader(sprintf('新役職情報 - [%s]', $title), 'new_role', true);
   echo <<<EOF
 <h1>{$title}</h1>
@@ -61,7 +61,7 @@ EOF;
 }
 
 //配役テーブル出力
-function OutputCastTable($min = 0, $max = null){
+function OutputCastTable($min = 0, $max = null) {
   //設定されている役職名を取得
   $stack = array();
   foreach (CastConfig::$role_list as $key => $value) {
@@ -92,14 +92,14 @@ function OutputCastTable($min = 0, $max = null){
 }
 
 //カテゴリ別ページ内リンク出力
-function OutputCategoryLink($list) {
+function OutputCategoryLink(array $list) {
   foreach ($list as $name) {
     printf("<a href=\"#%s\">%s</a>\n", $name, OptionManager::GenerateCaption($name));
   }
 }
 
 //他のサーバの部屋画面ロード用データを出力
-function OutputSharedRoomList(){
+function OutputSharedRoomList() {
   if (SharedServerConfig::DISABLE) return false;
 
   $str = HTML::LoadJavaScript('shared_room');
@@ -121,7 +121,7 @@ EOF;
 }
 
 //他のサーバの部屋画面を出力
-function OutputSharedRoom($id){
+function OutputSharedRoom($id) {
   if (SharedServerConfig::DISABLE) return false;
 
   $count = 0;

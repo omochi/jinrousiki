@@ -6,12 +6,10 @@
 */
 RoleManager::LoadFile('angel');
 class Role_exchange_angel extends Role_angel {
-  function __construct(){ parent::__construct(); }
-
-  protected function IsSympathy($lovers_a, $lovers_b){ return false; }
+  protected function IsSympathy(User $a, User $b) { return false; }
 
   //交換憑依処理
-  function Exchange(){
+  function Exchange() {
     //変数を初期化
     $angel_list    = array();
     $lovers_list   = array();
@@ -54,11 +52,11 @@ class Role_exchange_angel extends Role_angel {
 
     foreach ($exchange_list as $id) {
       $target_list = $angel_list[$id];
-      $lovers_a = DB::$USER->ByID($target_list[0]);
-      $lovers_b = DB::$USER->ByID($target_list[1]);
-      $lovers_a->AddRole(sprintf('possessed_exchange[%s]', $target_list[1]));
-      $lovers_b->AddRole(sprintf('possessed_exchange[%s]', $target_list[0]));
-      $this->SetSympathy($lovers_a, $lovers_b);
+      $a = DB::$USER->ByID($target_list[0]);
+      $b = DB::$USER->ByID($target_list[1]);
+      $a->AddRole(sprintf('possessed_exchange[%s]', $target_list[1]));
+      $b->AddRole(sprintf('possessed_exchange[%s]', $target_list[0]));
+      $this->SetSympathy($a, $b);
     }
   }
 }

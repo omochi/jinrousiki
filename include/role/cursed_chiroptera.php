@@ -4,5 +4,4 @@
   ○仕様
 */
 class Role_cursed_chiroptera extends Role {
-  function __construct(){ parent::__construct(); }
 }

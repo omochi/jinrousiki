@@ -7,13 +7,13 @@ class UserIcon extends UserIconConfig {
   const SIZE_LIMIT   = '幅%dピクセル × 高さ%dピクセルまで';
 
   //文字数制限
-  static function GetLengthLimit(){
+  static function GetLengthLimit() {
     $name = self::LENGTH;
     return sprintf(self::LENGTH_LIMIT, $name, floor($name / 2));
   }
 
   //文字数制限 (フォーム用)
-  static function GetMaxLength($limit = false){
+  static function GetMaxLength($limit = false) {
     $length = self::LENGTH;
     $format = self::MAX_LENGTH;
     if ($limit) $format .= '>' . self::GetLengthLimit();
@@ -21,24 +21,24 @@ class UserIcon extends UserIconConfig {
   }
 
   //ファイルサイズ制限
-  static function GetFileLimit(){
+  static function GetFileLimit() {
     $size = self::FILE;
     return sprintf(self::FILE_LIMIT, $size > 1024 ? sprintf('%dk', floor($size / 1024)) : $size);
   }
 
   //アイコンのサイズ制限
-  static function GetSizeLimit(){
+  static function GetSizeLimit() {
     return sprintf(self::SIZE_LIMIT, self::WIDTH, self::HEIGHT);
   }
 
   //アイコンアップロード時の注意事項
-  static function GetCaution(){
+  static function GetCaution() {
     $caution = self::CAUTION;
     return isset($caution) ? '<br>' . $caution : '';
   }
 
   //文字列長チェック
-  static function CheckText($title, $url){
+  static function CheckText($title, $url) {
     $stack = array();
     $list  = array('icon_name'  => 'アイコン名',
 		   'appearance' => '出典',
@@ -55,7 +55,7 @@ class UserIcon extends UserIconConfig {
   }
 
   //RGB カラーチェック
-  static function CheckColor($str, $title, $url){
+  static function CheckColor($str, $title, $url) {
     if (strlen($str) != 7 || substr($str, 0, 1) != '#' || ! ctype_xdigit(substr($str, 1, 7))) {
       $error = '色指定が正しくありません。<br>'."\n" .
 	'指定は (例：#6699CC) のように RGB 16進数指定で行ってください。<br>'."\n" .

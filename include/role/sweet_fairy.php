@@ -9,15 +9,14 @@ class Role_sweet_fairy extends Role_fairy {
   public $action = 'CUPID_DO';
   public $submit = 'fairy_do';
   public $ignore_message = '初日以外は投票できません';
-  function __construct(){ parent::__construct(); }
 
-  function IsVote(){ return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->date == 1; }
 
-  function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
-  function IsVoteCheckbox($user, $live){ return $live && ! $user->IsDummyBoy(); }
+  function IsVoteCheckbox(User $user, $live) { return $live && ! $user->IsDummyBoy(); }
 
-  function VoteNight(){
+  function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     if (count($stack) != 2) return '指定人数は2人にしてください'; //人数チェック
 

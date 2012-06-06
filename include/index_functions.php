@@ -14,13 +14,13 @@ class IndexHTML {
   const FOOTER      = "<div class=\"footer\">\n%s\n</div>\n";
 
   //ヘッダー出力
-  static function OutputHeader(){
+  static function OutputHeader() {
     HTML::OutputHeader(ServerConfig::TITLE . ServerConfig::COMMENT, 'index', true);
     if (ServerConfig::BACK_PAGE != '') printf(self::BACK_PAGE, ServerConfig::BACK_PAGE);
   }
 
   //メニュー出力
-  static function OutputMenu(){
+  static function OutputMenu() {
     $str = sprintf(self::MENU_HEADER, '交流用サイト');
     foreach (MenuConfig::$list as $name => $url) $str .= sprintf(self::MENU_LINK, $url, $name);
     $str .= self::MENU_FOOTER;
@@ -37,7 +37,7 @@ class IndexHTML {
   }
 
   //掲示板情報出力
-  static function OutputBBS(){
+  static function OutputBBS() {
     if (BBSConfig::DISABLE) return;
     if (! ExternalLinkBuilder::CheckConnection(BBSConfig::RAW_URL)) {
       $title = sprintf(self::BBS_TITLE, BBSConfig::VIEW_URL, BBSConfig::THREAD);
@@ -65,7 +65,7 @@ class IndexHTML {
   }
 
   //フッター出力
-  function OutputFooter(){
+  static function OutputFooter() {
     $str = sprintf(self::VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::DEVELOPER);
     if (ServerConfig::ADMIN) $str .= sprintf(self::ADMIN, ServerConfig::ADMIN);
     printf(self::FOOTER, $str);

@@ -1082,7 +1082,7 @@ class RoleData {
 
   //-- 関数 --//
   //役職グループ判定
-  static function DistinguishRoleGroup($role){
+  static function DistinguishRoleGroup($role) {
     foreach (self::$main_role_group_list as $key => $value) {
       if (strpos($role, $key) !== false) return $value;
     }
@@ -1090,7 +1090,7 @@ class RoleData {
   }
 
   //所属陣営判別
-  static function DistinguishCamp($role, $start = false){
+  static function DistinguishCamp($role, $start = false) {
     switch ($camp = self::DistinguishRoleGroup($role)) {
     case 'wolf':
     case 'mad':
@@ -1131,7 +1131,7 @@ class RoleData {
   }
 
   //役職クラス (CSS) 判定
-  static function DistinguishRoleClass($role){
+  static function DistinguishRoleClass($role) {
     switch ($class = self::DistinguishRoleGroup($role)) {
     case 'poison_cat':
       $class = 'cat';
@@ -1153,7 +1153,7 @@ class RoleData {
   }
 
   //役職名のタグ生成
-  static function GenerateRoleTag($role, $css = null, $sub_role = false){
+  static function GenerateRoleTag($role, $css = null, $sub_role = false) {
     $str = '';
     if (is_null($css)) $css = self::DistinguishRoleClass($role);
     if ($sub_role) $str .= '<br>';
@@ -1163,13 +1163,13 @@ class RoleData {
   }
 
   //役職名のタグ生成 (メイン役職専用)
-  static function GenerateMainRoleTag($role, $tag = 'span'){
+  static function GenerateMainRoleTag($role, $tag = 'span') {
     return '<' . $tag . ' class="' . self::DistinguishRoleClass($role) . '">' .
       self::$main_role_list[$role] . '</' . $tag .'>';
   }
 
   //役職の説明ページへのリンク生成
-  static function GenerateRoleLink($role){
+  static function GenerateRoleLink($role) {
     if (array_key_exists($role, self::$sub_role_list)) {
       $url  = 'sub_role';
       $name = self::$sub_role_list[$role];
@@ -1186,7 +1186,7 @@ class RoleData {
   }
 
   //役職名のソート
-  static function SortRole($list){
+  static function SortRole(array $list) {
     return array_intersect(array_keys(self::$main_role_list), $list);
   }
 }

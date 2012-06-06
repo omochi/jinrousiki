@@ -2,7 +2,7 @@
 //-- DB アクセス (アイコン拡張) --//
 class IconDB {
   //村で使用中のアイコンチェック
-  static function IsUsing($icon_no){
+  static function IsUsing($icon_no) {
     $format = 'SELECT icon_no FROM user_icon INNER JOIN ' .
       '(user_entry INNER JOIN room USING (room_no)) USING (icon_no) ' .
       "WHERE icon_no = %d AND room.status IN ('waiting', 'playing')";
@@ -10,13 +10,13 @@ class IconDB {
   }
 
   //アイコン情報取得
-  static function GetInfo($icon_no){
+  static function GetInfo($icon_no) {
     $format = 'SELECT * FROM user_icon WHERE icon_no = %d';
     return DB::FetchAssoc(sprintf($format, $icon_no));;
   }
 
   //アイコンリスト取得
-  static function GetList($where){
+  static function GetList(array $where) {
     $format  = 'SELECT * FROM user_icon WHERE %s ORDER BY %s';
     $where[] = 'icon_no > 0';
     $sort    = RQ::$get->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name';
@@ -29,20 +29,20 @@ class IconDB {
   }
 
   //アイコン数取得
-  static function GetCount($where){
+  static function GetCount(array $where) {
     $format  = 'SELECT icon_no FROM user_icon WHERE %s';
     $where[] = 'icon_no > 0';
     return DB::Count(sprintf($format, implode(' AND ', $where)));
   }
 
   //カテゴリ取得
-  static function GetCategoryList($type){
+  static function GetCategoryList($type) {
     $stack = array('SELECT', 'FROM user_icon WHERE', 'IS NOT NULL GROUP BY', 'ORDER BY icon_no');
     return DB::FetchArray(implode(" {$type} ", $stack));
   }
 
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
-  static function GetSelectionByType($type){
+  static function GetSelectionByType($type) {
     //選択状態の抽出
     $data   = RQ::$get->search ? RQ::$get->$type : $_SESSION['icon_view'][$type];
     $target = empty($data) ? array() : (is_array($data) ? $data : array($data));
@@ -55,7 +55,7 @@ class IconDB {
   }
 
   //検索項目と検索値のセットから抽出条件を生成する
-  static function GetInClause($type, $list){
+  static function GetInClause($type, array $list) {
     if (in_array('__null__', $list)) return $type . ' IS NULL';
     $stack = array();
     foreach ($list as $value) $stack[] = sprintf("'%s'", Text::Escape($value));
@@ -63,7 +63,7 @@ class IconDB {
   }
 
   //アイコン削除
-  static function Delete($icon_no, $file){
+  static function Delete($icon_no, $file) {
     $query = sprintf('DELETE FROM user_icon WHERE icon_no = %d', $icon_no);
     if (! DB::FetchBool($query)) return false; //削除処理
     unlink(Icon::GetFile($file)); //ファイル削除
@@ -75,7 +75,7 @@ class IconDB {
 //-- HTML 生成クラス (アイコン拡張) --//
 class IconHTML {
   //アイコン情報出力
-  static function Output($base_url = 'icon_view'){
+  static function Output($base_url = 'icon_view') {
     /*
       初回表示前に検索条件をリセットする
       TODO: リファラーをチェックすることで GET リクエストによる取得にも対処できる
@@ -110,7 +110,7 @@ HTML;
   }
 
   //アイコン編集フォーム出力
-  private function OutputEdit($icon_no){
+  private function OutputEdit($icon_no) {
     $size = UserIcon::GetMaxLength();
     foreach (IconDB::GetInfo($icon_no) as $stack) {
       extract($stack);
@@ -160,7 +160,7 @@ EOF;
   }
 
   //アイコン情報を収集して表示する
-  private function OutputConcrete($base_url = 'icon_view'){
+  private function OutputConcrete($base_url = 'icon_view') {
     //-- ヘッダ出力 --//
     $colspan       = UserIcon::COLUMN * 2;
     $line_header   = sprintf('<tr><td colspan="%d">', $colspan);
@@ -295,7 +295,7 @@ HTML;
   }
 
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示する
-  private function OutputByType($type, $caption){
+  private function OutputByType($type, $caption) {
     $format = <<<EOF
 <td>
 <label for="%s[]">%s</label><br>
@@ -320,7 +320,7 @@ EOF;
   }
 
   //アイコン詳細画面 (IconView 用)
-  private function OutputDetailForIconView($icon_list, $cellwidth){
+  private function OutputDetailForIconView(array $icon_list, $cellwidth) {
     extract($icon_list);
     $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
@@ -354,7 +354,7 @@ HTML;
   }
 
   //アイコン詳細画面 (UserEntry 用)
-  private function OutputDetailForUserEntry($icon_list, $cellwidth){
+  private function OutputDetailForUserEntry(array $icon_list, $cellwidth) {
     extract($icon_list);
     $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;

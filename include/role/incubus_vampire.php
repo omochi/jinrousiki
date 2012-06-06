@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('vampire');
 class Role_incubus_vampire extends Role_vampire {
-  function __construct(){ parent::__construct(); }
-
-  function Infect($user){
+  function Infect(User $user) {
     if ($user->IsFemale()) {
       parent::Infect($user);
     }

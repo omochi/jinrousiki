@@ -7,9 +7,8 @@
 RoleManager::LoadFile('cupid');
 class Role_snow_cupid extends Role_cupid {
   public $mix_in = 'critical_mad';
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteAction($user){
+  function SetVoteAction(User $user) {
     if ($user->IsLovers()) $user->AddDoom(1, 'frostbite');
   }
 }

@@ -269,7 +269,7 @@ EOF;
 //-- HTML 生成クラス (Game 拡張) --//
 class GameHTML {
   //投票データを整形する
-  static function ParseVote($raw_data, $date) {
+  static function ParseVote(array $raw_data, $date) {
     if (count($raw_data) < 1) return null; //投票総数
 
     $open_vote   = DB::$ROOM->IsOpenData() || DB::$ROOM->IsOption('open_vote'); //投票数開示判定
@@ -863,7 +863,7 @@ EOF;
 
 //-- 基礎関数 --//
 //配列からランダムに一つ取り出す
-function GetRandom($array) { return $array[array_rand($array)]; }
+function GetRandom(array $array) { return $array[array_rand($array)]; }
 
 //-- 役職関連 --//
 //巫女の判定結果 (システムメッセージ)

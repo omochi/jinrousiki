@@ -95,7 +95,7 @@ RQ::GetTest()->test_users[10]->live = 'live';
 RQ::GetTest()->test_users[11]->uname = 'cherry';
 RQ::GetTest()->test_users[11]->handle_name = 'さくら';
 RQ::GetTest()->test_users[11]->sex = 'female';
-RQ::GetTest()->test_users[11]->role = 'chiroptera downer_luck';
+RQ::GetTest()->test_users[11]->role = 'angel downer_luck';
 RQ::GetTest()->test_users[11]->live = 'live';
 
 RQ::GetTest()->test_users[12]->uname = 'white';

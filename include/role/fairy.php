@@ -15,13 +15,13 @@ class Role_fairy extends Role {
   }
 
   //占い (悪戯)
-  function Mage($user) {
+  function Mage(User $user) {
     if ($this->IsJammer($user) || $this->IsCursed($user)) return false;
     $this->FairyAction($user);
   }
 
   //悪戯
-  function FairyAction($user) {
+  function FairyAction(User $user) {
     $user->AddRole(sprintf('bad_status[%d-%d]', $this->GetActor()->user_no, DB::$ROOM->date + 1));
   }
 

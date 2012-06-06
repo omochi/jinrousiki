@@ -10,7 +10,7 @@ class Role_miasma_fox extends Role_child_fox {
   public $action = null;
   public $result = null;
 
-  function VoteKillCounter($list) {
+  function VoteKillCounter(array $list) {
     $stack = array();
     foreach ($list as $uname) {
       $user = DB::$USER->ByRealUname($uname);

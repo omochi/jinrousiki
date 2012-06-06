@@ -40,7 +40,7 @@ class Vote {
   }
 
   //役職の人数通知リストを作成する
-  static function GenerateRoleNameList($role_count_list, $css = false) {
+  static function GenerateRoleNameList(array $role_count_list, $css = false) {
     $chaos = DB::$ROOM->IsOption('chaos_open_cast_camp') ? 'camp' :
       (DB::$ROOM->IsOption('chaos_open_cast_role') ? 'role' : null);
     switch ($chaos) {
@@ -1351,7 +1351,7 @@ class Vote {
   }
 
   //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
-  private function AggregateKick($target) {
+  private function AggregateKick(User $target) {
     self::CheckSituation('KICK_DO'); //コマンドチェック
 
     //今回投票した相手にすでに投票している人数を取得

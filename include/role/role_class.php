@@ -256,7 +256,7 @@ class RoleManager {
     return $this->GetFilter($this->GetList($type));
   }
 
-  function LoadMain($user) {
+  function LoadMain(User $user) {
     $this->actor = $user;
     return $this->Load('main_role', true);
   }
@@ -272,7 +272,7 @@ class RoleManager {
     return is_array($stack) ? $stack : array();
   }
 
-  function GetFilter($list) {
+  function GetFilter(array $list) {
     $stack = array();
     foreach ($list as $key) { //順番依存があるので配列関数を使わないで処理する
       if (! array_key_exists($key, $this->loaded->class)) continue;
@@ -804,7 +804,7 @@ abstract class Role {
 //-- HTML 生成クラス (Role 拡張) --//
 class RoleHTML {
   //仲間表示
-  static function OutputPartner($list, $header, $footer = null) {
+  static function OutputPartner(array $list, $header, $footer = null) {
     if (count($list) < 1) return false; //仲間がいなければ表示しない
     $list[] = '</td>';
     $str = '<table class="ability-partner"><tr>'."\n" .

@@ -7,9 +7,8 @@
 RoleManager::LoadFile('cupid');
 class Role_moon_cupid extends Role_cupid {
   public $self_shoot = true;
-  function __construct(){ parent::__construct(); }
 
-  protected function AddCupidRole($user, $flag){
+  protected function AddCupidRole(User $user, $flag) {
     $user->AddRole('challenge_lovers');
     if (! $this->IsActor($user->uname)) $this->GetActor()->AddRole($user->GetID('mind_receiver'));
   }

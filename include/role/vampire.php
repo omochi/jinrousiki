@@ -32,7 +32,7 @@ class Role_vampire extends Role {
   function IsVote() { return DB::$ROOM->date > 1; }
 
   //吸血対象セット
-  function SetInfect($user) {
+  function SetInfect(User $user) {
     global $ROLES;
 
     $actor = $this->GetActor();
@@ -69,7 +69,7 @@ class Role_vampire extends Role {
   }
 
   //対吸血処理
-  protected function InfectVampire($user) {
+  protected function InfectVampire(User $user) {
     $this->AddSuccess($this->GetActor()->user_no, 'vampire_kill');
   }
 
@@ -88,5 +88,5 @@ class Role_vampire extends Role {
   }
 
   //吸血処理
-  function Infect($user) { $user->AddRole($this->GetActor()->GetID('infected')); }
+  function Infect(User $user) { $user->AddRole($this->GetActor()->GetID('infected')); }
 }
