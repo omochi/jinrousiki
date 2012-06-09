@@ -33,7 +33,7 @@ class Role_mage extends Role {
     $phantom = $user->IsLive(true) && $user->IsRoleGroup('phantom') && $user->IsActive(); //幻系
 
     if ($half || $phantom) {
-      foreach ($this->GetGuardCurse() as $filter) { //厄神の護衛判定
+      foreach ($this->GetGuardCurse() as $filter) { //厄払い判定
 	if ($filter->IsGuard($uname)) return false;
       }
     }
@@ -50,7 +50,7 @@ class Role_mage extends Role {
   function IsCursed(User $user) {
     if ($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))) {
       $actor = $this->GetActor();
-      foreach ($this->GetGuardCurse() as $filter) { //厄神の護衛判定
+      foreach ($this->GetGuardCurse() as $filter) { //厄払い判定
 	if ($filter->IsGuard($actor->uname)) return false;
       }
       DB::$USER->Kill($actor->user_no, 'CURSED');
@@ -61,9 +61,8 @@ class Role_mage extends Role {
 
   //厄払いフィルタ取得
   protected function GetGuardCurse() {
-    global $ROLES;
     if (! is_array($stack = $this->GetStack($data = 'guard_curse'))) {
-      $stack = $ROLES->LoadFilter($data);
+      $stack = RoleManager::LoadFilter($data);
       $this->SetStack($stack, $data);
     }
     return $stack;

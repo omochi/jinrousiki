@@ -17,13 +17,11 @@ class Role_pierrot_wizard extends Role_wizard {
   public $result_type = 'PIERROT';
 
   function SetAssassin(User $user) {
-    global $ROLES;
-
     $actor = $this->GetActor();
-    foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
+    foreach (RoleManager::LoadFilter('trap') as $filter) { //罠判定
       if ($filter->TrapStack($actor, $user->uname)) return;
     }
-    foreach ($ROLES->LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
+    foreach (RoleManager::LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
       if ($filter->GuardAssassin($user->uname)) return;
     }
     if ($user->IsRoleGroup('escaper')) return; //逃亡者は無効

@@ -141,8 +141,8 @@ class OptionManager {
   //クラスロード
   private function LoadClass($name) {
     if (! isset(self::$class[$name])) {
-      $class = 'Option_' . $name;
-      self::$class[$name] = new $class();
+      $class_name = 'Option_' . $name;
+      self::$class[$name] = new $class_name();
     }
     return self::$class[$name];
   }

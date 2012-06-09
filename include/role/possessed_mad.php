@@ -42,9 +42,7 @@ class Role_possessed_mad extends Role {
 
   //憑依情報セット
   function SetPossessed(User $user) {
-    global $ROLES;
-
-    foreach ($ROLES->LoadFilter('guard_curse') as $filter) { //厄神の護衛判定
+    foreach (RoleManager::LoadFilter('guard_curse') as $filter) { //厄払い判定
       if ($filter->IsGuard($this->GetUname())) return false;
     }
 

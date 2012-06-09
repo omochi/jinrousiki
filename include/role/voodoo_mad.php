@@ -15,7 +15,7 @@ class Role_voodoo_mad extends Role {
   function SetVoodoo(User $user) {
     if ($user->IsCursed()) { //呪返し判定
       $actor = $this->GetActor();
-      foreach ($this->GetGuardCurse() as $filter) { //厄神の護衛判定
+      foreach ($this->GetGuardCurse() as $filter) { //厄払い判定
 	if ($filter->IsGuard($actor->uname)) return false;
       }
       DB::$USER->Kill($actor->user_no, 'CURSED');
@@ -37,7 +37,7 @@ class Role_voodoo_mad extends Role {
     foreach ($stack as $uname => $target_uname) {
       if ($count_list[$target_uname] > 1) {
 	$user = DB::$USER->ByUname($uname);
-	foreach ($filter_list as $filter) { //厄神の護衛判定
+	foreach ($filter_list as $filter) { //厄払い判定
 	  if ($filter->IsGuard($user->uname)) continue 2;
 	}
 	DB::$USER->Kill($user->user_no, 'CURSED');
@@ -47,9 +47,8 @@ class Role_voodoo_mad extends Role {
 
   //厄払いフィルタ取得
   protected function GetGuardCurse() {
-    global $ROLES;
     if (! is_array($stack = $this->GetStack($data = 'guard_curse'))) {
-      $stack = $ROLES->LoadFilter($data);
+      $stack = RoleManager::LoadFilter($data);
       $this->SetStack($stack, $data);
     }
     return $stack;

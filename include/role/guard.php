@@ -24,11 +24,9 @@ class Role_guard extends Role {
 
   //護衛先セット
   function SetGuard($uname) {
-    global $ROLES;
-
     if (DB::$ROOM->IsEvent('no_contact')) return false; //スキップ判定 (花曇)
     $this->AddStack($uname, 'guard');
-    foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
+    foreach (RoleManager::LoadFilter('trap') as $filter) { //罠判定
       if ($filter->DelayTrap($this->GetActor(), $uname)) break;
     }
     return true;
@@ -36,10 +34,8 @@ class Role_guard extends Role {
 
   //護衛
   function Guard(User $user, $flag = false) {
-    global $ROLES;
-
     $stack = array(); //護衛者検出
-    foreach ($ROLES->LoadFilter('guard') as $filter) $filter->GetGuard($user->uname, $stack);
+    foreach (RoleManager::LoadFilter('guard') as $filter) $filter->GetGuard($user->uname, $stack);
     //PrintData($stack, 'List [gurad/' . $this->GetVoter()->uname . ']');
 
     $result  = false;
@@ -49,7 +45,7 @@ class Role_guard extends Role {
       $actor  = DB::$USER->ByUname($uname);
       if ($actor->IsDead(true)) continue; //直前に死んでいたら無効
 
-      $filter = $ROLES->LoadMain($actor);
+      $filter = RoleManager::LoadMain($actor);
       if ($failed = $filter->GuardFailed()) continue; //個別護衛失敗判定
       $result |= ! ($half && mt_rand(0, 1) > 0) && (! $limited || is_null($failed));
 

@@ -207,7 +207,7 @@ EOF;
       case 'human':
       case 'wolf':
       case 'fox':
-	$win_flag = $winner == $camp && $ROLES->LoadMain($user)->Win($winner);
+	$win_flag = $winner == $camp && RoleManager::LoadMain($user)->Win($winner);
 	break;
 
       case 'vampire':
@@ -221,7 +221,7 @@ EOF;
       case 'ogre':
       case 'duelist':
 	$win_flag = $user->IsRoleGroup('mania') ? $user->IsLive()
-	  : $ROLES->LoadMain($user)->Win($winner);
+	  : RoleManager::LoadMain($user)->Win($winner);
 	break;
 
       default:
@@ -230,8 +230,8 @@ EOF;
       }
 
       if ($win_flag) { //ジョーカー系判定
-	$ROLES->actor = $user;
-	foreach ($ROLES->Load('joker') as $filter) $filter->FilterWin($win_flag);
+	RoleManager::$actor = $user;
+	foreach (RoleManager::Load('joker') as $filter) $filter->FilterWin($win_flag);
       }
 
       if ($win_flag) {

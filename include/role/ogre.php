@@ -34,12 +34,10 @@ class Role_ogre extends Role {
 
   //人攫い情報セット
   function SetAssassin(User $user) {
-    global $ROLES;
-
-    foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
+    foreach (RoleManager::LoadFilter('trap') as $filter) { //罠判定
       if ($filter->DelayTrap($this->GetActor(), $user->uname)) return;
     }
-    foreach ($ROLES->LoadFilter('guard_assassin') as $filter) { //門番の護衛判定
+    foreach (RoleManager::LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
       if ($filter->GuardAssassin($user->uname)) return;
     }
     if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //無効判定

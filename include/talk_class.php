@@ -193,8 +193,6 @@ class TalkBuilder {
 
   //発言生成
   function Generate(TalkParser $talk) {
-    global $ROLES;
-
     //PrintData($talk);
     //発言ユーザを取得
     /*
@@ -324,52 +322,52 @@ class TalkBuilder {
       }
       else {
 	$mind_read = false; //特殊発言透過判定
-	$ROLES->actor = $actor;
-	foreach ($ROLES->Load('mind_read') as $filter) $mind_read |= $filter->IsMindRead();
+	RoleManager::$actor = $actor;
+	foreach (RoleManager::Load('mind_read') as $filter) $mind_read |= $filter->IsMindRead();
 
-	$ROLES->actor = $this->actor;
-	foreach ($ROLES->Load('mind_read_active') as $filter) {
+	RoleManager::$actor = $this->actor;
+	foreach (RoleManager::Load('mind_read_active') as $filter) {
 	  $mind_read |= $filter->IsMindReadActive($actor);
 	}
 
-	$ROLES->actor = $real_user;
-	foreach ($ROLES->Load('mind_read_possessed') as $filter) {
+	RoleManager::$actor = $real_user;
+	foreach (RoleManager::Load('mind_read_possessed') as $filter) {
 	  $mind_read |= $filter->IsMindReadPossessed($actor);
 	}
 
-	$ROLES->actor = $actor;
+	RoleManager::$actor = $actor;
 	switch ($talk->location) {
 	case 'common': //共有者
 	  if ($this->flag->common || $mind_read) return $this->Add($actor, $talk, $real);
-	  if ($ROLES->LoadMain($actor)->Whisper($this, $talk->font_type)) return;
-	  foreach ($ROLES->Load('talk_whisper') as $filter) {
+	  if (RoleManager::LoadMain($actor)->Whisper($this, $talk->font_type)) return;
+	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
 	  return false;
 
 	case 'wolf': //人狼
 	  if ($this->flag->wolf || $mind_read) return $this->Add($actor, $talk, $real);
-	  if ($ROLES->LoadMain($actor)->Howl($this, $talk->font_type)) return;
-	  foreach ($ROLES->Load('talk_whisper') as $filter) {
+	  if (RoleManager::LoadMain($actor)->Howl($this, $talk->font_type)) return;
+	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
 	  return false;
 
 	case 'mad': //囁き狂人
 	  if ($this->flag->wolf || $mind_read) return $this->Add($actor, $talk, $real);
-	  foreach ($ROLES->Load('talk_whisper') as $filter) {
+	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
 	  return false;
 
 	case 'fox': //妖狐
 	  if ($this->flag->fox || $mind_read) return $this->Add($actor, $talk, $real);
-	  $ROLES->actor = DB::$SELF;
-	  foreach ($ROLES->Load('talk_fox') as $filter) {
+	  RoleManager::$actor = DB::$SELF;
+	  foreach (RoleManager::Load('talk_fox') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
-	  $ROLES->actor = $actor;
-	  foreach ($ROLES->Load('talk_whisper') as $filter) {
+	  RoleManager::$actor = $actor;
+	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
 	  return false;
@@ -378,11 +376,11 @@ class TalkBuilder {
 	  if ($this->flag->dummy_boy || $mind_read || $this->actor->IsSame($talk->uname)) {
 	    return $this->Add($actor, $talk, $real);
 	  }
-	  foreach ($ROLES->Load('talk_self') as $filter) {
+	  foreach (RoleManager::Load('talk_self') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
-	  $ROLES->actor = $this->actor;
-	  foreach ($ROLES->Load('talk_ringing') as $filter) {
+	  RoleManager::$actor = $this->actor;
+	  foreach (RoleManager::Load('talk_ringing') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
 	  return false;
@@ -513,10 +511,10 @@ EOF;
   private function LoadFilter() {
     global $ROLES;
 
-    $ROLES->actor = $this->actor;
-    if (! isset($ROLES->actor->virtual_live)) $ROLES->actor->virtual_live = false;
-    $this->filter = $ROLES->Load('talk');
-    $ROLES->stack->viewer  = $ROLES->actor;
+    RoleManager::$actor = $this->actor;
+    if (! isset(RoleManager::$actor->virtual_live)) RoleManager::$actor->virtual_live = false;
+    $this->filter = RoleManager::Load('talk');
+    $ROLES->stack->viewer  = RoleManager::$actor;
     $ROLES->stack->builder = $this;
   }
 

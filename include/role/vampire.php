@@ -33,11 +33,9 @@ class Role_vampire extends Role {
 
   //吸血対象セット
   function SetInfect(User $user) {
-    global $ROLES;
-
     $actor = $this->GetActor();
     $this->SetStack($actor, 'voter');
-    foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
+    foreach (RoleManager::LoadFilter('trap') as $filter) { //罠判定
       if ($filter->DelayTrap($actor, $user->uname)) return;
     }
     foreach (array_keys($this->GetStack('escaper'), $actor->uname) as $uname) { //自己逃亡判定
@@ -46,12 +44,12 @@ class Role_vampire extends Role {
     foreach (array_keys($this->GetStack('escaper'), $user->uname) as $uname) { //逃亡巻き添え判定
       $this->SetInfectTarget($uname);
     }
-    if ($ROLES->LoadMain(new User('guard'))->Guard($user, true)) return; //護衛判定
+    if (RoleManager::LoadMain(new User('guard'))->Guard($user, true)) return; //護衛判定
     if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //スキップ判定
 
     //吸血リスト登録
     if ($user->IsRoleGroup('vampire')) {
-      $ROLES->LoadMain($user)->InfectVampire($actor); //吸血鬼襲撃
+      RoleManager::LoadMain($user)->InfectVampire($actor); //吸血鬼襲撃
     }
     elseif ($user->IsRole('soul_mania', 'dummy_mania') && $user->IsCamp('vampire')) {
       $this->AddSuccess($user->user_no, 'vampire_kill'); //覚醒コピー能力者
@@ -75,14 +73,12 @@ class Role_vampire extends Role {
 
   //吸血死＆吸血処理
   function VampireKill() {
-    global $ROLES;
-
     foreach ($this->GetStack('vampire_kill') as $id => $flag) { //吸血死処理
       DB::$USER->Kill($id, 'VAMPIRE_KILLED');
     }
 
     foreach ($this->GetStack('vampire') as $uname => $stack) {
-      $filter = $ROLES->LoadMain(DB::$USER->ByUname($uname));
+      $filter = RoleManager::LoadMain(DB::$USER->ByUname($uname));
       foreach ($stack as $target_uname) $filter->Infect(DB::$USER->ByUname($target_uname));
     }
   }

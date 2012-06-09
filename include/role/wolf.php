@@ -86,15 +86,13 @@ class Role_wolf extends Role {
 
   //人狼襲撃失敗判定
   function WolfEatSkip(User $user) {
-    global $ROLES;
-
     if ($user->IsWolf()) { //人狼系判定 (例：銀狼出現)
       $this->WolfEatSkipAction($user);
       $user->wolf_eat = true; //襲撃は成功扱い
       return true;
     }
     if ($user->IsFox()) { //妖狐判定
-      $filter = $ROLES->LoadMain($user);
+      $filter = RoleManager::LoadMain($user);
       if (! $filter->resist_wolf) return false;
       $this->FoxEatAction($user); //妖狐襲撃処理
       $filter->FoxEatCounter($this->GetWolfVoter()); //妖狐襲撃カウンター処理

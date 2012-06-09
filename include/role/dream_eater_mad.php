@@ -15,8 +15,6 @@ class Role_dream_eater_mad extends Role {
 
   //夢食い処理
   function DreamEat(User $user) {
-    global $ROLES;
-
     $actor = $this->GetActor();
     if ($user->IsLiveRole('dummy_guard', true)) { //対象が夢守人なら返り討ちに合う
       DB::$USER->Kill($actor->user_no, 'HUNTED');
@@ -26,7 +24,7 @@ class Role_dream_eater_mad extends Role {
       return;
     }
 
-    foreach ($ROLES->LoadFilter('guard_dream') as $filter) { //夢守人の護衛判定
+    foreach (RoleManager::LoadFilter('guard_dream') as $filter) { //夢護衛判定
       if ($filter->GuardDream($actor, $user->uname)) return;
     }
 

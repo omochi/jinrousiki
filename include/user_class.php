@@ -1069,8 +1069,6 @@ EOF;
 
   //特殊イベント情報を設定する
   function SetEvent($force = false) {
-    global $ROLES;
-
     if (DB::$ROOM->id < 1 || ! is_array($event_rows = DB::$ROOM->GetEvent($force))) return;
     //PrintData($event_rows, 'Event[row]');
     foreach ($event_rows as $event) {
@@ -1085,7 +1083,7 @@ EOF;
 	break;
 
       case 'VOTE_DUEL':
-	$ROLES->LoadMain($this->ByID($event['message']))->SetEvent($this);
+	RoleManager::LoadMain($this->ByID($event['message']))->SetEvent($this);
 	break;
 
       case 'SAME_FACE':
@@ -1110,7 +1108,7 @@ EOF;
     //PrintData(DB::$ROOM->event, 'Event');
 
     if (DB::$ROOM->IsDay()) { //昼限定
-      foreach ($ROLES->event_virtual_day_list as $role) {
+      foreach (RoleManager::$event_virtual_day_list as $role) {
 	if (DB::$ROOM->IsEvent($role)) {
 	  foreach ($this->rows as $user) $user->AddVirtualRole($role);
 	}
@@ -1118,7 +1116,7 @@ EOF;
     }
 
     if (DB::$ROOM->IsPlaying()) { //昼夜両方
-      foreach ($ROLES->event_virtual_list as $role) {
+      foreach (RoleManager::$event_virtual_list as $role) {
 	if (DB::$ROOM->IsEvent($role)) {
 	  foreach ($this->rows as $user) $user->AddVirtualRole($role);
 	}
@@ -1127,8 +1125,8 @@ EOF;
       if ((DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) && ! RQ::$get->reverse_log) {
 	$base_date--;
       }
-      $ROLES->LoadMain(new User('shadow_fairy'))->BadStatus($this, $base_date); //影妖精の処理
-      $ROLES->LoadMain(new User('enchant_mad'))->BadStatus($this); //狢の処理
+      RoleManager::LoadMain(new User('shadow_fairy'))->BadStatus($this, $base_date); //影妖精の処理
+      RoleManager::LoadMain(new User('enchant_mad'))->BadStatus($this); //狢の処理
     }
   }
 

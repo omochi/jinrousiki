@@ -41,7 +41,7 @@ RQ::GetTest()->test_users[1]->color = '#000000';
 RQ::GetTest()->test_users[2]->uname = 'light_gray';
 RQ::GetTest()->test_users[2]->handle_name = '明灰';
 RQ::GetTest()->test_users[2]->sex = 'male';
-RQ::GetTest()->test_users[2]->role = 'wolf lost_ability authority';
+RQ::GetTest()->test_users[2]->role = 'trap_wolf lost_ability authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->uname = 'dark_gray';
@@ -659,7 +659,7 @@ do {
 } while(false);
 //PrintData(Lottery::RateToProbability(GameConfig::$weather_list));
 //InsertLog();
-//PrintData($ROLES->loaded->file);
-//PrintData(array_keys($ROLES->loaded->class));
+//PrintData(RoleManager::$file);
+//PrintData(array_keys(RoleManager::$class));
 //PrintData($INIT_CONF->loaded->class);
 HTML::OutputFooter();

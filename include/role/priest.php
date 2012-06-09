@@ -41,8 +41,6 @@ class Role_priest extends Role {
 
   //情報収集
   function AggregatePriest(StdClass $role_flag) {
-    global $ROLES;
-
     $flag = false;
     $data = new StdClass();
     $data->list  = array();
@@ -51,7 +49,7 @@ class Role_priest extends Role {
     $this->SetStack($data);
     foreach ($role_flag as $role => $stack) { //司祭系の出現判定
       $user = new User($role);
-      if ($user->IsRoleGroup('priest')) $flag |= $ROLES->LoadMain($user)->SetPriest();
+      if ($user->IsRoleGroup('priest')) $flag |= RoleManager::LoadMain($user)->SetPriest();
     }
     $data = $this->GetStack();
     if (DB::$ROOM->IsOption('weather') && (DB::$ROOM->date % 3) == 1) { //天候判定

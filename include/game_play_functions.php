@@ -154,25 +154,25 @@ class Play {
     //if (DB::$SELF->IsDead()) return false; //テスト用
 
     $ROLES->stack->say = $say;
-    $ROLES->actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->user_no)); //仮想ユーザを取得
+    RoleManager::$actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->user_no)); //仮想ユーザを取得
     do { //発言置換処理
-      foreach ($ROLES->Load('say_convert_virtual') as $filter) {
+      foreach (RoleManager::Load('say_convert_virtual') as $filter) {
 	if ($filter->ConvertSay()) break 2;
       }
-      $ROLES->actor = DB::$SELF;
-      foreach ($ROLES->Load('say_convert') as $filter) {
+      RoleManager::$actor = DB::$SELF;
+      foreach (RoleManager::Load('say_convert') as $filter) {
 	if ($filter->ConvertSay()) break 2;
       }
     } while (false);
 
     foreach ($virtual->GetPartner('bad_status', true) as $id => $date) { //妖精の処理
       if ($date != DB::$ROOM->date) continue;
-      $ROLES->actor = DB::$USER->ByID($id);
-      foreach ($ROLES->Load('say_bad_status') as $filter) $filter->ConvertSay();
+      RoleManager::$actor = DB::$USER->ByID($id);
+      foreach (RoleManager::Load('say_bad_status') as $filter) $filter->ConvertSay();
     }
 
-    $ROLES->actor = $virtual;
-    foreach ($ROLES->Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
+    RoleManager::$actor = $virtual;
+    foreach (RoleManager::Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
     $say = $ROLES->stack->say;
     unset($ROLES->stack->say);
     return true;
@@ -180,8 +180,6 @@ class Play {
 
   //発言
   static function EntrySay($say) {
-    global $ROLES;
-
     if (! DB::$ROOM->IsPlaying()) { //ゲーム開始前後
       return self::Talk($say, DB::$ROOM->scene, null, 0, true);
     }
@@ -201,8 +199,10 @@ class Play {
     if ($left_time < 1) return; //制限時間外ならスキップ (ここに来るのは生存者のみのはず)
 
     if (DB::$ROOM->IsDay()) { //昼はそのまま発言
-      if (DB::$ROOM->IsEvent('wait_morning')) return; //待機時間中ならスキップ
-      if (DB::$SELF->IsRole('echo_brownie')) $ROLES->LoadMain(DB::$SELF)->EchoSay(); //山彦の処理
+      if (DB::$ROOM->IsEvent('wait_morning')) return; //待機時間判定
+
+      //山彦の処理
+      if (DB::$SELF->IsRole('echo_brownie')) RoleManager::LoadMain(DB::$SELF)->EchoSay();
       return self::Talk($say, DB::$ROOM->scene, null, $spend_time, true);
     }
 
@@ -233,13 +233,11 @@ class Play {
 
   //発言を DB に登録する
   static function Talk($say, $scene, $location = null, $spend_time = 0, $update = false) {
-    global $ROLES;
-
     //声の大きさを決定
     $voice = RQ::$get->font_type;
     if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
-      $ROLES->actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
-      foreach ($ROLES->Load('voice') as $filter) $filter->FilterVoice($voice, $say);
+      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
+      foreach (RoleManager::Load('voice') as $filter) $filter->FilterVoice($voice, $say);
     }
 
     $uname = DB::$SELF->uname;
@@ -474,8 +472,6 @@ EOF;
 
   //能力の種類とその説明を出力
   static function OutputAbility() {
-    global $ROLES;
-
     if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
     if (DB::$SELF->IsDead()) { //死亡したら口寄せ以外は表示しない
@@ -486,25 +482,25 @@ EOF;
       }
       return;
     }
-    $ROLES->LoadMain(DB::$SELF)->OutputAbility(); //メイン役職
+    RoleManager::LoadMain(DB::$SELF)->OutputAbility(); //メイン役職
 
     //-- ここからサブ役職 --//
-    foreach ($ROLES->Load('display_real') as $filter) $filter->OutputAbility();
+    foreach (RoleManager::Load('display_real') as $filter) $filter->OutputAbility();
 
     //-- ここからは憑依先の役職を表示 --//
-    $ROLES->actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
-    foreach ($ROLES->Load('display_virtual') as $filter) $filter->OutputAbility();
+    RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
+    foreach (RoleManager::Load('display_virtual') as $filter) $filter->OutputAbility();
 
     //-- これ以降はサブ役職非公開オプションの影響を受ける --//
     if (DB::$ROOM->IsOption('secret_sub_role')) return;
 
     $stack = array();
     foreach (array('real', 'virtual', 'none') as $name) {
-      $stack = array_merge($stack, $ROLES->{'display_' . $name . '_list'});
+      $stack = array_merge($stack, RoleManager::${'display_' . $name . '_list'});
     }
     //PrintData($stack);
     $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);
-    $target_list  = array_intersect($display_list, array_slice($ROLES->actor->role_list, 1));
+    $target_list  = array_intersect($display_list, array_slice(RoleManager::$actor->role_list, 1));
     //PrintData($target_list);
     foreach ($target_list as $role) Image::Role()->Output($role);
   }
