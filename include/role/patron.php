@@ -9,13 +9,12 @@ class Role_patron extends Role_valkyrja_duelist {
   public $partner_header = 'patron_target';
   public $self_shoot = false;
   public $shoot_count = 1;
-  function __construct(){ parent::__construct(); }
 
-  function IsVoteCheckbox($user, $live){
+  function IsVoteCheckbox(User $user, $live) {
     return parent::IsVoteCheckbox($user, $live) && ! $this->IsActor($user->uname);
   }
 
-  function VoteNight(){
+  function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = $this->GetVoteNightTargetCount();
@@ -34,11 +33,11 @@ class Role_patron extends Role_valkyrja_duelist {
     return null;
   }
 
-  protected function AddDuelistRole($user){
+  protected function AddDuelistRole(User $user) {
     if (isset($this->patron_role)) $user->AddRole($this->GetActor()->GetID($this->patron_role));
   }
 
-  function Win($winner){
+  function Win($winner) {
     $actor = $this->GetActor();
     $id    = $actor->user_no;
     $count = 0;

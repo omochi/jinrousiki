@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('ogre');
 class Role_indigo_ogre extends Role_ogre {
-  function __construct(){ parent::__construct(); }
-
-  function Win($winner){
+  function Win($winner) {
     if ($winner == 'fox' || $this->IsDead()) return false;
     foreach (DB::$USER->rows as $user) {
       if ($user->IsLive() && $user->IsCamp('fox', true)) return false;

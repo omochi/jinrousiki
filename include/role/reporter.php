@@ -20,7 +20,7 @@ class Role_reporter extends Role {
   function IsVote() { return DB::$ROOM->date > 1; }
 
   //尾行
-  function Report($user) {
+  function Report(User $user) {
     $target = $this->GetWolfTarget();
     if ($user->IsSame($target->uname)) { //尾行成功
       if (! $user->wolf_eat) return; //人狼襲撃が失敗していたらスキップ

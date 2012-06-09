@@ -45,6 +45,7 @@ class InitializeConfig {
     'icon_class'             => 'icon_config',
     'user_icon_class'        => 'user_icon_config',
     'sound_class'            => 'sound_config',
+    'cookie_class'           => 'sound_class',
     'twitter_class'          => array('twitter_config', 'twitter'),
     'room_manager_class'     => array('room_option_class', 'image_class'),
     'login_class'            => 'session_class',
@@ -73,7 +74,6 @@ class InitializeConfig {
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'COOKIE'    => 'CookieDataSet',
     'ROLES'     => 'RoleManager',
     'TIME_CALC' => 'TimeCalculation',
     'PAPARAZZI' => 'Paparazzi'

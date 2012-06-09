@@ -15,9 +15,8 @@ class Role_pierrot_wizard extends Role_wizard {
     'sex_mage' => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT');
   public $result_type = 'PIERROT';
-  function __construct(){ parent::__construct(); }
 
-  function SetAssassin($user){
+  function SetAssassin(User $user) {
     global $ROLES;
 
     $actor = $this->GetActor();
@@ -36,11 +35,11 @@ class Role_pierrot_wizard extends Role_wizard {
     $class->$method($user);
   }
 
-  function Assassin($user){
+  function Assassin(User $user) {
     if ($user->IsLive(true)) $user->AddDoom(mt_rand(2, 10), 'death_warrant');
   }
 
-  function Mage($user){
+  function Mage(User $user) {
     if ($this->IsJammer($user) || $this->IsCursed($user)) return false;
     $handle_name = DB::$USER->GetHandleName($user->uname);
     DB::$ROOM->ResultDead($handle_name, $this->result_type, GetRandom(range('A', 'Z')));

@@ -7,7 +7,6 @@
 RoleManager::LoadFile('valkyrja_duelist');
 class Role_cowboy_duelist extends Role_valkyrja_duelist {
   public $self_shoot = true;
-  function __construct(){ parent::__construct(); }
 
-  function FilterVoteDo(&$number){ $number--; }
+  function FilterVoteDo(&$number) { $number--; }
 }

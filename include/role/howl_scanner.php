@@ -7,5 +7,4 @@
 RoleManager::LoadFile('whisper_scanner');
 class Role_howl_scanner extends Role_whisper_scanner {
   public $mind_read_target = 'wolf';
-  function __construct(){ parent::__construct(); }
 }

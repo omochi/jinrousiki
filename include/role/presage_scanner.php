@@ -8,9 +8,8 @@
 RoleManager::LoadFile('mind_scanner');
 class Role_presage_scanner extends Role_mind_scanner {
   public $mind_role = 'mind_presage';
-  function __construct(){ parent::__construct(); }
 
-  function WolfEatCounter($target){
+  function WolfEatCounter(User $target) {
     $actor = $this->GetActor();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($this->mind_role, $actor->user_no)) {

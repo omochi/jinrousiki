@@ -6,13 +6,11 @@
 */
 RoleManager::LoadFile('common');
 class Role_trap_common extends Role_common {
-  function __construct(){ parent::__construct(); }
-
-  function SetVoteDay($uname){
+  function SetVoteDay($uname) {
     if ($this->IsRealActor()) $this->AddStack($uname);
   }
 
-  function VotedReaction(){
+  function VotedReaction() {
     if (! is_array($stack = $this->GetStack())) return;
     if (count($stack) < 1) return;
     $target_list = array();

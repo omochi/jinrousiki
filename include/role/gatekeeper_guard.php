@@ -6,18 +6,16 @@
 */
 RoleManager::LoadFile('guard');
 class Role_gatekeeper_guard extends Role_guard {
-  function __construct(){ parent::__construct(); }
-
-  function SetGuard($uname){
+  function SetGuard($uname) {
     if (! parent::SetGuard($uname)) return false;
     $this->AddStack($uname);
     return true;
   }
 
-  protected function IsHunt($user){ return false; }
+  protected function IsHunt(User $user) { return false; }
 
   //対暗殺護衛
-  function GuardAssassin($uname){
+  function GuardAssassin($uname) {
     $stack = array_keys($this->GetStack(), $uname); //護衛判定
     if (count($stack) < 1) return false;
 

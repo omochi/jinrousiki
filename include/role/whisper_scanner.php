@@ -11,9 +11,8 @@ class Role_whisper_scanner extends Role_mind_scanner {
   public $action    = null;
   public $mind_role = null;
   public $mind_read_target = 'common';
-  function __construct(){ parent::__construct(); }
 
-  function IsMindRead(){
+  function IsMindRead() {
     return DB::$ROOM->date > 1 && $this->GetTalkFlag($this->mind_read_target);
   }
 }

@@ -5,5 +5,4 @@
 */
 RoleManager::LoadFile('common');
 class Role_detective_common extends Role_common {
-  function __construct(){ parent::__construct(); }
 }

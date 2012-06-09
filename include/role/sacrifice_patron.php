@@ -8,7 +8,6 @@
 RoleManager::LoadFile('patron');
 class Role_sacrifice_patron extends Role_patron {
   public $patron_role = 'protected';
-  function __construct(){ parent::__construct(); }
 
-  function WolfEatResist(){ return true; }
+  function WolfEatResist() { return true; }
 }

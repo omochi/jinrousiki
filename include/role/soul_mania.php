@@ -42,16 +42,15 @@ class Role_soul_mania extends Role_mania {
     'duelist'		=> 'critical_duelist',
     'avenger'		=> 'revive_avenger',
     'patron'		=> 'sacrifice_patron');
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date == 2) $this->OutputAbilityResult($this->result);
   }
 
-  protected function GetManiaRole($user){ return $user->DistinguishRoleGroup(); }
+  protected function GetManiaRole(User $user) { return $user->DistinguishRoleGroup(); }
 
   //覚醒コピー
-  function DelayCopy($user){
+  function DelayCopy(User $user) {
     $actor = $this->GetActor();
     $role  = $user->IsRoleGroup('mania', 'copied') ? 'human' :
       $this->copy_list[$user->IsRole('changed_therian') ? 'mad' : $user->DistinguishRoleGroup()];

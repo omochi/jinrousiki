@@ -11,5 +11,4 @@ class Role_soul_wizard extends Role_wizard {
     'poison_guard' => 'GUARD_DO', 'doom_assassin' => 'ASSASSIN_DO',
     'soul_assassin' => 'ASSASSIN_DO', 'light_fairy' => 'FAIRY_DO', 'sex_mage' => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT', 'GUARD_SUCCESS', 'GUARD_HUNTED', 'ASSASSIN_RESULT');
-  function __construct(){ parent::__construct(); }
 }

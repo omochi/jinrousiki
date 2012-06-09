@@ -5,10 +5,7 @@ $INIT_CONF->LoadFile('time_config', 'icon_class', 'talk_class', 'session_class',
 
 //-- データ収集 --//
 $INIT_CONF->LoadRequest('RequestGamePlay', true);
-if (RQ::$get->play_sound) { //音でお知らせ
-  $INIT_CONF->LoadFile('sound_class');
-  $INIT_CONF->LoadClass('COOKIE');
-}
+if (RQ::$get->play_sound) $INIT_CONF->LoadFile('cookie_class'); //音でお知らせ
 
 DB::Connect();
 Session::CertifyGamePlay(); //セッション認証
@@ -33,8 +30,7 @@ elseif (DB::$ROOM->IsFinished()) { //勝敗結果表示
 
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
-
-SendCookie($OBJECTION); //必要なクッキーをセットする
+if (RQ::$get->play_sound) JinroCookie::Set(); //クッキー情報セット
 
 //-- 発言処理 --//
 $say_limit = null;
@@ -91,46 +87,6 @@ HTML::OutputFooter();
 ob_end_flush();
 
 //-- 関数 --//
-//必要なクッキーをまとめて登録 (ついでに最新の異議ありの状態を取得して配列に格納)
-function SendCookie(&$objection_list) {
-  //-- 夜明け --//
-  setcookie('scene', DB::$ROOM->scene, DB::$ROOM->system_time + 3600); //シーンを登録
-
-  //-- 再投票 --//
-  if (DB::$ROOM->vote_count > 1) { //再投票回数を登録
-    setcookie('vote_times', DB::$ROOM->vote_count, DB::$ROOM->system_time + 3600);
-  }
-  else { //再投票が無いなら削除
-    setcookie('vote_times', '', DB::$ROOM->system_time - 3600);
-  }
-
-  //-- 入村情報 --//
-  if (DB::$ROOM->IsBeforeGame()) { //現在のユーザ人数を登録
-    setcookie('user_count', DB::$USER->GetUserCount(), DB::$ROOM->system_time + 3600);
-  }
-
-  //-- 「異議」あり --//
-  $user_count = DB::$USER->GetUserCount(true); //KICK も含めたユーザ総数を取得
-  $objection_list = array_fill(0, $user_count, 0); //配列をセット (index は 0 から)
-  if (DB::$ROOM->IsAfterGame()) return; //ゲーム終了ならスキップ
-
-  //「異議」ありセット判定
-  if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
-      (DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
-    DB::$SELF->objection++;
-    DB::$SELF->Update('objection', DB::$SELF->objection);
-    DB::$ROOM->Talk('', 'OBJECTION', DB::$SELF->uname);
-  }
-
-  //ユーザ全体の「異議」ありを集計
-  $count = 0;
-  foreach (DB::$USER->names as $uname => $id) {
-    $objection_list[$count++] = DB::$USER->ByID($id)->objection;
-  }
-  //PrintData($objection_list, 'objection');
-  setcookie('objection', implode(',', $objection_list), DB::$ROOM->system_time + 3600); //リストを登録
-}
-
 //昼の自分の未投票チェック
 function CheckSelfVoteDay() {
   $str = '<div class="self-vote">投票 ' . (DB::$ROOM->revote_count + 1) . ' 回目：';

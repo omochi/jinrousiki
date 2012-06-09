@@ -10,5 +10,4 @@ class Role_eclipse_cat extends Role_poison_cat {
   public $display_role  = 'revive_cat';
   public $revive_rate   = 40;
   public $missfire_rate = 20;
-  function __construct(){ parent::__construct(); }
 }

@@ -35,14 +35,14 @@ class Role_valkyrja_duelist extends Role {
     $this->SetStack($flag, 'self_shoot');
   }
 
-  function GetVoteCheckbox($user, $id, $live) {
+  function GetVoteCheckbox(User $user, $id, $live) {
     return $this->IsVoteCheckbox($user, $live) ?
       '<input type="checkbox" name="target_no[]"' .
       ($this->IsSelfShoot() && $this->IsActor($user->uname) ? ' checked' : '') .
       ' id="' . $id . '" value="' . $id . '">'."\n" : '';
   }
 
-  function IsVoteCheckbox($user, $live) { return $live && ! $user->IsDummyBoy(); }
+  function IsVoteCheckbox(User $user, $live) { return $live && ! $user->IsDummyBoy(); }
 
   //自分撃ち判定
   function IsSelfShoot() { return $this->GetStack('self_shoot') || $this->self_shoot; }
@@ -77,7 +77,7 @@ class Role_valkyrja_duelist extends Role {
   function GetVoteNightTargetCount() { return $this->shoot_count; }
 
   //決闘者陣営の投票処理
-  function VoteNightAction($list) {
+  function VoteNightAction(array $list) {
     $role  = $this->GetActor()->GetID($this->partner_role);
     $stack = array();
     foreach ($list as $user) {
@@ -90,7 +90,7 @@ class Role_valkyrja_duelist extends Role {
   }
 
   //役職追加処理
-  protected function AddDuelistRole($user) {}
+  protected function AddDuelistRole(User $user) {}
 
   //勝利判定
   function Win($winner) {

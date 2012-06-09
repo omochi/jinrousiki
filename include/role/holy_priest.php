@@ -6,18 +6,16 @@
 */
 RoleManager::LoadFile('priest');
 class Role_holy_priest extends Role_priest {
-  function __construct(){ parent::__construct(); }
-
-  protected function GetOutputRole(){
+  protected function GetOutputRole() {
     return DB::$ROOM->date == 5 ? $this->role : null;
   }
 
-  protected function SetPriest(){
+  protected function SetPriest() {
     if (DB::$ROOM->date == 4) parent::SetPriest();
     return false;
   }
 
-  function Priest($role_flag){
+  function Priest(StdClass $role_flag) {
     $event = $this->GetEvent();
     $max   = count(DB::$USER->rows);
     foreach ($role_flag->{$this->role} as $uname) {

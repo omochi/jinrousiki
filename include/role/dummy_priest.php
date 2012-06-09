@@ -9,9 +9,8 @@ RoleManager::LoadFile('priest');
 class Role_dummy_priest extends Role_priest {
   public $display_role = 'priest';
   public $priest_type  = 'dream';
-  function __construct(){ parent::__construct(); }
 
-  protected function SetPriest(){
+  protected function SetPriest() {
     return ! DB::$ROOM->IsEvent('no_dream') && parent::SetPriest();
   }
 }

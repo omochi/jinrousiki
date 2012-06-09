@@ -6,11 +6,9 @@
 */
 RoleManager::LoadFile('priest');
 class Role_weather_priest extends Role_priest {
-  function __construct(){ parent::__construct(); }
+  protected function GetOutputRole() { return DB::$ROOM->date > 1 ? $this->role : null; }
 
-  protected function GetOutputRole(){ return DB::$ROOM->date > 1 ? $this->role : null; }
-
-  function Priest($role_flag){
+  function Priest(StdClass $role_flag) {
     $data = $this->GetStack('priest');
     //スキップ判定
     if (! (isset($data->{$this->role}) ||

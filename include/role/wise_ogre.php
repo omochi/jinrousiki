@@ -9,9 +9,8 @@ class Role_wise_ogre extends Role_ogre {
   public $mix_in = 'common';
   public $resist_rate = 40;
   public $reduce_rate =  2;
-  function __construct(){ parent::__construct(); }
 
-  function Win($winner){
+  function Win($winner) {
     if ($this->IsDead()) return false;
     foreach (DB::$USER->rows as $user) {
       if ($user->IsLive() && $user->IsRoleGroup('common', 'wolf', 'fox') && ! $user->IsChildFox()) {

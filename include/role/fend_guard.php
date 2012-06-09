@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('guard');
 class Role_fend_guard extends Role_guard {
-  function __construct(){ parent::__construct(); }
-
-  function WolfEatResist(){
+  function WolfEatResist() {
     if (! $this->GetActor()->IsActive()) return false;
     $this->GetActor()->LostAbility();
     return true;

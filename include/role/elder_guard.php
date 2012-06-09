@@ -8,11 +8,9 @@
 */
 RoleManager::LoadFile('guard');
 class Role_elder_guard extends Role_guard {
-  function __construct(){ parent::__construct(); }
+  function GuardFailed() { return mt_rand(0, 9) < 3 ? true : null; }
 
-  function GuardFailed(){ return mt_rand(0, 9) < 3 ? true : null; }
+  protected function IsHunt(User $user) { return false; }
 
-  protected function IsHunt($user){ return false; }
-
-  function FilterVoteDo(&$number){ $number++; }
+  function FilterVoteDo(&$number) { $number++; }
 }

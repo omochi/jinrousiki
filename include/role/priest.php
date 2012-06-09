@@ -6,26 +6,25 @@
 */
 class Role_priest extends Role {
   public $priest_type = 'human_side';
-  function __construct(){ parent::__construct(); }
 
   //Mixin あり
-  function OutputResult(){
+  function OutputResult() {
     if (is_null($role = $this->GetOutputRole())) return;
     $this->OutputAbilityResult($this->GetEvent($role));
   }
 
   //司祭結果表示役職取得
-  protected function GetOutputRole(){
+  protected function GetOutputRole() {
     return DB::$ROOM->date > 3 && (DB::$ROOM->date % 2) == 0 ? $this->role : null;
   }
 
   //イベント名取得
-  protected function GetEvent($role = null){
+  protected function GetEvent($role = null) {
     return strtoupper(isset($role) ? $role : $this->role) . '_RESULT';
   }
 
   //司祭能力
-  function Priest($role_flag){
+  function Priest(StdClass $role_flag) {
     $data = $this->GetStack('priest');
     if (is_null($role = $this->GetPriestRole($data->list))) return;
     $class = $this->GetClass($method = 'GetPriestType');
@@ -33,15 +32,15 @@ class Role_priest extends Role {
   }
 
   //司祭能力発動判定
-  protected function GetPriestRole($list){
+  protected function GetPriestRole(array $list) {
     return DB::$ROOM->date > 2 && (DB::$ROOM->date % 2) == 1 ? $this->role : null;
   }
 
   //司祭能力対象取得
-  function GetPriestType(){ return $this->priest_type; }
+  function GetPriestType() { return $this->priest_type; }
 
   //情報収集
-  function AggregatePriest($role_flag){
+  function AggregatePriest(StdClass $role_flag) {
     global $ROLES;
 
     $flag = false;
@@ -117,7 +116,7 @@ class Role_priest extends Role {
   }
 
   //司祭情報セット
-  protected function SetPriest(){
+  protected function SetPriest() {
     $stack = $this->GetStack('priest');
     $stack->list[] = $this->role;
     $this->SetStack($stack, 'priest');

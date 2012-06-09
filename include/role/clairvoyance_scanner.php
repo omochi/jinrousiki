@@ -11,19 +11,18 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
   public $mind_role = null;
   public $result = 'CLAIRVOYANCE_RESULT';
   public $ignore_message = '初日は透視できません';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
-  function IsVote(){ return DB::$ROOM->date > 1; }
+  function IsVote() { return DB::$ROOM->date > 1; }
 
   /*
     複数の投票イベントを持つタイプが出現した場合は複数のメッセージを発行する必要がある
     対象が NULL でも有効になるタイプ (キャンセル投票はスキップ) は想定していない
   */
-  function Report($user){
+  function Report(User $user) {
     foreach ($this->GetStack('vote_data') as $action => $vote_stack) {
       if (strpos($action, '_NOT_DO') !== false ||
 	  ! array_key_exists($user->user_no, $vote_stack)) continue;

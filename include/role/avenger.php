@@ -9,13 +9,12 @@ class Role_avenger extends Role_valkyrja_duelist {
   public $partner_role   = 'enemy';
   public $partner_header = 'avenger_target';
   public $check_self_shoot = false;
-  function __construct(){ parent::__construct(); }
 
-  function IsVoteCheckbox($user, $live){
+  function IsVoteCheckbox(User $user, $live) {
     return parent::IsVoteCheckbox($user, $live) && ! $this->IsActor($user->uname);
   }
 
-  function VoteNight(){
+  function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     $count = floor(DB::$USER->GetUserCount() / 4);
@@ -34,7 +33,7 @@ class Role_avenger extends Role_valkyrja_duelist {
     return null;
   }
 
-  function Win($winner){
+  function Win($winner) {
     $actor = $this->GetActor();
     $id    = $actor->user_no;
     $count = 0;

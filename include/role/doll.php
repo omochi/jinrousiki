@@ -31,5 +31,7 @@ class Role_doll extends Role {
   }
 
   //人形判定
-  function IsDoll($user) { return $user->IsRoleGroup('doll') && ! $user->IsRole('doll_master'); }
+  function IsDoll(User $user) {
+    return $user->IsRoleGroup('doll') && ! $user->IsRole('doll_master');
+  }
 }

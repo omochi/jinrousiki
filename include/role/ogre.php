@@ -33,7 +33,7 @@ class Role_ogre extends Role {
   }
 
   //人攫い情報セット
-  function SetAssassin($user) {
+  function SetAssassin(User $user) {
     global $ROLES;
 
     foreach ($ROLES->LoadFilter('trap') as $filter) { //罠判定
@@ -66,7 +66,7 @@ class Role_ogre extends Role {
   }
 
   //人攫い失敗判定
-  protected function IgnoreAssassin($user) { return false; }
+  protected function IgnoreAssassin(User $user) { return false; }
 
   //天候情報取得
   protected function GetEvent() {
@@ -77,7 +77,7 @@ class Role_ogre extends Role {
   protected function GetReduceRate() { return 1 / $this->reduce_rate; }
 
   //人攫い
-  protected function Assassin($user) { $this->AddSuccess($user->user_no, 'ogre'); }
+  protected function Assassin(User $user) { $this->AddSuccess($user->user_no, 'ogre'); }
 
   //人攫い死
   function AssassinKill() {

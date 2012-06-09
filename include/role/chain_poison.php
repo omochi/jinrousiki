@@ -6,10 +6,9 @@
 */
 class Role_chain_poison extends Role {
   public $display_role = 'human';
-  function __construct(){ parent::__construct(); }
 
   //毒処理
-  function Poison($user){
+  function Poison(User $user) {
     global $ROLES;
 
     $ROLES->actor = DB::$USER->ByVirtual($user->user_no); //解毒判定

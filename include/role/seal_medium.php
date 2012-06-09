@@ -12,9 +12,8 @@ class Role_seal_medium extends Role_medium {
     'phantom_wolf', 'resist_wolf', 'revive_wolf', 'fire_wolf', 'tongue_wolf', 'trap_mad',
     'possessed_mad', 'revive_mad', 'phantom_fox', 'spell_fox', 'emerald_fox', 'revive_fox',
     'possessed_fox', 'trap_fox', 'revive_cupid', 'revive_avenger');
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteAction($user){
+  function SetVoteAction(User $user) {
     if (! $user->IsRole($this->seal_list)) return;
     $user->IsActive() ? $user->LostAbility() : $this->SuddenDeathKill($user->user_no);
   }

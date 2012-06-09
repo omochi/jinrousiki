@@ -6,7 +6,5 @@
 */
 RoleManager::LoadFile('valkyrja_duelist');
 class Role_doom_duelist extends Role_valkyrja_duelist {
-  function __construct(){ parent::__construct(); }
-
-  protected function AddDuelistRole($user){ $user->AddRole('death_warrant[7]'); }
+  protected function AddDuelistRole(User $user) { $user->AddRole('death_warrant[7]'); }
 }

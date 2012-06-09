@@ -21,7 +21,7 @@ class Role_assassin extends Role {
   }
 
   //暗殺先セット
-  function SetAssassin($user) {
+  function SetAssassin(User $user) {
     global $ROLES;
 
     $actor = $this->GetActor();
@@ -41,7 +41,7 @@ class Role_assassin extends Role {
   }
 
   //暗殺処理 (protected)
-  function Assassin($user) {
+  function Assassin(User $user) {
     if ($flag = $user->IsLive(true)) $this->AddSuccess($user->user_no, 'assassin');
     return $flag;
   }

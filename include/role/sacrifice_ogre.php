@@ -28,11 +28,11 @@ class Role_sacrifice_ogre extends Role_ogre {
 
   protected function GetReduceRate() { return 3 / 5; }
 
-  protected function IgnoreAssassin($user) { return $user->IsCamp('vampire'); }
+  protected function IgnoreAssassin(User $user) { return $user->IsCamp('vampire'); }
 
-  protected function Assassin($user) { $user->AddRole('psycho_infected'); }
+  protected function Assassin(User $user) { $user->AddRole('psycho_infected'); }
 
-  function IsSacrifice($user) {
+  function IsSacrifice(User $user) {
     return ! $this->IsActor($user->uname) && $user->IsRole('psycho_infected');
   }
 }

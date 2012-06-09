@@ -8,9 +8,8 @@ RoleManager::LoadFile('medium');
 class Role_bacchus_medium extends Role_medium {
   public $mix_in = 'critical_mad';
   public $sudden_death = 'DRUNK';
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteAction($user){
+  function SetVoteAction(User $user) {
     if ($user->IsOgre()) $this->SuddenDeathKill($user->user_no);
   }
 }

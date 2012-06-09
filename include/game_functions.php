@@ -744,10 +744,8 @@ EOF;
 
   //再投票メッセージ出力
   static function OutputRevote() {
-    global $COOKIE;
-
     if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
-	DB::$ROOM->vote_count > $COOKIE->vote_times) {
+	DB::$ROOM->vote_count > JinroCookie::$vote_count) {
       Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
     }
     if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ

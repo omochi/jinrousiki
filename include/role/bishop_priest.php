@@ -7,13 +7,12 @@
 RoleManager::LoadFile('priest');
 class Role_bishop_priest extends Role_priest {
   public $priest_type = 'dead';
-  function __construct(){ parent::__construct(); }
 
-  protected function GetOutputRole(){
+  protected function GetOutputRole() {
     return DB::$ROOM->date > 2 && (DB::$ROOM->date % 2) == 1 ? $this->role : null;
   }
 
-  protected function GetPriestRole($list){
+  protected function GetPriestRole(array $list) {
     return DB::$ROOM->date > 1 && (DB::$ROOM->date % 2) == 0 ? $this->role : null;
   }
 }

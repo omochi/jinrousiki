@@ -6,11 +6,9 @@
 */
 RoleManager::LoadFile('priest');
 class Role_revive_priest extends Role_priest {
-  function __construct(){ parent::__construct(); }
+  protected function GetOutputRole() { return null; }
 
-  protected function GetOutputRole(){ return null; }
-
-  function Priest($role_flag){
+  function Priest(StdClass $role_flag) {
     $data = $this->GetStack('priest');
     if (DB::$ROOM->date != 4 && ! isset($data->crisis) && $data->count['wolf'] != 1 &&
 	count(DB::$USER->rows) < $data->count['total'] * 2) {
@@ -30,7 +28,7 @@ class Role_revive_priest extends Role_priest {
   }
 
   //帰還
-  function PriestReturn(){
+  function PriestReturn() {
     $user = $this->GetActor();
     if ($user->IsDummyBoy()) return;
     if ($user->IsLovers()) {

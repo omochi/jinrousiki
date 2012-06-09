@@ -6,14 +6,12 @@
 */
 RoleManager::LoadFile('assassin');
 class Role_reverse_assassin extends Role_assassin {
-  function __construct(){ parent::__construct(); }
-
-  function Assassin($user){
+  function Assassin(User $user) {
     global $ROLES;
     $ROLES->stack->reverse_assassin[$this->GetActor()->uname] = $user->uname;
   }
 
-  function AssassinKill(){
+  function AssassinKill() {
     global $ROLES;
 
     foreach ($this->GetStack() as $uname => $target_uname) {
@@ -28,7 +26,7 @@ class Role_reverse_assassin extends Role_assassin {
   }
 
   //反魂処理
-  function Resurrect(){
+  function Resurrect() {
     $role = 'possessed';
     foreach ($this->GetStack('reverse') as $uname => $flag) {
       if (! $flag) continue;

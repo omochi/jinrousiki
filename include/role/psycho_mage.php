@@ -9,7 +9,7 @@ RoleManager::LoadFile('mage');
 class Role_psycho_mage extends Role_mage {
   public $mage_failed = 'mage_failed';
 
-  function IsCursed($user) { return false; }
+  function IsCursed(User $user) { return false; }
 
-  function GetMageResult($user) { return $user->DistinguishLiar(); }
+  function GetMageResult(User $user) { return $user->DistinguishLiar(); }
 }

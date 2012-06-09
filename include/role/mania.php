@@ -19,7 +19,7 @@ class Role_mania extends Role {
   function IsVote() { return DB::$ROOM->date == 1; }
 
   //コピー処理
-  function Copy($user) {
+  function Copy(User $user) {
     $actor = $this->GetActor();
     $role  = $this->GetRole($user);
     $this->CopyAction($user, $role);
@@ -33,15 +33,15 @@ class Role_mania extends Role {
   }
 
   //コピー結果役職取得
-  protected function GetRole($user) {
+  protected function GetRole(User $user) {
     return $user->IsRoleGroup('mania') ? 'human' : $this->GetManiaRole($user);
   }
 
   //コピー役職取得
-  protected function GetManiaRole($user) { return $user->main_role; }
+  protected function GetManiaRole(User $user) { return $user->main_role; }
 
   //特殊コピー処理
-  protected function CopyAction($user, $role) {}
+  protected function CopyAction(User $user, $role) {}
 
   //コピー変化後役職取得
   protected function GetCopiedRole() { return $this->copied; }

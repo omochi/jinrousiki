@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('necromancer');
 class Role_attempt_necromancer extends Role_necromancer {
-  function __construct(){ parent::__construct(); }
-
-  function Necromancer($user, $data){
+  function Necromancer(User $user, $data) {
     $stack = array();
     if ($user->IsLive(true)) $stack[$user->user_no] = true; //人狼襲撃
     foreach (array('ASSASSIN_DO', 'OGRE_DO') as $action) { //暗殺・人攫い

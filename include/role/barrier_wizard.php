@@ -11,11 +11,10 @@ class Role_barrier_wizard extends Role_wizard {
   public $submit = 'wizard_do';
   public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
   public $result_list = array('GUARD_SUCCESS');
-  function __construct(){ parent::__construct(); }
 
-  function GetVoteCheckboxHeader(){ return '<input type="checkbox" name="target_no[]"'; }
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
-  function VoteNight(){
+  function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //人数チェック
     if (count($stack) < 1 || 4 < count($stack)) return '指定人数は1～4人にしてください';
@@ -39,7 +38,7 @@ class Role_barrier_wizard extends Role_wizard {
     return null;
   }
 
-  function SetGuard($list){
+  function SetGuard($list) {
     $actor     = $this->GetActor()->uname;
     $stack     = array();
     $trapped   = false;
@@ -59,7 +58,7 @@ class Role_barrier_wizard extends Role_wizard {
     }
   }
 
-  function GetGuard($uname, &$list){
+  function GetGuard($uname, array &$list) {
     $rate = $this->GetGuardRate();
     foreach ($this->GetStack() as $target_uname => $target_list) {
       if (in_array($uname, $target_list) &&
@@ -70,12 +69,12 @@ class Role_barrier_wizard extends Role_wizard {
   }
 
   //護衛成功係数取得
-  private function GetGuardRate(){
+  private function GetGuardRate() {
     return DB::$ROOM->IsEvent('full_wizard') ? 1.25 :
       (DB::$ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
   }
 
-  function GuardFailed(){ return false; }
+  function GuardFailed() { return false; }
 
-  function GuardAction($user, $flag){}
+  function GuardAction(User $user, $flag) {}
 }

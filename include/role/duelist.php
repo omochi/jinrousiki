@@ -7,9 +7,8 @@
 RoleManager::LoadFile('valkyrja_duelist');
 class Role_duelist extends Role_valkyrja_duelist {
   public $self_shoot = true;
-  function __construct(){ parent::__construct(); }
 
-  protected function AddDuelistRole($user){
+  protected function AddDuelistRole(User $user) {
     if (! $this->IsActor($user->uname)) $user->AddRole($this->GetActor()->GetID('mind_receiver'));
   }
 }

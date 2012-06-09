@@ -11,5 +11,4 @@ class Role_philosophy_wizard extends Role_wizard {
     'alchemy_pharmacist', 'cure_pharmacist', 'miasma_jealousy', 'miasma_mad', 'critical_mad',
     'sweet_cupid', 'corpse_courier_mad');
   public $result_list = array('PHARMACIST_RESULT');
-  function __construct(){ parent::__construct(); }
 }

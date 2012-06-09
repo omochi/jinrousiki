@@ -7,13 +7,12 @@
 RoleManager::LoadFile('assassin');
 class Role_soul_assassin extends Role_assassin {
   public $result = 'ASSASSIN_RESULT';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
-  function Assassin($user){
+  function Assassin(User $user) {
     if (! parent::Assassin($user)) return false;
     $target = DB::$USER->GetHandleName($user->uname, true);
     DB::$ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetActor()->user_no);

@@ -7,11 +7,9 @@
 */
 RoleManager::LoadFile('guard');
 class Role_hunter_guard extends Role_guard {
-  function __construct(){ parent::__construct(); }
-
-  function GuardAction($user, $flag){
+  function GuardAction(User $user, $flag) {
     if (! $flag) DB::$USER->Kill($this->GetActor()->user_no, 'WOLF_KILLED');
   }
 
-  protected function IsHunt($user){ return parent::IsHunt($user) || $user->IsFox(); }
+  protected function IsHunt(User $user) { return parent::IsHunt($user) || $user->IsFox(); }
 }

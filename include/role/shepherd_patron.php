@@ -8,11 +8,8 @@
 RoleManager::LoadFile('patron');
 class Role_shepherd_patron extends Role_patron {
   public $patron_role = 'mind_sheep';
-  function __construct(){ parent::__construct(); }
 
-  function GetVoteNightTargetCount(){
-    $count = floor(DB::$USER->GetUserCount() / 6);
-    if ($count < 1) $count++;
-    return $count;
+  function GetVoteNightTargetCount() {
+    return max(1, floor(DB::$USER->GetUserCount() / 6));
   }
 }

@@ -8,16 +8,15 @@
 RoleManager::LoadFile('priest');
 class Role_widow_priest extends Role_priest {
   public $display_role = 'human';
-  function __construct(){ parent::__construct(); }
 
-  protected function GetOutputRole(){ return null; }
+  protected function GetOutputRole() { return null; }
 
-  protected function SetPriest(){
+  protected function SetPriest() {
     if (DB::$ROOM->date == 1 && DB::$ROOM->IsDummyBoy()) parent::SetPriest();
     return false;
   }
 
-  function Priest($role_flag){
+  function Priest(StdClass $role_flag) {
     $dummy_boy = DB::$USER->ByID(1);
     $result = $dummy_boy->main_role;
     $target = $dummy_boy->handle_name;

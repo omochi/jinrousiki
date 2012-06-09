@@ -8,9 +8,8 @@ RoleManager::LoadFile('ogre');
 class Role_north_ogre extends Role_ogre {
   public $resist_rate = 40;
   public $reduce_rate =  2;
-  function __construct(){ parent::__construct(); }
 
-  function Win($winner){
+  function Win($winner) {
     if ($winner != 'human' || $this->IsDead()) return false;
     $id = $this->GetActor()->user_no;
     foreach (DB::$USER->rows as $user) {

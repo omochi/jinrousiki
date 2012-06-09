@@ -11,5 +11,4 @@ class Role_astray_wizard extends Role_wizard {
     'voodoo_mad' => 'VOODOO_MAD_DO', 'dream_eater_mad' => 'DREAM_EAT',
     'snow_trap_mad' => 'TRAP_MAD_DO', 'doom_fox' => 'ASSASSIN_DO', 'dark_fairy' => 'FAIRY_DO');
   public $result_list = array();
-  function __construct(){ parent::__construct(); }
 }

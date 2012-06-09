@@ -6,19 +6,18 @@
 */
 class Role_pharmacist extends Role {
   public $result = 'PHARMACIST_RESULT';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
-  function SetVoteDay($uname){
+  function SetVoteDay($uname) {
     $this->InitStack();
     if ($this->IsRealActor()) $this->AddStack($uname);
   }
 
   //毒能力情報セット
-  function SetDetox(){
+  function SetDetox() {
     foreach ($this->GetStack() as $uname => $target_uname) {
       if ($this->IsVoted($uname)) continue;
       $str = $this->DistinguishPoison(DB::$USER->ByRealUname($target_uname));
@@ -27,7 +26,7 @@ class Role_pharmacist extends Role {
   }
 
   //毒能力鑑定
-  protected function DistinguishPoison($user){
+  protected function DistinguishPoison(User $user) {
     //非毒能力者・夢毒者
     if (! $user->IsRoleGroup('poison') || $user->IsRole('dummy_poison')) return 'nothing';
     if ($user->IsRole('strong_poison')) return 'strong'; //強毒者
@@ -41,7 +40,7 @@ class Role_pharmacist extends Role {
   }
 
   //解毒
-  function Detox(){
+  function Detox() {
     foreach ($this->GetStack() as $uname => $target_uname) {
       if ($this->IsVoted($uname)) continue;
       if ($this->IsActor($target_uname)) $this->SetDetoxFlag($uname);
@@ -49,13 +48,13 @@ class Role_pharmacist extends Role {
   }
 
   //解毒フラグセット
-  protected function SetDetoxFlag($uname){
+  protected function SetDetoxFlag($uname) {
     $this->GetActor()->detox = true;
     $this->AddStack('success', 'pharmacist_result', $uname);
   }
 
   //ショック死抑制
-  function Cure(){
+  function Cure() {
     foreach ($this->GetStack() as $uname => $target_uname) {
       if ($this->IsVoted($uname) || ! $this->IsActor($target_uname)) continue;
       $this->GetActor()->cured_flag = true;
@@ -64,7 +63,7 @@ class Role_pharmacist extends Role {
   }
 
   //鑑定結果登録
-  function SaveResult(){
+  function SaveResult() {
     foreach ($this->GetStack($this->role . '_result') as $uname => $result) {
       $user   = DB::$USER->ByUname($uname);
       $list   = $this->GetStack($user->GetMainRole(true));

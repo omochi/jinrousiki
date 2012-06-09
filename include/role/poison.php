@@ -5,10 +5,8 @@
   ・毒：制限なし
 */
 class Role_poison extends Role {
-  function __construct(){ parent::__construct(); }
-
   //毒対象者選出 (処刑)
-  function GetPoisonVoteTarget($list){
+  function GetPoisonVoteTarget(array $list) {
     $stack = array();
     $class = $this->GetClass($method = 'IsPoisonTarget');
     foreach ($list as $uname) {
@@ -21,5 +19,5 @@ class Role_poison extends Role {
   }
 
   //毒対象者判定
-  function IsPoisonTarget($user){ return true; }
+  function IsPoisonTarget(User $user) { return true; }
 }

@@ -7,9 +7,8 @@
 RoleManager::LoadFile('poison');
 class Role_dummy_poison extends Role_poison {
   public $display_role = 'poison';
-  function __construct(){ parent::__construct(); }
 
-  function IsPoisonTarget($user){
+  function IsPoisonTarget(User $user) {
     return $user->IsRole('dream_eater_mad') || $user->IsRoleGroup('fairy');
   }
 }

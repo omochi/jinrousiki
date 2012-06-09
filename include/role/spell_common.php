@@ -7,9 +7,8 @@
 RoleManager::LoadFile('common');
 class Role_spell_common extends Role_common {
   public $mix_in = 'critical_mad';
-  function __construct(){ parent::__construct(); }
 
-  function SetVoteAction($user){
+  function SetVoteAction(User $user) {
     if ($user->IsRoleGroup('wolf', 'fox') || $user->IsLovers()) $user->AddRole('cute_camouflage');
   }
 }

@@ -7,13 +7,12 @@
 RoleManager::LoadFile('patron');
 class Role_soul_patron extends Role_patron {
   public $result = 'PATRON_RESULT';
-  function __construct(){ parent::__construct(); }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     if (DB::$ROOM->date == 2) $this->OutputAbilityResult($this->result);
   }
 
-  protected function AddDuelistRole($user){
+  protected function AddDuelistRole(User $user) {
     $id = $this->GetActor()->user_no;
     DB::$ROOM->ResultAbility($this->result, $user->main_role, $user->handle_name, $id);
   }

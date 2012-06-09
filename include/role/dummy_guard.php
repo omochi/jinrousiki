@@ -6,15 +6,14 @@
 RoleManager::LoadFile('guard');
 class Role_dummy_guard extends Role_guard {
   public $display_role = 'guard';
-  function __construct(){ parent::__construct(); }
 
-  function SetGuard($uname){
+  function SetGuard($uname) {
     if (! DB::$ROOM->IsEvent('no_dream')) $this->AddStack($uname); //スキップ判定 (熱帯夜)
     return false;
   }
 
   //夢防衛
-  function GuardDream($user, $uname){
+  function GuardDream(User $user, $uname) {
     if (! in_array($uname, $this->GetStack())) return false;
     $flag = false;
     foreach (array_keys($this->GetStack(), $uname) as $guard_uname) { //護衛者を検出
@@ -31,7 +30,7 @@ class Role_dummy_guard extends Role_guard {
   }
 
   //護衛処理
-  function DreamGuard(&$list){
+  function DreamGuard(array &$list) {
     foreach ($this->GetStack() as $uname => $target_uname) {
       $user = DB::$USER->ByUname($uname);
       if ($user->IsDead(true)) continue; //直前に死んでいたら無効
@@ -48,7 +47,7 @@ class Role_dummy_guard extends Role_guard {
   }
 
   //狩り処理
-  function DreamHunt($list){
+  function DreamHunt(array $list) {
     foreach ($list as $id => $target) {
       DB::$USER->Kill($target->user_no, 'HUNTED');
       //憑依能力者は対象外なので仮想ユーザを引く必要なし

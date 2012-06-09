@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('unknown_mania');
 class Role_revive_mania extends Role_unknown_mania {
-  function __construct(){ parent::__construct(); }
-
-  function WolfEatCounter($user){
+  function WolfEatCounter(User $user) {
     if (DB::$ROOM->IsEvent('no_revive') || is_null($id = $this->GetActor()->GetMainRoleTarget())) {
       return;
     }

@@ -8,13 +8,12 @@
 RoleManager::LoadFile('priest');
 class Role_crisis_priest extends Role_priest {
   public $display_role = 'human';
-  function __construct(){ parent::__construct(); }
 
-  protected function GetOutputRole(){
+  protected function GetOutputRole() {
     return DB::$ROOM->date > 1 ? $this->role : null;
   }
 
-  function Priest($role_flag){
+  function Priest(StdClass $role_flag) {
     $data = $this->GetStack('priest');
     if (isset($data->crisis)) DB::$ROOM->ResultAbility($this->GetEvent(), $data->crisis);
   }

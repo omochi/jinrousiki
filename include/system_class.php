@@ -1,19 +1,4 @@
 <?php
-//-- クッキーデータのロード処理 --//
-class CookieDataSet {
-  public $scene;      //夜明け
-  public $objection;  //「異議あり」の情報
-  public $vote_times; //投票回数
-  public $user_count; //参加人数
-
-  function __construct() {
-    $this->scene      = @$_COOKIE['scene'];
-    $this->objection  = @$_COOKIE['objection'];
-    $this->vote_times = @(int)$_COOKIE['vote_times'];
-    $this->user_count = @(int)$_COOKIE['user_count'];
-  }
-}
-
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder {
   const TIME    = 5; //タイムアウト時間 (秒)

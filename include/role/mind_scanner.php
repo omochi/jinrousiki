@@ -27,15 +27,15 @@ class Role_mind_scanner extends Role {
 
   function IsVote() { return parent::IsVote() && DB::$ROOM->date == 1; }
 
-  function IsVoteCheckbox($user, $live) {
+  function IsVoteCheckbox(User $user, $live) {
     return parent::IsVoteCheckbox($user, $live) && ! $user->IsDummyBoy();
   }
 
-  function IgnoreVoteNight($user, $live) {
+  function IgnoreVoteNight(User $user, $live) {
     if (! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
     return $user->IsDummyBoy() ? '身代わり君には投票できません' : null;
   }
 
   //透視
-  function MindScan($user) { $user->AddRole($this->GetActor()->GetID($this->mind_role)); }
+  function MindScan(User $user) { $user->AddRole($this->GetActor()->GetID($this->mind_role)); }
 }

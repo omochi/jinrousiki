@@ -11,14 +11,13 @@ class Role_mimic_wizard extends Role_wizard {
   public $mix_in = 'mage';
   public $wizard_list = array('mage' => 'MAGE_DO', 1 => 'MAGE_DO');
   public $result_list = array('MAGE_RESULT', 'MIMIC_WIZARD_RESULT');
-  function __construct(){ parent::__construct(); }
 
-  function Mage($user){
+  function Mage(User $user) {
     $this->IsJammer($user);
     $this->SaveMageResult($user, 'failed', 'MAGE_RESULT');
   }
 
-  function Necromancer($user, $flag){
+  function Necromancer(User $user, $flag) {
     if (DB::$ROOM->date < 3) return;
     $failed = ! DB::$ROOM->IsEvent('full_wizard') &&
       (DB::$ROOM->IsEvent('debilitate_wizard') || mt_rand(0, 1) > 0);

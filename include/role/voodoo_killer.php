@@ -19,7 +19,7 @@ class Role_voodoo_killer extends Role {
   }
 
   //占い
-  function Mage($user) {
+  function Mage(User $user) {
     //呪殺判定 (呪い所持者・憑依能力者)
     if ($user->IsLive(true) && ($user->IsRoleGroup('cursed') || $user->IsPossessedGroup())) {
       DB::$USER->Kill($user->user_no, 'CURSED');

@@ -21,7 +21,7 @@ class Role_anti_voodoo extends Role {
   function IsVote() { return DB::$ROOM->date > 1; }
 
   //厄払い先セット
-  function SetGuard($user) {
+  function SetGuard(User $user) {
     $this->AddStack($user->uname);
     if (count($stack = array_keys($this->GetStack('possessed'), $user->uname)) > 0) { //憑依妨害判定
       foreach ($stack as $uname) DB::$USER->ByUname($uname)->possessed_cancel = true;

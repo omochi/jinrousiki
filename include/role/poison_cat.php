@@ -38,16 +38,18 @@ class Role_poison_cat extends Role {
     return method_exists($self, $method) ? $class->$method() : null;
   }
 
-  function GetVoteIconPath($user, $live) { return Icon::GetFile($user->icon_filename); }
+  function GetVoteIconPath(User $user, $live) { return Icon::GetFile($user->icon_filename); }
 
-  function IsVoteCheckbox($user, $live) {
+  function IsVoteCheckbox(User $user, $live) {
     return ! $live && ! $this->IsActor($user->uname) && ! $user->IsDummyBoy();
   }
 
-  function IgnoreVoteNight($user, $live) { return $live ? '死者以外には投票できません' : null; }
+  function IgnoreVoteNight(User $user, $live) {
+    return $live ? '死者以外には投票できません' : null;
+  }
 
   //蘇生
-  function Revive($user) {
+  function Revive(User $user) {
     $target = $this->GetReviveTarget($user);
     $result = is_null($target) || ! $this->ReviveUser($target) ? 'failed' : 'success';
     if ($result == 'success') {
@@ -63,11 +65,12 @@ class Role_poison_cat extends Role {
     if (DB::$ROOM->IsOption('seal_message')) return; //蘇生結果を登録 (天啓封印ならスキップ)
 
     $handle_name = DB::$USER->GetHandleName($target->uname, true);
-    DB::$ROOM->ResultAbility('POISON_CAT_RESULT', $result, $handle_name, $this->GetActor()->user_no);
+    $id = $this->GetActor()->user_no;
+    DB::$ROOM->ResultAbility('POISON_CAT_RESULT', $result, $handle_name, $id);
   }
 
   //蘇生対象者取得
-  function GetReviveTarget($user) {
+  function GetReviveTarget(User $user) {
     //蘇生データ取得
     $event  = DB::$ROOM->IsEvent('full_revive') ? 100 : (DB::$ROOM->IsEvent('no_revive') ? 0 : null);
     $class  = $this->GetClass($method = 'GetReviveRate');
@@ -123,7 +126,7 @@ class Role_poison_cat extends Role {
   }
 
   //蘇生実行
-  function ReviveUser($user) {
+  function ReviveUser(User $user) {
     if ($user->IsPossessedGroup()) { //憑依能力者対応
       if ($user->revive_flag) return true; //蘇生済みならスキップ
 

@@ -9,9 +9,8 @@ class Role_eclipse_medium extends Role_medium {
   public $mix_in = 'chicken';
   public $display_role = 'medium';
   public $sudden_death = 'SEALED';
-  function __construct(){ parent::__construct(); }
 
-  function SuddenDeath(){
+  function SuddenDeath() {
     if (! $this->IgnoreSuddenDeath() && $this->GetVoteKill() == '') {
       $this->SetSuddenDeath($this->sudden_death);
     }
