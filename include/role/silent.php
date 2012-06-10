@@ -5,8 +5,6 @@
   ・発言変換：文字数制限 (サーバ設定)
 */
 class Role_silent extends Role {
-  function __construct() { parent::__construct(); }
-
   function ConvertSay() {
     $str = $this->GetStack('say');
     $len = GameConfig::SILENT_LENGTH;

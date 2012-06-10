@@ -16,5 +16,5 @@ class Role_mind_sheep extends Role {
     RoleHTML::OutputPartner($stack, 'shepherd_patron_list');
   }
 
-  function WolfEatCounter($user) { $user->AddDoom(1, 'sheep_wisp'); }
+  function WolfEatCounter(User $user) { $user->AddDoom(1, 'sheep_wisp'); }
 }

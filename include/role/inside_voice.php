@@ -6,9 +6,7 @@
 */
 RoleManager::LoadFile('strong_voice');
 class Role_inside_voice extends Role_strong_voice {
-  function __construct(){ parent::__construct(); }
-
-  function FilterVoice(&$voice, &$str){
+  function FilterVoice(&$voice, &$str) {
     $stack = $this->voice_list;
     $voice = DB::$ROOM->IsNight() ? array_pop($stack) : array_shift($stack);
   }

@@ -6,5 +6,4 @@
 */
 RoleManager::LoadFile('strong_voice');
 class Role_weak_voice extends Role_strong_voice {
-  function __construct(){ parent::__construct(); }
 }

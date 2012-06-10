@@ -6,16 +6,14 @@
     - 問題点：観戦モードにすると普通に見えてしまう
 */
 class Role_blinder extends Role {
-  function __construct(){ parent::__construct(); }
-
   //スキップ判定
-  function IgnoreTalk(){
+  function IgnoreTalk() {
     return  ! $this->GetViewer()->virtual_live &&
       ! DB::$USER->IsVirtualLive($this->GetViewer()->user_no);
   }
 
   //発言フィルタ
-  function FilterTalk($user, &$name, &$voice, &$str){
+  function FilterTalk(User $user, &$name, &$voice, &$str) {
     if ($this->IgnoreTalk() || ! DB::$ROOM->IsDay() || $this->GetViewer()->IsSame($user->uname)) {
       return;
     }
@@ -23,5 +21,5 @@ class Role_blinder extends Role {
   }
 
   //囁きフィルタ
-  function FilterWhisper(&$voice, &$str){}
+  function FilterWhisper(&$voice, &$str) {}
 }

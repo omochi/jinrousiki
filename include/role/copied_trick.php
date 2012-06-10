@@ -5,5 +5,4 @@
 */
 RoleManager::LoadFile('copied');
 class Role_copied_trick extends Role_copied {
-  function __construct(){ parent::__construct(); }
 }

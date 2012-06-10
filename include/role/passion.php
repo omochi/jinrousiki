@@ -19,12 +19,11 @@ class Role_passion extends Role {
     '●' => 'ねたましい', 'ねたましい' => '●',
     'グレラン' => '告白', '告白'  => 'グレラン',
     'ローラー' => 'ハーレム', 'ハーレム'  => 'ローラー');
-  function __construct(){ parent::__construct(); }
 
-  function ConvertSay(){
+  function ConvertSay() {
     if (! is_array($stack = $this->GetConvertSayList())) return;
     $this->SetStack(strtr($this->GetStack('say'), $stack), 'say');
   }
 
-  protected function GetConvertSayList(){ return $this->convert_say_list; }
+  protected function GetConvertSayList() { return $this->convert_say_list; }
 }

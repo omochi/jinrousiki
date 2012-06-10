@@ -5,8 +5,6 @@
   ・勝利判定：非最終所持 or 単独生存
 */
 class Role_joker extends Role {
-  function __construct(){ parent::__construct(); }
-
   protected function IgnoreAbility() { return ! $this->GetActor()->IsJoker(); }
 
   function FilterWin(&$flag) {

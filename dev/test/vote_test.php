@@ -41,7 +41,7 @@ RQ::GetTest()->test_users[1]->color = '#000000';
 RQ::GetTest()->test_users[2]->uname = 'light_gray';
 RQ::GetTest()->test_users[2]->handle_name = '明灰';
 RQ::GetTest()->test_users[2]->sex = 'male';
-RQ::GetTest()->test_users[2]->role = 'trap_wolf lost_ability authority';
+RQ::GetTest()->test_users[2]->role = 'sex_wolf lost_ability authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->uname = 'dark_gray';
@@ -137,7 +137,7 @@ RQ::GetTest()->test_users[17]->live = 'dead';
 RQ::GetTest()->test_users[18]->uname = 'sea';
 RQ::GetTest()->test_users[18]->handle_name = '海';
 RQ::GetTest()->test_users[18]->sex = 'male';
-RQ::GetTest()->test_users[18]->role = 'detective_common';
+RQ::GetTest()->test_users[18]->role = 'detective_common no_last_words';
 RQ::GetTest()->test_users[18]->live = 'live';
 
 RQ::GetTest()->test_users[19]->uname = 'land';
@@ -384,7 +384,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-DB::$SELF = DB::$USER->ByID(10);
+#DB::$SELF = DB::$USER->ByID(10);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -661,7 +661,7 @@ do {
 //PrintData(Lottery::RateToProbability(GameConfig::$weather_list));
 //InsertLog();
 //PrintData(RoleManager::$file);
-PrintData(array_keys(RoleManager::$class));
-PrintData(DB::$USER->role);
+//PrintData(array_keys(RoleManager::$class));
+//PrintData(DB::$USER->role);
 //PrintData($INIT_CONF->loaded->class);
 HTML::OutputFooter();

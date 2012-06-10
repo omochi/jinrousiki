@@ -5,8 +5,6 @@
   ・発言変換：完全置換 (生存者ユーザ名 (ランダム) + サーバ設定)
 */
 class Role_gentleman extends Role {
-  function __construct() { parent::__construct(); }
-
   function ConvertSay() {
     if (mt_rand(1, 100) > GameConfig::GENTLEMAN_RATE) return false; //スキップ判定
 

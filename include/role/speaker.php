@@ -11,17 +11,16 @@
 RoleManager::LoadFile('strong_voice');
 class Role_speaker extends Role_strong_voice {
   public $mix_in = 'blinder';
-  function __construct(){ parent::__construct(); }
 
-  function IgnoreTalk(){
+  function IgnoreTalk() {
     return parent::IgnoreTalk() || ! DB::$ROOM->IsPlaying();
   }
 
-  function FilterTalk($user, &$name, &$voice, &$str){
+  function FilterTalk(User $user, &$name, &$voice, &$str) {
     if (! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str);
   }
 
-  function FilterWhisper(&$voice, &$str){
+  function FilterWhisper(&$voice, &$str) {
     if (! $this->IgnoreTalk()) $this->ShiftVoice($voice, $str);
   }
 }

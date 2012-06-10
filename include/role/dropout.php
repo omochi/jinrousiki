@@ -6,11 +6,9 @@
 */
 RoleManager::LoadFile('decide');
 class Role_dropout extends Role_decide {
-  function __construct(){ parent::__construct(); }
+  function SetVoteDay($uname) { $this->AddStack($uname); }
 
-  function SetVoteDay($uname){ $this->AddStack($uname); }
-
-  function DecideVoteKill(){
+  function DecideVoteKill() {
     if ($this->IsVoteKill()) return;
     $stack = $this->GetVotePossible();
     foreach ($this->GetStack() as $actor => $target) {

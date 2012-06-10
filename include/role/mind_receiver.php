@@ -17,7 +17,7 @@ class Role_mind_receiver extends Role {
     RoleHTML::OutputPartner($stack, 'mind_scanner_target');
   }
 
-  function IsMindReadActive($user) {
+  function IsMindReadActive(User $user) {
     return $this->GetTalkFlag('mind_read') &&
       $this->GetActor()->IsPartner($this->role, $user->user_no);
   }

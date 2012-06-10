@@ -6,8 +6,6 @@
     - 判定は一文字毎で、空白、タブ、改行文字は対象外
 */
 class Role_invisible extends Role {
-  function __construct() { parent::__construct(); }
-
   function ConvertSay() {
     $say    = $this->GetStack('say');
     $result = '';

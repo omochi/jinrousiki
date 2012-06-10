@@ -7,13 +7,11 @@
 */
 RoleManager::LoadFile('escaper');
 class Role_divine_escaper extends Role_escaper {
-  function __construct(){ parent::__construct(); }
-
-  protected function EscapeFailed($user){
+  protected function EscapeFailed(User $user) {
     return $user->IsWolf() || $user->IsRoleGroup('assassin') || $user->IsOgre();
   }
 
-  protected function EscapeAction($user){
+  protected function EscapeAction(User $user) {
     if ($user->IsCamp('human')) $user->AddDoom(1, 'day_voter');
   }
 }

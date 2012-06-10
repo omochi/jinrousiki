@@ -6,7 +6,5 @@
 */
 RoleManager::LoadFile('escaper');
 class Role_psycho_escaper extends Role_escaper {
-  function __construct(){ parent::__construct(); }
-
-  protected function EscapeFailed($user){ return $user->IsLiar(); }
+  protected function EscapeFailed(User $user) { return $user->IsLiar(); }
 }

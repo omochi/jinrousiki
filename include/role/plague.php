@@ -6,7 +6,5 @@
 */
 RoleManager::LoadFile('decide');
 class Role_plague extends Role_decide {
-  function __construct(){ parent::__construct(); }
-
-  function DecideVoteKill(){ $this->DecideVoteKillEscape(); }
+  function DecideVoteKill() { $this->DecideVoteKillEscape(); }
 }

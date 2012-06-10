@@ -7,15 +7,14 @@
 RoleManager::LoadFile('chicken');
 class Role_febris extends Role_chicken {
   public $sudden_death = 'FEBRIS';
-  function __construct(){ parent::__construct(); }
 
-  protected function IgnoreAbility(){ return ! $this->IsDoom(); }
+  protected function IgnoreAbility() { return ! $this->IsDoom(); }
 
-  protected function OutputImage(){ return; }
+  protected function OutputImage() { return; }
 
-  protected function OutputResult(){
+  protected function OutputResult() {
     RoleHTML::OutputAbilityResult($this->role . '_header', DB::$ROOM->date, 'sudden_death_footer');
   }
 
-  function IsSuddenDeath(){ return ! $this->IgnoreSuddenDeath() && $this->IsDoom(); }
+  function IsSuddenDeath() { return ! $this->IgnoreSuddenDeath() && $this->IsDoom(); }
 }

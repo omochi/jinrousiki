@@ -5,9 +5,7 @@
   ・人狼襲撃耐性：身代わり (庇護者付加者)
 */
 class Role_protected extends Role {
-  function __construct(){ parent::__construct(); }
-
-  function WolfEatResist(){
+  function WolfEatResist() {
     if ($this->IgnoreSacrifice()) return false;
     $stack = array();
     foreach ($this->GetActor()->GetPartner($this->role) as $id) {
@@ -17,10 +15,10 @@ class Role_protected extends Role {
   }
 
   //身代わり無効判定
-  function IgnoreSacrifice(){ return DB::$ROOM->IsEvent('no_sacrifice'); }
+  function IgnoreSacrifice() { return DB::$ROOM->IsEvent('no_sacrifice'); }
 
   //身代わり処理
-  function Sacrifice($stack){
+  function Sacrifice($stack) {
     //PrintData($stack, sprintf('Sacrifice [%s]', $this->role));
     if (count($stack) < 1) return false;
     DB::$USER->Kill(GetRandom($stack), 'SACRIFICE');
@@ -28,7 +26,7 @@ class Role_protected extends Role {
   }
 
   //人狼襲撃得票カウンター (Mixin 用)
-  function WolfEatReaction(){
+  function WolfEatReaction() {
     if ($this->IgnoreSacrifice()) return false;
     $stack = array();
     $class = $this->GetClass($method = 'IsSacrifice');

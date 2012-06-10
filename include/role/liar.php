@@ -21,7 +21,6 @@ class Role_liar extends Role_passion {
     '少年' => '少女', '少女' => '少年',
     'しょうねん' => 'しょうじょ', 'しょうじょ' => 'しょうねん',
     'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう');
-  function __construct() { parent::__construct(); }
 
   protected function GetConvertSayList() {
     return mt_rand(1, 100) > GameConfig::LIAR_RATE ? null : parent::GetConvertSayList();

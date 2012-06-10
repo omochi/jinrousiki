@@ -7,9 +7,8 @@
 RoleManager::LoadFile('chicken');
 class Role_celibacy extends Role_chicken {
   public $sudden_death = 'CELIBACY';
-  function __construct(){ parent::__construct(); }
 
-  function SuddenDeath(){
+  function SuddenDeath() {
     if ($this->IgnoreSuddenDeath()) return;
     foreach ($this->GetVotedUname() as $uname) {
       if (DB::$USER->ByRealUname($uname)->IsLovers()) {
