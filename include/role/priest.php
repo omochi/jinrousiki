@@ -85,7 +85,7 @@ class Role_priest extends Role {
 
       if (in_array('dowser_priest', $data->list)) {
 	$dummy_user = new User();
-	$dummy_user->ParseRoles($user->GetRole());
+	$dummy_user->Parse($user->GetRole());
 	$data->count['sub_role'] += count($dummy_user->role_list) - 1;
       }
 

@@ -87,7 +87,7 @@ class Winner {
     $infected_list  = array(); //吸血鬼 => 感染者リスト
     foreach (DB::$USER->GetLivingUsers(true) as $uname) {
       $user = DB::$USER->ByUname($uname);
-      $user->ReparseRoles();
+      $user->Reparse();
       if (! $user->IsRole('psycho_infected')) $living_id_list[] = $user->user_no;
       if ($user->IsRole('infected')) {
 	foreach ($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->user_no;
@@ -141,8 +141,6 @@ class Winner {
 
   //勝敗結果生成
   static function Generate($id = 0) {
-    global $ROLES;
-
     /* 村の勝敗結果 */
     $winner = DB::$ROOM->LoadWinner();
     $class  = $winner;
@@ -202,7 +200,7 @@ EOF;
       break;
 
     default:
-      $ROLES->stack->class = null;
+      RoleManager::$get->class = null;
       switch ($camp) {
       case 'human':
       case 'wolf':
@@ -235,7 +233,7 @@ EOF;
       }
 
       if ($win_flag) {
-	$class = is_null($ROLES->stack->class) ? $camp : $ROLES->stack->class;
+	$class = is_null(RoleManager::$get->class) ? $camp : RoleManager::$get->class;
       }
       else {
 	$result = 'lose';

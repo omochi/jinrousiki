@@ -79,7 +79,7 @@ class Role_cupid extends Role {
       $stack[] = $user->handle_name;
       $user->AddRole($role); //恋人セット
       $this->AddCupidRole($user, $flag); //役職追加
-      $user->ReparseRoles(); //再パース (魂移使判定用：反映が保障されているのは恋人のみ)
+      $user->Reparse(); //再パース (魂移使判定用：反映が保障されているのは恋人のみ)
     }
     $this->SetStack(implode(' ', array_keys($list)), 'target_no');
     $this->SetStack(implode(' ', $stack), 'target_handle');

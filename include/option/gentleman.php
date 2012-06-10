@@ -11,12 +11,10 @@ class Option_gentleman extends CheckRoomOptionItem {
 
   function GetExplain() { return '全員に性別に応じた「紳士」「淑女」がつきます'; }
 
-  function Cast(&$list, &$rand) {
-    global $ROLES;
-
+  function Cast(array &$list, &$rand) {
     $stack = array('male' => 'gentleman', 'female' => 'lady');
     foreach (array_keys($list) as $id) {
-      $list[$id] .= ' ' . $stack[DB::$USER->ByUname($ROLES->stack->uname_list[$id])->sex];
+      $list[$id] .= ' ' . $stack[DB::$USER->ByUname(RoleManager::$get->uname_list[$id])->sex];
     }
     return array('gentleman', 'lady');
   }

@@ -226,7 +226,8 @@ function GenerateOldLog() {
     DB::$ROOM->scene  = 'day';
   }
   $title  = sprintf('[%d番地] %s - %s', DB::$ROOM->id, DB::$ROOM->name, $base_title);
-  $option = RoomOption::Wrap(DB::$ROOM->game_option->row, DB::$ROOM->option_role->row)->GenerateImageList();
+  $option_role = DB::$ROOM->option_role->row;
+  $option = RoomOption::Wrap(DB::$ROOM->game_option->row, $option_role)->GenerateImageList();
   $log    = GameHTML::GeneratePlayer() . (RQ::$get->heaven_only ? LayoutHeaven() : LayoutTalkLog());
   $link = '<a href="#beforegame">前</a>'."\n";
   for($i = 1; $i <= DB::$ROOM->last_date ; $i++) $link .= '<a href="#date'.$i.'">'.$i.'</a>'."\n";
@@ -331,7 +332,7 @@ function GenerateDateTalkLog($set_date, $set_scene) {
 
   //-- 仮想稼動モードテスト用 --//
   //DB::$SELF = DB::$USER->rows[3];
-  //DB::$SELF->ParseRoles('human earplug');
+  //DB::$SELF->Parse('human earplug');
   //DB::$SELF->live = 'live';
   //DB::$ROOM->status = 'playing';
   //DB::$ROOM->option_list[] = 'not_open_cast';

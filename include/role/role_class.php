@@ -5,6 +5,7 @@ class RoleManager {
   static $file  = array(); //ロード済みファイル
   static $class = array(); //ロード済みクラス
   static $actor; //対象ユーザ
+  static $get;   //スタックデータ
 
   //常時表示サブ役職 (本体 / 順番依存あり)
   static $display_real_list = array(
@@ -210,10 +211,6 @@ class RoleManager {
   //特殊勝敗判定 (ジョーカー系)
   static $joker_list = array('joker', 'rival');
 
-  function __construct() {
-    $this->stack  = new StdClass();
-  }
-
   //フィルタロード
   static function Load($type, $shift = false, $virtual = false) {
     $stack = array();
@@ -250,6 +247,14 @@ class RoleManager {
     if (! self::LoadFile($name)) return null;
     $class = 'Role_' . $name;
     return new $class();
+  }
+
+  //データ取得
+  static function GetStack($name) { return isset(self::$get->$name) ? self::$get->$name : null; }
+
+  //データセット
+  static function SetStack($name, $data) {
+    self::$get->$name = $data;
   }
 
   //クラスセット
@@ -347,28 +352,24 @@ abstract class Role {
 
   //データ初期化
   protected function InitStack($name = null) {
-    global $ROLES;
     $data = is_null($name) ? $this->role : $name;
-    if (! property_exists($ROLES->stack, $data)) $ROLES->stack->$data = array();
+    if (! isset(RoleManager::$get->$data)) RoleManager::$get->$data = array();
   }
 
   //データ取得
   protected function GetStack($name = null, $fill = false) {
-    global $ROLES;
-    $data = is_null($name) ? $this->role : $name;
-    return property_exists($ROLES->stack, $data) ? $ROLES->stack->$data : ($fill ? array() : null);
+    $stack = RoleManager::GetStack(is_null($name) ? $this->role : $name);
+    return isset($stack) ? $stack : ($fill ? array() : null);
   }
 
   //データセット
   protected function SetStack($data, $role = null) {
-    global $ROLES;
-    $ROLES->stack->{is_null($role) ? $this->role : $role} = $data;
+    RoleManager::SetStack(is_null($role) ? $this->role : $role, $data);
   }
 
   //データ追加
   protected function AddStack($data, $role = null, $uname = null) {
-    global $ROLES;
-    $ROLES->stack->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
+    RoleManager::$get->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
   }
 
   //同一ユーザ判定
@@ -783,8 +784,7 @@ abstract class Role {
   //-- 投票集計処理 (夜) --//
   //成功データ追加
   protected function AddSuccess($target, $data = null, $null = false) {
-    global $ROLES;
-    $ROLES->stack->{is_null($data) ? $this->role : $data}[$target] = $null ? null : true;
+    RoleManager::$get->{is_null($data) ? $this->role : $data}[$target] = $null ? null : true;
   }
 
   //投票者取得

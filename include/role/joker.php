@@ -7,15 +7,15 @@
 class Role_joker extends Role {
   function __construct(){ parent::__construct(); }
 
-  protected function IgnoreAbility(){ return ! $this->GetActor()->IsJoker(); }
+  protected function IgnoreAbility() { return ! $this->GetActor()->IsJoker(); }
 
-  function FilterWin(&$flag){
+  function FilterWin(&$flag) {
     $flag = ! $this->GetActor()->IsJoker() ||
       ($this->IsLive() && count(DB::$USER->GetLivingUsers()) == 1);
   }
 
   //ジョーカー移動
-  function SetJoker(){
+  function SetJoker() {
     $user    = $this->GetJoker(); //現在の所持者を取得
     $virtual = DB::$USER->ByVirtual($user->user_no)->uname; //仮想ユーザ名を取得
     $uname   = $this->GetVoteTargetUname($virtual); //ジョーカーの投票先
@@ -52,7 +52,7 @@ class Role_joker extends Role {
 
   //ジョーカー再設定 (ゲーム終了時)
   /* ゲーム終了時のみ、処刑先への移動許可 (それ以外なら本人継承) */
-  function FinishJoker(){
+  function FinishJoker() {
     $uname = $this->GetStack('joker_uname');
     $user  = $this->GetJoker();
     $this->IsVoted($uname) && ! $this->IsVoted($user->uname) ?
@@ -61,7 +61,7 @@ class Role_joker extends Role {
 
   //ジョーカー再設定
   /* 生きていたら本人継承 / 処刑者なら前日所持者以外の投票者ランダム / 死亡なら完全ランダム */
-  function ResetJoker(){
+  function ResetJoker() {
     $user = $this->GetJoker();
     if ($user->IsLive(true)) {
       $user->AddJoker();
@@ -74,5 +74,5 @@ class Role_joker extends Role {
   }
 
   //現在の所持ユーザ取得
-  private function GetJoker(){ return DB::$USER->ByID($this->GetStack('joker_id')); }
+  private function GetJoker() { return DB::$USER->ByID($this->GetStack('joker_id')); }
 }

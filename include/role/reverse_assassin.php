@@ -7,20 +7,17 @@
 RoleManager::LoadFile('assassin');
 class Role_reverse_assassin extends Role_assassin {
   function Assassin(User $user) {
-    global $ROLES;
-    $ROLES->stack->reverse_assassin[$this->GetActor()->uname] = $user->uname;
+    RoleManager::$get->reverse_assassin[$this->GetActor()->uname] = $user->uname;
   }
 
   function AssassinKill() {
-    global $ROLES;
-
     foreach ($this->GetStack() as $uname => $target_uname) {
       $target = DB::$USER->ByUname($target_uname);
       if ($target->IsLive(true)) {
 	DB::$USER->Kill($target->user_no, 'ASSASSIN_KILLED');
       }
       elseif (! $target->IsLovers()) {
-	$ROLES->stack->reverse[$target_uname] = ! $ROLES->stack->reverse[$target_uname];
+	RoleManager::$get->reverse[$target_uname] = ! RoleManager::$get->reverse[$target_uname];
       }
     }
   }

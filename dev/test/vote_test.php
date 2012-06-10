@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('room_config', 'icon_class', 'game_play_functions', 'game_vote_functions');
-$INIT_CONF->LoadClass('ROLES');
+$INIT_CONF->LoadFile('room_config', 'role_class', 'icon_class', 'game_play_functions',
+		     'game_vote_functions');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame', true);
@@ -189,6 +189,7 @@ $icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
 foreach (RQ::GetTest()->test_users as $id => $user) {
   $user->room_no = RQ::$get->room_no;
   $user->user_no = $id;
+  $user->role_id = $id;
   if (! isset($user->profile)) $user->profile = $id;
   $user->last_load_scene = 'night';
   if ($id > 1) {
@@ -383,7 +384,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(23);
+DB::$SELF = DB::$USER->ByID(10);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -603,7 +604,7 @@ do {
   foreach (DB::$USER->rows as $user) {
     unset($user->virtual_role);
     $user->live = $user->IsLive(true) ? 'live' : 'dead';
-    $user->ReparseRoles();
+    $user->Reparse();
   }
 
   foreach (RQ::GetTest()->vote->night as $stack) {
@@ -660,6 +661,7 @@ do {
 //PrintData(Lottery::RateToProbability(GameConfig::$weather_list));
 //InsertLog();
 //PrintData(RoleManager::$file);
-//PrintData(array_keys(RoleManager::$class));
+PrintData(array_keys(RoleManager::$class));
+PrintData(DB::$USER->role);
 //PrintData($INIT_CONF->loaded->class);
 HTML::OutputFooter();

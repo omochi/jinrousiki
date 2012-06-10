@@ -1,9 +1,8 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('chaos_config', 'icon_class', 'user_class', 'cast_class',
+$INIT_CONF->LoadFile('chaos_config', 'icon_class', 'user_class', 'role_class', 'cast_class',
 		     'room_option_class', 'game_vote_functions');
-$INIT_CONF->LoadClass('ROLES');
 
 //-- 仮想村データをセット --//
 $INIT_CONF->LoadRequest('RequestBaseGame', true);
@@ -166,6 +165,6 @@ GameHTML::OutputPlayer();
 Vote::AggregateGameStart();
 DB::$ROOM->date++;
 DB::$ROOM->scene = 'night';
-foreach (DB::$USER->rows as $user) $user->ReparseRoles();
+foreach (DB::$USER->rows as $user) $user->Reparse();
 GameHTML::OutputPlayer();
 HTML::OutputFooter();

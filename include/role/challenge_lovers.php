@@ -10,11 +10,10 @@
 class Role_challenge_lovers extends Role {
   public $mix_in = 'chicken';
   public $sudden_death = 'CHALLENGE';
-  function __construct(){ parent::__construct(); }
 
-  protected function IgnoreAbility(){ return DB::$ROOM->date < 2; }
+  protected function IgnoreAbility() { return DB::$ROOM->date < 2; }
 
-  function SuddenDeath(){
+  function SuddenDeath() {
     if ($this->IgnoreSuddenDeath() || DB::$ROOM->date < 5) return;
     if (! is_array($cupid_list = $this->GetStack())){ //QP のデータをセット
       $cupid_list = array();
@@ -41,5 +40,5 @@ class Role_challenge_lovers extends Role {
     $this->SetSuddenDeath($this->sudden_death);
   }
 
-  function WolfEatResist(){ return $this->GetActor()->IsChallengeLovers(); }
+  function WolfEatResist() { return $this->GetActor()->IsChallengeLovers(); }
 }

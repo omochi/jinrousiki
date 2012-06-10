@@ -137,8 +137,6 @@ class Play {
 
   //置換処理
   static function ConvertSay(&$say) {
-    global $ROLES;
-
     if ($say == '') return null; //リロード時なら処理スキップ
     //文字数・行数チェック
     if (strlen($say) > GameConfig::LIMIT_SAY ||
@@ -153,7 +151,7 @@ class Play {
     if (DB::$SELF->IsDead() || ! DB::$ROOM->IsPlaying()) return null;
     //if (DB::$SELF->IsDead()) return false; //テスト用
 
-    $ROLES->stack->say = $say;
+    RoleManager::$get->say = $say;
     RoleManager::$actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->user_no)); //仮想ユーザを取得
     do { //発言置換処理
       foreach (RoleManager::Load('say_convert_virtual') as $filter) {
@@ -173,8 +171,8 @@ class Play {
 
     RoleManager::$actor = $virtual;
     foreach (RoleManager::Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
-    $say = $ROLES->stack->say;
-    unset($ROLES->stack->say);
+    $say = RoleManager::$get->say;
+    unset(RoleManager::$get->say);
     return true;
   }
 

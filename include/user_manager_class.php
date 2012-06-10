@@ -170,7 +170,7 @@ EOF;
     }
 
     //DB にユーザデータを登録
-    $user_no = count(DB::$USER->names) + 1; //KICK された住人も含めた新しい番号を振る
+    $user_no = count(DB::$USER->name) + 1; //KICK された住人も含めた新しい番号を振る
     if (DB::InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
 		       $sex, $role, Session::Get(true))) {
       //クッキーの初期化

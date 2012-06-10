@@ -44,7 +44,7 @@ class JinroCookie {
 
     //ユーザ全体の「異議」ありを集計
     $count = 0;
-    foreach (DB::$USER->names as $uname => $id) {
+    foreach (DB::$USER->name as $uname => $id) {
       $objection_list[$count++] = DB::$USER->ByID($id)->objection;
     }
     //PrintData($objection_list, 'objection');

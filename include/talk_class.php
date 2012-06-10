@@ -509,13 +509,11 @@ EOF;
 
   //役職情報ロード
   private function LoadFilter() {
-    global $ROLES;
-
     RoleManager::$actor = $this->actor;
     if (! isset(RoleManager::$actor->virtual_live)) RoleManager::$actor->virtual_live = false;
     $this->filter = RoleManager::Load('talk');
-    $ROLES->stack->viewer  = RoleManager::$actor;
-    $ROLES->stack->builder = $this;
+    RoleManager::$get->viewer  = RoleManager::$actor;
+    RoleManager::$get->builder = $this;
   }
 
   //フィルタ用フラグセット

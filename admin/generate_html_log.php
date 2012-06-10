@@ -34,7 +34,6 @@ if ($db_delete_mode) {
 //HTML::OutputFooter(true);
 
 $INIT_CONF->LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
-$INIT_CONF->LoadClass('ROLES');
 
 $room_delete = false; //DB削除設定
 $header = sprintf('../log_test/%s', RQ::$get->prefix);

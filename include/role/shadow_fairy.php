@@ -6,7 +6,7 @@
 */
 RoleManager::LoadFile('fairy');
 class Role_shadow_fairy extends Role_fairy {
-  function BadStatus($USERS, $base_date) {
+  function BadStatus(UserDataSet $USERS, $base_date) {
     $stack = array();
     foreach ($USERS->rows as $user) {
       foreach ($user->GetPartner('bad_status', true) as $id => $date) {

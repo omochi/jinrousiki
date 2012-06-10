@@ -26,7 +26,6 @@ class InitializeConfig {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   public $depend_file = array(
-    'ROLES'                  => 'role_class',
     'TIME_CALC'              => array('time_config', 'room_config', 'game_config', 'cast_config',
 				      'role_data_class', 'image_class', 'info_functions'),
     'PAPARAZZI'              => 'paparazzi_class',
@@ -41,7 +40,7 @@ class InitializeConfig {
     'room_option_item_class' => array('room_config', 'time_config', 'game_option_config'),
     'option_form_class'      => 'room_option_class',
     'user_class'             => array('role_data_class', 'game_functions'),
-    'talk_class'             => array('game_config', 'message', 'user_class'),
+    'talk_class'             => array('game_config', 'message', 'user_class', 'role_class'),
     'icon_class'             => 'icon_config',
     'user_icon_class'        => 'user_icon_config',
     'sound_class'            => 'sound_config',
@@ -69,12 +68,11 @@ class InitializeConfig {
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
   public $depend_class = array(
-    'talk_class' => 'ROLES',
+    //'talk_class' => 'ROLES',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   public $class_list = array(
-    'ROLES'     => 'RoleManager',
     'TIME_CALC' => 'TimeCalculation',
     'PAPARAZZI' => 'Paparazzi'
   );
