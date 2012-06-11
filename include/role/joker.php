@@ -66,8 +66,8 @@ class Role_joker extends Role {
       return;
     }
     $target = $this->GetStack('joker_target');
-    $stack  = $this->IsVoted($user->uname) && count($target) > 0 ? $target :
-      DB::$USER->GetLivingUsers(true);
+    $stack  = $this->IsVoted($user->uname) && count($target) > 0 ?
+      $target : DB::$USER->GetLivingUsers(true);
     DB::$USER->ByRealUname(GetRandom($stack))->AddJoker();
   }
 

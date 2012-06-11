@@ -15,7 +15,7 @@ class Talk {
     //if (DB::$SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
     $is_open = DB::$ROOM->IsOpenCast(); //霊界公開判定
-    $builder = new TalktBuilder('talk');
+    $builder = new TalkBuilder('talk');
     foreach (DB::$ROOM->LoadTalk(true) as $talk) {
       $user = DB::$USER->ByUname($talk->uname); //ユーザを取得
 

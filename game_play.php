@@ -30,6 +30,15 @@ elseif (DB::$ROOM->IsFinished()) { //勝敗結果表示
 
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
+
+//「異議」ありセット判定
+if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
+    (DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
+  DB::$SELF->objection++;
+  DB::$SELF->Update('objection', DB::$SELF->objection);
+  DB::$ROOM->Talk('', 'OBJECTION', DB::$SELF->uname);
+}
+
 if (RQ::$get->play_sound) JinroCookie::Set(); //クッキー情報セット
 
 //-- 発言処理 --//

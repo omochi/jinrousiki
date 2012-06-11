@@ -34,14 +34,6 @@ class JinroCookie {
     $objection_list = array_fill(0, $user_count, 0); //配列をセット (index は 0 から)
     if (DB::$ROOM->IsAfterGame()) return; //ゲーム終了ならスキップ
 
-    //「異議」ありセット判定
-    if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
-	(DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
-      DB::$SELF->objection++;
-      DB::$SELF->Update('objection', DB::$SELF->objection);
-      DB::$ROOM->Talk('', 'OBJECTION', DB::$SELF->uname);
-    }
-
     //ユーザ全体の「異議」ありを集計
     $count = 0;
     foreach (DB::$USER->name as $uname => $id) {

@@ -720,20 +720,6 @@ EOF;
     }
   }
 
-  /*
-    このメソッドは橋姫実装時のために予約されています。
-     スペースが２つ続いている箇所は空の役職と認識されるおそれがあります。
-     本来はParseRole側でpreg_split()などを使用するべきですが、役職が減る状況の方が少ないため、
-     削除側で調節するものとします。(2009-07-05 enogu)
-  */
-  /*
-  public function RemoveRole($role) {
-    $this->role = str_replace('  ', ' ', str_replace($role, '', $this->role));
-    $this->updated[] = 'role';
-    $this->Parse();
-  }
-  */
-
   public function LostAbility() {
     $this->AddRole('lost_ability');
     $this->lost_flag = true;
@@ -1120,8 +1106,10 @@ class UserDataSet {
     $user = GetRandom($stack);
     $user->AddDoom(0, 'death_note');
     DB::$ROOM->date--;
+    DB::$ROOM->scene = 'night';
     DB::$ROOM->ResultDead($user->handle_name, 'DEATH_NOTE_MOVED');
     DB::$ROOM->date++;
+    DB::$ROOM->scene = 'day';
   }
 
   //仮想役職リストの保存 (ログ処理用)
