@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('info_functions');
+Loader::LoadFile('info_functions');
 OutputRolePageHeader('サブ役職');
 ?>
 <p><a href="#rule">基本ルール</a></p>

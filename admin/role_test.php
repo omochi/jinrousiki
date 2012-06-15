@@ -2,14 +2,14 @@
 //error_reporting(E_ALL);
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('chaos_config', 'role_data_class', 'cast_class', 'room_option_class',
-		     'game_vote_functions');
+Loader::LoadFile('chaos_config', 'role_data_class', 'cast_class', 'room_option_class',
+		 'game_vote_functions');
 
 HTML::OutputHeader('配役テストツール', 'role_table', true);
 OutputRoleTestForm();
 
 if (@$_POST['command'] == 'role_test') {
-  $INIT_CONF->LoadRequest('RequestBase'); //専用 Request を作るべき
+  Loader::LoadRequest('RequestBase'); //専用 Request を作るべき
   RQ::$get->TestItems = new StdClass();
   RQ::GetTest()->is_virtual_room = true;
 

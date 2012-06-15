@@ -1,11 +1,11 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('time_config', 'icon_class', 'talk_class', 'session_class',
-		     'game_play_functions');
+Loader::LoadFile('time_config', 'icon_class', 'talk_class', 'session_class',
+		 'game_play_functions');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestGamePlay', true);
-if (RQ::$get->play_sound) $INIT_CONF->LoadFile('cookie_class'); //音でお知らせ
+Loader::LoadRequest('RequestGamePlay', true);
+if (RQ::$get->play_sound) Loader::LoadFile('cookie_class'); //音でお知らせ
 
 DB::Connect();
 Session::CertifyGamePlay(); //セッション認証
@@ -18,14 +18,14 @@ DB::$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
 //シーンに応じた追加クラスをロード
 if (DB::$ROOM->IsBeforeGame()) { //ゲームオプション表示
-  $INIT_CONF->LoadFile('cast_config', 'image_class', 'room_option_class');
+  Loader::LoadFile('cast_config', 'image_class', 'room_option_class');
   RQ::$get->retrive_type = DB::$ROOM->scene;
 }
 elseif (! DB::$ROOM->heaven_mode && DB::$ROOM->IsDay()) {
   RQ::$get->retrive_type = DB::$ROOM->scene;
 }
 elseif (DB::$ROOM->IsFinished()) { //勝敗結果表示
-  $INIT_CONF->LoadFile('winner_message');
+  Loader::LoadFile('winner_message');
 }
 
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード

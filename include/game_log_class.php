@@ -2,8 +2,6 @@
 //-- GameLog 出力クラス --//
 class GameLog {
   static function Output() {
-    global $INIT_CONF;
-
     //-- データ収集 --//
     DB::Connect();
     Session::Certify();
@@ -79,7 +77,7 @@ class GameLog {
     //能力発動ログを出力 (管理者限定)
     if (RQ::$get->user_no > 0 &&
 	DB::$SELF->IsDummyBoy() && DB::$SELF->handle_name == '身代わり君') {
-      $INIT_CONF->LoadFile('game_play_functions');
+      Loader::LoadFile('game_play_functions');
       DB::$SELF = DB::$USER->ByID(RQ::$get->user_no);
       DB::$SELF->live = 'live';
       PlayHTML::OutputAbility();

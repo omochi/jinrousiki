@@ -6,7 +6,7 @@ $DISABLE_TWITTER_TEST = true; //false にすると使用可能になる
 if ($DISABLE_TWITTER_TEST) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
-$INIT_CONF->LoadFile('twitter_class');
+Loader::LoadFile('twitter_class');
 
 //-- 投稿テスト用データ --//
 $room_no      = '1';

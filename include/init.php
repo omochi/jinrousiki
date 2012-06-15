@@ -20,12 +20,13 @@ define('JINRO_MOD',  JINRO_ROOT . '/module');
   確実に読み込まれているデータを入れる必要はない。
   逆にコード上必須ではないが常にセットで使われるデータを入れると良い。
 */
-class InitializeConfig {
-  public $path; //パス情報格納変数
-  public $loaded; //ロード情報格納変数
+class Loader {
+  const PATH = '%s/%s.php';
+  static $file  = array(); //ロード済みファイル
+  static $class = array(); //ロード済みクラス
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
-  public $depend_file = array(
+  static $depend_file = array(
     'TIME_CALC'              => array('time_config', 'room_config', 'game_config', 'cast_config',
 				      'role_data_class', 'image_class', 'info_functions'),
     'PAPARAZZI'              => 'paparazzi_class',
@@ -67,65 +68,64 @@ class InitializeConfig {
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
-  public $depend_class = array(
+  static $depend_class = array(
     //'talk_class' => 'ROLES',
   );
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
-  public $class_list = array(
+  static $class_list = array(
     'TIME_CALC' => 'TimeCalculation',
     'PAPARAZZI' => 'Paparazzi'
   );
 
-  function __construct() {
-    $this->path = new StdClass();
-    $this->path->root    = JINRO_ROOT;
-    $this->path->config  = JINRO_CONF;
-    $this->path->include = JINRO_INC;
-    $this->path->module  = JINRO_MOD;
-    $this->loaded = new StdClass();
-    $this->loaded->file  = array();
-    $this->loaded->class = array();
-
-    $this->LoadFile('database_class', 'server_config');
-  }
-
-  //依存情報設定
-  protected function SetDepend($type, $name, $depend) {
-    if (is_null($this->$type)) return false;
-    $this->{$type}[$name] = $depend;
-    return true;
-  }
-
-  //依存クラス情報設定 ＆ ロード
-  protected function SetClass($name, $class) {
-    if (! $this->SetDepend('class_list', $name, $class)) return false;
-    $this->LoadClass($name);
-    return true;
-  }
-
-  //依存解決処理
-  protected function LoadDependence($name) {
-    if (array_key_exists($name, $this->depend_file))  $this->LoadFile($this->depend_file[$name]);
-    if (array_key_exists($name, $this->depend_class)) $this->LoadClass($this->depend_class[$name]);
-  }
-
   //ファイルロード
-  function LoadFile($name) {
+  static function LoadFile($name) {
     $name_list = func_get_args();
     if (is_array($name_list[0])) $name_list = $name_list[0];
     if (count($name_list) > 1) {
-      foreach ($name_list as $name) $this->LoadFile($name);
-      return;
+      foreach ($name_list as $name) self::LoadFile($name);
+      return true;
     }
 
-    if (is_null($name) || in_array($name, $this->loaded->file)) return false;
-    $this->LoadDependence($name);
+    if (is_null($name) || in_array($name, self::$file)) return false;
+    self::LoadDependence($name);
 
+    require_once(self::GetPath($name));
+    self::$file[] = $name;
+    return true;
+  }
+
+  //クラスロード
+  static function LoadClass($name) {
+    $name_list = func_get_args();
+    if (is_array($name_list[0])) $name_list = $name_list[0];
+    if (count($name_list) > 1) {
+      foreach ($name_list as $name) self::LoadClass($name);
+      return true;
+    }
+
+    if (is_null($name) || in_array($name, self::$class)) return false;
+    self::LoadDependence($name);
+
+    if (is_null($class_name = self::$class_list[$name])) return false;
+    $GLOBALS[$name] = new $class_name();
+    self::$class[] = $name;
+    return true;
+  }
+
+  //リクエストクラスロード
+  static function LoadRequest($class = null, $load = false) {
+    if ($load) self::LoadFile('game_config');
+    self::LoadFile('request_class');
+    return RQ::Load($class);
+  }
+
+  //ファイルパス取得
+  private function GetPath($name) {
     switch ($name) {
     case 'copyright_config':
     case 'version':
-      $path = $this->path->config . '/system';
+      $path = JINRO_CONF . '/system';
       break;
 
     case 'game_config':
@@ -137,7 +137,7 @@ class InitializeConfig {
     case 'time_config':
     case 'icon_config':
     case 'sound_config':
-      $path = $this->path->config . '/game';
+      $path = JINRO_CONF . '/game';
       break;
 
     case 'database_config':
@@ -152,12 +152,12 @@ class InitializeConfig {
     case 'src_upload_config':
     case 'twitter_config':
     case 'setup_config':
-      $path = $this->path->config . '/server';
+      $path = JINRO_CONF . '/server';
       break;
 
     case 'mb-emulator':
     case 'twitter':
-      $path = $this->path->module . '/' . $name;
+      $path = JINRO_MOD . '/' . $name;
       break;
 
     case 'role_class':
@@ -166,62 +166,41 @@ class InitializeConfig {
     case 'feedengine':
     case 'paparazzi':
     case 'paparazzi_class':
-      $path = $this->path->include . '/' . @array_shift(explode('_', $name));
+      $path = JINRO_INC . '/' . @array_shift(explode('_', $name));
       break;
 
     case 'option_class':
     case 'option_form_class':
     case 'room_option_class':
     case 'room_option_item_class':
-      $path = $this->path->include . '/option';
+      $path = JINRO_INC . '/option';
       break;
 
     default:
-      $path = $this->path->include;
+      $path = JINRO_INC;
       break;
     }
 
-    require_once($path . '/' . $name . '.php');
-    $this->loaded->file[] = $name;
-    return true;
+    return sprintf(self::PATH, $path, $name);
   }
 
-  function LoadClass($name) {
-    $name_list = func_get_args();
-    if (is_array($name_list[0])) $name_list = $name_list[0];
-    if (count($name_list) > 1) {
-      foreach ($name_list as $name) $this->LoadClass($name);
-      return;
-    }
-
-    if (is_null($name) || in_array($name, $this->loaded->class)) return false;
-    $this->LoadDependence($name);
-
-    if (is_null($class_name = $this->class_list[$name])) return false;
-    $GLOBALS[$name] = new $class_name();
-    $this->loaded->class[] = $name;
-    return true;
-  }
-
-  function LoadRequest($class = null, $load = false) {
-    if ($load) $this->LoadFile('game_config');
-    $this->LoadFile('request_class');
-    return RQ::Load($class);
+  //依存解決処理
+  private function LoadDependence($name) {
+    if (array_key_exists($name, self::$depend_file))  self::LoadFile(self::$depend_file[$name]);
+    if (array_key_exists($name, self::$depend_class)) self::LoadClass(self::$depend_class[$name]);
   }
 }
 
 //-- 初期化処理 --//
-$INIT_CONF = new InitializeConfig();
+Loader::LoadFile('database_class', 'server_config');
 
 //mbstring 非対応の場合、エミュレータを使用する
-if (! extension_loaded('mbstring')) $INIT_CONF->LoadFile('mb-emulator');
+if (! extension_loaded('mbstring')) Loader::LoadFile('mb-emulator');
 
 if (Security::CheckValue($_REQUEST) || Security::CheckValue($_SERVER)) die;
 
 //デバッグ用ツールをロード
-ServerConfig::DEBUG_MODE ? $INIT_CONF->LoadClass('PAPARAZZI') : $INIT_CONF->LoadFile('paparazzi');
-
-//PrintData($INIT_CONF); //テスト用
+ServerConfig::DEBUG_MODE ? Loader::LoadClass('PAPARAZZI') : Loader::LoadFile('paparazzi');
 
 //-- スクリプト群の文字コード --//
 /*

@@ -1,9 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('game_option_config', 'role_data_class',
-		     'option/room_option_class', 'option/room_option_item_class', 'option_class',
-		     'info_functions');
+Loader::LoadFile('role_data_class', 'room_option_class', 'info_functions');
 OutputInfoPageHeader('天候システム');
 ?>
 <p>

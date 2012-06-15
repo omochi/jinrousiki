@@ -6,7 +6,6 @@ class FeedEngine {
   public $items = array();
 
   function Initialize($filename){
-    global $INIT_CONF;
     if (include(JINRO_INC . "/feedengine/$filename")) {
       $segments = explode('_', substr($filename, 0, -4));
       foreach($segments as $segment){

@@ -1,10 +1,10 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('icon_class', 'session_class', 'user_class', 'role_class', 'room_option_class',
-		     'game_vote_functions');
+Loader::LoadFile('icon_class', 'session_class', 'user_class', 'role_class', 'room_option_class',
+		 'game_vote_functions');
 
 //-- データ収集 --//
-$INIT_CONF->LoadRequest('RequestGameVote', true);
+Loader::LoadRequest('RequestGameVote', true);
 DB::Connect();
 Session::Certify(); //セッション認証
 
@@ -23,7 +23,7 @@ if (RQ::$get->vote) { //投票処理
   if (DB::$ROOM->IsBeforeGame()) { //ゲーム開始 or Kick 投票処理
     switch (RQ::$get->situation) {
     case 'GAMESTART':
-      $INIT_CONF->LoadFile('chaos_config', 'cast_class'); //配役情報をロード
+      Loader::LoadFile('chaos_config', 'cast_class'); //配役情報をロード
       Vote::VoteGameStart();
       break;
 
@@ -58,7 +58,7 @@ if (RQ::$get->vote) { //投票処理
   }
 }
 else { //シーンに合わせた投票ページを出力
-  $INIT_CONF->LoadFile('vote_message');
+  Loader::LoadFile('vote_message');
   if (DB::$SELF->IsDead()) {
     DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
   }

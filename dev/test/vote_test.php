@@ -2,11 +2,11 @@
 error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('room_config', 'role_class', 'icon_class', 'game_play_functions',
-		     'game_vote_functions');
+Loader::LoadFile('room_config', 'role_class', 'icon_class', 'game_play_functions',
+		 'game_vote_functions');
 
 //-- 仮想村データをセット --//
-$INIT_CONF->LoadRequest('RequestBaseGame', true);
+Loader::LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 94;
 RQ::$get->reverse_log = null;
 RQ::$get->TestItems = new StdClass();
@@ -95,7 +95,7 @@ RQ::GetTest()->test_users[10]->live = 'live';
 RQ::GetTest()->test_users[11]->uname = 'cherry';
 RQ::GetTest()->test_users[11]->handle_name = 'さくら';
 RQ::GetTest()->test_users[11]->sex = 'female';
-RQ::GetTest()->test_users[11]->role = 'angel downer_luck';
+RQ::GetTest()->test_users[11]->role = 'revive_priest downer_luck';
 RQ::GetTest()->test_users[11]->live = 'live';
 
 RQ::GetTest()->test_users[12]->uname = 'white';
@@ -155,13 +155,13 @@ RQ::GetTest()->test_users[20]->live = 'live';
 RQ::GetTest()->test_users[21]->uname = 'peach';
 RQ::GetTest()->test_users[21]->handle_name = '桃';
 RQ::GetTest()->test_users[21]->sex = 'female';
-RQ::GetTest()->test_users[21]->role = 'basic_mania panelist';
+RQ::GetTest()->test_users[21]->role = 'mania panelist';
 RQ::GetTest()->test_users[21]->live = 'live';
 
 RQ::GetTest()->test_users[22]->uname = 'gust';
 RQ::GetTest()->test_users[22]->handle_name = '霧';
 RQ::GetTest()->test_users[22]->sex = 'female';
-RQ::GetTest()->test_users[22]->role = 'fairy reduce_voter';
+RQ::GetTest()->test_users[22]->role = 'echo_brownie reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
 RQ::GetTest()->test_users[23]->uname = 'cloud';
@@ -265,25 +265,24 @@ RQ::GetTest()->vote_target_day = array(
 );
 */
 //初日用
-/*
 RQ::GetTest()->vote->night = array(
   array('user_no' =>  2,	'target_no' =>  1,	'type' => 'WOLF_EAT'),
   array('user_no' =>  4,	'target_no' => 14,	'type' => 'MAGE_DO'),
   array('user_no' =>  5,	'target_no' => 14,	'type' => 'MAGE_DO'),
   #array('user_no' => 11,	'target_no' =>  4,	'type' => 'VOODOO_MAD_DO'),
   #array('user_no' => 13,	'target_no' => 18,	'type' => 'MAGE_DO'),
-  array('user_no' => 14,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
+  #array('user_no' => 14,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
   array('user_no' => 16,	'target_no' => '16 18',	'type' => 'CUPID_DO'),
   array('user_no' => 19,	'target_no' => 20,	'type' => 'FAIRY_DO'),
   #array('user_no' => 21,	'target_no' => '18 21',	'type' => 'CUPID_DO'),
-  array('user_no' => 21,	'target_no' =>  5,	'type' => 'MANIA_DO'),
+  array('user_no' => 21,	'target_no' => 11,	'type' => 'MANIA_DO'),
   #array('user_no' => 22,	'target_no' => 24,	'type' => 'DUELIST_DO'),
   #array('user_no' => 23,	'target_no' =>  4,	'type' => 'MANIA_DO'),
   #array('user_no' => 23,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
   #array('user_no' => 24,	'target_no' =>  2,	'type' => 'MIND_SCANNER_DO'),
 );
-*/
 
+/*
 RQ::GetTest()->vote->night = array(
   array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
   #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
@@ -344,6 +343,7 @@ RQ::GetTest()->vote->night = array(
   array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 8),
   #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
 );
+*/
 
 //-- 仮想システムメッセージをセット --//
 RQ::GetTest()->winner = 'wolf';
@@ -371,7 +371,7 @@ DB::$ROOM = new Room(RQ::$get); //村情報を取得
 DB::$ROOM->test_mode = true;
 DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
-DB::$ROOM->date = 7;
+DB::$ROOM->date = 1;
 #DB::$ROOM->scene = 'beforegame';
 #DB::$ROOM->scene = 'day';
 DB::$ROOM->scene = 'night';
@@ -390,7 +390,7 @@ DB::$SELF = DB::$USER->ByID(1);
 //-- データ出力 --//
 $vote_view_mode = false;
 if ($vote_view_mode) { //投票表示モード
-  $INIT_CONF->LoadFile('vote_message');
+  Loader::LoadFile('vote_message');
   $stack = new RequestGameVote();
   RQ::$get->vote = $stack->vote;
   RQ::$get->target_no = $stack->target_no;
@@ -447,7 +447,7 @@ $talk_view_mode = false;
 if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();
-  $INIT_CONF->LoadFile('talk_class');
+  Loader::LoadFile('talk_class');
   RQ::$get->add_role = false;
   RQ::GetTest()->talk_data = new StdClass();
   //昼の発言
@@ -533,7 +533,7 @@ if ($role_view_mode) { //画像表示モード
 }
 $cast_view_mode = false;
 if ($cast_view_mode) { //配役情報表示モード
-  $INIT_CONF->LoadFile('chaos_config');
+  Loader::LoadFile('chaos_config');
   //PrintData(Lottery::RateToProbability(ChaosConfig::$chaos_hyper_random_role_list));
   //PrintData(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
   //PrintData(ChaosConfig::$role_group_rate_list);
@@ -589,7 +589,7 @@ elseif (DB::$ROOM->IsNight()) { // 夜の投票テスト
   Vote::AggregateNight();
 }
 elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
-  $INIT_CONF->LoadFile('winner_message');
+  Loader::LoadFile('winner_message');
   DB::$ROOM->log_mode = false;
   DB::$ROOM->personal_mode = false;
   Winner::Output();
@@ -663,5 +663,5 @@ do {
 //PrintData(RoleManager::$file);
 //PrintData(array_keys(RoleManager::$class));
 //PrintData(DB::$USER->role);
-//PrintData($INIT_CONF->loaded->class);
+//PrintData(Loader::$file);
 HTML::OutputFooter();

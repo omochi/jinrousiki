@@ -1,5 +1,5 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('icon_edit_class');
-$INIT_CONF->LoadRequest('RequestIconEdit');
+Loader::LoadFile('icon_edit_class');
+Loader::LoadRequest('RequestIconEdit');
 IconEdit::Execute();

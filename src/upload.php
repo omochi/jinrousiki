@@ -3,8 +3,8 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT  . '/include/init.php');
 if (Security::CheckValue($_FILES)) die;
 
-$INIT_CONF->LoadFile('src_upload_config');
-$INIT_CONF->LoadRequest('RequestSrcUpload'); //引数をセット
+Loader::LoadFile('src_upload_config');
+Loader::LoadRequest('RequestSrcUpload'); //引数をセット
 
 if (SrcUploadConfig::DISABLE){
   HTML::OutputResult('ファイルアップロード', '現在アップロードは停止しています');

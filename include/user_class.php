@@ -116,15 +116,6 @@ class User {
   //死の宣告系の宣告日取得
   public function GetDoomDate($role) { return max($this->GetPartner($role)); }
 
-  //仮想的な生死判定
-  public function IsDeadFlag($strict = false) {
-    if (! $strict) return null;
-    if ($this->suicide_flag) return true;
-    if ($this->revive_flag)  return false;
-    if ($this->dead_flag)    return true;
-    return null;
-  }
-
   //生存フラグ判定
   public function IsLive($strict = false) {
     $dead = $this->IsDeadFlag($strict);
@@ -217,7 +208,9 @@ class User {
   }
 
   //孤立系役職判定
-  public function IsLonely() { return $this->IsRole('mind_lonely') || $this->IsRoleGroup('silver'); }
+  public function IsLonely() {
+    return $this->IsRole('mind_lonely') || $this->IsRoleGroup('silver');
+  }
 
   //男性判定
   public function IsMale() { return $this->sex == 'male'; }
@@ -239,7 +232,7 @@ class User {
   public function IsSiriusWolf($full = true) {
     if (! $this->IsRole('sirius_wolf')) return false;
     $type = $full ? 'ability_full_sirius_wolf' : 'ability_sirius_wolf';
-    if (! property_exists($this, $type)) {
+    if (! isset($this->$type)) {
       $stack = DB::$USER->GetLivingWolves();
       $this->ability_sirius_wolf      = count($stack) < 3;
       $this->ability_full_sirius_wolf = count($stack) == 1;
@@ -280,10 +273,12 @@ class User {
   public function IsJoker($shift = false) {
     if (! $this->IsRole('joker')) return false;
     if (DB::$ROOM->IsFinished()) {
-      if (! property_exists($this, 'joker_flag')) DB::$USER->SetJoker();
+      if (! isset($this->joker_flag)) DB::$USER->SetJoker();
       return $this->joker_flag;
     }
-    elseif ($this->IsDead()) return false;
+    elseif ($this->IsDead()) {
+      return false;
+    }
 
     $date = DB::$ROOM->date - ($shift ? 1 : 0);
     if ($date == 1 || DB::$ROOM->IsNight()) $date++;
@@ -297,7 +292,7 @@ class User {
 
   //護衛成功済み判定
   public function IsFirstGuardSuccess($uname) {
-    $flag = ! (property_exists($this, 'guard_success') && in_array($uname, $this->guard_success));
+    $flag = ! (isset($this->guard_success) && in_array($uname, $this->guard_success));
     $this->guard_success[] = $uname;
     return $flag;
   }
@@ -306,7 +301,7 @@ class User {
   public function IsPoison() {
     //旱魃、無毒・連毒者
     if (DB::$ROOM->IsEvent('no_poison') ||
-       ! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false;
+	! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false;
     if ($this->IsRole('poison_guard'))    return DB::$ROOM->IsNight(); //騎士
     if ($this->IsRole('incubate_poison')) return DB::$ROOM->date >= 5; //潜毒者
     if ($this->IsRole('dummy_poison'))    return DB::$ROOM->IsDay();   //夢毒者
@@ -335,25 +330,35 @@ class User {
        $this->IsSiriusWolf(false) || $this->IsChallengeLovers()) return true;
 
     //確率反射
-    if ($this->IsRole('cursed_brownie')) $rate = 30;
+    if ($this->IsRole('cursed_brownie')) {
+      $rate = 30;
+    }
     elseif ($this->IsOgre()) {
       //天候判定
       if (DB::$ROOM->IsEvent('full_ogre')) return true;
       if (DB::$ROOM->IsEvent('seal_ogre')) return false;
 
-      if ($this->IsRole('sacrifice_ogre'))
+      if ($this->IsRole('sacrifice_ogre')) {
 	$rate = 50;
-      elseif ($this->IsRole('west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre',
-			   'wise_ogre', 'power_ogre', 'revive_ogre', 'power_yaksa', 'dowser_yaksa'))
+      }
+      elseif ($this->IsRole(
+        'west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'wise_ogre',
+	'power_ogre', 'revive_ogre', 'power_yaksa', 'dowser_yaksa')) {
 	$rate = 40;
-      elseif ($this->IsRole('power_yaksa'))
+      }
+      elseif ($this->IsRole('power_yaksa')) {
 	$rate = 30;
-      elseif ($this->IsRoleGroup('yaksa'))
+      }
+      elseif ($this->IsRoleGroup('yaksa')) {
 	$rate = 20;
-      else
+      }
+      else {
 	$rate = 30;
+      }
     }
-    else return false;
+    else {
+      return false;
+    }
 
     return $rate >= mt_rand(1, 100);
   }
@@ -406,7 +411,9 @@ class User {
   public function DistinguishCamp() { return RoleData::DistinguishCamp($this->main_role); }
 
   //所属役職グループ陣営判別 (ラッパー)
-  public function DistinguishRoleGroup() { return RoleData::DistinguishRoleGroup($this->main_role); }
+  public function DistinguishRoleGroup() {
+    return RoleData::DistinguishRoleGroup($this->main_role);
+  }
 
   //精神鑑定
   public function DistinguishLiar() {
@@ -776,6 +783,15 @@ EOF;
     }
     return DB::Insert('vote', $items, $values);
   }
+
+  //仮想的な生死判定
+  private function IsDeadFlag($strict = false) {
+    if (! $strict) return null;
+    if ($this->suicide_flag) return true;
+    if ($this->revive_flag)  return false;
+    if ($this->dead_flag)    return true;
+    return null;
+  }
 }
 
 //-- ユーザ情報ローダー --//
@@ -791,20 +807,9 @@ class UserDataSet {
     $this->Load($request, $lock);
   }
 
-  //ユーザ ID -> ユーザ名変換
-  public function NumberToUname($id) { return $this->rows[$id]->uname; }
-
   //ユーザ名 -> ユーザ ID 変換
   public function UnameToNumber($uname) {
     return array_key_exists($uname, $this->name) ? $this->name[$uname] : null;
-  }
-
-  //HN -> ユーザ名変換
-  public function HandleNameToUname($handle_name) {
-    foreach ($this->rows as $user) {
-      if ($user->IsSameName($handle_name)) return $user->uname;
-    }
-    return null;
   }
 
   //ユーザ情報取得 (ユーザ ID 経由)
@@ -824,21 +829,6 @@ class UserDataSet {
 
   //ユーザ情報取得 (クッキー経由)
   public function BySession() { return $this->TraceExchange(Session::GetUser()); }
-
-  //憑依情報追跡
-  public function TraceVirtual($user_no, $type) {
-    $user = $this->ByID($user_no);
-    if (! DB::$ROOM->IsPlaying()) return $user;
-    if ($type == 'possessed') {
-      if (! $user->IsRole($type)) return $user;
-    }
-    elseif (! $user->IsPossessedGroup()) {
-      return $user;
-    }
-
-    $id = $user->GetPossessedTarget($type, DB::$ROOM->date);
-    return $id === false ? $user : $this->ByID($id);
-  }
 
   //交換憑依情報追跡
   public function TraceExchange($id) {
@@ -1130,11 +1120,6 @@ class UserDataSet {
     }
   }
 
-  //保存処理 (実用されていません)
-  public function Save() {
-    foreach ($this->rows as $user) $user->Save();
-  }
-
   //村情報のロード処理
   private function Load(RequestBase $request, $lock = false) {
     if ($request->IsVirtualRoom()) { //仮想モード
@@ -1256,5 +1241,28 @@ EOF;
     }
     $this->SetEvent();
     return count($this->name);
+  }
+
+  //HN -> ユーザ名変換
+  private function HandleNameToUname($handle_name) {
+    foreach ($this->rows as $user) {
+      if ($user->IsSameName($handle_name)) return $user->uname;
+    }
+    return null;
+  }
+
+  //憑依情報追跡
+  private function TraceVirtual($user_no, $type) {
+    $user = $this->ByID($user_no);
+    if (! DB::$ROOM->IsPlaying()) return $user;
+    if ($type == 'possessed') {
+      if (! $user->IsRole($type)) return $user;
+    }
+    elseif (! $user->IsPossessedGroup()) {
+      return $user;
+    }
+
+    $id = $user->GetPossessedTarget($type, DB::$ROOM->date);
+    return $id === false ? $user : $this->ByID($id);
   }
 }

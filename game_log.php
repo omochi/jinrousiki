@@ -1,5 +1,5 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('game_log_class');
-$INIT_CONF->LoadRequest('RequestGameLog');
+Loader::LoadFile('game_log_class');
+Loader::LoadRequest('RequestGameLog');
 GameLog::Output();

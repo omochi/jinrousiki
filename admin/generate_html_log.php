@@ -7,8 +7,8 @@ if ($disable) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
-$INIT_CONF->LoadFile('room_config', 'oldlog_functions');
-$INIT_CONF->LoadRequest('RequestOldLog'); //引数を取得
+Loader::LoadFile('room_config', 'oldlog_functions');
+Loader::LoadRequest('RequestOldLog'); //引数を取得
 DB::Connect(RQ::$get->db_no);
 
 RQ::$get->generate_index = true;
@@ -33,7 +33,7 @@ if ($db_delete_mode) {
 //GenerateLogIndex(); //インデックスページ生成
 //HTML::OutputFooter(true);
 
-$INIT_CONF->LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
+Loader::LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
 
 $room_delete = false; //DB削除設定
 $header = sprintf('../log_test/%s', RQ::$get->prefix);

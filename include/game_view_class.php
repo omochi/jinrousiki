@@ -3,7 +3,25 @@
 class GameView {
   //出力
   static function Output() {
-    self::Load();
+    //データ収集
+    DB::Connect();
+    DB::$ROOM = new Room(RQ::$get); //村情報を取得
+    DB::$ROOM->view_mode   = true;
+    DB::$ROOM->system_time = Time::Get();
+
+    //シーンに応じた追加クラスをロード
+    if (DB::$ROOM->IsFinished()) {
+      Loader::LoadFile('winner_message');
+    }
+    else {
+      Loader::LoadFile('cast_config', 'image_class', 'room_option_class');
+    }
+
+    //ユーザ情報を取得
+    if (DB::$ROOM->IsBeforeGame()) RQ::$get->retrive_type = DB::$ROOM->scene;
+    DB::$USER = new UserDataSet(RQ::$get);
+    DB::$SELF = new User();
+
     HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
     if (GameConfig::AUTO_RELOAD && RQ::$get->auto_reload > 0) { //自動更新
       printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
@@ -97,28 +115,5 @@ EOF;
     GameHTML::OutputDead();
     GameHTML::OutputVote();
     HTML::OutputFooter();
-  }
-
-  //データ収集
-  private function Load() {
-    global $INIT_CONF;
-
-    DB::Connect();
-    DB::$ROOM = new Room(RQ::$get); //村情報を取得
-    DB::$ROOM->view_mode   = true;
-    DB::$ROOM->system_time = Time::Get();
-
-    //シーンに応じた追加クラスをロード
-    if (DB::$ROOM->IsFinished()) {
-      $INIT_CONF->LoadFile('winner_message');
-    }
-    else {
-      $INIT_CONF->LoadFile('cast_config', 'image_class', 'room_option_class');
-    }
-
-    //ユーザ情報を取得
-    if (DB::$ROOM->IsBeforeGame()) RQ::$get->retrive_type = DB::$ROOM->scene;
-    DB::$USER = new UserDataSet(RQ::$get);
-    DB::$SELF = new User();
   }
 }

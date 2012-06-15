@@ -1,9 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('cast_config', 'game_option_config', 'role_data_class',
-		     'option/room_option_class', 'option/room_option_item_class', 'option_class',
-		     'info_functions');
+Loader::LoadFile('cast_config', 'role_data_class', 'room_option_class', 'info_functions');
 
 //-- 関数定義 --//
 //追加役職の人数と説明ページリンク出力

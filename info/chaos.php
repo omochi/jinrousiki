@@ -1,8 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('game_option_config', 'info_functions',
-		     'option/room_option_class', 'option/room_option_item_class', 'option_class');
+Loader::LoadFile('room_option_class', 'info_functions');
 
 function OutputItem($option, $name, $version) {
   $format = "<h3 id=\"%s_%s\">%s [%s～]</h3>\n";

@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('index_functions');
+Loader::LoadFile('index_functions');
 IndexHTML::OutputHeader();
 ?>
 <a href="./"><img src="img/top_title.jpg" title="汝は人狼なりや？" alt="汝は人狼なりや？"></a>

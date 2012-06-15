@@ -353,8 +353,7 @@ function PrintData($data, $name = null){
 
 //村情報のRSSファイルを更新する
 function OutputSiteSummary(){
-  global $INIT_CONF;
-  $INIT_CONF->LoadFile('feedengine');
+  Loader::LoadFile('feedengine');
 
   $filename = 'rss/rooms.rss';
   $rss = FeedEngine::Initialize('site_summary.php');

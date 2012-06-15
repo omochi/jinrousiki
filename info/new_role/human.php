@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('info_functions');
+Loader::LoadFile('info_functions');
 OutputRolePageHeader('村人陣営');
 ?>
 <p><a href="#change_group">所属変更</a></p>

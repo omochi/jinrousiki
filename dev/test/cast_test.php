@@ -1,11 +1,11 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('chaos_config', 'icon_class', 'user_class', 'role_class', 'cast_class',
-		     'room_option_class', 'game_vote_functions');
+Loader::LoadFile('chaos_config', 'icon_class', 'user_class', 'role_class', 'cast_class',
+		 'room_option_class', 'game_vote_functions');
 
 //-- 仮想村データをセット --//
-$INIT_CONF->LoadRequest('RequestBaseGame', true);
+Loader::LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 1;
 RQ::$get->TestItems = new StdClass();
 RQ::GetTest()->test_room = array(

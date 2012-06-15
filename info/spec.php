@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('message', 'info_functions');
+Loader::LoadFile('message', 'info_functions');
 OutputInfoPageHeader('詳細な仕様');
 ?>
 <p>

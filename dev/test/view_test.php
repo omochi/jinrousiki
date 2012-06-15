@@ -6,12 +6,10 @@ $disable = false; true; //使用時には false に変更する
 if ($disable) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
-
-$INIT_CONF->LoadFile('room_config', 'cast_config', 'icon_class', 'user_class',
-		     'game_vote_functions');
+Loader::LoadFile('room_config', 'cast_config', 'icon_class', 'user_class', 'game_vote_functions');
 
 //-- 仮想村データをセット --//
-$INIT_CONF->LoadRequest('RequestBaseGame', true);
+Loader::LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 1;
 RQ::$get->reverse_log = null;
 RQ::$get->TestItems = new StdClass();

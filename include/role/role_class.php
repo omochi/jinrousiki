@@ -249,6 +249,11 @@ class RoleManager {
     return new $class();
   }
 
+  //個別クラス取得
+  static function GetClass($role) {
+    return self::LoadClass($role) ? self::$class[$role] : null;
+  }
+
   //データ取得
   static function GetStack($name) { return isset(self::$get->$name) ? self::$get->$name : null; }
 

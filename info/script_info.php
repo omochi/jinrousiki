@@ -1,9 +1,8 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('message', 'image_class', 'user_icon_class', 'room_option_class',
-		     'info_functions');
-$INIT_CONF->LoadClass('TIME_CALC');
+Loader::LoadFile('message', 'user_icon_class', 'room_option_class');
+Loader::LoadClass('TIME_CALC');
 
 //-- 関数定義 --//
 //村の最大人数設定出力

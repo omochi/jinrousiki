@@ -1,11 +1,10 @@
 <?php
 require_once('include/init.php');
-$INIT_CONF->LoadFile('oldlog_functions');
-$INIT_CONF->LoadRequest('RequestOldLog');
+Loader::LoadFile('oldlog_functions');
+Loader::LoadRequest('RequestOldLog');
 DB::Connect(RQ::$get->db_no);
-ob_start();
 if (RQ::$get->is_room) {
-  $INIT_CONF->LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
+  Loader::LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
 
   DB::$ROOM = new Room(RQ::$get);
   DB::$ROOM->LoadOption();
@@ -23,8 +22,7 @@ if (RQ::$get->is_room) {
   OutputOldLog();
 }
 else {
-  $INIT_CONF->LoadFile('room_config');
+  Loader::LoadFile('room_config');
   OutputFinishedRooms(RQ::$get->page);
 }
 HTML::OutputFooter();
-ob_end_flush();

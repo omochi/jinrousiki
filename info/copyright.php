@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('copyright_config');
+Loader::LoadFile('copyright_config');
 OutputInfoPageHeader('謝辞・素材', 0, 'info');
 OutputCopyright();
 HTML::OutputFooter();

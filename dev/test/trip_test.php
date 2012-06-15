@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-$INIT_CONF->LoadFile('game_config');
+Loader::LoadFile('game_config');
 
 HTML::OutputHeader('トリップテストツール', null, true);
   echo <<<EOF

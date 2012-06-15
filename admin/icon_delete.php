@@ -11,7 +11,7 @@ $icon_no = intval($unsafe_icon_no);
 $title   = 'アイコン削除[エラー]';
 if ($icon_no < 1) HTML::OutputResult($title, '無効なアイコン番号です。');
 
-$INIT_CONF->LoadFile('icon_functions');
+Loader::LoadFile('icon_functions');
 DB::Connect();
 
 $error = "サーバが混雑しています。<br>\n時間を置いてから再度アクセスしてください。";
