@@ -96,6 +96,7 @@ Ver. 1.5.0
 <a href="#ver152">Ver. 1.5.2</a><br>
 Ver. 2.1.0
 <a href="#ver210a2">α2</a>
+<a href="#ver210a3">α3</a>
 </p>
 
 <p>
@@ -136,7 +137,9 @@ Ver. 1.5.0
 <a href="#sub_ver150b6">β6</a>
 <a href="#sub_ver150b7">β7</a>
 <a href="#sub_ver150b11">β11</a>
-<a href="#sub_ver150b14">β14</a>
+<a href="#sub_ver150b14">β14</a><br>
+Ver. 2.1.0
+<a href="#sub_ver210a3">α3</a>
 </p>
 
 <table id="main_role">
@@ -2888,6 +2891,15 @@ Ver. 1.5.0
   <td class="ability">一定期間 (5 日目以降) になるまで処刑投票数が +1 される村人。</td>
   <td>Ver. 2.1.0 α2</td>
 </tr>
+<tr id="ver210a3">
+  <td><a href="wolf.php#disguise_wolf">朔狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">処刑投票先が<a href="wolf.php#wolf_group">人狼系</a> (種類は不問) だった場合は<a href="wolf.php#whisper_mad">囁き狂人</a>に変化する人狼。</td>
+  <td>Ver. 2.1.0 α3</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -3394,7 +3406,7 @@ Ver. 1.5.0
     <td><a href="sub_role.php#changed_therian">元獣人</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>無し</td>
-    <td class="ability">人狼に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。</td>
+    <td class="ability"><a href="wolf.php#wolf">人狼</a>に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。</td>
     <td>Ver. 1.4.0 β15</td>
   </tr>
   <tr id="sub_ver140b16">
@@ -3613,6 +3625,13 @@ Ver. 1.5.0
     <td>有り</td>
     <td class="ability">昼の間だけ、高確率で発言が人狼の遠吠えに入れ替わってしまう。</td>
     <td>Ver. 1.5.0 β14</td>
+  </tr>
+  <tr id="sub_ver210a3">
+    <td><a href="sub_role.php#changed_disguise">元朔狼</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>無し</td>
+    <td class="ability"><a href="wolf.php#whisper_mad">囁き狂人</a>に変化した後の<a href="wolf.php#disguise_wolf">朔狼</a>に付加される。</td>
+    <td>Ver. 2.1.0 α3</td>
   </tr>
 </table>
 

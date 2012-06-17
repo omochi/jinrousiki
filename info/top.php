@@ -18,7 +18,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>朔狼：処刑投票先が人狼系だった場合は囁き狂人に変化する人狼</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

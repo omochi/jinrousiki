@@ -41,6 +41,7 @@ OutputRolePageHeader('能力者逆引き');
 <a href="#seal">封印</a>
 </p>
 <p>
+<a href="#disguise">変化</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#soul">役職鑑定</a>
 <a href="#last_words_limit">遺言制限</a>
@@ -134,7 +135,7 @@ OutputRolePageHeader('能力者逆引き');
 
 <h2 id="vote_action">処刑投票能力者</h2>
 <pre>
-<a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>)
 </pre>
 
@@ -301,6 +302,11 @@ OutputRolePageHeader('能力者逆引き');
 <h2 id="seal">封印対象者</h2>
 <pre>
 <a href="human.php#seal_medium">封印師</a>参照
+</pre>
+
+<h2 id="disguise">変化能力者</h2>
+<pre>
+<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#therian_mad">獣人</a>
 </pre>
 
 <h2 id="sacrifice">身代わり能力者</h2>

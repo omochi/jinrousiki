@@ -1545,9 +1545,6 @@ EOF;
       echo $user->GenerateVoteTag($path, $checkbox);
     }
 
-    if (is_null(RoleManager::$get->submit)) {
-      RoleManager::$get->submit = RoleManager::$get->action;
-    }
     $str = <<<EOF
 </tr></table>
 <span class="vote-message">%s</span>
@@ -1556,15 +1553,14 @@ EOF;
 <input type="hidden" name="situation" value="%s">
 <td><input type="submit" value="%s"></td></form>%s
 EOF;
-    $submit = is_null(RoleManager::$get->submit) ? RoleManager::$get->action :
-      RoleManager::$get->submit;
+    if (is_null(RoleManager::$get->submit)) {
+      RoleManager::$get->submit = RoleManager::$get->action;
+    }
+    $submit = strtoupper(RoleManager::$get->submit);
     printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, RoleManager::$get->action,
 	   VoteMessage::$$submit, "\n");
 
     if (isset(RoleManager::$get->not_action)) {
-      if (is_null(RoleManager::$get->not_submit)) {
-	RoleManager::$get->not_submit = RoleManager::$get->not_action;
-      }
       $str = <<<EOF
 <td>
 <form method="POST" action="%s">
@@ -1574,9 +1570,12 @@ EOF;
 <input type="submit" value="%s"></form>
 </td>%s
 EOF;
-      $message = RoleManager::$get->not_submit;
+      if (is_null(RoleManager::$get->not_submit)) {
+	RoleManager::$get->not_submit = RoleManager::$get->not_action;
+      }
+      $not_submit = strtoupper(RoleManager::$get->not_submit);
       printf($str, RQ::$get->post_url, RoleManager::$get->not_action, DB::$SELF->user_no,
-	     VoteMessage::$$message, "\n");
+	     VoteMessage::$$not_submit, "\n");
     }
 
     echo "</tr></table></div>\n";

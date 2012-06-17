@@ -30,8 +30,6 @@ EOF;
 
   //村(room)の作成
   static function Create() {
-    global $TWITTER;
-
     if (ServerConfig::DISABLE_ESTABLISH) {
       HTML::OutputResult('村作成 [制限事項]', '村作成はできません');
     }
@@ -157,6 +155,8 @@ EOF;
     $option_role = RoomOption::GetOption(RoomOption::ROLE_OPTION);
     //PrintData($_POST, 'Post');
     //PrintData(RQ::$get, 'RQ');
+    //PrintData(RoomOption::$game_option, 'GameOptionClass');
+    //PrintData(RoomOption::$role_option, 'OptionRoleClass');
     //PrintData($game_option, 'GameOption');
     //PrintData($option_role, 'OptionRole');
     //HTML::OutputFooter(true); //テスト用

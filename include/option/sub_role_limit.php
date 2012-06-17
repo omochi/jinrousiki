@@ -8,8 +8,11 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
 
   function __construct() {
     parent::__construct();
-    foreach (array('no_sub_role', 'easy', 'normal', 'hard') as $name) {
-      $class  = sprintf('%s_%s', $this->name, $name);
+    $stack = array('no_sub_role' => 'no_sub_role');
+    foreach (array('easy', 'normal', 'hard') as $name) {
+      $stack[$name] = sprintf('%s_%s', $this->name, $name);
+    }
+    foreach ($stack as $name => $class) {
       $filter = OptionManager::GetClass($class);
       if (isset($filter) && $filter->enable) $this->item_list[$class] = $name;
     }
@@ -30,7 +33,6 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
   function LoadPost() {
     if (! isset($_POST[$this->name])) return false;
     $post = $_POST[$this->name];
-
     foreach ($this->item_list as $option => $value) {
       if ($value == $post) {
 	RQ::$get->$option = true;

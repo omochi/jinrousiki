@@ -24,7 +24,7 @@ class RoleManager {
   static $display_none_list = array(
     'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'critical_voter',
     'critical_luck', 'enemy', 'supported', 'infected', 'psycho_infected', 'possessed_target',
-    'possessed', 'bad_status', 'protected','changed_therian');
+    'possessed', 'bad_status', 'protected','changed_therian', 'changed_disguise');
 
   //初期配役抑制役職
   static $disable_cast_list = array(
@@ -34,7 +34,7 @@ class RoleManager {
     'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
     'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
     'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_therian',
-    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
+    'changed_disguise', 'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
 
   //発言表示
   static $talk_list = array('blinder', 'earplug', 'speaker');
@@ -105,9 +105,10 @@ class RoleManager {
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
     'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie', 'corpse_courier_mad',
-    'amaze_mad', 'agitate_mad', 'miasma_mad', 'critical_mad', 'follow_mad', 'critical_fox',
-    'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience',
-    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'amaze_mad', 'agitate_mad', 'miasma_mad', 'critical_mad', 'follow_mad', 'disguise_wolf',
+    'critical_fox', 'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger',
+    'impatience', 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck',
+    'authority', 'rebel');
 
   //反逆者判定
   static $rebel_list = array('rebel');
@@ -130,7 +131,8 @@ class RoleManager {
   static $vote_action_list = array(
     'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
     'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
-    'critical_fox', 'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid');
+    'critical_fox', 'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid',
+    'disguise_wolf');
 
   //霊能
   static $necromancer_list = array(
@@ -812,8 +814,107 @@ abstract class Role {
   protected function IsDead($strict = false) { return $this->GetActor()->IsDead($strict); }
 }
 
+//-- 発言処理クラス (Role 拡張) --//
+class RoleTalk {
+  //置換処理
+  static function Convert(&$say) {
+    if ($say == '') return null; //リロード時なら処理スキップ
+    //文字数・行数チェック
+    if (strlen($say) > GameConfig::LIMIT_SAY ||
+	substr_count($say, "\n") >= GameConfig::LIMIT_SAY_LINE) {
+      $say = '';
+      return false;
+    }
+    //発言置換モード
+    if (GameConfig::REPLACE_TALK) $say = strtr($say, GameConfig::$replace_talk_list);
+
+    //死者・ゲームプレイ中以外なら以降はスキップ
+    if (DB::$SELF->IsDead() || ! DB::$ROOM->IsPlaying()) return null;
+    //if (DB::$SELF->IsDead()) return false; //テスト用
+
+    RoleManager::$get->say = $say;
+    RoleManager::$actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->user_no)); //仮想ユーザを取得
+    do { //発言置換処理
+      foreach (RoleManager::Load('say_convert_virtual') as $filter) {
+	if ($filter->ConvertSay()) break 2;
+      }
+      RoleManager::$actor = DB::$SELF;
+      foreach (RoleManager::Load('say_convert') as $filter) {
+	if ($filter->ConvertSay()) break 2;
+      }
+    } while (false);
+
+    foreach ($virtual->GetPartner('bad_status', true) as $id => $date) { //妖精の処理
+      if ($date != DB::$ROOM->date) continue;
+      RoleManager::$actor = DB::$USER->ByID($id);
+      foreach (RoleManager::Load('say_bad_status') as $filter) $filter->ConvertSay();
+    }
+
+    RoleManager::$actor = $virtual;
+    foreach (RoleManager::Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
+    $say = RoleManager::$get->say;
+    unset(RoleManager::$get->say);
+    return true;
+  }
+
+  //発言を DB に登録する
+  static function Save($say, $scene, $location = null, $spend_time = 0, $update = false) {
+    //声の大きさを決定
+    $voice = RQ::$get->font_type;
+    if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
+      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
+      foreach (RoleManager::Load('voice') as $filter) $filter->FilterVoice($voice, $say);
+    }
+
+    $uname = DB::$SELF->uname;
+    if (DB::$ROOM->IsBeforeGame()) {
+      DB::$ROOM->TalkBeforeGame($say, $uname, DB::$SELF->handle_name, DB::$SELF->color, $voice);
+    }
+    else {
+      $role_id = DB::$ROOM->IsPlaying() ? DB::$SELF->role_id : null;
+      DB::$ROOM->Talk($say, null, $uname, $scene, $location, $voice, $role_id, $spend_time);
+    }
+    if ($update) DB::$ROOM->UpdateTime();
+  }
+}
+
 //-- HTML 生成クラス (Role 拡張) --//
 class RoleHTML {
+  //能力の種類とその説明を出力
+  static function OutputAbility() {
+    if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
+
+    if (DB::$SELF->IsDead()) { //死亡したら口寄せ以外は表示しない
+      echo '<span class="ability ability-dead">' . Message::$ability_dead . '</span><br>';
+      if (DB::$SELF->IsRole('mind_evoke')) Image::Role()->Output('mind_evoke');
+      if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()) { //身代わり君のみ隠蔽情報を表示
+	echo '<div class="system-vote">' . Message::$close_cast . '</div>'."\n";
+      }
+      return;
+    }
+    RoleManager::LoadMain(DB::$SELF)->OutputAbility(); //メイン役職
+
+    //-- ここからサブ役職 --//
+    foreach (RoleManager::Load('display_real') as $filter) $filter->OutputAbility();
+
+    //-- ここからは憑依先の役職を表示 --//
+    RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
+    foreach (RoleManager::Load('display_virtual') as $filter) $filter->OutputAbility();
+
+    //-- これ以降はサブ役職非公開オプションの影響を受ける --//
+    if (DB::$ROOM->IsOption('secret_sub_role')) return;
+
+    $stack = array();
+    foreach (array('real', 'virtual', 'none') as $name) {
+      $stack = array_merge($stack, RoleManager::${'display_' . $name . '_list'});
+    }
+    //PrintData($stack);
+    $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);
+    $target_list  = array_intersect($display_list, array_slice(RoleManager::$actor->role_list, 1));
+    //PrintData($target_list);
+    foreach ($target_list as $role) Image::Role()->Output($role);
+  }
+
   //仲間表示
   static function OutputPartner(array $list, $header, $footer = null) {
     if (count($list) < 1) return false; //仲間がいなければ表示しない

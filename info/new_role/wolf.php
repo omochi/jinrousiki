@@ -81,10 +81,11 @@ OutputRolePageHeader('人狼陣営');
 <a href="#cursed_wolf">呪狼</a>
 <a href="#quiet_wolf">静狼</a>
 <a href="#wise_wolf">賢狼</a>
+<a href="#disguise_wolf">朔狼</a>
 <a href="#poison_wolf">毒狼</a>
-<a href="#resist_wolf">抗毒狼</a>
 </p>
 <p>
+<a href="#resist_wolf">抗毒狼</a>
 <a href="#revive_wolf">仙狼</a>
 <a href="#trap_wolf">狡狼</a>
 <a href="#blue_wolf">蒼狼</a>
@@ -94,9 +95,9 @@ OutputRolePageHeader('人狼陣営');
 <a href="#sex_wolf">雛狼</a>
 <a href="#sharp_wolf">鋭狼</a>
 <a href="#hungry_wolf">餓狼</a>
-<a href="#tongue_wolf">舌禍狼</a>
 </p>
 <p>
+<a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
 <a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
@@ -231,6 +232,25 @@ OutputRolePageHeader('人狼陣営');
 狼サイドから妖狐の生存がわかります。
 <a href="fox.php#silver_fox">銀狐</a>や<a href="fox.php#child_fox">子狐</a>など、念話できない妖狐の
 生存は感知できないので注意してください。
+</pre>
+
+<h3 id="disguise_wolf">朔狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.1.0 α3～]</h3>
+<pre>
+処刑投票先が<a href="#wolf_group">人狼系</a> (種類は不問) だった場合は<a href="#whisper_mad">囁き狂人</a>に変化する人狼。
+<a href="#whisper_mad">囁き狂人</a>に変化すると<a href="sub_role.php#changed_disguise">元朔狼</a>がつく。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、判定時に自分か投票先が死亡していたら無効。</li>
+<li><a href="../spec.php#vote_day">役職判定</a> (<a href="human.php#necromancer_group">霊能</a>・<a href="human.php#pharmacist_group">薬師</a>なども含む) は変化前の役職 (朔狼) に対して行われる。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#disguise">変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+人狼カウント飽和による妖狐・恋人勝利に対する対抗策が主眼です。
+能力発動が敵対陣営に察知されにくいので、効果的に生存カウントを調整できます。
 </pre>
 
 <h3 id="poison_wolf">毒狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12～]</h3>
@@ -1018,7 +1038,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#fanatic_mad">狂信者</a>・<a href="mania.php#soul_mania">覚醒者</a>
+<a href="#disguise_wolf">朔狼</a>・<a href="#fanatic_mad">狂信者</a>・<a href="mania.php#soul_mania">覚醒者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1388,7 +1408,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
+<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#disguise">変化能力者</a>
 </pre>
 <h5>Ver. 1.5.0 β6～</h5>
 <pre>

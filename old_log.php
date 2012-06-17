@@ -4,7 +4,7 @@ Loader::LoadFile('oldlog_functions');
 Loader::LoadRequest('RequestOldLog');
 DB::Connect(RQ::$get->db_no);
 if (RQ::$get->is_room) {
-  Loader::LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
+  Loader::LoadFile('winner_message', 'icon_class', 'image_class', 'talk_class');
 
   DB::$ROOM = new Room(RQ::$get);
   DB::$ROOM->LoadOption();

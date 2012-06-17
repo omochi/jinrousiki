@@ -33,7 +33,7 @@ if ($db_delete_mode) {
 //GenerateLogIndex(); //インデックスページ生成
 //HTML::OutputFooter(true);
 
-Loader::LoadFile('winner_message', 'icon_class', 'talk_class', 'game_play_functions');
+Loader::LoadFile('winner_message', 'icon_class', 'image_class', 'talk_class');
 
 $room_delete = false; //DB削除設定
 $header = sprintf('../log_test/%s', RQ::$get->prefix);

@@ -1756,6 +1756,7 @@ B：「恋人陣営の勝利」
 <a href="#protected">庇護者</a>
 <a href="#lost_ability">能力喪失</a>
 <a href="#muster_ability">能力発現</a>
+<a href="#changed_disguise">元朔狼</a>
 <a href="#changed_therian">元獣人</a>
 </p>
 
@@ -1858,11 +1859,22 @@ B：「恋人陣営の勝利」
 <a href="wolf.php#immolate_mad">殉教者</a>用に実装されたサブ役職です。
 </pre>
 
+<h3 id="changed_disguise">元朔狼 [Ver. 2.1.0 α3～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="wolf.php#whisper_mad">囁き狂人</a>に変化した後の<a href="wolf.php#disguise_wolf">朔狼</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#disguise_wolf">朔狼</a>用に実装されたサブ役職です。
+</pre>
+
 <h3 id="changed_therian">元獣人 [Ver. 1.4.0 β15～]</h3>
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-人狼に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。
+<a href="wolf.php#wolf">人狼</a>に変化した後の<a href="wolf.php#therian_mad">獣人</a>に付加される。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-Loader::LoadFile('room_config', 'role_class', 'icon_class', 'game_play_functions',
+Loader::LoadFile('room_config', 'image_class', 'icon_class', 'user_class','role_class',
 		 'game_vote_functions');
 
 //-- 仮想村データをセット --//
@@ -41,7 +41,7 @@ RQ::GetTest()->test_users[1]->color = '#000000';
 RQ::GetTest()->test_users[2]->uname = 'light_gray';
 RQ::GetTest()->test_users[2]->handle_name = '明灰';
 RQ::GetTest()->test_users[2]->sex = 'male';
-RQ::GetTest()->test_users[2]->role = 'sex_wolf lost_ability authority';
+RQ::GetTest()->test_users[2]->role = 'disguise_wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->uname = 'dark_gray';
@@ -107,13 +107,13 @@ RQ::GetTest()->test_users[12]->live = 'live';
 RQ::GetTest()->test_users[13]->uname = 'black';
 RQ::GetTest()->test_users[13]->handle_name = '黒';
 RQ::GetTest()->test_users[13]->sex = 'male';
-RQ::GetTest()->test_users[13]->role = 'wolf mind_presage[23]';
+RQ::GetTest()->test_users[13]->role = 'whisper_mad mind_presage[23] changed_disguse';
 RQ::GetTest()->test_users[13]->live = 'live';
 
 RQ::GetTest()->test_users[14]->uname = 'gold';
 RQ::GetTest()->test_users[14]->handle_name = '金';
 RQ::GetTest()->test_users[14]->sex = 'female';
-RQ::GetTest()->test_users[14]->role = 'leader_common';
+RQ::GetTest()->test_users[14]->role = 'jammer_mad';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->uname = 'frame';
@@ -131,7 +131,7 @@ RQ::GetTest()->test_users[16]->live = 'live';
 RQ::GetTest()->test_users[17]->uname = 'sky';
 RQ::GetTest()->test_users[17]->handle_name = '空';
 RQ::GetTest()->test_users[17]->sex = 'male';
-RQ::GetTest()->test_users[17]->role = 'necromancer possessed[3-3] disfavor';
+RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
 RQ::GetTest()->test_users[17]->live = 'dead';
 
 RQ::GetTest()->test_users[18]->uname = 'sea';
@@ -199,10 +199,11 @@ foreach (RQ::GetTest()->test_users as $id => $user) {
 }
 
 //-- 仮想投票データをセット --//
+$set_date = 6;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
-  array('id' =>  2, 'target_no' => 11),
+  array('id' =>  2, 'target_no' => 13),
   array('id' =>  3, 'target_no' =>  7),
   //array('id' =>  3, 'target_no' => 10),
   array('id' =>  4, 'target_no' => 11),
@@ -211,12 +212,12 @@ RQ::GetTest()->vote_target_day = array(
   //array('id' =>  7, 'target_no' =>  3),
   array('id' =>  7, 'target_no' => 25),
   array('id' =>  8, 'target_no' =>  9),
-  array('id' =>  9, 'target_no' =>  3),
-  array('id' => 10, 'target_no' =>  3),
-  array('id' => 11, 'target_no' =>  3),
-  array('id' => 12, 'target_no' =>  3),
+  array('id' =>  9, 'target_no' => 13),
+  array('id' => 10, 'target_no' => 13),
+  array('id' => 11, 'target_no' => 13),
+  array('id' => 12, 'target_no' => 13),
   array('id' => 13, 'target_no' =>  3),
-  array('id' => 14, 'target_no' =>  3),
+  array('id' => 14, 'target_no' => 13),
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 23),
   //array('id' => 17, 'target_no' => 22),
@@ -264,86 +265,85 @@ RQ::GetTest()->vote_target_day = array(
   array('id' => 25, 'target_no' => 4),
 );
 */
-//初日用
-RQ::GetTest()->vote->night = array(
-  array('user_no' =>  2,	'target_no' =>  1,	'type' => 'WOLF_EAT'),
-  array('user_no' =>  4,	'target_no' => 14,	'type' => 'MAGE_DO'),
-  array('user_no' =>  5,	'target_no' => 14,	'type' => 'MAGE_DO'),
-  #array('user_no' => 11,	'target_no' =>  4,	'type' => 'VOODOO_MAD_DO'),
-  #array('user_no' => 13,	'target_no' => 18,	'type' => 'MAGE_DO'),
-  #array('user_no' => 14,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
-  array('user_no' => 16,	'target_no' => '16 18',	'type' => 'CUPID_DO'),
-  array('user_no' => 19,	'target_no' => 20,	'type' => 'FAIRY_DO'),
-  #array('user_no' => 21,	'target_no' => '18 21',	'type' => 'CUPID_DO'),
-  array('user_no' => 21,	'target_no' => 11,	'type' => 'MANIA_DO'),
-  #array('user_no' => 22,	'target_no' => 24,	'type' => 'DUELIST_DO'),
-  #array('user_no' => 23,	'target_no' =>  4,	'type' => 'MANIA_DO'),
-  #array('user_no' => 23,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
-  #array('user_no' => 24,	'target_no' =>  2,	'type' => 'MIND_SCANNER_DO'),
-);
-
-/*
-RQ::GetTest()->vote->night = array(
-  array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
-  #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
-  array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
-  array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
-  array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
-  #array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
-  #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
-  array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
-  #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-  array('user_no' => 10, 	'target_no' => 12,	'type' => 'ASSASSIN_DO'),
-  array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
-  #array('user_no' => 10, 	'target_no' => 12,	'type' => 'DEATH_NOTE_DO'),
-  #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
-  #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
-  #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
-  #array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 11),
-  #array('user_no' => 12, 	'type' => 'TRAP_MAD_DO',	'target_no' => 16),
-  #array('user_no' => 12, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
-  #array('user_no' => 12, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
-  #array('user_no' => 12, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
-  #array('user_no' => 12, 	'type' => 'ANTI_VOODOO_DO',	'target_no' => 4),
-  #array('user_no' => 12, 	'type' => 'MAGE_DO', 'target_no' => 16),
-  #array('user_no' => 12, 	'type' => 'WOLF_EAT', 'target_no' => 2),
-  #array('user_no' => 12, 	'type' => 'VOODOO_FOX_DO',	'target_no' => 21),
-  #array('user_no' => 13, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
-  #array('user_no' => 13, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
-  #array('user_no' => 13, 	'type' => 'POISON_CAT_DO',	'target_no' => 6),
-  #array('user_no' => 13, 	'type' => 'POISON_CAT_NOT_DO',	'target_no' => null),
-  #array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
-  #array('user_no' => 13, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
-  #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
-  #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
-  #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
-  #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
-  #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
-  #array('user_no' => 18, 	'type' => 'VOODOO_FOX_DO', 'target_no' => 20),
-  array('user_no' => 19, 	'type' => 'FAIRY_DO', 'target_no' => 23),
-  array('user_no' => 20, 	'type' => 'VAMPIRE_DO', 'target_no' => 23),
-  #array('user_no' => 21, 	'type' => 'CHILD_FOX_DO',	'target_no' => 5),
-  #array('user_no' => 22, 	'type' => 'ESCAPE_DO', 'target_no' => 12),
-  array('user_no' => 22, 	'type' => 'FAIRY_DO', 'target_no' => 13),
-  #array('user_no' => 22, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-  #array('user_no' => 22, 	'type' => 'OGRE_DO', 'target_no' => 24),
-  #array('user_no' => 22, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
-  #array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 23),
-  #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 12),
-  #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
-  #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
-  #array('user_no' => 23, 	'type' => 'ASSASSIN_DO', 'target_no' => 3),
-  #array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
-  array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
-  #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
-  #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
-  array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13 18'),
-  #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
-  #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-  array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 8),
-  #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
-);
-*/
+if ($set_date == 1) { //初日用
+  RQ::GetTest()->vote->night = array(
+    array('user_no' =>  2,	'target_no' =>  1,	'type' => 'WOLF_EAT'),
+    array('user_no' =>  4,	'target_no' => 14,	'type' => 'MAGE_DO'),
+    array('user_no' =>  5,	'target_no' => 14,	'type' => 'MAGE_DO'),
+    #array('user_no' => 11,	'target_no' =>  4,	'type' => 'VOODOO_MAD_DO'),
+    #array('user_no' => 13,	'target_no' => 18,	'type' => 'MAGE_DO'),
+    #array('user_no' => 14,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
+    array('user_no' => 16,	'target_no' => '16 18',	'type' => 'CUPID_DO'),
+    array('user_no' => 19,	'target_no' => 20,	'type' => 'FAIRY_DO'),
+    #array('user_no' => 21,	'target_no' => '18 21',	'type' => 'CUPID_DO'),
+    array('user_no' => 21,	'target_no' => 11,	'type' => 'MANIA_DO'),
+    #array('user_no' => 22,	'target_no' => 24,	'type' => 'DUELIST_DO'),
+    #array('user_no' => 23,	'target_no' =>  4,	'type' => 'MANIA_DO'),
+    #array('user_no' => 23,	'target_no' =>  4,	'type' => 'CHILD_FOX_DO'),
+    #array('user_no' => 24,	'target_no' =>  2,	'type' => 'MIND_SCANNER_DO')
+  );
+} else {
+  RQ::GetTest()->vote->night = array(
+    array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
+    #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
+    array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
+    array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
+    array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
+    #array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
+    #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
+    array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
+    #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
+    array('user_no' => 10, 	'target_no' => 12,	'type' => 'ASSASSIN_DO'),
+    array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
+    #array('user_no' => 10, 	'target_no' => 12,	'type' => 'DEATH_NOTE_DO'),
+    #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
+    #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
+    #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
+    #array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 11),
+    #array('user_no' => 12, 	'type' => 'TRAP_MAD_DO',	'target_no' => 16),
+    #array('user_no' => 12, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
+    #array('user_no' => 12, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
+    #array('user_no' => 12, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
+    #array('user_no' => 12, 	'type' => 'ANTI_VOODOO_DO',	'target_no' => 4),
+    #array('user_no' => 12, 	'type' => 'MAGE_DO', 'target_no' => 16),
+    #array('user_no' => 12, 	'type' => 'WOLF_EAT', 'target_no' => 2),
+    #array('user_no' => 12, 	'type' => 'VOODOO_FOX_DO',	'target_no' => 21),
+    #array('user_no' => 13, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
+    #array('user_no' => 13, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
+    #array('user_no' => 13, 	'type' => 'POISON_CAT_DO',	'target_no' => 6),
+    #array('user_no' => 13, 	'type' => 'POISON_CAT_NOT_DO',	'target_no' => null),
+    #array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
+    #array('user_no' => 13, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
+    #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
+    #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
+    #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
+    array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
+    #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
+    #array('user_no' => 18, 	'type' => 'VOODOO_FOX_DO', 'target_no' => 20),
+    array('user_no' => 19, 	'type' => 'FAIRY_DO', 'target_no' => 23),
+    array('user_no' => 20, 	'type' => 'VAMPIRE_DO', 'target_no' => 23),
+    #array('user_no' => 21, 	'type' => 'CHILD_FOX_DO',	'target_no' => 5),
+    #array('user_no' => 22, 	'type' => 'ESCAPE_DO', 'target_no' => 12),
+    #array('user_no' => 22, 	'type' => 'FAIRY_DO', 'target_no' => 13),
+    #array('user_no' => 22, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
+    #array('user_no' => 22, 	'type' => 'OGRE_DO', 'target_no' => 24),
+    #array('user_no' => 22, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
+    #array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 23),
+    #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 12),
+    #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
+    #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
+    #array('user_no' => 23, 	'type' => 'ASSASSIN_DO', 'target_no' => 3),
+    #array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
+    array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
+    #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
+    #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
+    array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13 18'),
+    #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
+    #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
+    array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 8),
+    #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
+  );
+}
 
 //-- 仮想システムメッセージをセット --//
 RQ::GetTest()->winner = 'wolf';
@@ -371,7 +371,7 @@ DB::$ROOM = new Room(RQ::$get); //村情報を取得
 DB::$ROOM->test_mode = true;
 DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
-DB::$ROOM->date = 1;
+DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
 #DB::$ROOM->scene = 'day';
 DB::$ROOM->scene = 'night';
@@ -384,7 +384,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(10);
+#DB::$SELF = DB::$USER->ByID(9);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -517,7 +517,7 @@ if ($talk_view_mode) { //発言表示モード
   }
   //PrintData(RQ::GetTest()->talk);
   GameHTML::OutputPlayer();
-  if (DB::$SELF->user_no > 0) PlayHTML::OutputAbility();
+  if (DB::$SELF->user_no > 0) RoleHTML::OutputAbility();
   Talk::Output();
   HTML::OutputFooter(true);
 }
@@ -555,10 +555,10 @@ if ($cast_view_mode) { //配役情報表示モード
   HTML::OutputFooter(true);
 }
 GameHTML::OutputPlayer();
-PlayHTML::OutputAbility();
+RoleHTML::OutputAbility();
 if (RQ::$get->say != '') { //発言変換テスト
-  Play::ConvertSay(RQ::$get->say);
-  Play::Talk(RQ::$get->say, 'day', 0);
+  RoleTalk::Convert(RQ::$get->say);
+  RoleTalk::Save(RQ::$get->say, 'day', 0);
 }
 if (DB::$ROOM->IsDay()) { //昼の投票テスト
   $self_id = DB::$SELF->user_no;
@@ -651,10 +651,10 @@ do {
 
   //DB::$ROOM->status = 'finished';
   GameHTML::OutputPlayer();
-  PlayHTML::OutputAbility();
+  RoleHTML::OutputAbility();
   //foreach (array(5, 18, 2, 9, 13, 14, 23) as $id) {
   foreach (range(1, 25) as $id) {
-    DB::$SELF = DB::$USER->ByID($id); PlayHTML::OutputAbility();
+    DB::$SELF = DB::$USER->ByID($id); RoleHTML::OutputAbility();
   }
   //var_dump(DB::$USER->IsOpenCast());
 } while(false);

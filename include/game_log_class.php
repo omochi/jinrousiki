@@ -77,10 +77,9 @@ class GameLog {
     //能力発動ログを出力 (管理者限定)
     if (RQ::$get->user_no > 0 &&
 	DB::$SELF->IsDummyBoy() && DB::$SELF->handle_name == '身代わり君') {
-      Loader::LoadFile('game_play_functions');
       DB::$SELF = DB::$USER->ByID(RQ::$get->user_no);
       DB::$SELF->live = 'live';
-      PlayHTML::OutputAbility();
+      RoleHTML::OutputAbility();
     }
     Talk::Output();
     if (DB::$ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示

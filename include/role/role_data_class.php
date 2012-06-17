@@ -145,6 +145,7 @@ class RoleData {
     'cursed_wolf'          => '呪狼',
     'quiet_wolf'           => '静狼',
     'wise_wolf'            => '賢狼',
+    'disguise_wolf'        => '朔狼',
     'poison_wolf'          => '毒狼',
     'resist_wolf'          => '抗毒狼',
     'revive_wolf'          => '仙狼',
@@ -416,6 +417,7 @@ class RoleData {
     'lost_ability'       => '能力喪失',
     'muster_ability'     => '能力発現',
     'changed_therian'    => '元獣人',
+    'changed_disguise'   => '元朔狼',
     'copied'             => '元神話マニア',
     'copied_trick'       => '元奇術師',
     'copied_basic'       => '元求道者',
@@ -564,6 +566,7 @@ class RoleData {
     'cursed_wolf'          => '呪狼',
     'quiet_wolf'           => '静狼',
     'wise_wolf'            => '賢狼',
+    'disguise_wolf'        => '朔狼',
     'poison_wolf'          => '毒狼',
     'resist_wolf'          => '抗',
     'revive_wolf'          => '仙狼',
@@ -831,6 +834,7 @@ class RoleData {
     'lost_ability'         => '失',
     'muster_ability'       => '発',
     'changed_therian'      => '元獣',
+    'changed_disguise'     => '元朔',
     'copied'               => '元マ',
     'copied_trick'         => '元奇',
     'copied_basic'         => '元求',
@@ -909,7 +913,7 @@ class RoleData {
     'chiroptera'   => array('bad_status', 'sweet_status'),
     'guard'        => array('protected'),
     'human'        => array('lost_ability', 'muster_ability'),
-    'wolf'         => array('possessed_target', 'possessed', 'changed_therian'),
+    'wolf'         => array('possessed_target', 'possessed', 'changed_therian', 'changed_disguise'),
     'mania'        => array('copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller'));
 
   //天候のリスト

@@ -5,13 +5,13 @@ Loader::LoadFile('room_option_class', 'info_functions');
 
 function OutputItem($option, $name, $version) {
   $format = "<h3 id=\"%s_%s\">%s [%s～]</h3>\n";
-  printf($format, $option, $name, GameOptionConfig::${$option.'_items'}[$name], $version);
+  printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name], $version);
 }
 
 function OutputItemList($option, $list) {
   $format = "<a href=\"#%s_%s\">%s</a>\n";
   foreach ($list as $name) {
-    printf($format, $option, $name, GameOptionConfig::${$option.'_items'}[$name]);
+    printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);
   }
 }
 
