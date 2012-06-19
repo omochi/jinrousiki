@@ -249,6 +249,7 @@ OutputRolePageHeader('サブ役職');
 <a href="#gentleman">紳士</a>
 <a href="#lady">淑女</a>
 <a href="#cute_camouflage">魔が言</a>
+<a href="#confession">告白</a>
 </p>
 
 <h3 id="liar">狼少年 [Ver. 1.4.0 α11～]</h3>
@@ -405,6 +406,18 @@ OutputRolePageHeader('サブ役職');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="wolf.php#cute_wolf">萌狼</a>のサブ役職バージョンです。
+</pre>
+
+<h3 id="confession">告白 [Ver. 2.1.0 α3～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+昼の間だけ、低確率 (3%) で発言が自分の<a href="#lovers">恋人</a>の名前に入れ替わってしまう。
+<a href="#lovers">恋人</a>が複数いる場合はランダム。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#divorce_jealousy">縁切地蔵</a>の強化用に実装されたサブ役職です。
 </pre>
 
 
@@ -1319,7 +1332,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#sweet_status">悲恋</a>
+<a href="#confession">告白</a>・<a href="#sweet_status">悲恋</a>
 </pre>
 
 <h3 id="challenge_lovers">難題 [Ver. 1.4.0 β11～]</h3>

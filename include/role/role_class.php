@@ -23,13 +23,14 @@ class RoleManager {
   //非表示サブ役職 (呼び出し抑制用)
   static $display_none_list = array(
     'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'critical_voter',
-    'critical_luck', 'enemy', 'supported', 'infected', 'psycho_infected', 'possessed_target',
-    'possessed', 'bad_status', 'protected','changed_therian', 'changed_disguise');
+    'critical_luck', 'confession', 'enemy', 'supported', 'infected', 'psycho_infected',
+    'possessed_target', 'possessed', 'bad_status', 'protected','changed_therian',
+    'changed_disguise');
 
   //初期配役抑制役職
   static $disable_cast_list = array(
-    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'day_voter',
-    'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
+    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'confession',
+    'day_voter', 'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
     'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
     'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
@@ -62,8 +63,8 @@ class RoleManager {
   //閲覧判定 (憑依型)
   static $mind_read_possessed_list = array('possessed_wolf', 'possessed_mad', 'possessed_fox');
 
-  //発言置換 (仮想)
-  static $say_convert_virtual_list = array('cute_camouflage', 'gentleman', 'lady');
+  //発言置換 (仮想 / 順番依存あり)
+  static $say_convert_virtual_list = array('confession', 'cute_camouflage', 'gentleman', 'lady');
 
   //発言置換 (本体)
   static $say_convert_list = array('suspect', 'cute_mage', 'cute_wolf', 'cute_fox',

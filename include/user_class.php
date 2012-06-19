@@ -1028,7 +1028,7 @@ class UserDataSet {
   public function GetLivingUsers($strict = false) {
     $stack = array();
     foreach ($this->rows as $user) {
-      if ($user->IsLive($strict)) $stack[] = $user->uname;
+      if ($user->IsLive($strict)) $stack[$user->user_no] = $user->uname;
     }
     return $stack;
   }
@@ -1037,7 +1037,7 @@ class UserDataSet {
   public function GetLivingWolves() {
     $stack = array();
     foreach ($this->rows as $user) {
-      if ($user->IsLive() && $user->IsWolf()) $stack[] = $user->uname;
+      if ($user->IsLive() && $user->IsWolf()) $stack[$user->user_no] = $user->uname;
     }
     return $stack;
   }

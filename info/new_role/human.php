@@ -2316,9 +2316,13 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="divorce_jealousy">縁切地蔵 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β19～]</h3>
 <pre>
-自分に処刑投票してきた<a href="sub_role.php#lovers">恋人</a>に一定確率 (40%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+自分に処刑投票してきた<a href="sub_role.php#lovers">恋人</a>に一定確率 (40%) で<a href="sub_role.php#confession">告白</a>を付加する特殊な橋姫。
 <a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が処刑された場合は無効。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
+</pre>
+<h5>Ver. 2.1.0 α3～</h5>
+<pre>
+付加役職変更：<a href="sub_role.php#passion">恋色迷彩</a> → <a href="sub_role.php#confession">告白</a>
 </pre>
 <h5>Ver. 1.5.0 β16～</h5>
 <pre>
@@ -2332,6 +2336,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 発動機会が増えた代りに効果や発動率が<a href="#jealousy">橋姫</a>よりもかなり抑えられています。
 <a href="sub_role.php#passion">恋色迷彩</a>は発動しても気付きにくいので発言を注視する必要があります。
+→ 発動しても全く脅威にならないようなので付加役職を強化しました。
 </pre>
 
 <h3 id="priest_jealousy">恋司祭 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17～]</h3>
@@ -2366,7 +2371,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 
 <h3 id="miasma_jealousy">蛇姫 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β9～]</h3>
 <pre>
-処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (40%) で<a href="sub_role.php#febris">熱病</a>を付加する上位橋姫。
+処刑投票先が<a href="sub_role.php#lovers">恋人</a>なら一定確率 (50%) で<a href="sub_role.php#febris">熱病</a>を付加する上位橋姫。
 <a href="#jealousy">橋姫</a>の能力は持っていない。
 </pre>
 <ol>
@@ -2374,6 +2379,10 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 </ol>
+<h5>Ver. 2.1.0 α3～</h5>
+<pre>
+発動率変更：40% → 50%
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="#philosophy_wizard">賢者</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>

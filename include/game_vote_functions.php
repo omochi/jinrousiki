@@ -286,7 +286,6 @@ class Vote {
     //システムメッセージ
     $str = 'システム：' . DB::$SELF->handle_name . 'さんは蘇生を辞退しました。';
     DB::$ROOM->Talk($str, null, DB::$SELF->uname, 'heaven', null, 'normal');
-
     DB::Commit();
     VoteHTML::OutputResult('投票完了');
   }
@@ -542,9 +541,9 @@ class Vote {
     }
     //PrintData($vote_count_list, 'VoteCountBase');
 
-    foreach ($user_list as $uname) { //個別の投票データを収集
-      $list   = DB::$ROOM->vote[DB::$USER->ByUname($uname)->user_no]; //投票データ
-      $user   = DB::$USER->ByVirtualUname($uname); //仮想ユーザを取得
+    foreach ($user_list as $id => $uname) { //個別の投票データを収集
+      $list   = DB::$ROOM->vote[$id]; //投票データ
+      $user   = DB::$USER->ByVirtual($id); //仮想ユーザを取得
       $target = DB::$USER->ByVirtual($list['target_no']); //投票先の仮想ユーザ
       $vote   = @(int)$list['vote_number']; //投票数
       $poll   = @(int)$vote_count_list[$user->uname]; //得票数
@@ -938,8 +937,9 @@ class Vote {
       //狡狼の自動罠設置判定 (花曇・雪明りは無効)
       if (DB::$ROOM->date > 2 && ! DB::$ROOM->IsEvent('no_contact') &&
 	  ! DB::$ROOM->IsEvent('no_trap')) {
-	foreach (DB::$USER->rows as $user) {
-	  if ($user->IsLiveRole('trap_wolf')) RoleManager::LoadMain($user)->SetTrap($user->uname);
+	foreach (DB::$USER->role['trap_wolf'] as $id) {
+	  $user = DB::$USER->ByID($id);
+	  if ($user->IsLive()) RoleManager::LoadMain($user)->SetTrap($user->uname);
 	}
       }
 
@@ -983,8 +983,9 @@ class Vote {
       }
 
       RoleManager::$get->voter = $voted_wolf; //護衛判定
-      if (RoleManager::LoadMain(new User('guard'))->Guard($wolf_target) &&
-	  ! $voted_wolf->IsSiriusWolf()) break;
+      if (RoleManager::GetClass('guard')->Guard($wolf_target) && ! $voted_wolf->IsSiriusWolf()) {
+	break;
+      }
 
       $wolf_filter = RoleManager::LoadMain($voted_wolf);
       if (! $wolf_target->IsDummyBoy()) { //特殊能力者判定 (身代わり君は対象外)
@@ -1087,9 +1088,7 @@ class Vote {
       }
       foreach (RoleManager::LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
       //PrintData(RoleManager::$get->$role, "Target [{$role}]");
-      if (count(RoleManager::$get->$role) > 0) {
-	RoleManager::LoadMain(new User($role))->AssassinKill();
-      }
+      if (count(RoleManager::$get->$role) > 0) RoleManager::GetClass($role)->AssassinKill();
       unset(RoleManager::$get->$role);
 
       //オシラ遊びの処理

@@ -1687,7 +1687,7 @@ Ver. 2.1.0
   <td><a href="human.php#jealousy_group">橋姫系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">自分に処刑投票してきた恋人に一定確率 (40%) で<a href="sub_role.php#passion">恋色迷彩</a>を付加する特殊な橋姫。
+  <td class="ability">自分に処刑投票してきた恋人に一定確率で<a href="sub_role.php#confession">告白</a>を付加する特殊な橋姫。
   </td>
   <td>Ver. 1.4.0 β19</td>
 </tr>
@@ -3631,6 +3631,13 @@ Ver. 2.1.0
     <td><a href="sub_role.php#other_group">その他</a></td>
     <td>無し</td>
     <td class="ability"><a href="wolf.php#whisper_mad">囁き狂人</a>に変化した後の<a href="wolf.php#disguise_wolf">朔狼</a>に付加される。</td>
+    <td>Ver. 2.1.0 α3</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#confession">告白</a></td>
+    <td><a href="sub_role.php#liar_group">狼少年系</a></td>
+    <td>無し</td>
+    <td class="ability">昼の間だけ、低確率で発言が自分の<a href="sub_role.php#lovers">恋人</a>の名前に入れ替わってしまう。</td>
     <td>Ver. 2.1.0 α3</td>
   </tr>
 </table>

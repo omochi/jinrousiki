@@ -23,5 +23,6 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>「縁切地蔵」「蛇姫」仕様変更</li>
+  <li>告白：昼の間だけ、低確率で発言が自分の恋人の名前に入れ替わってしまう</li>
 </ul>

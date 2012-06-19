@@ -41,7 +41,7 @@ RQ::GetTest()->test_users[1]->color = '#000000';
 RQ::GetTest()->test_users[2]->uname = 'light_gray';
 RQ::GetTest()->test_users[2]->handle_name = '明灰';
 RQ::GetTest()->test_users[2]->sex = 'male';
-RQ::GetTest()->test_users[2]->role = 'disguise_wolf authority';
+RQ::GetTest()->test_users[2]->role = 'trap_wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->uname = 'dark_gray';
@@ -71,13 +71,13 @@ RQ::GetTest()->test_users[6]->live = 'dead';
 RQ::GetTest()->test_users[7]->uname = 'light_blue';
 RQ::GetTest()->test_users[7]->handle_name = '水色';
 RQ::GetTest()->test_users[7]->sex = 'male';
-RQ::GetTest()->test_users[7]->role = 'dummy_guard';
+RQ::GetTest()->test_users[7]->role = 'dummy_guard lovers[16]';
 RQ::GetTest()->test_users[7]->live = 'live';
 
 RQ::GetTest()->test_users[8]->uname = 'blue';
 RQ::GetTest()->test_users[8]->handle_name = '青';
 RQ::GetTest()->test_users[8]->sex = 'male';
-RQ::GetTest()->test_users[8]->role = 'priest';
+RQ::GetTest()->test_users[8]->role = 'blind_guard';
 RQ::GetTest()->test_users[8]->live = 'live';
 
 RQ::GetTest()->test_users[9]->uname = 'green';
@@ -113,7 +113,7 @@ RQ::GetTest()->test_users[13]->live = 'live';
 RQ::GetTest()->test_users[14]->uname = 'gold';
 RQ::GetTest()->test_users[14]->handle_name = '金';
 RQ::GetTest()->test_users[14]->sex = 'female';
-RQ::GetTest()->test_users[14]->role = 'jammer_mad';
+RQ::GetTest()->test_users[14]->role = 'divorce_jealousy';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->uname = 'frame';
@@ -167,7 +167,7 @@ RQ::GetTest()->test_users[22]->live = 'live';
 RQ::GetTest()->test_users[23]->uname = 'cloud';
 RQ::GetTest()->test_users[23]->handle_name = '雲';
 RQ::GetTest()->test_users[23]->sex = 'male';
-RQ::GetTest()->test_users[23]->role = 'soul_vampire deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'revive_pharmacist deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->uname = 'moon';
@@ -210,16 +210,16 @@ RQ::GetTest()->vote_target_day = array(
   array('id' =>  5, 'target_no' => 25),
   //array('id' =>  6, 'target_no' =>  3),
   //array('id' =>  7, 'target_no' =>  3),
-  array('id' =>  7, 'target_no' => 25),
+  array('id' =>  7, 'target_no' => 14),
   array('id' =>  8, 'target_no' =>  9),
-  array('id' =>  9, 'target_no' => 13),
-  array('id' => 10, 'target_no' => 13),
+  array('id' =>  9, 'target_no' => 11),
+  array('id' => 10, 'target_no' => 11),
   array('id' => 11, 'target_no' => 13),
   array('id' => 12, 'target_no' => 13),
   array('id' => 13, 'target_no' =>  3),
   array('id' => 14, 'target_no' => 13),
   array('id' => 15, 'target_no' =>  7),
-  array('id' => 16, 'target_no' => 23),
+  array('id' => 16, 'target_no' => 11),
   //array('id' => 17, 'target_no' => 22),
   array('id' => 18, 'target_no' => 16),
   //array('id' => 18, 'target_no' => 3),
@@ -289,7 +289,7 @@ if ($set_date == 1) { //初日用
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
     array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
-    #array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
+    array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
     #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
     #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
@@ -384,7 +384,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(9);
+#DB::$SELF = DB::$USER->ByID(7);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -443,7 +443,7 @@ if ($vote_view_mode) { //投票表示モード
   HTML::OutputFooter(true);
 }
 HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
-$talk_view_mode = false;
+$talk_view_mode = true; false;
 if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();
