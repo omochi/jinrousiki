@@ -53,5 +53,5 @@ EOF;
   default:
     return;
   }
-  foreach ($stack as $role) PrintData(RoleData::GenerateMainRoleTag($role));
+  foreach ($stack as $role) Text::p(RoleData::GenerateMainRoleTag($role));
 }

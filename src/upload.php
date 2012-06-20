@@ -29,12 +29,12 @@ foreach (RQ::$get as $key => $value) {
 if (RQ::$get->password != SrcUploadConfig::PASSWORD) OutputUploadResult('パスワード認証エラー。');
 
 //ファイルの種類のチェック
-//PrintData($_FILES['file']);
+//Text::p($_FILES['file']);
 $file_name = strtolower(trim($_FILES['file']['name']));
 $file_type = $_FILES['file']['type'];
 if (! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', $file_type) &&
-      preg_match('/^.*\.(zip|lzh)$/', $file_name))){
-  PrintData($_FILES['file']);
+       preg_match('/^.*\.(zip|lzh)$/', $file_name))) {
+  Text::p($_FILES['file']);
   OutputUploadResult('<span>' . $file_name . '</span> : <span>' . $file_type . '</span><br>'."\n".
 		     'zip/lzh 以外のファイルはアップロードできません。');
 }

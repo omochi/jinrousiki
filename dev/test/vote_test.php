@@ -317,7 +317,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
     #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
     #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
-    array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
+    #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
     #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
     #array('user_no' => 18, 	'type' => 'VOODOO_FOX_DO', 'target_no' => 20),
     array('user_no' => 19, 	'type' => 'FAIRY_DO', 'target_no' => 23),
@@ -334,7 +334,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
     #array('user_no' => 23, 	'type' => 'ASSASSIN_DO', 'target_no' => 3),
     #array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
-    array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
+    #array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
     #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
     #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
     array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13 18'),
@@ -384,7 +384,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(7);
+DB::$SELF = DB::$USER->ByID(7);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//
@@ -443,7 +443,7 @@ if ($vote_view_mode) { //投票表示モード
   HTML::OutputFooter(true);
 }
 HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
-$talk_view_mode = true; false;
+$talk_view_mode = false;
 if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();
@@ -515,7 +515,7 @@ if ($talk_view_mode) { //発言表示モード
   foreach (RQ::GetTest()->talk_data->{DB::$ROOM->scene} as $stack) {
     RQ::GetTest()->talk[] = new TalkParser($stack);
   }
-  //PrintData(RQ::GetTest()->talk);
+  //Text::p(RQ::GetTest()->talk);
   GameHTML::OutputPlayer();
   if (DB::$SELF->user_no > 0) RoleHTML::OutputAbility();
   Talk::Output();
@@ -534,9 +534,9 @@ if ($role_view_mode) { //画像表示モード
 $cast_view_mode = false;
 if ($cast_view_mode) { //配役情報表示モード
   Loader::LoadFile('chaos_config');
-  //PrintData(Lottery::RateToProbability(ChaosConfig::$chaos_hyper_random_role_list));
-  //PrintData(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
-  //PrintData(ChaosConfig::$role_group_rate_list);
+  //Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));
+  //Text::p(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
+  //Text::p(ChaosConfig::$role_group_rate_list);
   echo '<table border="1" cellspacing="0">'."\n".'<tr><th>人口</th>';
   foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
     $role  = RoleData::DistinguishRoleGroup($group);
@@ -585,7 +585,7 @@ if (DB::$ROOM->IsDay()) { //昼の投票テスト
   DB::$SELF = DB::$USER->ByID($self_id);
 }
 elseif (DB::$ROOM->IsNight()) { // 夜の投票テスト
-  //PrintData(RQ::GetTest()->vote->night);
+  //Text::p(RQ::GetTest()->vote->night);
   Vote::AggregateNight();
 }
 elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
@@ -595,9 +595,9 @@ elseif (DB::$ROOM->IsAfterGame()) { //勝敗判定表示
   Winner::Output();
   HTML::OutputFooter();
 }
-//PrintData(RQ::GetTest()->system_message, 'System');
-//PrintData(RQ::GetTest()->result_ability, 'Ability');
-//PrintData(RQ::GetTest()->result_dead, 'Dead');
+//Text::p(RQ::GetTest()->system_message, 'System');
+//Text::p(RQ::GetTest()->result_ability, 'Ability');
+//Text::p(RQ::GetTest()->result_dead, 'Dead');
 
 do {
   //break;
@@ -643,10 +643,10 @@ do {
   }
   GameHTML::OutputAbilityAction();
 
-  //PrintData(RQ::GetTest()->system_message, 'SystemMessage');
+  //Text::p(RQ::GetTest()->system_message, 'SystemMessage');
   DB::$ROOM->LoadEvent();
   DB::$USER->SetEvent();
-  //PrintData(DB::$ROOM->event);
+  //Text::p(DB::$ROOM->event);
   GameHTML::OutputDead();
 
   //DB::$ROOM->status = 'finished';
@@ -658,10 +658,10 @@ do {
   }
   //var_dump(DB::$USER->IsOpenCast());
 } while(false);
-//PrintData(Lottery::RateToProbability(GameConfig::$weather_list));
+//Text::p(Lottery::ToProbability(GameConfig::$weather_list));
 //InsertLog();
-//PrintData(RoleManager::$file);
-//PrintData(array_keys(RoleManager::$class));
-//PrintData(DB::$USER->role);
-//PrintData(Loader::$file);
+//Text::p(RoleManager::$file);
+//Text::p(array_keys(RoleManager::$class));
+//Text::p(DB::$USER->role);
+//Text::p(Loader::$file);
 HTML::OutputFooter();

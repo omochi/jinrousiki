@@ -11,6 +11,6 @@ class Role_brownie extends Role {
       $user = DB::$USER->ByRealUname($uname);
       if (! $user->IsAvoid()) $stack[] = $user->user_no;
     }
-    if (count($stack) > 0) DB::$USER->ByID(GetRandom($stack))->AddDoom(1, 'febris');
+    if (count($stack) > 0) DB::$USER->ByID(Lottery::Get($stack))->AddDoom(1, 'febris');
   }
 }

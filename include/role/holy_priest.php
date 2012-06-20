@@ -30,10 +30,10 @@ class Role_holy_priest extends Role_priest {
 	if (($j % 5) != 0 && $j < $max) $list[] = $j + 1;
       }
       if (DB::$ROOM->IsDummyBoy() && ! in_array(1, $list)) $list[] = 1; //身代わり君を追加
-      //PrintData($list, $num);
+      //Text::p($list, $num);
       $stack = array();
       foreach ($list as $id) $stack[DB::$USER->ByID($id)->GetCamp(true)][] = $id; //陣営カウント
-      //PrintData($stack, $uname);
+      //Text::p($stack, $uname);
       DB::$ROOM->ResultAbility($event, count(array_keys($stack)), null, $user->user_no);
     }
   }

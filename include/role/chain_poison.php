@@ -19,13 +19,13 @@ class Role_chain_poison extends Role {
       $user = DB::$USER->ByRealUname($uname);
       if (! $user->IsAvoid(true)) $stack[] = $user->user_no;
     }
-    //PrintData($stack, "Target [{$this->role}]");
+    //Text::p($stack, "Target [{$this->role}]");
 
     $count = 1; //連鎖カウントを初期化
     while ($count > 0) {
       $count--;
       shuffle($stack); //配列をシャッフル
-      //PrintData($stack, $count);
+      //Text::p($stack, $count);
       for ($i = 0; $i < 2; $i++) {
 	if (count($stack) < 1) return;
 	$id = array_shift($stack);

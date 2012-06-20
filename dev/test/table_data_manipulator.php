@@ -73,25 +73,25 @@ function UpdateIconInfo($type, $value, $from, $to = NULL){
 //ファイルの IO テスト
 function OpenFile($file){
   $io = file_get_contents(JINRO_ROOT . '/' . $file);
-  PrintData($io);
+  Text::p($io);
 }
 
 //使用されているアイコンを削除する (from: 対象番号 / to: 代替番号)
 /* ロック処理を再設計しているので 2.0 では使用できない */
 function DeleteUsedIcon($from, $to){
   if(DB::FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = {$to}") < 1){
-    PrintData($to, 'Invalid Icon No');
+    Text::p($to, 'Invalid Icon No');
     return false;
   }
   if(LockTable('icon_delete')){
-    PrintData('Lock Failed', 'icon_delete');
+    Text::p('Lock Failed', 'icon_delete');
     return false;
   }
   if(DB::Execute("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")){
     $file = DB::FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = {$from}");
     unlink(JINRO_ROOT . '/user_icon/' . $file); //ファイルの存在をチェックしていないので要注意
     DB::Execute("DELETE FROM user_icon WHERE icon_no = {$from}");
-    PrintData($to, "Icon Change From {$from}");
+    Text::p($to, "Icon Change From {$from}");
     UnlockTable();
   }
 }
@@ -114,7 +114,7 @@ function SqueezeIcon(){
     DB::Execute($query_user . $i . $footer);
     DB::Execute($query_icon . "'{$file_name}', icon_no = " . $i . $footer);
     rename($path . $icon['icon_filename'], $path . $file_name);
-    PrintData($icon, $file_name);
+    Text::p($icon, $file_name);
     //break;
   }
   DB::Optimize('user_icon');
@@ -123,7 +123,7 @@ function SqueezeIcon(){
 //村立て時刻再生成関数 (for 1.4, 1.5)
 function ReconstructEstablishTime($test = false){
   $room_list = DB::FetchArray("SELECT room_no FROM room WHERE establish_time IS NULL ORDER BY room_no");
-  //PrintData($room_list);
+  //Text::p($room_list);
   $keyword = '村作成：';
   foreach($room_list as $room_no){
     #if($room_no == 434) return;
@@ -134,7 +134,7 @@ function ReconstructEstablishTime($test = false){
       $str = array_pop(explode($keyword, $talk['sentence']));
       if($test){
 	$time = DB::FetchResult("SELECT STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s')");
-	PrintData($time, $room_no . ': ' . $str);
+	Text::p($time, $room_no . ': ' . $str);
       }
       else{
 	$query = "UPDATE room SET establish_time = STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s') " .
@@ -153,7 +153,7 @@ function ReconstructEstablishTime($test = false){
 	//$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
 	//$time = date('Y/m/d (D) H:i:s', $talk);
 	//$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}')");
-	PrintData($date, $room_no . ': ' . $time);
+	Text::p($date, $room_no . ': ' . $time);
       }
       else{
 	$query = "UPDATE room SET establish_time = FROM_UNIXTIME('{$talk}' - 32400) " .
@@ -168,7 +168,7 @@ function ReconstructEstablishTime($test = false){
 function ReconstructStartTime($test = false){
   $room_list = DB::FetchArray("SELECT room_no FROM room WHERE start_time IS NULL ORDER BY room_no");
   $keyword = 'ゲーム開始：';
-  //PrintData($room_list);
+  //Text::p($room_list);
   foreach($room_list as $room_no){
     #if($room_no == 434) return;
     $query = "SELECT sentence, talk_id FROM talk WHERE room_no = {$room_no} " .
@@ -178,7 +178,7 @@ function ReconstructStartTime($test = false){
       $str = array_pop(explode($keyword, $talk['sentence']));
       if($test){
 	$time = DB::FetchResult("SELECT STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s')");
-	PrintData($time, $room_no . ': ' . $str);
+	Text::p($time, $room_no . ': ' . $str);
       }
       else{
 	$query = "UPDATE room SET start_time = STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s') " .
@@ -194,7 +194,7 @@ function ReconstructStartTime($test = false){
       if($test){
 	$time = gmdate('Y/m/d (D) H:i:s', $talk);
 	$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
-	PrintData($date, $room_no . ': ' . $time);
+	Text::p($date, $room_no . ': ' . $time);
       }
       else{
 	$query = "UPDATE room SET start_time = FROM_UNIXTIME('{$talk}' - 32400) " .
@@ -208,7 +208,7 @@ function ReconstructStartTime($test = false){
 //ゲーム終了時刻再生成関数 (for 1.4, 1.5)
 function ReconstructFinishTime($test = false){
   $room_list = DB::FetchArray("SELECT room_no FROM room WHERE finish_time IS NULL ORDER BY room_no");
-  //PrintData($room_list);
+  //Text::p($room_list);
   $keyword = 'ゲーム終了：';
   foreach($room_list as $room_no){
     #if($room_no == 434) return;
@@ -219,7 +219,7 @@ function ReconstructFinishTime($test = false){
       $str = array_pop(explode($keyword, $talk['sentence']));
       if($test){
 	$time = DB::FetchResult("SELECT STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s')");
-	PrintData($time, $room_no . ': ' . $str);
+	Text::p($time, $room_no . ': ' . $str);
       }
       else{
 	$query = "UPDATE room SET finish_time = STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s') " .
@@ -236,7 +236,7 @@ function ReconstructFinishTime($test = false){
       if($test){
 	$time = gmdate('Y/m/d (D) H:i:s', $talk);
 	$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
-	PrintData($date, $room_no . ': ' . $time);
+	Text::p($date, $room_no . ': ' . $time);
       }
       else{
 	$query = "UPDATE room SET finish_time = FROM_UNIXTIME('{$talk}' - 32400) " .
@@ -325,7 +325,7 @@ function ConvertTableEncode($table){
       }
     }
   }
-  PrintData($new_table, 'Code Convert');
+  Text::p($new_table, 'Code Convert');
 }
 
 function ConvertCurrentTableEncode($table, $start){

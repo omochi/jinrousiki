@@ -11,7 +11,7 @@ class Cast {
       $str = $user_count . '人は設定されていません';
       VoteHTML::OutputResult($error_header . $str . $error_footer, true);
     }
-    //PrintData(DB::$ROOM->option_list);
+    //Text::p(DB::$ROOM->option_list);
 
     if (DB::$ROOM->IsOptionGroup('chaos')) { //闇鍋モード
       $random_role_list = array(); //ランダム配役結果
@@ -27,66 +27,68 @@ class Cast {
       $fix_role_list = ChaosConfig::${$base_name . '_fix_role_list'}; //グレード個別設定
 
       if (count($stack = DB::$ROOM->GetOptionList('topping')) > 0) { //固定配役追加モード
-	//PrintData($stack, 'topping');
+	//Text::p($stack, 'topping');
 	if (is_array(@$stack['fix'])) { //定数
 	  foreach ($stack['fix'] as $role => $count) @$fix_role_list[$role] += $count;
 	}
 	if (is_array(@$stack['random'])) { //ランダム
 	  foreach ($stack['random'] as $key => $list) {
-	    $random_list = Lottery::GenerateRandomList($list);
-	    //PrintData($random_list, $stack['count'][$key]);
+	    $random_list = Lottery::Generate($list);
+	    //Text::p($random_list, $stack['count'][$key]);
 	    for ($count = $stack['count'][$key]; $count > 0; $count--) {
-	      @$fix_role_list[GetRandom($random_list)]++;
+	      @$fix_role_list[Lottery::Get($random_list)]++;
 	    }
 	  }
 	}
-	//PrintData($fix_role_list, sprintf('Topping(%d)', array_sum($fix_role_list)));
+	//Text::p($fix_role_list, sprintf('Topping(%d)', array_sum($fix_role_list)));
       }
 
       //個別オプション(ゲルト君モード：村人 / 探偵村：探偵)
       foreach (array('gerd' => 'human', 'detective' => 'detective_common') as $option => $role) {
-	if (DB::$ROOM->IsOption($option) && ! isset($fix_role_list[$role])) $fix_role_list[$role] = 1;
+	if (DB::$ROOM->IsOption($option) && ! isset($fix_role_list[$role])) {
+	  $fix_role_list[$role] = 1;
+	}
       }
-      //PrintData($fix_role_list, sprintf('Fix(%d)', array_sum($fix_role_list)));
+      //Text::p($fix_role_list, sprintf('Fix(%d)', array_sum($fix_role_list)));
 
       $boost_list = DB::$ROOM->GetOptionList('boost_rate'); //出現率補正リスト
-      //PrintData($boost_list, 'boost');
+      //Text::p($boost_list, 'boost');
       if (! $chaos_verso) { //-- 最小出現補正 --//
 	$stack = array(); //役職系統別配役数
 	foreach ($fix_role_list as $key => $value) { //固定枠内の該当グループをカウント
 	  $stack[RoleData::DistinguishRoleGroup($key)] = $value;
 	}
-	//PrintData($stack, 'FixRole');
+	//Text::p($stack, 'FixRole');
 
 	foreach (array('wolf', 'fox') as $role) {
 	  $name  = ChaosConfig::${sprintf('%s_%s_list', $base_name, $role)};
-	  $rate  = Lottery::GetChaosRateList($name, $boost_list);
-	  $list  = Lottery::GenerateRandomList($rate);
+	  $rate  = Lottery::GetChaos($name, $boost_list);
+	  $list  = Lottery::Generate($rate);
 	  $base  = isset($stack[$role]) ? $stack[$role] : 0;
 	  $min   = ChaosConfig::${sprintf('min_%s_rate', $role)};
 	  $count = round($user_count / $min) - $base;
-	  //PrintData($list, $count);
-	  //Lottery::RateToProbability($rate); //テスト用
-	  Lottery::AddRandom($random_role_list, $list, $count);
-	  //PrintData($random_role_list, $role);
+	  //Text::p($list, $count);
+	  //Lottery::ToProbability($rate); //テスト用
+	  Lottery::Add($random_role_list, $list, $count);
+	  //Text::p($random_role_list, $role);
 	}
       }
-      //PrintData($random_role_list, sprintf('random(%d)', array_sum($random_role_list)));
+      //Text::p($random_role_list, sprintf('random(%d)', array_sum($random_role_list)));
 
       //-- ランダム配役 --//
       $name  = ChaosConfig::${$base_name . '_random_role_list'};
-      $rate  = Lottery::GetChaosRateList($name, $boost_list);
-      $list  = Lottery::GenerateRandomList($rate);
+      $rate  = Lottery::GetChaos($name, $boost_list);
+      $list  = Lottery::Generate($rate);
       $count = $user_count - (array_sum($random_role_list) + array_sum($fix_role_list));
-      //PrintData($list, $count);
-      //PrintData(array_sum($rate));
-      //Lottery::RateToProbability($rate); //テスト用
-      Lottery::AddRandom($random_role_list, $list, $count);
+      //Text::p($list, $count);
+      //Text::p(array_sum($rate));
+      //Lottery::ToProbability($rate); //テスト用
+      Lottery::Add($random_role_list, $list, $count);
 
       //固定とランダムを合計
       $role_list = $random_role_list;
       foreach ($fix_role_list as $key => $value) @$role_list[$key] += (int)$value;
-      //PrintData($role_list, sprintf('1st(%d)', array_sum($role_list)));
+      //Text::p($role_list, sprintf('1st(%d)', array_sum($role_list)));
 
       if (! $chaos_verso) { //-- 上限補正 --//
 	//役職グループ毎に集計
@@ -103,25 +105,25 @@ class Cast {
 	  $target = $random_stack[$name];
 	  if (! (is_array(@$total_stack[$name]) && is_array($target))) continue;
 	  $count = array_sum($total_stack[$name]) - round($user_count / $rate);
-	  //if ($count > 0) PrintData($count, $name); //テスト用
+	  //if ($count > 0) Text::p($count, $name); //テスト用
 	  for (; $count > 0; $count--) {
 	    if (array_sum($target) < 1) break;
-	    //PrintData($target, sprintf('　　%d: before', $count));
+	    //Text::p($target, sprintf('　　%d: before', $count));
 	    arsort($target);
-	    //PrintData($target, sprintf('　　%d: afetr', $count));
+	    //Text::p($target, sprintf('　　%d: afetr', $count));
 	    $key = key($target);
-	    //PrintData($key, '　　target');
+	    //Text::p($key, '　　target');
 	    $target[$key]--;
 	    $role_list[$key]--;
 	    isset($role_list['human']) ? $role_list['human']++ : $role_list['human'] = 1;
-	    //PrintData($target, sprintf('　　%d: delete', $count));
+	    //Text::p($target, sprintf('　　%d: delete', $count));
 
 	    //0 になった役職はリストから除く
 	    if ($role_list[$key] < 1) unset($role_list[$key]);
 	    if ($target[$key]    < 1) unset($target[$key]);
 	  }
 	}
-	//PrintData($role_list, sprintf('2nd(%d)', array_sum($role_list)));
+	//Text::p($role_list, sprintf('2nd(%d)', array_sum($role_list)));
       }
 
       if (DB::$ROOM->IsDummyBoy()) { //-- 身代わり君モード補正 --//
@@ -139,23 +141,23 @@ class Cast {
 	}
 
 	if ($dummy_count < 1) {
-	  //PrintData($target_stack, "for dummy");
+	  //Text::p($target_stack, "for dummy");
 	  foreach ($target_stack as $role => $stack) { //対象役職からランダムに村人へ置換
-	    //PrintData($stack, "　　$role");
+	    //Text::p($stack, "　　$role");
 	    //人狼・探偵村の探偵はゼロにしない
 	    if (($role == 'wolf' || (DB::$ROOM->IsOption('detective') && $role == 'detective')) &&
 		array_sum($stack) < 2) continue;
 
 	    arsort($stack);
-	    //PrintData($stack, "　　list");
+	    //Text::p($stack, "　　list");
 	    $key = key($stack);
-	    //PrintData($key, "　　role");
+	    //Text::p($key, "　　role");
 	    $role_list[$key]--;
 	    $role_list['human']++;
 	    if ($role_list[$key] < 1) unset($role_list[$key]); //0 になった役職はリストから除く
 	    break;
 	  }
-	  //PrintData($role_list, '3rd_list('.array_sum($role_list).')');
+	  //Text::p($role_list, '3rd_list('.array_sum($role_list).')');
 	}
       }
 
@@ -165,14 +167,14 @@ class Cast {
 	if (DB::$ROOM->IsOption('gerd')) $count--;
 	if ($count > 0) {
 	  $name = ChaosConfig::${$base_name . '_replace_human_role_list'};
-	  $rate = Lottery::GetChaosRateList($name, $boost_list);
-	  $list = Lottery::GenerateRandomList($rate);
-	  //PrintData($list, $count);
-	  //Lottery::RateToProbability($rate); //テスト用
-	  Lottery::AddRandom($role_list, $list, $count);
+	  $rate = Lottery::GetChaos($name, $boost_list);
+	  $list = Lottery::Generate($rate);
+	  //Text::p($list, $count);
+	  //Lottery::ToProbability($rate); //テスト用
+	  Lottery::Add($role_list, $list, $count);
 	  $role_list[$role] -= $count;
 	  if ($role_list[$role] < 1) unset($role_list[$role]); //0 になったらリストから除く
-	  //PrintData($role_list, sprintf('4th_list(%d)', array_sum($role_list)));
+	  //Text::p($role_list, sprintf('4th_list(%d)', array_sum($role_list)));
 	}
       }
     }
@@ -214,7 +216,7 @@ class Cast {
 
     if ($role_count != $user_count) { //配列長をチェック
       if (DB::$ROOM->test_mode) {
-	PrintData($role_count, 'エラー：配役数');
+	Text::p($role_count, 'エラー：配役数');
 	return $now_role_list;
       }
       $str = '村人 (' . $user_count . ') と配役の数 (' . $role_count . ') が一致していません';
@@ -261,7 +263,7 @@ class Cast {
   static function SetSubRole(&$fix_role_list) {
     $rand_keys = array_keys($fix_role_list); //人数分の ID リストを取得
     shuffle($rand_keys); //シャッフルしてランダムキーに変換
-    //PrintData($rand_keys, 'rand_keys');
+    //Text::p($rand_keys, 'rand_keys');
 
     OptionManager::$stack = RoleManager::$disable_cast_list; //割り振り対象外役職のリスト
     //サブ役職テスト用
@@ -299,10 +301,10 @@ class Cast {
     else {
       $sub_role_keys = array_keys(RoleData::$sub_role_list);
     }
-    //PrintData(OptionManager::$stack, 'DeleteRoleList');
+    //Text::p(OptionManager::$stack, 'DeleteRoleList');
 
     $sub_role_keys = array_diff($sub_role_keys, OptionManager::$stack);
-    //PrintData($sub_role_keys, 'SubRoleList');
+    //Text::p($sub_role_keys, 'SubRoleList');
     shuffle($sub_role_keys);
     foreach ($rand_keys as $id) $fix_role_list[$id] .= ' ' . array_pop($sub_role_keys);
   }
@@ -353,7 +355,6 @@ class Cast {
 	$stack[1][] = $option;
       }
     }
-    //PrintData($stack);
 
     foreach ($stack as $order => $option_list) {
       foreach ($option_list as $option) {

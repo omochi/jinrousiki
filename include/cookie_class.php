@@ -39,7 +39,7 @@ class JinroCookie {
     foreach (DB::$USER->name as $uname => $id) {
       $objection_list[$count++] = DB::$USER->ByID($id)->objection;
     }
-    //PrintData($objection_list, 'objection');
+
     //リストを登録
     setcookie('objection', implode(',', $objection_list), $time);
     self::$objection_list = $objection_list;

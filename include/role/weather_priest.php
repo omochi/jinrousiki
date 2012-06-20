@@ -20,7 +20,7 @@ class Role_weather_priest extends Role_priest {
     //天候補正処理
     $vote_margin = ceil(($data->count['total'] - 2) / 2) -
       $data->count['wolf'] - $data->count['fox'];
-    //PrintData($vote_margin, 'VoteMargin');
+    //Text::p($vote_margin, 'VoteMargin');
 
     $target = GameConfig::$weather_list;
     if ($data->count['fox'] > $data->count['wolf']) { //妖狐陣営優勢
@@ -68,13 +68,13 @@ class Role_weather_priest extends Role_priest {
       elseif (strpos($role, 'fairy') !== false) {
 	$id = 29;
       }
-      //PrintData($role, $id);
+      //Text::p($role, $id);
       if (isset($id)) $target[$id] = ceil($target[$id] * (1 + count($list) * 0.1));
     }
-    //PrintData($target);
-    //$stack = array(); for ($i = 0; $i < 20; $i++) @$stack[Lottery::Get($target)]++;
-    //ksort($stack); PrintData($stack);
-    $weather = Lottery::Get($target);
+    //Text::p($target);
+    //$stack = array(); for ($i = 0; $i < 20; $i++) @$stack[Lottery::Draw($target)]++;
+    //ksort($stack); Text::p($stack);
+    $weather = Lottery::Draw($target);
     //$weather = 44; //テスト用
     $date = 2;
     $flag = isset($role_flag->{$this->role}) && count($role_flag->{$this->role}) > 0;

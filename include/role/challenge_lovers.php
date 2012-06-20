@@ -23,12 +23,12 @@ class Role_challenge_lovers extends Role {
 	  foreach ($user->GetPartner('lovers') as $id) $cupid_list[$id][] = $user->user_no;
 	}
       }
-      //PrintData($cupid_list, 'QP');
+      //Text::p($cupid_list, 'QP');
       $this->SetStack($cupid_list);
     }
     $target = $this->GetStack('target');
     $stack  = array_keys($target, $target[$this->GetUname()]);
-    //PrintData($stack, $this->GetUname());
+    //Text::p($stack, $this->GetUname());
 
     $id = $this->GetActor()->user_no;
     foreach ($this->GetActor()->GetPartner('lovers') as $cupid_id) {

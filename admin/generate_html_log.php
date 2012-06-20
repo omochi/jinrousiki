@@ -30,7 +30,7 @@ if ($db_delete_mode) {
   HTML::OutputFooter(true);
 }
 
-//GenerateLogIndex(); //インデックスページ生成
+//OldLogHTML::GenerateIndex(); //インデックスページ生成
 //HTML::OutputFooter(true);
 
 Loader::LoadFile('winner_message', 'icon_class', 'image_class', 'talk_class');
@@ -48,7 +48,7 @@ for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
   DB::$SELF = new User();
 
   RQ::$get->reverse_log = false;
-  file_put_contents("{$header}{$i}.html", GenerateOldLog() . $footer);
+  file_put_contents("{$header}{$i}.html", OldLogHTML::Generate() . $footer);
 
   RQ::$get->reverse_log = true;
   DB::$ROOM = new Room(RQ::$get);
@@ -57,11 +57,10 @@ for ($i = RQ::$get->min_room_no; $i <= RQ::$get->max_room_no; $i++) {
 
   DB::$USER = new UserDataSet(RQ::$get);
   DB::$SELF = new User();
-  file_put_contents("{$header}{$i}r.html", GenerateOldLog() . $footer);
+  file_put_contents("{$header}{$i}r.html", OldLogHTML::Generate() . $footer);
   if ($room_delete) DB::DeleteRoom($i);
 }
 if ($room_delete) DB::Optimize();
 
-HTML::OutputResult('ログ生成',
-		   RQ::$get->min_room_no . ' 番地から ' .
-		   RQ::$get->max_room_no . ' 番地までを HTML 化しました');
+$format = '%d 番地から %d 番地までを HTML 化しました';
+HTML::OutputResult('ログ生成', sprintf($format, RQ::$get->min_room_no, RQ::$get->max_room_no));

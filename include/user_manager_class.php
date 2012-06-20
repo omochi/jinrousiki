@@ -67,7 +67,6 @@ class UserManager {
     RQ::$get->room_no = $room_no;
     RQ::$get->retrive_type = 'entry_user';
     DB::$USER = new UserDataSet(RQ::$get);
-    //PrintData(DB::$USER); //テスト用
 
     $user_count = DB::$USER->GetUserCount(); //現在の KICK されていない住人の数を取得
     if ($user_no < 1 && $user_count >= DB::$ROOM->max_user) { //定員オーバー判定
@@ -124,7 +123,7 @@ class UserManager {
       foreach (array('sex', 'profile', 'role') as $value) {
 	if ($target->$value != $$value) $stack[] = sprintf("%s = '%s'", $value, $$value);
       }
-      //PrintData($stack);
+      //Text::p($stack);
       if (count($stack) < 1) {
 	$str = '変更点はありません。' . $back_url;
 	HTML::OutputResult('村人登録 [登録情報変更]', $str);

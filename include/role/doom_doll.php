@@ -12,6 +12,6 @@ class Role_doom_doll extends Role_doll {
       $user = DB::$USER->ByRealUname($uname);
       if (! $user->IsAvoid() && ! $this->IsDoll($user)) $stack[] = $user->user_no;
     }
-    if (count($stack) > 0) DB::$USER->ByID(GetRandom($stack))->AddDoom(2);
+    if (count($stack) > 0) DB::$USER->ByID(Lottery::Get($stack))->AddDoom(2);
   }
 }

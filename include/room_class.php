@@ -111,7 +111,7 @@ class Room {
       $vote_list = DB::FetchAssoc($query);
     }
 
-    //PrintData($vote_list);
+    //Text::p($vote_list);
     $stack = array();
     switch ($this->scene) {
     case 'beforegame':
@@ -156,7 +156,7 @@ class Room {
       $stack = array();
       foreach (RQ::GetTest()->system_message as $date => $date_list) {
 	if ($date != $this->date) continue;
-	//PrintData($date_list, $date);
+	//Text::p($date_list, $date);
 	foreach ($date_list as $type => $type_list) {
 	  switch ($type) {
 	  case 'WEATHER':
@@ -212,7 +212,7 @@ class Room {
       $result->users[$user_no][] = $role_id;
       $result->timeline[$date][$scene][] = $role_id;
     }
-    //PrintData($result);
+    //Text::p($result);
     return $result;
   }
 
@@ -401,7 +401,7 @@ class Room {
     }
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$scene}: {$location}: {$action}: {$font_type}";
-      PrintData(Text::LineToBR($sentence), $str);
+      Text::p(Text::LineToBR($sentence), $str);
       return true;
     }
 
@@ -442,7 +442,7 @@ class Room {
   function TalkBeforeGame($sentence, $uname, $handle_name, $color, $font_type = null) {
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
-      PrintData(Text::LineToBR($sentence), $str);
+      Text::p(Text::LineToBR($sentence), $str);
       return true;
     }
 
@@ -468,7 +468,7 @@ class Room {
   function SystemMessage($str, $type, $add_date = 0) {
     $date = $this->date + $add_date;
     if ($this->test_mode) {
-      PrintData("{$type} ({$date}): {$str}", 'SystemMessage');
+      Text::p("{$type} ({$date}): {$str}", 'SystemMessage');
       if (is_array(RQ::GetTest()->system_message)) {
 	RQ::GetTest()->system_message[$date][$type][] = $str;
       }
@@ -483,7 +483,7 @@ class Room {
   function ResultAbility($type, $result, $target = null, $user_no = null) {
     $date = $this->date;
     if ($this->test_mode) {
-      PrintData("{$type}: {$result}: {$target}: {$user_no}", 'ResultAbility');
+      Text::p("{$type}: {$result}: {$target}: {$user_no}", 'ResultAbility');
       if (is_array(RQ::GetTest()->result_ability)) {
 	$stack = array('user_no' => $user_no, 'target' => $target, 'result' => $result);
 	RQ::GetTest()->result_ability[$date][$type][] = $stack;
@@ -505,7 +505,7 @@ class Room {
   function ResultDead($name, $type, $result = null) {
     $date = $this->date;
     if ($this->test_mode) {
-      PrintData("{$name}: {$type} ({$date}): {$result}", 'ResultDead');
+      Text::p("{$name}: {$type} ({$date}): {$result}", 'ResultDead');
       if (is_array(RQ::GetTest()->result_dead)) {
 	$stack = array('type' => $type, 'handle_name' => $name, 'result' => $result);
 	RQ::GetTest()->result_dead[] = $stack;

@@ -25,22 +25,22 @@ class Role_exchange_angel extends Role_angel {
 	}
       }
     }
-    //PrintData($angel_list, 'angel: 1st');
-    //PrintData($lovers_list, 'lovers: 1st');
+    //Text::p($angel_list, 'angel: 1st');
+    //Text::p($lovers_list, 'lovers: 1st');
 
     foreach ($angel_list as $id => $lovers_stack) { //抽選処理
       if (array_key_exists($id, $fix_list)) continue;
       $duplicate_stack = array();
-      //PrintData($fix_list, 'fix_angel:'. $id);
+      //Text::p($fix_list, 'fix_angel:'. $id);
       foreach ($lovers_stack as $lovers_id) {
 	foreach ($lovers_list[$lovers_id] as $cupid_id) {
 	  if (! array_key_exists($cupid_id, $fix_list)) $duplicate_stack[$cupid_id] = true;
 	}
       }
-      //PrintData($duplicate_stack, 'duplicate:' . $id);
+      //Text::p($duplicate_stack, 'duplicate:' . $id);
       $duplicate_list = array_keys($duplicate_stack);
       if (count($duplicate_list) > 1) {
-	$exchange_list[] = GetRandom($duplicate_list);
+	$exchange_list[] = Lottery::Get($duplicate_list);
 	foreach ($duplicate_list as $duplicate_id) $fix_list[$duplicate_id] = true;
       }
       else {
@@ -48,7 +48,7 @@ class Role_exchange_angel extends Role_angel {
       }
       $fix_list[$id] = true;
     }
-    //PrintData($exchange_list, 'exchange');
+    //Text::p($exchange_list, 'exchange');
 
     foreach ($exchange_list as $id) {
       $target_list = $angel_list[$id];

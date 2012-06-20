@@ -153,12 +153,12 @@ EOF;
     $room_no     = DB::FetchResult('SELECT MAX(room_no) FROM room') + 1; //村番号の最大値を取得
     $game_option = RoomOption::GetOption(RoomOption::GAME_OPTION);
     $option_role = RoomOption::GetOption(RoomOption::ROLE_OPTION);
-    //PrintData($_POST, 'Post');
-    //PrintData(RQ::$get, 'RQ');
-    //PrintData(RoomOption::$game_option, 'GameOptionClass');
-    //PrintData(RoomOption::$role_option, 'OptionRoleClass');
-    //PrintData($game_option, 'GameOption');
-    //PrintData($option_role, 'OptionRole');
+    //Text::p($_POST, 'Post');
+    //Text::p(RQ::$get, 'RQ');
+    //Text::p(RoomOption::$game_option, 'GameOptionClass');
+    //Text::p(RoomOption::$role_option, 'OptionRoleClass');
+    //Text::p($game_option, 'GameOption');
+    //Text::p($option_role, 'OptionRole');
     //HTML::OutputFooter(true); //テスト用
 
     do {

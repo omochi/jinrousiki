@@ -1,6 +1,20 @@
 <?php
 //-- テキスト処理クラス --//
 class Text {
+  //変数表示関数 (デバッグ用)
+  static function p($data, $name = null) {
+    $str = is_null($name) ? '' : $name . ': ';
+    $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
+    echo $str . '<br>';
+  }
+
+  //変数ダンプ (デバッグ用)
+  static function v($data, $name = null) {
+    if (! is_null($name)) echo $name . ': ';
+    var_dump($data);
+    echo '<br>';
+  }
+
   //パスワード暗号化
   static function CryptPassword($str) { return sha1(ServerConfig::SALT . $str); }
 
@@ -24,7 +38,7 @@ class Text {
       if (($trip_start = mb_strpos($str, '#')) !== false) { //トリップキーの位置を検索
 	$name = mb_substr($str, 0, $trip_start);
 	$key  = mb_substr($str, $trip_start + 1);
-	//PrintData(sprintf('%s, name: %s, key: %s', $trip_start, $name, $key), 'Trip Start');
+	//self::p(sprintf('%s, name: %s, key: %s', $trip_start, $name, $key), 'Trip Start');
 	$key = mb_convert_encoding($key, 'SJIS', ServerConfig::ENCODE); //文字コードを変換
 
 	if (GameConfig::TRIP_2ch && strlen($key) >= 12) {
@@ -56,7 +70,7 @@ class Text {
 	}
 	$str = $name . '◆' . $trip;
       }
-      //PrintData($str, 'Result');
+      //self::p($str, 'Result');
     }
     elseif (strpos($str, '#') !== false || strpos($str, '＃') !== false) {
       $sentence = "トリップは使用不可です。<br>\n" . '"#" 又は "＃" の文字も使用不可です。';
@@ -344,13 +358,6 @@ EOF;
 }
 
 //-- 出力関連 --//
-//変数表示関数 (デバッグ用)
-function PrintData($data, $name = null){
-  $str = is_null($name) ? '' : $name . ': ';
-  $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
-  echo $str . '<br>';
-}
-
 //村情報のRSSファイルを更新する
 function OutputSiteSummary(){
   Loader::LoadFile('feedengine');

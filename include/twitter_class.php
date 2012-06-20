@@ -33,7 +33,7 @@ class JinroTwitter {
     if (! ($response === false || strrpos($response, 'error'))) return true;
     //エラー処理
     $sentence = 'Twitter への投稿に失敗しました。<br>'."\n" . 'メッセージ：' . $message;
-    PrintData($sentence);
+    Text::p($sentence);
     return false;
   }
 }

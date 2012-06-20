@@ -19,10 +19,10 @@ if (RQ::$get->is_room) {
   DB::$USER->player = DB::$ROOM->LoadPlayer();
   if (DB::$ROOM->watch_mode) DB::$SELF->live = 'live';
   if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) DB::$USER->SaveRoleList();
-  OutputOldLog();
+  OldLogHTML::Output();
 }
 else {
   Loader::LoadFile('room_config');
-  OutputFinishedRooms(RQ::$get->page);
+  OldLogHTML::OutputList(RQ::$get->page);
 }
 HTML::OutputFooter();

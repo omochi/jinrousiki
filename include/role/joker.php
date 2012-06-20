@@ -18,7 +18,7 @@ class Role_joker extends Role {
     $virtual = DB::$USER->ByVirtual($user->user_no)->uname; //仮想ユーザ名を取得
     $uname   = $this->GetVoteTargetUname($virtual); //ジョーカーの投票先
     $this->SetStack($uname, 'joker_uname');
-    //PrintData($uname, 'Vote');
+    //Text::p($uname, 'Vote');
 
     $target = array(); //移動可能者リスト
     $stack  = $this->GetVotedUname($virtual); //ジョーカー投票者
@@ -27,8 +27,8 @@ class Role_joker extends Role {
       if ($voter->IsLive(true) && ! $voter->IsJoker(true)) $target[] = $voter_uname;
     }
     $this->SetStack($target, 'joker_target');
-    //PrintData($stack, 'Target [Voted]');
-    //PrintData($target, 'Target [joker]');
+    //Text::p($stack, 'Target [Voted]');
+    //Text::p($target, 'Target [joker]');
 
     //対象者か現在のジョーカー所持者が処刑者なら無効
     if ($this->IsVoted($uname) || $this->IsVoted($user->uname)) return true;
@@ -36,13 +36,13 @@ class Role_joker extends Role {
     if (in_array($uname, $stack)) { //相互投票なら無効 (複数から投票されていた場合は残りからランダム)
       unset($target[array_search($uname, $target)]);
       $this->SetStack($target, 'joker_target');
-      //PrintData($target, 'ReduceTarget');
+      //Text::p($target, 'ReduceTarget');
       if (count($target) == 0) return true;
-      $uname = GetRandom($target);
+      $uname = Lottery::Get($target);
     }
     elseif (DB::$USER->ByRealUname($uname)->IsDead(true)) { //対象者が死亡していた場合
       if (count($target) == 0) return true;
-      $uname = GetRandom($target); //ジョーカー投票者から選出
+      $uname = Lottery::Get($target); //ジョーカー投票者から選出
     }
     DB::$USER->ByRealUname($uname)->AddJoker();
     return false;
@@ -68,7 +68,7 @@ class Role_joker extends Role {
     $target = $this->GetStack('joker_target');
     $stack  = $this->IsVoted($user->uname) && count($target) > 0 ?
       $target : DB::$USER->GetLivingUsers(true);
-    DB::$USER->ByRealUname(GetRandom($stack))->AddJoker();
+    DB::$USER->ByRealUname(Lottery::Get($stack))->AddJoker();
   }
 
   //現在の所持ユーザ取得

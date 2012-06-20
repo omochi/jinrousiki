@@ -30,7 +30,6 @@ class Role_possessed_wolf extends Role_wolf {
       $user    = DB::$USER->ByUname($uname); //憑依者
       $target  = DB::$USER->ByUname($target_uname); //憑依予定先
       $virtual = DB::$USER->ByVirtual($user->user_no); //現在の憑依先
-      //PrintData($user);
       if (! isset($user->possessed_reset))  $user->possessed_reset  = null;
       if (! isset($user->possessed_cancel)) $user->possessed_cancel = null;
 

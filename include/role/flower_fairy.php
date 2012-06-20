@@ -10,6 +10,6 @@ class Role_flower_fairy extends Role_fairy {
 
   function FairyAction(User $user) {
     $handle_name = DB::$USER->GetHandleName($user->uname);
-    DB::$ROOM->ResultDead($handle_name, $this->result, GetRandom(range('A', 'Z')));
+    DB::$ROOM->ResultDead($handle_name, $this->result, Lottery::Get(range('A', 'Z')));
   }
 }

@@ -14,7 +14,6 @@ class Role_attempt_necromancer extends Role_necromancer {
 	if (DB::$USER->ByID($id)->IsLive(true)) $stack[$id] = true;
       }
     }
-    //PrintData($stack, 'Target: ' . $this->role);
 
     $str_stack = array();
     foreach (array_keys($stack) as $id) { //仮想ユーザの ID 順に出力

@@ -15,9 +15,8 @@ class Option_sudden_death extends CheckRoomOptionItem {
   function Cast(&$list, &$rand) {
     $stack = array_diff(RoleData::$sub_role_group_list['sudden-death'], $this->disable_list);
     $role_list = $stack;
-    //PrintData($stack, 'SuddenDeath');
     foreach (array_keys($list) as $id) { //全員に小心者系を何かつける
-      $role = GetRandom($stack);
+      $role = Lottery::Get($stack);
       $list[$id] .= ' ' . $role;
       if ($role == 'impatience') $stack = array_diff($stack, array('impatience')); //短気は一人だけ
     }

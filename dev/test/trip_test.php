@@ -11,5 +11,5 @@ HTML::OutputHeader('トリップテストツール', null, true);
 </form>
 
 EOF;
-if ($_POST['command'] == 'on') PrintData(Text::ConvertTrip($_POST['key']), '変換結果');
+if ($_POST['command'] == 'on') Text::p(Text::ConvertTrip($_POST['key']), '変換結果');
 HTML::OutputFooter();

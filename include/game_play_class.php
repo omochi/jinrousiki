@@ -218,7 +218,7 @@ class GamePlay {
     }
     elseif (DB::$ROOM->IsNight()) {
       $vote_data = DB::$ROOM->ParseVote(); //投票情報をパース
-      //PrintData($vote_data, 'Vote Data');
+      //Text::p($vote_data, 'Vote Data');
       foreach (DB::$USER->rows as $user) { //未投票チェック
 	if ($user->CheckVote($vote_data) === false) $novote_list[] = $user->user_no;
       }

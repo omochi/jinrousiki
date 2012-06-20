@@ -55,7 +55,6 @@ class IconEdit {
       $query_stack[] = sprintf('disable = %s', $disable ? 'TRUE' : 'FALSE');
     }
 
-    //PrintData($query_stack);
     if (count($query_stack) < 1) {
       HTML::OutputResult($title, '変更内容はありません' . $back_url);
     }

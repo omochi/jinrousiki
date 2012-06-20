@@ -8,6 +8,6 @@ RoleManager::LoadFile('fairy');
 class Role_greater_fairy extends Role_fairy {
   protected function GetBadStatus() {
     $stack = array(Message::$common_talk, '春ですよー', '夏ですよー', '秋ですよー', '冬ですよー');
-    return GetRandom($stack);
+    return Lottery::Get($stack);
   }
 }

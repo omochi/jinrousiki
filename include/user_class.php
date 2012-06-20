@@ -618,7 +618,7 @@ EOF;
   public function Update($item, $value) {
     if (DB::$ROOM->test_mode) {
       if (is_null($value)) $value = 'NULL (reset)';
-      PrintData($value, "Change [{$item}] ({$this->uname})");
+      Text::p($value, "Change [{$item}] ({$this->uname})");
       return true;
     }
     $value = is_null($value) ? 'NULL' : "'{$value}'";
@@ -629,7 +629,7 @@ EOF;
   //ID 更新処理 (KICK 後処理用)
   public function UpdateID($id) {
     if (DB::$ROOM->test_mode) {
-      PrintData("{$this->user_no} -> {$id}: {$this->uname}", 'Change ID');
+      Text::p("{$this->user_no} -> {$id}: {$this->uname}", 'Change ID');
       return;
     }
     $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
@@ -641,7 +641,7 @@ EOF;
     if (! isset($this->updated['role'])) return true;
     $role = $this->updated['role'];
     if (DB::$ROOM->test_mode) {
-      PrintData($role, "Player ({$this->uname})");
+      Text::p($role, "Player ({$this->uname})");
       return true;
     }
     $items  = 'room_no, date, scene, user_no, role';
@@ -742,7 +742,7 @@ EOF;
     if (! $this->IsDummyBoy() && $this->IsLastWordsLimited(true)) return true; //スキップ判定
     if (is_null($handle_name)) $handle_name = $this->handle_name;
     if (DB::$ROOM->test_mode) {
-      PrintData(sprintf('%s (%s)', $handle_name, $this->uname), 'LastWords');
+      Text::p(sprintf('%s (%s)', $handle_name, $this->uname), 'LastWords');
       return true;
     }
 
@@ -762,10 +762,10 @@ EOF;
 	$stack = array('user_no'   => $this->user_no, 'uname' => $this->uname,
 		       'target_no' => $target, 'vote_number'  => $vote_number);
 	RQ::GetTest()->vote->day[$this->uname] = $stack;
-	//PrintData($stack, 'Vote');
+	//Text::p($stack, 'Vote');
       }
       else {
-	PrintData("{$action}: {$this->uname}: {$target}", 'Vote');
+	Text::p("{$action}: {$this->uname}: {$target}", 'Vote');
       }
       return true;
     }
@@ -895,7 +895,7 @@ class UserDataSet {
   //特殊イベント情報セット
   public function SetEvent($force = false) {
     if (DB::$ROOM->id < 1 || ! is_array($event_list = DB::$ROOM->GetEvent($force))) return;
-    //PrintData($event_list, 'Event[row]');
+    //Text::p($event_list, 'Event[row]');
     foreach ($event_list as $event) {
       switch ($event['type']) {
       case 'WEATHER':
@@ -930,7 +930,7 @@ class UserDataSet {
       DB::$ROOM->event->blinder   = true;
       DB::$ROOM->event->mind_open = true;
     }
-    //PrintData(DB::$ROOM->event, 'Event');
+    //Text::p(DB::$ROOM->event, 'Event');
 
     if (DB::$ROOM->IsDay()) { //昼限定
       foreach (RoleManager::$event_virtual_day_list as $role) {
@@ -1083,7 +1083,7 @@ class UserDataSet {
       if ($user->IsJoker()) return; //現在の所持者が生存していた場合はスキップ
       $stack[] = $user;
     }
-    if (count($stack) > 0) GetRandom($stack)->AddJoker($shift);
+    if (count($stack) > 0) Lottery::Get($stack)->AddJoker($shift);
   }
 
   //デスノートの再配布処理 (オプションチェック判定は不要？)
@@ -1093,7 +1093,7 @@ class UserDataSet {
       if ($user->IsLive(true)) $stack[] = $user;
     }
     if (count($stack) < 1) return;
-    $user = GetRandom($stack);
+    $user = Lottery::Get($stack);
     $user->AddDoom(0, 'death_note');
     DB::$ROOM->date--;
     DB::$ROOM->scene = 'night';

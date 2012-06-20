@@ -47,7 +47,6 @@ class IconDB {
     $data   = RQ::$get->search ? RQ::$get->$type : $_SESSION['icon_view'][$type];
     $target = empty($data) ? array() : (is_array($data) ? $data : array($data));
     $_SESSION['icon_view'][$type] = $target;
-    //PrintData($data, $type);
     if ($type == 'keyword') return $target;
 
     $format = 'SELECT DISTINCT %s FROM user_icon WHERE %s IS NOT NULL';
@@ -169,7 +168,6 @@ EOF;
     $url_option    = array();
     $query_stack   = array();
     $category_list = IconDB::GetCategoryList('category');
-    //PrintData($category_list);
     echo <<<EOF
 <form id="icon_search" method="GET">
 <table class="selector">
@@ -206,7 +204,6 @@ EOF;
       $stack = array('');
     }
     $keyword = $stack[0];
-    //PrintData($where);
 
     $sort_by_name_checked = RQ::$get->sort_by_name ? ' checked' : '';
     echo <<<EOF
@@ -263,7 +260,6 @@ HTML;
     if (RQ::$get->room_no > 0) $CONF->option[] = 'room_no=' . RQ::$get->room_no;
     if (RQ::$get->icon_no > 0) $CONF->option[] = 'icon_no=' . RQ::$get->icon_no;
     printf('<td colspan="%d" class="page-link">', $colspan);
-    //PrintData($CONF, 'PAGE_CONF');
     OutputPageLink($CONF);
     echo <<<HTML
 </td>

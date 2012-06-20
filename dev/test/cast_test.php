@@ -142,7 +142,7 @@ foreach (RQ::GetTest()->test_users as $id => $user) {
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
   }
 }
-//PrintData(RQ::GetTest()->test_users[22]);
+//Text::p(RQ::GetTest()->test_users[22]);
 
 //-- 設定調整 --//
 #CastConfig::$decide = 11;

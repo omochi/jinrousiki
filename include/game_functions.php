@@ -295,7 +295,7 @@ class GameHTML {
 
   //プレイヤー一覧生成
   static function GeneratePlayer() {
-    //PrintData(DB::$ROOM->event);
+    //Text::p(DB::$ROOM->event);
     //キャッシュデータをセット
     $beforegame = DB::$ROOM->IsBeforeGame();
     $open_data  = DB::$ROOM->IsOpenData(true);
@@ -856,10 +856,6 @@ EOF;
     return sprintf($str, $weather['name'], $weather['caption']);
   }
 }
-
-//-- 基礎関数 --//
-//配列からランダムに一つ取り出す
-function GetRandom(array $array) { return $array[array_rand($array)]; }
 
 //-- 役職関連 --//
 //巫女の判定結果 (システムメッセージ)

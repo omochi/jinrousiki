@@ -97,11 +97,11 @@ class DB {
     $stack       = array($trace_stack['line'], $error, $query);
     $trace_stack = array_shift($backtrace);
     array_unshift($stack, $trace_stack['function'] . '()');
-    PrintData(implode(': ', $stack), 'SQLエラー');
+    Text::p(implode(': ', $stack), 'SQLエラー');
 
     foreach ($backtrace as $trace_stack) { //呼び出し元があるなら追加で出力
       $stack = array($trace_stack['function'] . '()', $trace_stack['line']);
-      PrintData(implode(': ', $stack), 'Caller');
+      Text::p(implode(': ', $stack), 'Caller');
     }
     return false;
   }

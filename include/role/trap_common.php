@@ -21,7 +21,7 @@ class Role_trap_common extends Role_common {
 	$target_list[$user->user_no] = DB::$USER->ByVirtual($user->user_no)->uname;
       }
     }
-    //PrintData($target_list, '! Human');
+    //Text::p($target_list, '! Human');
 
     foreach (array_keys($stack) as $uname) { //策士の得票リストと照合
       if ($this->GetVotedUname($uname) == array_values($target_list)) {

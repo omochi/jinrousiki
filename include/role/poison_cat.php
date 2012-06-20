@@ -85,8 +85,8 @@ class Role_poison_cat extends Role {
 
     $rand = mt_rand(1, 100); //蘇生判定用乱数
     //$rand = 5; //mt_rand(1, 10); //テスト用
-    //PrintData("{$revive} ({$missfire})", "Info: {$this->GetUname()} => {$user->uname}");
-    //PrintData($rand, 'Rate: ' . $this->GetUname());
+    //Text::p("{$revive} ({$missfire})", "Info: {$this->GetUname()} => {$user->uname}");
+    //Text::p($rand, 'Rate: ' . $this->GetUname());
 
     if ($rand > $revive) return null; //蘇生失敗
     if ($rand <= $missfire) { //誤爆蘇生
@@ -99,11 +99,12 @@ class Role_poison_cat extends Role {
 	  $stack[] = $target->uname;
 	}
       }
-      //PrintData($stack, 'Target/Missfire');
-      if (count($stack) > 0) $user = DB::$USER->ByUname(GetRandom($stack)); //候補がいる時だけ入れ替える
+      //Text::p($stack, 'Target/Missfire');
+      //候補がいる時だけ入れ替える
+      if (count($stack) > 0) $user = DB::$USER->ByUname(Lottery::Get($stack));
     }
     //$target = DB::$USER->ByID(24); //テスト用
-    //PrintData($user->uname, 'ReviveUser');
+    //Text::p($user->uname, 'ReviveUser');
     return $user->IsReviveLimited() ? null : $user; //蘇生失敗判定
   }
 

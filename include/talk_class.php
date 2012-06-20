@@ -193,7 +193,7 @@ class TalkBuilder {
 
   //発言生成
   function Generate(TalkParser $talk) {
-    //PrintData($talk);
+    //Text::p($talk);
     //発言ユーザを取得
     /*
       $uname は必ず $talk から取得すること。

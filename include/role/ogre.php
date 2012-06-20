@@ -53,7 +53,7 @@ class Role_ogre extends Role {
     $rate  = is_null($event) ? ceil(100 * pow($this->GetReduceRate(), $times)) : $event;
     $rand  = mt_rand(1, 100); //人攫い成功判定乱数
     //$rand = 5; //テスト用
-    //PrintData($rand, sprintf('Rate [OGRE_DO]: %d', $rate));
+    //Text::p($rand, sprintf('Rate [OGRE_DO]: %d', $rate));
     if ($rand > $rate) return; //成功判定
     $this->Assassin($user);
 
@@ -87,7 +87,7 @@ class Role_ogre extends Role {
     $rand = mt_rand(1, 100);
     //$rand = 5; //テスト用
     $rate = $this->GetResistRate();
-    //PrintData(sprintf('%d (%d)', $rand, $rate), 'Rate [ogre resist]');
+    //Text::p(sprintf('%d (%d)', $rand, $rate), 'Rate [ogre resist]');
     return $rand <= $rate;
   }
 

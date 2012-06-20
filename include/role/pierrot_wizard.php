@@ -40,6 +40,6 @@ class Role_pierrot_wizard extends Role_wizard {
   function Mage(User $user) {
     if ($this->IsJammer($user) || $this->IsCursed($user)) return false;
     $handle_name = DB::$USER->GetHandleName($user->uname);
-    DB::$ROOM->ResultDead($handle_name, $this->result_type, GetRandom(range('A', 'Z')));
+    DB::$ROOM->ResultDead($handle_name, $this->result_type, Lottery::Get(range('A', 'Z')));
   }
 }

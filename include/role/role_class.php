@@ -254,7 +254,7 @@ class RoleManager {
 
   //個別クラス取得
   static function GetClass($role) {
-    return self::LoadClass($role) ? self::$class[$role] : null;
+    return (self::LoadFile($role) && self::LoadClass($role)) ? self::$class[$role] : null;
   }
 
   //データ取得
@@ -317,7 +317,7 @@ abstract class Role {
     if (isset($this->mix_in)) {
       $this->filter = RoleManager::LoadMix($this->mix_in);
       $this->filter->role = $this->role;
-      //PrintData(get_class_vars(get_class($this)));
+      //Text::p(get_class_vars(get_class($this)));
       if (isset($this->display_role)) $this->filter->display_role = $this->display_role;
     }
   }
@@ -325,11 +325,11 @@ abstract class Role {
   //Mixin 呼び出し用
   function __call($name, $args) {
     if (! is_object($this->filter)) {
-      PrintData('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
+      Text::p('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
       return false;
     }
     if (! method_exists($this->filter, $name)) {
-      PrintData('Error: Method not found: ' . get_class($this) . ": {$name}()");
+      Text::p('Error: Method not found: ' . get_class($this) . ": {$name}()");
       return false;
     }
     return call_user_func_array(array($this->filter, $name), $args);
@@ -595,14 +595,14 @@ abstract class Role {
       $stack = RQ::GetTest()->result_ability;
       $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : array();
       $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
-      //PrintData($stack, $user_no);
+      //Text::p($stack, $user_no);
       if ($limit) {
 	$limit_stack = array();
 	foreach ($stack as $list) {
 	  if ($list['user_no'] == DB::$SELF->user_no) $limit_stack[] = $list;
 	}
 	$stack = $limit_stack;
-	//PrintData($stack, $user_no);
+	//Text::p($stack, $user_no);
       }
       $result_list = $stack;
     }
@@ -613,7 +613,7 @@ abstract class Role {
       if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->user_no);
       $result_list = DB::FetchAssoc($query);
     }
-    //PrintData($result_list);
+    //Text::p($result_list);
 
     switch ($type) {
     case 'mage':
@@ -909,10 +909,10 @@ class RoleHTML {
     foreach (array('real', 'virtual', 'none') as $name) {
       $stack = array_merge($stack, RoleManager::${'display_' . $name . '_list'});
     }
-    //PrintData($stack);
+    //Text::p($stack);
     $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);
     $target_list  = array_intersect($display_list, array_slice(RoleManager::$actor->role_list, 1));
-    //PrintData($target_list);
+    //Text::p($target_list);
     foreach ($target_list as $role) Image::Role()->Output($role);
   }
 

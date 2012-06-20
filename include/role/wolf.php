@@ -122,7 +122,7 @@ class Role_wolf extends Role {
   //毒対象者選出 (襲撃)
   function GetPoisonEatTarget() {
     return GameConfig::POISON_ONLY_EATER ? $this->GetWolfVoter() :
-      DB::$USER->ByUname(GetRandom(DB::$USER->GetLivingWolves()));
+      DB::$USER->ByUname(Lottery::Get(DB::$USER->GetLivingWolves()));
   }
 
   //毒死処理

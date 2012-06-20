@@ -88,7 +88,7 @@ foreach (RQ::GetTest()->test_users as $id => $user) {
     $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
   }
 }
-//PrintData(RQ::GetTest()->test_users[22]);
+//Text::p(RQ::GetTest()->test_users[22]);
 RQ::GetTest()->system_message = array();
 RQ::GetTest()->result_ability = array();
 RQ::GetTest()->result_dead    = array();
@@ -180,12 +180,12 @@ if(false){
 //-- データ出力 --//
 HTML::OutputHeader('表示テスト', 'game');
 HTML::OutputBodyHeader(sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene));
-//PrintData(DB::$ROOM->scene, $_GET['scene']);
+//Text::p(DB::$ROOM->scene, $_GET['scene']);
 GameHTML::OutputPlayer();
 HTML::OutputFooter(true);
 
-//PrintData(DB::$USER->rows[1]);
-//PrintData($dead_list);
+//Text::p(DB::$USER->rows[1]);
+//Text::p($dead_list);
 echo <<<EOF
 [昼]：<br>
 身代わり君：

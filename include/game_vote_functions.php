@@ -190,7 +190,7 @@ class Vote {
     //投票済みチェック
     if (DB::$ROOM->test_mode) {
       if (array_key_exists(DB::$SELF->uname, RQ::GetTest()->vote->day)) {
-	PrintData(DB::$SELF->uname, 'AlreadyVoted');
+	Text::p(DB::$SELF->uname, 'AlreadyVoted');
 	return false;
       }
     }
@@ -247,7 +247,7 @@ class Vote {
     else {
       $not_action = false;
     }
-    //PrintData($filter);
+    //Text::p($filter);
     if (! DB::$ROOM->test_mode) self::CheckVoteNight(RQ::$get->situation); //投票済みチェック
 
     //-- 投票処理 --//
@@ -259,7 +259,7 @@ class Vote {
     }
     else {
       $filter->CheckVoteNight();
-      //PrintData(RoleManager::$get);
+      //Text::p(RoleManager::$get);
       if (! DB::$SELF->Vote(RQ::$get->situation, RoleManager::$get->target_no)) {
 	VoteHTML::OutputResult('データベースエラー'); //投票処理
       }
@@ -331,8 +331,8 @@ class Vote {
 
     //-- 配役決定ルーチン --//
     DB::$ROOM->LoadOption(); //配役設定オプションの情報を取得
-    //PrintData(DB::$ROOM->option_role, 'OptionRole');
-    //PrintData(DB::$ROOM->option_list, 'OptionList');
+    //Text::p(DB::$ROOM->option_role, 'OptionRole');
+    //Text::p(DB::$ROOM->option_list, 'OptionList');
 
     //配役決定用変数をセット
     $uname_list        = DB::$USER->GetLivingUsers(); //ユーザ名の配列
@@ -340,8 +340,8 @@ class Vote {
     $fix_uname_list    = array(); //役職の決定したユーザ名を格納する
     $fix_role_list     = array(); //ユーザ名に対応する役職
     $remain_uname_list = array(); //希望の役職になれなかったユーザ名を一時的に格納
-    //PrintData($uname_list, 'Uname');
-    //PrintData($role_list, 'Role');
+    //Text::p($uname_list, 'Uname');
+    //Text::p($role_list, 'Role');
 
     //エラーメッセージ
     $error        = 'ゲームスタート[配役設定エラー]：%s。<br>管理者に問い合わせて下さい。';
@@ -354,11 +354,11 @@ class Vote {
       }
       $fix_uname_list[] = 'dummy_boy'; //決定済みリストに身代わり君を追加
       unset($uname_list[array_search('dummy_boy', $uname_list)]); //身代わり君を削除
-      //PrintData($fix_role_list, 'dummy_boy');
+      //Text::p($fix_role_list, 'dummy_boy');
     }
 
     shuffle($uname_list); //ユーザリストをランダムに取得
-    //PrintData($uname_list, 'ShuffleUname');
+    //Text::p($uname_list, 'ShuffleUname');
 
     //希望役職を参照して一次配役を行う
     if (DB::$ROOM->IsOption('wish_role')) { //役職希望制の場合
@@ -374,7 +374,7 @@ class Vote {
 	    foreach ($role_list as $stack_role) {
 	      if ($role == RoleData::DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
 	    }
-	    $fix_role = GetRandom($stack);
+	    $fix_role = Lottery::Get($stack);
 	  }
 	  //希望役職の存在チェック
 	  if (($role_key = array_search($fix_role, $role_list)) === false) break;
@@ -449,7 +449,7 @@ class Vote {
     }
     */
     //テスト用
-    //PrintData($fix_uname_list); PrintData($fix_role_list); DB::$ROOM->DeleteVote(); return false;
+    //Text::p($fix_uname_list); Text::p($fix_role_list); DB::$ROOM->DeleteVote(); return false;
 
     //役職をDBに更新
     $role_count_list = array();
@@ -500,7 +500,7 @@ class Vote {
     }
     DB::$ROOM->Talk($sentence);
     if ($is_detective && count($detective_list) > 0) { //探偵村の指名
-      $detective_user = GetRandom($detective_list);
+      $detective_user = Lottery::Get($detective_list);
       DB::$ROOM->Talk('探偵は ' . $detective_user->handle_name . ' さんです');
       if (DB::$ROOM->IsOption('gm_login') && DB::$ROOM->IsOption('not_open_cast') &&
 	  $user_count > 7) {
@@ -533,13 +533,13 @@ class Vote {
     if (DB::$ROOM->IsOption('joker')) RoleManager::$get->joker_id = DB::$USER->SetJoker();
 
     //-- 投票データ収集 --//
-    //PrintData(DB::$ROOM->vote);
+    //Text::p(DB::$ROOM->vote);
     foreach (DB::$ROOM->vote as $id => $list) { //初期得票データを収集
       $target_uname = DB::$USER->ByVirtual($list['target_no'])->uname;
       if (! isset($vote_count_list[$target_uname])) $vote_count_list[$target_uname] = 0;
       $vote_count_list[$target_uname] += $list['vote_number'];
     }
-    //PrintData($vote_count_list, 'VoteCountBase');
+    //Text::p($vote_count_list, 'VoteCountBase');
 
     foreach ($user_list as $id => $uname) { //個別の投票データを収集
       $list   = DB::$ROOM->vote[$id]; //投票データ
@@ -564,23 +564,23 @@ class Vote {
 						 'vote' => $vote, 'poll' => $poll);
       if (DB::$USER->ByReal($user->user_no)->IsRole('philosophy_wizard')) { //賢者の魔法発動
 	RoleManager::LoadMain($user)->SetWizard();
-	//PrintData($user->virtual_role, 'Wizard: ' . $user->uname);
+	//Text::p($user->virtual_role, 'Wizard: ' . $user->uname);
       }
       foreach (RoleManager::Load('vote_day', false, true) as $filter) {
 	$filter->SetVoteDay($target->uname);
       }
     }
     RoleManager::$get->target = $vote_target_list;
-    //PrintData(RoleManager::$get, 'RoleStack');
-    //PrintData($vote_message_list, 'VoteMessage');
+    //Text::p(RoleManager::$get, 'RoleStack');
+    //Text::p($vote_message_list, 'VoteMessage');
     ksort($vote_message_list); //投票順をソート (憑依対応)
     $stack = array();
     foreach ($vote_message_list as $id => $list) $stack[DB::$USER->ByID($id)->uname] = $list;
     $vote_message_list = $stack;
-    //PrintData($vote_message_list, 'VoteMessage');
+    //Text::p($vote_message_list, 'VoteMessage');
 
     //-- 反逆者の処理 --//
-    //PrintData($vote_count_list, 'VoteCount');
+    //Text::p($vote_count_list, 'VoteCount');
     if (! DB::$ROOM->IsEvent('no_authority')) { //蜃気楼ならスキップ
       foreach (RoleManager::LoadFilter('rebel') as $filter) {
 	$filter->Rebel($vote_message_list, $vote_count_list);
@@ -608,7 +608,7 @@ class Vote {
     //最大得票数のユーザ名 (処刑候補者) のリストを取得
     RoleManager::$get->max_voted = array_keys($vote_count_list, $max_poll);
     $stack = RoleManager::$get->max_voted;
-    //PrintData($stack, 'MaxVoted');
+    //Text::p($stack, 'MaxVoted');
     if (count($stack) == 1) { //一人だけなら決定
       RoleManager::$get->vote_kill_uname = array_shift($stack);
     }
@@ -616,7 +616,7 @@ class Vote {
       RoleManager::$get->vote_possible = $stack;
       foreach (RoleManager::LoadFilter('vote_kill') as $filter) $filter->DecideVoteKill();
     }
-    //PrintData(RoleManager::$get->vote_kill_uname, 'VoteTarget');
+    //Text::p(RoleManager::$get->vote_kill_uname, 'VoteTarget');
 
     if (RoleManager::$get->vote_kill_uname != '') { //-- 処刑実行処理 --//
       //-- 処刑者情報収取 --//
@@ -648,10 +648,10 @@ class Vote {
 	$user  = RoleManager::$actor->$role || DB::$ROOM->IsEvent($role) ?
 	  new User($role) : $vote_target;
 	$poison_target_list = RoleManager::LoadMain($user)->GetPoisonVoteTarget($stack);
-	//PrintData($poison_target_list, 'Target [poison]');
+	//Text::p($poison_target_list, 'Target [poison]');
 	if (count($poison_target_list) < 1) break;
 
-	$poison_target = DB::$USER->ByID(GetRandom($poison_target_list)); //対象者を決定
+	$poison_target = DB::$USER->ByID(Lottery::Get($poison_target_list)); //対象者を決定
 	if ($poison_target->IsActive('resist_wolf')) { //抗毒判定
 	  $poison_target->LostAbility();
 	  break;
@@ -663,7 +663,7 @@ class Vote {
 	  RoleManager::LoadMain(new User($role))->Poison($poison_target);
 	}
       } while (false);
-      //PrintData(RoleManager::$get->pharmacist_result, 'EndDetox');
+      //Text::p(RoleManager::$get->pharmacist_result, 'EndDetox');
 
       //-- 処刑者カウンター処理 --//
       RoleManager::$actor = $vote_target;
@@ -688,7 +688,7 @@ class Vote {
       foreach (DB::$USER->role as $role => $list) {
 	if (array_key_exists($role, RoleData::$main_role_list)) $role_flag->$role = true;
       }
-      //PrintData($role_flag, 'ROLE_FLAG');
+      //Text::p($role_flag, 'ROLE_FLAG');
 
       if (! DB::$ROOM->IsEvent('new_moon')) { //新月ならスキップ
 	$role = 'mimic_wizard';
@@ -728,7 +728,7 @@ class Vote {
     //-- ショック死処理 --//
     //判定用データを登録
     RoleManager::$get->count = array_count_values($vote_target_list); //投票者対象ユーザ名 => 人数
-    //PrintData(RoleManager::$get->count, 'count');
+    //Text::p(RoleManager::$get->count, 'count');
 
     RoleManager::$get->thunderbolt = array(); //青天の霹靂判定用
     if (DB::$ROOM->IsEvent('thunderbolt')) {
@@ -739,7 +739,7 @@ class Vote {
 	$filter->SetThunderbolt($user_list);
       }
     }
-    //PrintData(RoleManager::$get->thunderbolt, 'ThunderboltTarget');
+    //Text::p(RoleManager::$get->thunderbolt, 'ThunderboltTarget');
 
     foreach ($live_uname_list as $uname) {
       RoleManager::$actor = DB::$USER->ByUname($uname); //$live_uname_list は仮想ユーザ名
@@ -764,7 +764,7 @@ class Vote {
 
     $role = 'pharmacist'; //薬師系の鑑定結果を登録
     $name = $role . '_result';
-    //PrintData(RoleManager::$get->$name, "Result [{$role}]");
+    //Text::p(RoleManager::$get->$name, "Result [{$role}]");
     if (count(RoleManager::$get->$name) > 0) RoleManager::LoadMain(new User($role))->SaveResult();
     unset(RoleManager::$get->$name);
 
@@ -783,8 +783,8 @@ class Vote {
 	  $user = DB::$USER->ByRealUname($uname);
 	  if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
 	}
-	//PrintData($stack, 'Target [frostbite]');
-	DB::$USER->ByID(GetRandom($stack))->AddDoom(1, 'frostbite');
+	//Text::p($stack, 'Target [frostbite]');
+	DB::$USER->ByID(Lottery::Get($stack))->AddDoom(1, 'frostbite');
       }
       elseif (DB::$ROOM->IsEvent('psycho_infected')) { //-- 濃霧の処理 --//
 	$stack = array();
@@ -795,8 +795,8 @@ class Vote {
 	    $stack[] = $user->user_no;
 	  }
 	}
-	//PrintData($stack, 'Target [psycho_infected]');
-	DB::$USER->ByID(GetRandom($stack))->AddRole('psycho_infected');
+	//Text::p($stack, 'Target [psycho_infected]');
+	DB::$USER->ByID(Lottery::Get($stack))->AddRole('psycho_infected');
       }
 
       if ($joker_flag = DB::$ROOM->IsOption('joker')) { //ジョーカー移動判定
@@ -838,15 +838,15 @@ class Vote {
   //夜の集計処理
   static function AggregateNight($skip = false) {
     DB::$ROOM->LoadVote(); //投票情報を取得
-    //PrintData(DB::$ROOM->vote, 'VoteRow');
+    //Text::p(DB::$ROOM->vote, 'VoteRow');
 
     $vote_data = DB::$ROOM->ParseVote(); //コマンド毎に分割
-    //PrintData($vote_data, 'VoteData');
+    //Text::p($vote_data, 'VoteData');
 
     if (! $skip) {
       foreach (DB::$USER->rows as $user) { //未投票チェック
 	if ($user->CheckVote($vote_data) === false) {
-	  if (DB::$ROOM->test_mode) PrintData($user->uname, $user->main_role);
+	  if (DB::$ROOM->test_mode) Text::p($user->uname, $user->main_role);
 	  return false;
 	}
       }
@@ -866,7 +866,7 @@ class Vote {
     foreach ($stack as $action) {
       if (! isset($vote_data[$action])) $vote_data[$action] = array();
     }
-    //PrintData($vote_data);
+    //Text::p($vote_data);
 
     //-- 変数の初期化 --//
     RoleManager::$get->trap                = array(); //罠師の罠の設置先
@@ -912,7 +912,7 @@ class Vote {
     if (DB::$ROOM->date > 1) {
       foreach ($vote_data['WIZARD_DO'] as $id => $target_no) {
 	$action = RoleManager::LoadMain(DB::$USER->ByID($id))->SetWizard();
-	//PrintData(RoleManager::$actor->virtual_role, "Wizard: {$id}: {$action}");
+	//Text::p(RoleManager::$actor->virtual_role, "Wizard: {$id}: {$action}");
 	$vote_data[$action][$id] = $target_no;
       }
     }
@@ -945,25 +945,25 @@ class Vote {
 
       if (count(RoleManager::$get->trap) > 0) RoleManager::SetClass('trap_mad');
       foreach (RoleManager::LoadFilter('trap') as $filter) $filter->TrapToTrap(); //罠能力者の罠判定
-      //PrintData(RoleManager::$get->trap, 'Target [trap]');
-      //PrintData(RoleManager::$get->trapped, 'Trap [trap]');
+      //Text::p(RoleManager::$get->trap, 'Target [trap]');
+      //Text::p(RoleManager::$get->trapped, 'Trap [trap]');
 
       foreach ($vote_data['GUARD_DO'] as $id => $target_id) { //狩人系の護衛先をセット
 	$target_uname = DB::$USER->ByID($target_id)->uname;
 	RoleManager::LoadMain(DB::$USER->ByID($id))->SetGuard($target_uname);
       }
       if (count(RoleManager::$get->guard) > 0) RoleManager::SetClass('guard');
-      //PrintData(RoleManager::$get->guard, 'Target [guard]');
+      //Text::p(RoleManager::$get->guard, 'Target [guard]');
 
       foreach ($vote_data['SPREAD_WIZARD_DO'] as $id => $target_list) { //結界師の情報収集
 	RoleManager::LoadMain(DB::$USER->ByID($id))->SetGuard($target_list);
       }
-      //PrintData(RoleManager::$get->barrier_wizard, 'Target [wizard]');
+      //Text::p(RoleManager::$get->barrier_wizard, 'Target [wizard]');
 
       foreach ($vote_data['ESCAPE_DO'] as $id => $target_id) { //逃亡者系の情報収集
 	RoleManager::LoadMain(DB::$USER->ByID($id))->Escape(DB::$USER->ByID($target_id));
       }
-      //PrintData(RoleManager::$get->escaper, 'Target [escaper]');
+      //Text::p(RoleManager::$get->escaper, 'Target [escaper]');
     }
 
     do { //人狼の襲撃成功判定
@@ -1029,7 +1029,7 @@ class Vote {
 	RoleManager::LoadMain($poison_target)->PoisonDead(); //毒死処理
       }
     } while (false);
-    //PrintData(RoleManager::$get->possessed, 'Possessed [wolf]');
+    //Text::p(RoleManager::$get->possessed, 'Possessed [wolf]');
 
     if (DB::$ROOM->date > 1) {
       foreach ($vote_data['DEATH_NOTE_DO'] as $id => $target_id) { //デスノートの処理
@@ -1057,8 +1057,8 @@ class Vote {
 	RoleManager::LoadMain($user)->SetInfect(DB::$USER->ByID($target_id));
       }
       foreach (RoleManager::LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
-      //PrintData(RoleManager::$get->$role, "Target [{$role}]");
-      //PrintData(RoleManager::$get->$name, "Target [{$name}]");
+      //Text::p(RoleManager::$get->$role, "Target [{$role}]");
+      //Text::p(RoleManager::$get->$name, "Target [{$name}]");
       if (count(RoleManager::$get->$role) > 0 || count(RoleManager::$get->$name) > 0) {
 	RoleManager::LoadMain(new User($role))->VampireKill();
       }
@@ -1072,7 +1072,7 @@ class Vote {
 	if ($user->IsDead(true)) continue; //直前に死んでいたら無効
 	RoleManager::LoadMain($user)->SetAssassin(DB::$USER->ByID($target_id));
       }
-      //PrintData(RoleManager::$get->$role, "Target [{$role}]");
+      //Text::p(RoleManager::$get->$role, "Target [{$role}]");
       if (count(RoleManager::$get->$role) > 0) {
 	RoleManager::LoadMain(new User($role))->AssassinKill();
       }
@@ -1087,7 +1087,7 @@ class Vote {
 	RoleManager::LoadMain($user)->SetAssassin(DB::$USER->ByID($target_id));
       }
       foreach (RoleManager::LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
-      //PrintData(RoleManager::$get->$role, "Target [{$role}]");
+      //Text::p(RoleManager::$get->$role, "Target [{$role}]");
       if (count(RoleManager::$get->$role) > 0) RoleManager::GetClass($role)->AssassinKill();
       unset(RoleManager::$get->$role);
 
@@ -1106,10 +1106,10 @@ class Vote {
 	RoleManager::LoadMain(new User($role))->AssassinKill();
       }
       unset(RoleManager::$get->$role);
-      //PrintData(RoleManager::$get->reverse, 'ReverseList');
+      //Text::p(RoleManager::$get->reverse, 'ReverseList');
 
       $role = 'frostbite';
-      //PrintData(RoleManager::$get->$role, "Target [{$role}]");
+      //Text::p(RoleManager::$get->$role, "Target [{$role}]");
       foreach (RoleManager::$get->$role as $uname => $flag) { //凍傷処理
 	$target = DB::$USER->ByUname($uname);
 	if ($target->IsLive(true)) $target->AddDoom(1, $role);
@@ -1134,7 +1134,7 @@ class Vote {
 	if ($user->IsDead(true)) continue; //直前に死んでいたら無効
 	RoleManager::LoadMain($user)->SetGuard(DB::$USER->ByID($target_id));
       }
-      //PrintData(RoleManager::$get->anti_voodoo, 'Target [anti_voodoo]');
+      //Text::p(RoleManager::$get->anti_voodoo, 'Target [anti_voodoo]');
     }
 
     RoleManager::$get->voodoo_killer         = array(); //陰陽師の解呪対象リスト
@@ -1144,8 +1144,8 @@ class Vote {
       if ($user->IsDead(true)) continue; //直前に死んでいたら無効
       RoleManager::LoadMain($user)->Mage(DB::$USER->ByID($target_id));
     }
-    //PrintData(RoleManager::$get->voodoo_killer, 'Target [voodoo_killer]');
-    //PrintData(RoleManager::$get->voodoo_killer_success, 'Success [voodoo_killer]');
+    //Text::p(RoleManager::$get->voodoo_killer, 'Target [voodoo_killer]');
+    //Text::p(RoleManager::$get->voodoo_killer_success, 'Success [voodoo_killer]');
 
     //呪術系能力者の処理
     RoleManager::$get->voodoo = array(); //呪術対象リスト
@@ -1156,9 +1156,9 @@ class Vote {
 	RoleManager::LoadMain($user)->SetVoodoo(DB::$USER->ByID($target_id));
       }
     }
-    //PrintData(RoleManager::$get->voodoo, 'Target [voodoo]');
-    //PrintData(RoleManager::$get->voodoo_killer_success, 'Success [voodoo_killer/voodoo]');
-    //PrintData(RoleManager::$get->anti_voodoo_success, 'Success [anti_voodoo/voodoo]');
+    //Text::p(RoleManager::$get->voodoo, 'Target [voodoo]');
+    //Text::p(RoleManager::$get->voodoo_killer_success, 'Success [voodoo_killer/voodoo]');
+    //Text::p(RoleManager::$get->anti_voodoo_success, 'Success [anti_voodoo/voodoo]');
 
     //呪術系能力者の対象先が重なった場合は呪返しを受ける
     if (count(RoleManager::$get->voodoo) > 0) {
@@ -1172,8 +1172,8 @@ class Vote {
       if ($user->IsDead(true)) continue; //直前に死んでいたら無効
       RoleManager::LoadMain($user)->SetJammer(DB::$USER->ByID($target_id));
     }
-    //PrintData(RoleManager::$get->jammer, 'Target [jammer]');
-    //PrintData(RoleManager::$get->anti_voodoo_success, 'Success [anti_voodoo/jammer]');
+    //Text::p(RoleManager::$get->jammer, 'Target [jammer]');
+    //Text::p(RoleManager::$get->anti_voodoo_success, 'Success [anti_voodoo/jammer]');
 
     RoleManager::$get->phantom = array(); //幻系の発動者リスト
     foreach (array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action) { //占い系の処理
@@ -1184,7 +1184,7 @@ class Vote {
       }
     }
     $role = 'phantom'; //幻系の能力失効処理
-    //PrintData(RoleManager::$get->$role, "Target [{$role}]");
+    //Text::p(RoleManager::$get->$role, "Target [{$role}]");
     foreach (RoleManager::$get->$role as $id => $flag) DB::$USER->ByID($id)->LostAbility();
     unset(RoleManager::$get->$role, $mage_list);
 
@@ -1262,25 +1262,25 @@ class Vote {
       }
       $role = 'possessed_mad';
       $name = 'possessed_dead';
-      //PrintData(RoleManager::$get->$name, "Target [{$role}]");
+      //Text::p(RoleManager::$get->$name, "Target [{$role}]");
       if (count(RoleManager::$get->$name) > 0) {
 	RoleManager::LoadMain(new User($role))->Possessed();
       }
       unset(RoleManager::$get->$name);
-      //PrintData(RoleManager::$get->possessed, 'Possessed [mad/fox]');
+      //Text::p(RoleManager::$get->possessed, 'Possessed [mad/fox]');
     }
 
     //-- 憑依処理 --//
     $role = 'possessed_wolf';
     $name = 'possessed';
-    //PrintData(RoleManager::$get->$name, "Target [{$role}]");
+    //Text::p(RoleManager::$get->$name, "Target [{$role}]");
     if (count(RoleManager::$get->$name) > 0) RoleManager::LoadMain(new User($role))->Possessed();
     unset(RoleManager::$get->$name);
 
     if (! DB::$ROOM->IsOption('seal_message')) {  //陰陽師・厄神の成功結果登録
       foreach (array('voodoo_killer', 'anti_voodoo') as $role) {
 	$name = $role . '_success';
-	//PrintData(RoleManager::$get->$name, "SUCCESS [{$role}]");
+	//Text::p(RoleManager::$get->$name, "SUCCESS [{$role}]");
 	if (count(RoleManager::$get->$name) > 0) {
 	  RoleManager::LoadMain(new User($role))->SaveSuccess();
 	}
@@ -1308,7 +1308,7 @@ class Vote {
 	$role_flag->{$user->main_role}[$user->user_no] = $user->uname;
       }
     }
-    //PrintData($role_flag);
+    //Text::p($role_flag);
 
     $role = 'attempt_necromancer'; //蟲姫の処理
     if (DB::$ROOM->date > 1 && property_exists($role_flag, $role) && count($role_flag->$role) > 0) {
@@ -1316,9 +1316,9 @@ class Vote {
     }
 
     RoleManager::LoadMain(new User('priest'))->AggregatePriest($role_flag);
-    //PrintData(RoleManager::$get->priest->list, 'PriestList');
-    //PrintData(RoleManager::$get->priest->count, 'LiveCount');
-    //PrintData(RoleManager::$get->priest->crisis, 'Crisis');
+    //Text::p(RoleManager::$get->priest->list, 'PriestList');
+    //Text::p(RoleManager::$get->priest->count, 'LiveCount');
+    //Text::p(RoleManager::$get->priest->crisis, 'Crisis');
     foreach (RoleManager::$get->priest->list as $role) {
       RoleManager::LoadMain(new User($role))->Priest($role_flag);
     }
@@ -1327,7 +1327,7 @@ class Vote {
     if (DB::$ROOM->test_mode || ! $status) DB::$USER->ResetJoker(true); //ジョーカー再配置処理
     if (DB::$ROOM->IsOption('death_note')) DB::$USER->ResetDeathNote(); //デスノートの再配布処理
     if (isset(RoleManager::$get->event)) { //イベントの登録
-      //PrintData(RoleManager::$get->event, 'Event');
+      //Text::p(RoleManager::$get->event, 'Event');
       $stack = array();
       foreach (RoleManager::$get->event as $uname => $event) $stack[$event] = true;
       foreach ($stack as $event => $flag) {
@@ -1395,7 +1395,7 @@ class Vote {
 
   //ランダムメッセージを挿入する
   private function InsertRandomMessage() {
-    if (GameConfig::RANDOM_MESSAGE) DB::$ROOM->Talk(GetRandom(Message::$random_message_list));
+    if (GameConfig::RANDOM_MESSAGE) DB::$ROOM->Talk(Lottery::Get(Message::$random_message_list));
   }
 }
 
@@ -1527,8 +1527,8 @@ EOF;
     }
 
     self::OutputHeader();
-    //PrintData($filter);
-    //PrintData(RoleManager::$get);
+    //Text::p($filter);
+    //Text::p(RoleManager::$get);
     echo '<table class="vote-page"><tr>'."\n";
     $count = 0;
     foreach ($filter->GetVoteTargetUser() as $id => $user) {

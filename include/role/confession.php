@@ -20,7 +20,7 @@ class Role_confession extends Role {
     }
     if (count($stack) < 1) return false;
 
-    $this->SetStack(sprintf(self::SAY, GetRandom($stack)), 'say');
+    $this->SetStack(sprintf(self::SAY, Lottery::Get($stack)), 'say');
     return true;
   }
 }

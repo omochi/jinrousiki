@@ -29,7 +29,7 @@ class Role_wizard extends Role {
     $list  = $this->GetWizard();
     $stack = is_null($this->action) ? $list : array_keys($list);
     $role  = DB::$ROOM->IsEvent('full_wizard') ? array_shift($stack) :
-      (DB::$ROOM->IsEvent('debilitate_wizard') ? array_pop($stack) : GetRandom($stack));
+      (DB::$ROOM->IsEvent('debilitate_wizard') ? array_pop($stack) : Lottery::Get($stack));
     $this->GetActor()->virtual_role = is_int($role) ? $this->role : $role; //仮想役職を登録
     return is_null($this->action) ? $role : $list[$role];
   }

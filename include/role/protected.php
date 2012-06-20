@@ -19,9 +19,9 @@ class Role_protected extends Role {
 
   //身代わり処理
   function Sacrifice($stack) {
-    //PrintData($stack, sprintf('Sacrifice [%s]', $this->role));
+    //Text::p($stack, sprintf('Sacrifice [%s]', $this->role));
     if (count($stack) < 1) return false;
-    DB::$USER->Kill(GetRandom($stack), 'SACRIFICE');
+    DB::$USER->Kill(Lottery::Get($stack), 'SACRIFICE');
     return true;
   }
 

@@ -11,7 +11,7 @@ class Role_echo_brownie extends Role {
       ' AND scene = "' . DB::$ROOM->scene . '" ORDER BY id DESC LIMIT 5';
     $stack = DB::FetchAssoc($query);
     if (count($stack) < 1 || $this->IsActor($stack[0]['uname'])) return; //連続発言検出
-    $str = GetRandom($stack);
+    $str = Lottery::Get($stack);
     RoleTalk::Save($str['sentence'], DB::$ROOM->scene);
   }
 }

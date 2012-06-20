@@ -22,7 +22,7 @@ class Role_follow_mad extends Role {
       if ($this->IsVoted($target->uname)) continue;
       $target->suicide_flag ? $count++ : $follow_stack[$uname] = $target->user_no;
     }
-    //PrintData($follow_stack, $this->role . ': ' . $count);
+    //Text::p($follow_stack, $this->role . ': ' . $count);
     if ($count < 1) return false;
 
     $target_stack = array(); //対象者リスト
@@ -30,7 +30,7 @@ class Role_follow_mad extends Role {
       $user = DB::$USER->ByRealUname($uname);
       if ($user->IsLive(true) && ! $user->IsAvoid(true)) $target_stack[] = $user->user_no;
     }
-    //PrintData($target_stack, "BaseTarget [{$this->role}]" );
+    //Text::p($target_stack, "BaseTarget [{$this->role}]" );
 
     while ($count > 0 && count($target_stack) > 0) { //道連れ処理
       $count--;
