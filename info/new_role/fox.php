@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('妖狐陣営');
+InfoHTML::OutputRoleHeader('妖狐陣営');
 ?>
 <p>
 <a href="#partner">仲間表示</a>
@@ -636,4 +636,5 @@ OutputRolePageHeader('妖狐陣営');
 <pre>
 妲己の妖狐伝承がモチーフです。寿羊は「じゅよう」と読みます。
 </pre>
-</body></html>
+</body>
+</html>

@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputInfoPageHeader('開発履歴 / 1.4', 1, 'develop_history');
+InfoHTML::OutputHeader('開発履歴 / 1.4', 1, 'develop_history');
 ?>
 <p><a href="history.php">最新情報</a></p>
 <p>
@@ -457,4 +457,5 @@ Ver. 1.4.0<br>
 <li>クイズ村実装開始</li>
 <li>闇鍋モード実装開始</li>
 </ul>
-</body></html>
+</body>
+</html>

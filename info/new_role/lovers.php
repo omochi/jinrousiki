@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('恋人陣営');
+InfoHTML::OutputRoleHeader('恋人陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
@@ -321,4 +321,5 @@ OutputRolePageHeader('恋人陣営');
 <pre>
 天使系の劣化種として<a href="sub_role.php#celibacy">独身貴族</a>相当の能力を持たせてみました。
 </pre>
-</body></html>
+</body>
+</html>

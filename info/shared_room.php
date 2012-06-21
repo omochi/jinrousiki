@@ -5,10 +5,10 @@ Loader::LoadFile('shared_server_config');
 Loader::LoadRequest('RequestSharedRoom');
 
 if (0 < RQ::$get->id && RQ::$get->id <= count(SharedServerConfig::$server_list)) {
-  OutputSharedRoom(RQ::$get->id);
+  InfoHTML::OutputSharedRoom(RQ::$get->id);
 }
 else {
-  OutputInfoPageHeader('関連サーバ村情報', 0, 'shared_room');
-  OutputSharedRoomList();
+  InfoHTML::OutputHeader('関連サーバ村情報', 0, 'shared_room');
+  InfoHTML::OutputSharedRoomList();
   HTML::OutputFooter();
 }

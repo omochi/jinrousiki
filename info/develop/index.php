@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputInfoPageHeader('開発者向け情報', 1);
+InfoHTML::OutputHeader('開発者向け情報', 1);
 ?>
 <h2>Ver. 2 について</h2>
 <ul>
@@ -28,4 +28,5 @@ OutputInfoPageHeader('開発者向け情報', 1);
 <ul>
   <li>過去ログ HTML 化の自動化</li>
 </ul>
-</body></html>
+</body>
+</html>

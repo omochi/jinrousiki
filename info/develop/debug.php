@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputInfoPageHeader('デバッグ情報', 1, 'debug');
+InfoHTML::OutputHeader('デバッグ情報', 1, 'debug');
 ?>
 <p>
 Ver. 1.5.0<br>
@@ -461,4 +461,5 @@ if($user->IsRole('dummy_guard')){ //夢守人は罠無効
 × if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')) continue;
 ○ if($user->IsRole('emerald_fox') || $user->IsRoleGroup('fairy')<span> || $wizard_target_list[$uname] == 'light_fairy'</span>) continue;
 </pre>
-</body></html>
+</body>
+</html>

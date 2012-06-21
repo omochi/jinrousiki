@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('サブ役職');
+InfoHTML::OutputRoleHeader('サブ役職');
 ?>
 <p><a href="#rule">基本ルール</a></p>
 <p>
@@ -1893,4 +1893,5 @@ B：「恋人陣営の勝利」
 <pre>
 <a href="wolf.php#therian_mad">獣人</a>用に実装されたサブ役職です。
 </pre>
-</body></html>
+</body>
+</html>

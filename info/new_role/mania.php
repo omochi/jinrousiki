@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('神話マニア陣営');
+InfoHTML::OutputRoleHeader('神話マニア陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
@@ -702,4 +702,5 @@ CO するべきかどうかは、コピーした役職次第です。
 <a href="human.php#presage_scanner">件</a>と<a href="human.php#sacrifice_cat">猫神</a>を合わせたような能力で、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/65" target="_top">新役職考案スレ2(65)</a> が原型です。
 条件次第で<a href="ability.php#possessed">憑依能力者</a>も騙ることができます。
 </pre>
-</body></html>
+</body>
+</html>

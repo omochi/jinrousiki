@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputInfoPageHeader('開発履歴 / 2.0', 1, 'develop_history');
+InfoHTML::OutputHeader('開発履歴 / 2.0', 1, 'develop_history');
 ?>
 <p><a href="history.php">最新情報</a></p>
 <p>
@@ -67,15 +67,5 @@ Ver. 2.0.0<br>
 <ul>
 <li>データベース構造を再設計</li>
 </ul>
-<!--
-<h2 id="ver150a2">Ver. 1.5.0 α2 (Rev. 273) : 2011/01/21 (Fri) 07:38</h2>
-<ul>
-<li>ゲームオプション「天候あり」実装</li>
-</ul>
-
-<h2 id="ver150a1">Ver. 1.5.0 α1 (Rev. 269) : 2011/01/15 (Sat) 09:16</h2>
-<ul>
-<li>「魔法使い」「八卦見」実装</li>
-</ul>
--->
-</body></html>
+</body>
+</html>

@@ -3,28 +3,7 @@ define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('message', 'user_icon_class', 'room_option_class');
 Loader::LoadClass('TIME_CALC');
-
-//-- 関数定義 --//
-//村の最大人数設定出力
-function OutputMaxUser(){
-  $min_user = min(array_keys(CastConfig::$role_list));
-  $str = '[ ' . implode('人・', RoomConfig::$max_user_list) .
-    '人 ] のどれかを村に登録できる村人の最大人数として設定することができます。<br>' .
-    "ただしゲームを開始するには最低 [ {$min_user}人 ] の村人が必要です。";
-  echo $str;
-}
-
-//身代わり君がなれない役職のリスト出力
-function OutputDisableDummyBoyRole(){
-  $stack = array('人狼', '妖狐');
-  foreach (CastConfig::$disable_dummy_boy_role_list as $role) {
-    $stack[] = RoleData::$main_role_list[$role];
-  }
-  echo implode($stack, '・');
-}
-
-//-- 表示 --//
-OutputInfoPageHeader('仕様', 0, 'script_info');
+InfoHTML::OutputHeader('仕様', 0, 'script_info');
 HTML::OutputJavaScript('output_diff_time');
 ?>
 <img src="../img/script_info_title.jpg" title="スクリプトの仕様" alt="スクリプトの仕様">
@@ -94,7 +73,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 このスクリプトではゲームマスターは居ません、村を作成した人は改めて住民登録をしてゲームにご参加ください。<br>
 ゲームを開始するにはプレイヤー全員が「ゲームの開始」に投票する必要があります。<br>
-ゲーム中の仮想時間 (昼12時間、夜6時間) を経過した後に [ <?php echo $TIME_CALC->sudden_death ?> ] 経過すると投票していない人は自動で突然死となります。<br>
+ゲーム中の仮想時間 (昼12時間、夜6時間) を経過した後に [ <?php echo $TIME_CALC->sudden_death; ?> ] 経過すると投票していない人は自動で突然死となります。<br>
 突然死が発生するとその日の投票がリセットされて再投票となります、注意してください。
 </div>
 
@@ -114,13 +93,13 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 再投票が何度も続くとゲームが進まなくなります。<br>
 この場合、やむを得ず引き分けとすることが必要です。<br>
-[ <?php echo GameConfig::DRAW; ?>回 ] 再投票が続いた場合は自動的に引き分けとなり、ゲームは終了します。
+[ <?php printf('%d回', GameConfig::DRAW); ?> ] 再投票が続いた場合は自動的に引き分けとなり、ゲームは終了します。
 </div>
 
 <h3 id="difference_deadman">死亡者の順序がランダム表示</h3>
 <div>
-人狼に襲われて死亡した場合、妖狐が占われて死亡した場合、埋毒者に道連れにされた場合、表示されるメッセージは「～<?php echo Message::$deadman ?>」となります。<br>
-また、恋人が後追いした場合、表示されるメッセージは「～<?php echo Message::$lovers_followed ?>」となります。<br>
+人狼に襲われて死亡した場合、妖狐が占われて死亡した場合、埋毒者に道連れにされた場合、表示されるメッセージは [ ～<?php echo Message::$deadman; ?> ] となります。<br>
+また、恋人が後追いした場合、表示されるメッセージは [ ～<?php echo Message::$lovers_followed; ?> ] となります。<br>
 表示される順番ですが、どの死に方をした人が上に表示されるということはなく順序がランダムに表示されます。<br>
 注意しなければいけないことはリロードするたびにランダムに順序が変更されるということです。
 </div>
@@ -146,7 +125,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_poison_vote">埋毒者を吊った際に巻き添えにする対象を限定可能 [Ver. 1.3.1～ / Ver. 1.4.0 α12～]</h3>
 <div>
 サーバ管理者がゲーム設定を変更する事で埋毒者を吊った際に巻き添えにする対象を限定する事が可能です。<br>
-現在の設定は [ <?php echo GameConfig::POISON_ONLY_VOTER ? '投票者' : '生存者全員'; ?>からランダム ] です。
+現在の設定は [ <?php printf('%sからランダム', GameConfig::POISON_ONLY_VOTER ? '投票者' : '生存者全員'); ?> ] です。
 </div>
 
 <h3 id="difference_poison_eat">人狼が埋毒者を襲撃した際に巻き添えになる対象を限定可能 [Ver. 1.3.0～]</h3>
@@ -175,7 +154,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 「音でお知らせ」をOnにすると、「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」<br>
 「夜が明けた時」「再投票になった時」「未投票者への告知 (超過時間経過1分毎)」<br>
-「未投票者への警告 (超過時間残り [ <?php echo $TIME_CALC->alert ?> ] より、[ <?php echo $TIME_CALC->alert_distance ?> ] 毎) 」「異議ありの時」に音でお知らせしてくれます。<br>
+「未投票者への警告 (超過時間残り [ <?php echo $TIME_CALC->alert; ?> ] より、[ <?php echo $TIME_CALC->alert_distance; ?> ] 毎) 」「異議ありの時」に音でお知らせしてくれます。<br>
 「異議あり」については<a href="#difference_objection">別項目</a>で説明します。
 </div>
 <h4>Ver. 1.4.14～ / Ver. 1.5.0 ～</h4>
@@ -192,7 +171,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 ゲーム前、ゲーム中の昼に右上に「異議あり」のボタンがあります。<br>
 このボタンを押すと特殊なメッセージと音で皆に知らせることができます。<br>
 ボタンに右にカッコ内で表示されている数字は残り回数です。<br>
-[ <?php echo GameConfig::OBJECTION; ?> 回 ] 「異議あり」を使用すると二度と使えなくなります。
+[ <?php printf('%d回', GameConfig::OBJECTION); ?> ] 「異議あり」を使用すると二度と使えなくなります。
 </div>
 
 <h3 id="difference_last_words">遺言</h3>
@@ -205,7 +184,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 「半角スペース一つ」のみを遺言にセットすることで遺言を消去できます。<br>
 死亡後は遺言のセットはできません。<br>
 サーバ管理者が設定することで遺言の設定をゲーム開始前の限定できます。<br>
-現在の設定は [ 遺言制限<?php echo GameConfig::LIMIT_LAST_WORDS ? 'あり' : 'なし'; ?> ] です。
+現在の設定は [ <?php printf('遺言制限%s', GameConfig::LIMIT_LAST_WORDS ? 'あり' : 'なし'); ?> ] です。
 </div>
 <h4>Ver. 2.0.0 RC1～</h4>
 <div>
@@ -218,19 +197,19 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_max_user">村の最大人数を制限できます</h3>
 <div>
-<?php OutputMaxUser() ?>
+<?php Info::OutputMaxUser(); ?>
 </div>
 
 <h3 id="difference_active_room">同時稼働できる村の数 [Ver. 1.4.0 α19～]</h3>
 <div>
 サーバ負荷の調整のため、同時稼働できる村の数をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo RoomConfig::MAX_ACTIVE_ROOM; ?>村 ] までです。
+現在の設定は [ <?php printf('%d村', RoomConfig::MAX_ACTIVE_ROOM); ?> ] までです。
 </div>
 
 <h3 id="difference_establish_wait">次の村を立てられるまでの待ち時間 [Ver. 1.4.0 β1～]</h3>
 <div>
 打ち合わせミスや、リロードによる多重村立て事故を防ぐため、一つの村が立ってから次の村を立てられるまでの待ち時間をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo $TIME_CALC->establish_wait ?> ] です。
+現在の設定は [ <?php echo $TIME_CALC->establish_wait; ?> ] です。
 </div>
 
 <h3 id="difference_ip">同じ村には同じ IP アドレスで複数登録することはできません</h3>
@@ -238,12 +217,12 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 多重登録を防ぐために同じ村に同じ IP アドレスで複数登録することはできません。<br>
 この機能はスクリプトの設定で有効、無効を設定することができます。<br>
 一つのグローバル IP アドレスでルータを用いて複数の人が参加したい場合は管理人さんに相談してください。<br>
-現在の設定は [ 登録<?php echo GameConfig::LIMIT_IP ? '不可' : '可能'; ?> ] になっています。
+現在の設定は [ <?php printf('登録%s', GameConfig::LIMIT_IP ? '不可' : '可能'); ?> ] になっています。
 </div>
 
 <h3 id="difference_die_room">自動廃村</h3>
 <div>
-ゲームが開始されない場合、最後に発言された時間から [ <?php echo $TIME_CALC->die_room ?> ] 放置されると自動で村は廃墟になります。<br>
+ゲームが開始されない場合、最後に発言された時間から [ <?php echo $TIME_CALC->die_room; ?> ] 放置されると自動で村は廃墟になります。<br>
 手動で廃村にする方法はありません、連絡用の掲示板やゲーム内の発言で村に登録しないように促してください。
 </div>
 
@@ -257,17 +236,15 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 初日の夜に一度も発言することなく人狼に襲われて、ゲームに参加したとはいえない！と思ったことはありませんか？<br>
 村を作成するときに「<a href="game_option.php#dummy_boy">初日の夜は身代わり君</a>」にチェックを入れると初日の夜、人狼は身代わり君しか襲えないようになります。<br>
 身代わり君はプレイヤーが操作するのではなく、初日に襲われる為だけに存在します。<br>
-割り当てられる役割は [ <?php OutputDisableDummyBoyRole() ?> ] 以外のどれかランダムに設定されます。
+割り当てられる役割は [ <?php Info::OutputDisableDummyBoyRole(); ?> ] 以外のどれかランダムに設定されます。
 </div>
 
 <h3 id="difference_real_time">リアルタイム制オプション</h3>
 <div>
 村を作成するときに「<a href="game_option.php#real_time">リアルタイム制</a>」にチェックを入れると、ゲーム中の仮想時間 (昼12時間、夜6時間) が発言により消費されるのではなく固定された実時間で消費されていきます。<br>
 設定される時間は村を作成する人が決定することができます
-(デフォルト 昼： [ <?php echo TimeConfig::DEFAULT_DAY; ?>分 ]　夜： [ <?php echo TimeConfig::DEFAULT_NIGHT; ?>分 ])。<br>
-その村に設定された制限時間を知るには、ゲーム一覧のゲームオプションアイコン、リアルタイム制用 <?php echo
-Image::Room()->Generate('real_time', 'リアルタイム制　昼：' . TimeConfig::DEFAULT_DAY .
-			'分　夜： ' . TimeConfig::DEFAULT_NIGHT . '分'); ?> にマウスポインタを合わせることで表示されます。
+(デフォルト 昼： [ <?php printf('%d分', TimeConfig::DEFAULT_DAY); ?> ]　夜： [ <?php printf('%d分', TimeConfig::DEFAULT_NIGHT); ?> ])。<br>
+その村に設定された制限時間を知るには、ゲーム一覧のゲームオプションアイコン、リアルタイム制用 <?php Info::OutputRealTime(); ?> にマウスポインタを合わせることで表示されます。
 </div>
 <h4>Ver. 1.4.0 β4～</h4>
 <div>
@@ -276,14 +253,14 @@ PC の時計をサーバと合わせる必要がなくなりました。
 
 <h3 id="difference_spend_time">非リアルタイム制の会話の時間消費の上限</h3>
 <div>
-半角100文字 (全角50文字) で 昼： [ <?php echo $TIME_CALC->spend_day ?> ] 夜：[ <?php echo $TIME_CALC->spend_night ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字 (全角200文字) までの消費時間までしか増えません。<br>
+半角100文字 (全角50文字) で 昼： [ <?php echo $TIME_CALC->spend_day; ?> ] 夜：[ <?php echo $TIME_CALC->spend_night; ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字 (全角200文字) までの消費時間までしか増えません。<br>
 半角400文字以上で発言しても消費される時間は半角400文字分と同じです。
 </div>
 
 <h3 id="difference_silence">強制沈黙</h3>
 <div>
-非リアルタイム制の場合、誰も発言をせず [ <?php echo $TIME_CALC->silence ?> ] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
-消費される時間は 昼： [ <?php echo $TIME_CALC->silence_day ?> ] 夜： [ <?php echo $TIME_CALC->silence_night ?> ]です。
+非リアルタイム制の場合、誰も発言をせず [ <?php echo $TIME_CALC->silence; ?> ] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
+消費される時間は 昼： [ <?php echo $TIME_CALC->silence_day; ?> ] 夜： [ <?php echo $TIME_CALC->silence_night; ?> ]です。
 </div>
 
 <h3 id="difference_wait_morning">早朝待機制オプション [Ver. 1.4.0 β17～]</h3>
@@ -296,7 +273,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
 <div>
 村人登録時に、ユーザ名の入力欄にユーザ名に続けて「#任意の文字列」と入力することでトリップ変換されます。<br>
 また、ユーザ名の「#」の右側のトリップ入力専用欄を使用することで「#」の入力の手間を省くことができます。<br>
-現在の設定は [ トリップ使用<?php echo GameConfig::TRIP ? '可' : '不可'; ?> ] になっています。
+現在の設定は [ <?php printf('トリップ使用%s', GameConfig::TRIP ? '可' : '不可'); ?> ] になっています。
 </div>
 <h4>Ver. 1.5.0 β6～</h4>
 <div>
@@ -306,7 +283,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
 <h3 id="difference_kick">キック投票</h3>
 <div>
 村人登録後に急な用事が入って抜けなければならなくなったり、応答がなくなってしまったなどの理由で開始前に村から去ってもらうためには、KICK 投票をする必要があります。<br>
-現在の設定は [ <?php echo GameConfig::KICK; ?>票 ] 必要で、[ 自己投票<?php echo GameConfig::SELF_KICK ? '可' : '不可'; ?> ] になっています。
+現在の設定は [ <?php printf('%d票', GameConfig::KICK); ?> ] 必要で、[ <?php printf('自己投票%s', GameConfig::SELF_KICK ? '可' : '不可'); ?> ] になっています。
 </div>
 <h4>Ver. 1.4.0 α21～</h4>
 <div>
@@ -417,4 +394,5 @@ Ver. 1.2.0で追加した画像については、<a href="http://azukifont.mints
 このシステムには mbstring モジュールに非対応なサーバでも稼動できるように <a href="http://www.matsubarafamily.com/blog/mbemu.php" target="_blank">mbstringエミュレータ</a>が入っています。<br>
 <a href="copyright.php">謝辞・素材</a>の mbstring エミュレータさんへのリンクを削除しないようにお願いします。
 </div>
-</body></html>
+</body>
+</html>

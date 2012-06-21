@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('村人陣営');
+InfoHTML::OutputRoleHeader('村人陣営');
 ?>
 <p><a href="#change_group">所属変更</a></p>
 <p>
@@ -3154,4 +3154,5 @@ Pixiv 人狼のプレイヤーさんの誕生日プレゼントです。
 放っておくと確定村人が増えていくので、人狼は逃亡先を狙って
 襲撃をする価値が出てきます。
 </pre>
-</body></html>
+</body>
+</html>

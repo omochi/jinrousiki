@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('吸血鬼陣営');
+InfoHTML::OutputRoleHeader('吸血鬼陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
@@ -220,4 +220,5 @@ OutputRolePageHeader('吸血鬼陣営');
 <a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>の吸血鬼バージョンです。
 潜伏するのが難しいので劣化種扱いとなります。
 </pre>
-</body></html>
+</body>
+</html>

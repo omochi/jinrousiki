@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('能力者逆引き');
+InfoHTML::OutputRoleHeader('能力者逆引き');
 ?>
 <p>
 <a href="#assassin">暗殺</a>
@@ -373,4 +373,5 @@ OutputRolePageHeader('能力者逆引き');
 <a href="wolf.php#trap_wolf">狡狼</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="fox.php#trap_fox">狡狐</a>
 <a href="human.php#astray_wizard">左道使い</a>(<a href="wolf.php#snow_trap_mad">雪女</a>)
 </pre>
-</body></html>
+</body>
+</html>

@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('蝙蝠陣営');
+InfoHTML::OutputRoleHeader('蝙蝠陣営');
 ?>
 <p><a href="#rule">基本ルール</a></p>
 <p>
@@ -490,4 +490,5 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 <pre>
 <a href="wolf.php#snow_trap_mad">雪女</a>の能力を妖精に転化してみました。
 </pre>
-</body></html>
+</body>
+</html>

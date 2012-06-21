@@ -2,35 +2,22 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('room_option_class', 'info_functions');
-
-function OutputItem($option, $name, $version) {
-  $format = "<h3 id=\"%s_%s\">%s [%s～]</h3>\n";
-  printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name], $version);
-}
-
-function OutputItemList($option, $list) {
-  $format = "<a href=\"#%s_%s\">%s</a>\n";
-  foreach ($list as $name) {
-    printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);
-  }
-}
-
-OutputInfoPageHeader('闇鍋モード');
+InfoHTML::OutputHeader('闇鍋モード');
 ?>
 <p>
 <a href="#decide_role">配役決定ルーチン</a>
 <a href="#wish_role"><?php OptionManager::OutputCaption('wish_role'); ?></a>
 </p>
 <p>
-<?php OutputCategoryLink(array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso',
+<?php InfoHTML::OutputCategory(array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso',
 'chaos_old')); ?>
 <a href="#chaos_old"><?php OptionManager::OutputCaption('chaos'); ?> (旧設定)</a>
 </p>
 <p>
-<?php OutputCategoryLink(array('topping', 'boost_rate', 'chaos_open_cast')); ?>
+<?php InfoHTML::OutputCategory(array('topping', 'boost_rate', 'chaos_open_cast')); ?>
 </p>
 <p>
-<?php OutputCategoryLink(array('sub_role_limit', 'secret_sub_role')); ?>
+<?php InfoHTML::OutputCategory(array('sub_role_limit', 'secret_sub_role')); ?>
 </p>
 
 <h2 id="decide_role">配役決定ルーチン</h2>
@@ -627,13 +614,13 @@ OutputInfoPageHeader('闇鍋モード');
 <li>内容は設定ファイルで変更できます。</li>
 </ol>
 <p>
-<?php OutputItemList('topping', range('a', 'g')); ?>
+<?php InfoHTML::OutputItemList('topping', range('a', 'g')); ?>
 </p>
 <p>
-<?php OutputItemList('topping', range('h', 'l')); ?>
+<?php InfoHTML::OutputItemList('topping', range('h', 'l')); ?>
 </p>
 
-<?php OutputItem('topping', 'a', 'Ver. 1.4.0 β19'); ?>
+<?php InfoHTML::OutputItem('topping', 'a', 'Ver. 1.4.0 β19'); ?>
 <pre>
 <a href="new_role/human.php#doll_group">上海人形系</a>(<a href="new_role/human.php#doll_master">人形遣い</a>以外)1　<a href="new_role/human.php#doll_rule">人形遣い枠</a>2 (<a href="new_role/human.php#doll_master">人形遣い</a>1・それ以外1)
 </pre>
@@ -647,12 +634,12 @@ OutputInfoPageHeader('闇鍋モード');
 上海人形1 → 上海人形系(人形遣い以外)1
 </pre>
 
-<?php OutputItem('topping', 'b', 'Ver. 1.4.0 β19'); ?>
+<?php InfoHTML::OutputItem('topping', 'b', 'Ver. 1.4.0 β19'); ?>
 <pre>
 <a href="new_role/quiz.php#quiz">出題者</a>1　<a href="new_role/ogre.php#poison_ogre">榊鬼</a>1
 </pre>
 
-<?php OutputItem('topping', 'c', 'Ver. 1.4.0 β19'); ?>
+<?php InfoHTML::OutputItem('topping', 'c', 'Ver. 1.4.0 β19'); ?>
 <pre>
 <a href="new_role/vampire.php">吸血鬼陣営</a>1
 </pre>
@@ -661,7 +648,7 @@ OutputInfoPageHeader('闇鍋モード');
 吸血鬼1 → 吸血鬼陣営1
 </pre>
 
-<?php OutputItem('topping', 'd', 'Ver. 1.4.0 β19'); ?>
+<?php InfoHTML::OutputItem('topping', 'd', 'Ver. 1.4.0 β19'); ?>
 <pre>
 <a href="new_role/human.php#poison_cat_group">猫又系</a>1　<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>1
 </pre>
@@ -670,17 +657,17 @@ OutputInfoPageHeader('闇鍋モード');
 猫又1 → 猫又系1
 </pre>
 
-<?php OutputItem('topping', 'e', 'Ver. 1.4.0 β19'); ?>
+<?php InfoHTML::OutputItem('topping', 'e', 'Ver. 1.4.0 β19'); ?>
 <pre>
 <a href="new_role/human.php#anti_voodoo">厄神</a>1　<a href="new_role/wolf.php#possessed_wolf">憑狼</a>1
 </pre>
 
-<?php OutputItem('topping', 'f', 'Ver. 1.4.0 RC1'); ?>
+<?php InfoHTML::OutputItem('topping', 'f', 'Ver. 1.4.0 RC1'); ?>
 <pre>
 <a href="new_role/ogre.php">鬼陣営</a>2
 </pre>
 
-<?php OutputItem('topping', 'g', 'Ver. 1.5.0 α7'); ?>
+<?php InfoHTML::OutputItem('topping', 'g', 'Ver. 1.5.0 α7'); ?>
 <pre>
 <a href="new_role/wolf.php#mad_group">狂人系</a>1　夢系1　精神系1
 
@@ -688,22 +675,22 @@ OutputInfoPageHeader('闇鍋モード');
 精神系：(<a href="new_role/human.php#psycho_mage">精神鑑定士</a>・<a href="new_role/human.php#psycho_necromancer">精神感応者</a>・<a href="new_role/human.php#psycho_escaper">迷い人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>・<a href="new_role/ogre.php#revive_ogre">茨木童子</a>)
 </pre>
 
-<?php OutputItem('topping', 'h', '1.5.0 α7'); ?>
+<?php InfoHTML::OutputItem('topping', 'h', '1.5.0 α7'); ?>
 <pre>
 <a href="new_role/human.php#human">村人</a>2
 </pre>
 
-<?php OutputItem('topping', 'i', 'Ver. 1.5.0 β1'); ?>
+<?php InfoHTML::OutputItem('topping', 'i', 'Ver. 1.5.0 β1'); ?>
 <pre>
 <a href="new_role/human.php#jealousy_group">橋姫系</a>1　<a href="new_role/lovers.php">恋人陣営</a>2
 </pre>
 
-<?php OutputItem('topping', 'j', 'Ver. 1.5.0 β1'); ?>
+<?php InfoHTML::OutputItem('topping', 'j', 'Ver. 1.5.0 β1'); ?>
 <pre>
 <a href="new_role/duelist.php">決闘者陣営</a>1
 </pre>
 
-<?php OutputItem('topping', 'k', 'Ver. 1.5.0 β2'); ?>
+<?php InfoHTML::OutputItem('topping', 'k', 'Ver. 1.5.0 β2'); ?>
 <pre>
 上位種3 (村人陣営1・人狼陣営1・他陣営1)
 
@@ -730,7 +717,7 @@ OutputInfoPageHeader('闇鍋モード');
 他：<a href="new_role/duelist.php#avenger">復讐者</a>・<a href="new_role/duelist.php#patron">後援者</a>・<a href="new_role/mania.php#sacrifice_mania">影武者</a>追加
 </pre>
 
-<?php OutputItem('topping', 'l', 'Ver. 1.5.0 β8'); ?>
+<?php InfoHTML::OutputItem('topping', 'l', 'Ver. 1.5.0 β8'); ?>
 <pre>
 <a href="new_role/human.php#ghost_common">亡霊嬢</a>1　<a href="new_role/wolf.php#boss_wolf">白狼</a>1　<a href="new_role/wolf.php#silver_wolf">銀狼</a>1　<a href="new_role/fox.php#howl_fox">化狐</a>1
 </pre>
@@ -743,42 +730,42 @@ OutputInfoPageHeader('闇鍋モード');
 <li>内容は設定ファイルで変更できます。</li>
 </ol>
 <p>
-<?php OutputItemList('boost_rate', range('a', 'g')); ?>
+<?php InfoHTML::OutputItemList('boost_rate', range('a', 'g')); ?>
 </p>
 
-<?php OutputItem('boost_rate', 'a', 'Ver. 1.5.0 β7'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'a', 'Ver. 1.5.0 β7'); ?>
 <pre>
 該当バージョンで新しく実装された役職の出現率が上がります。
 </pre>
 
-<?php OutputItem('boost_rate', 'b', 'Ver. 1.5.0 β7'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'b', 'Ver. 1.5.0 β7'); ?>
 <pre>
 <a href="new_role/ability.php#authority">投票数変化能力者</a>・<a href="new_role/ability.php#luck">得票数変化能力者</a>に属するメイン役職の出現率が 0 になります。
 </pre>
 
-<?php OutputItem('boost_rate', 'c', 'Ver. 1.5.0 β8'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'c', 'Ver. 1.5.0 β8'); ?>
 <pre>
 各系統の基本職の出現率が 0 になります。
 役職グループの<a href="#decide_role_random">上限補正</a>の振り替えで<a href="new_role/human.php#human">村人</a>が出現する可能性があります。
 村人の<a href="#decide_role_random">上限補正</a>の振り替えでは基本職は出現しません。
 </pre>
 
-<?php OutputItem('boost_rate', 'd', 'Ver. 1.5.0 β9'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'd', 'Ver. 1.5.0 β9'); ?>
 <pre>
 <a href="new_role/ability.php#revive_other">他者蘇生能力者</a>の出現率が 0 になります。
 </pre>
 
-<?php OutputItem('boost_rate', 'e', 'Ver. 1.5.0 β9'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'e', 'Ver. 1.5.0 β9'); ?>
 <pre>
 <a href="new_role/lovers.php#exchange_angel">魂移使</a>・<a href="new_role/ability.php#possessed">憑依能力者</a>の出現率が 0 になります。
 </pre>
 
-<?php OutputItem('boost_rate', 'f', 'Ver. 1.5.0 β12'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'f', 'Ver. 1.5.0 β12'); ?>
 <pre>
 <a href="new_role/chiroptera.php">蝙蝠陣営</a>・<a href="new_role/ogre.php">鬼陣営</a>・<a href="new_role/duelist.php">決闘者陣営</a>の出現率が 0 になります。
 </pre>
 
-<?php OutputItem('boost_rate', 'g', 'Ver. 2.0.0'); ?>
+<?php InfoHTML::OutputItem('boost_rate', 'g', 'Ver. 2.0.0'); ?>
 <pre>
 <a href="new_role/human.php#jealousy">橋姫系</a>・<a href="new_role/lovers.php">恋人陣営</a>の出現率が 0 になります。
 </pre>
@@ -822,7 +809,7 @@ OutputInfoPageHeader('闇鍋モード');
   <li>内容は設定ファイルで変更できます。</li>
 </ol>
 <p>
-<?php OutputCategoryLink(array('no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal',
+<?php InfoHTML::OutputCategory(array('no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal',
 'sub_role_limit_hard')); ?>
 <a href="#sub_role_limit_none">サブ役職制限なし</a>
 </p>
@@ -861,4 +848,5 @@ OutputInfoPageHeader('闇鍋モード');
 <pre>
 一部の例外を除き、サブ役職の本人表示が無効になります。
 </pre>
-</body></html>
+</body>
+</html>

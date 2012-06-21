@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('鬼陣営');
+InfoHTML::OutputRoleHeader('鬼陣営');
 ?>
 <p>
 <a href="#rule">基本ルール</a>
@@ -451,4 +451,5 @@ OutputRolePageHeader('鬼陣営');
 多数のサブ役職を付加する特殊<a href="lovers.php">キューピッド</a>、毎日サブ役職を付加していく
 <a href="vampire.php">吸血鬼陣営</a>・<a href="chiroptera.php#fairy_group">妖精系</a>が主な障害となります。
 </pre>
-</body></html>
+</body>
+</html>

@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('message', 'info_functions');
-OutputInfoPageHeader('詳細な仕様');
+InfoHTML::OutputHeader('詳細な仕様');
 ?>
 <p>
 <a href="#decide_role">配役決定ルーチン</a>
@@ -113,46 +113,46 @@ OutputInfoPageHeader('詳細な仕様');
 </p>
 
 <h3 id="dead_common">共通</h3>
-<h4>～<?php echo Message::$sudden_death ?> [Ver. 1.4.0 β13～]</h4>
+<h4>～<?php echo Message::$sudden_death; ?> [Ver. 1.4.0 β13～]</h4>
 <ul>
 <li>未投票突然死</li>
 </ul>
 
-<h4>～<?php echo Message::$lovers_followed ?> [Ver. 1.2.0～]</h4>
+<h4>～<?php echo Message::$lovers_followed; ?> [Ver. 1.2.0～]</h4>
 <ul>
 <li><a href="new_role/sub_role.php#lovers">恋人</a>後追い</li>
 </ul>
 
-<h4>～<?php echo Message::$joker_moved ?> [Ver. 1.4.0 β21～]</h4>
+<h4>～<?php echo Message::$joker_moved; ?> [Ver. 1.4.0 β21～]</h4>
 <ul>
 <li><a href="new_role/sub_role.php#joker">ジョーカー</a>の移動 (配役公開状態限定)</li>
 </ul>
 
 
 <h3 id="dead_day">昼</h3>
-<h4>～<?php echo Message::$vote_killed ?></h4>
+<h4>～<?php echo Message::$vote_killed; ?></h4>
 <ul>
 <li>処刑</li>
 </ul>
 
-<h4>～<?php echo Message::$deadman ?></h4>
+<h4>～<?php echo Message::$deadman; ?></h4>
 <ul>
 <li>毒 (<a href="new_role/ability.php#poison">毒能力者</a>・<a href="new_role/human.php#centaurus_pharmacist">人馬</a>)</li>
 <li>罠 (<a href="new_role/human.php#trap_common">策士</a>)</li>
 </ul>
 
-<h4>～<?php echo Message::$vote_sudden_death ?> [Ver. 1.4.0 α3-7～]</h4>
+<h4>～<?php echo Message::$vote_sudden_death; ?> [Ver. 1.4.0 α3-7～]</h4>
 <ul>
 <li>ショック死 (<a href="new_role/ability.php#sudden_death">ショック死発動能力者</a>・<a href="weather.php#weather_thunderbolt">天候：青天の霹靂</a>)</li>
 </ul>
 
-<h4><?php echo Message::$blind_vote ?> [Ver. 1.4.0 β21～]</h4>
+<h4><?php echo Message::$blind_vote; ?> [Ver. 1.4.0 β21～]</h4>
 <ul>
 <li><a href="new_role/wolf.php#amaze_mad">傘化け</a>の能力発動</li>
 </ul>
 
 <h3 id="dead_night">夜</h3>
-<h4>～<?php echo Message::$deadman ?></h4>
+<h4>～<?php echo Message::$deadman; ?></h4>
 <ul>
 <li>人狼襲撃 (<a href="new_role/wolf.php#wolf_group">人狼系</a>)</li>
 <li>餓狼襲撃 (<a href="new_role/wolf.php#hungry_wolf">餓狼</a>)</li>
@@ -172,28 +172,28 @@ OutputInfoPageHeader('詳細な仕様');
 <li>人外尾行 (<a href="new_role/human.php#reporter">ブン屋</a>)</li>
 <li>帰還 (<a href="new_role/human.php#revive_priest">天人</a>・<a href="new_role/sub_role.php#death_selected">オシラ遊び</a>)</li>
 </ul>
-<h4>～<?php echo Message::$revive_success ?> [Ver. 1.4.0 α18～]</h4>
+<h4>～<?php echo Message::$revive_success; ?> [Ver. 1.4.0 α18～]</h4>
 <ul>
 <li>蘇生 (<a href="new_role/ability.php#revive">蘇生能力者</a>)</li>
 <li>憑依・憑依解放 (<a href="new_role/ability.php#possessed">憑依能力者</a>)</li>
 </ul>
 
-<h4>～<?php echo Message::$revive_failed ?> [Ver. 1.4.0 α18～]</h4>
+<h4>～<?php echo Message::$revive_failed; ?> [Ver. 1.4.0 α18～]</h4>
 <ul>
 <li>蘇生失敗 (霊界限定) (<a href="new_role/ability.php#revive_other">他者蘇生能力者</a>)</li>
 </ul>
 
-<h4>～<?php echo Message::$flowered_a ?> (一例) [Ver. 1.4.0 β12～]</h4>
+<h4>～<?php echo Message::$flowered_a; ?> (一例) [Ver. 1.4.0 β12～]</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#flower_fairy">花妖精</a>)</li>
 </ul>
 
-<h4>～<?php echo Message::$constellation_a ?> (一例) [Ver. 1.4.0 β13～]</h4>
+<h4>～<?php echo Message::$constellation_a; ?> (一例) [Ver. 1.4.0 β13～]</h4>
 <ul>
 <li>悪戯 (<a href="new_role/chiroptera.php#star_fairy">星妖精</a>)</li>
 </ul>
 
-<h4>～<?php echo Message::$pierrot_a ?> (一例) [Ver. 1.5.0 α8～]</h4>
+<h4>～<?php echo Message::$pierrot_a; ?> (一例) [Ver. 1.5.0 α8～]</h4>
 <ul>
 <li>魔法 (<a href="new_role/human.php#pierrot_wizard">道化師</a>)</li>
 </ul>
@@ -284,4 +284,5 @@ OutputInfoPageHeader('詳細な仕様');
 
 これは、死亡後に急な用事が入って抜けなければならない人の為の救済措置です。
 </pre>
-</body></html>
+</body>
+</html>

@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('出題者陣営');
+InfoHTML::OutputRoleHeader('出題者陣営');
 ?>
 <p><a href="#rule">基本ルール</a></p>
 <p>
@@ -53,4 +53,5 @@ OutputRolePageHeader('出題者陣営');
 クイズ村以外では恋人になったほうがまだましという涙目すぎる存在ですが
 闇鍋なので全役職を出します。一回くらいは奇跡的な勝利を見てみたいですね。
 </pre>
-</body></html>
+</body>
+</html>

@@ -1,6 +1,5 @@
 <?php
-//-- クラス定義 --//
-//時間設定表示用クラス
+//-- 時間設定表示用クラス --//
 class TimeCalculation {
   public $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
   public $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
@@ -30,13 +29,55 @@ class TimeCalculation {
   }
 }
 
-//-- 関数定義 --//
-//情報一覧ページ HTML ヘッダ出力
-function OutputInfoPageHeader($title, $level = 0, $css = 'info') {
-  $top  = str_repeat('../', $level + 1);
-  $info = $level == 0 ? './' : str_repeat('../', $level);
-  HTML::OutputHeader(sprintf('[%s]', $title), 'info/' . $css, true);
-  echo <<<EOF
+//-- Info 情報生成クラス --//
+class Info {
+  //村の最大人数設定出力
+  static function OutputMaxUser() {
+    $list = sprintf('[ %s人 ]', implode('人・', RoomConfig::$max_user_list));
+    $min  = sprintf('[ %d人 ]', min(array_keys(CastConfig::$role_list)));
+    $format = '%s のどれかを村に登録できる村人の最大人数として設定することができます。<br>' .
+      "ただしゲームを開始するには最低 %s の村人が必要です。";
+    printf($format, $list, $min);
+  }
+
+  //身代わり君がなれない役職のリスト出力
+  static function OutputDisableDummyBoyRole() {
+    $stack = array('人狼', '妖狐');
+    foreach (CastConfig::$disable_dummy_boy_role_list as $role) {
+      $stack[] = RoleData::$main_role_list[$role];
+    }
+    echo implode($stack, '・');
+  }
+
+  //リアルタイム制のアイコン出力
+  static function OutputRealTime() {
+    $format = 'リアルタイム制　昼：%d分　夜： %d分';
+    $str = sprintf($format, TimeConfig::DEFAULT_DAY,  TimeConfig::DEFAULT_NIGHT);
+    echo Image::Room()->Generate('real_time', $str);
+  }
+
+  //追加役職の人数と説明ページリンク出力
+  static function OutputAddRole($role, $add = false) {
+    $str = RoleData::GenerateRoleLink($role);
+    $format = '村の人口が%d人以上になったら%s%sします';
+    printf($format, CastConfig::$$role, $str, $add ? 'を追加' : 'が登場');
+  }
+
+  //村人置換系オプションのサーバ設定出力
+  static function OutputReplaceRole($option) {
+    echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
+      RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
+  }
+}
+
+//-- HTML 生成クラス (Info 拡張) --//
+class InfoHTML {
+  //HTML ヘッダ出力
+  static function OutputHeader($title, $level = 0, $css = 'info') {
+    $top  = str_repeat('../', $level + 1);
+    $info = $level == 0 ? './' : str_repeat('../', $level);
+    HTML::OutputHeader(sprintf('[%s]', $title), 'info/' . $css, true);
+    echo <<<EOF
 <h1>{$title}</h1>
 <p>
 <a target="_top" href="{$top}">&lt;= TOP</a>
@@ -44,12 +85,12 @@ function OutputInfoPageHeader($title, $level = 0, $css = 'info') {
 </p>
 
 EOF;
-}
+  }
 
-//役職情報ページ HTML ヘッダ出力
-function OutputRolePageHeader($title) {
-  HTML::OutputHeader(sprintf('新役職情報 - [%s]', $title), 'new_role', true);
-  echo <<<EOF
+  //役職情報ページ HTML ヘッダ出力
+  static function OutputRoleHeader($title) {
+    HTML::OutputHeader(sprintf('新役職情報 - [%s]', $title), 'new_role', true);
+    echo <<<EOF
 <h1>{$title}</h1>
 <p>
 <a target="_top" href="../">&lt;= 情報一覧</a>
@@ -58,104 +99,163 @@ function OutputRolePageHeader($title) {
 </p>
 
 EOF;
-}
-
-//配役テーブル出力
-function OutputCastTable($min = 0, $max = null) {
-  //設定されている役職名を取得
-  $stack = array();
-  foreach (CastConfig::$role_list as $key => $value) {
-    if ($key < $min) continue;
-    $stack = array_merge($stack, array_keys($value));
-    if ($key == $max) break;
   }
-  $role_list = RoleData::SortRole(array_unique($stack)); //表示順を決定
 
-  $header = '<table class="member">';
-  $str = '<tr><th>人口</th>';
-  foreach ($role_list as $role) $str .= RoleData::GenerateMainRoleTag($role, 'th');
-  $str .= '</tr>'."\n";
-  echo $header . $str;
-
-  //人数毎の配役を表示
-  foreach (CastConfig::$role_list as $key => $value) {
-    if ($key < $min) continue;
-    $tag = "<td><strong>{$key}</strong></td>";
-    foreach ($role_list as $role) {
-      $tag .= '<td>' . (isset($value[$role]) ? $value[$role] : 0) . '</td>';
+  //カテゴリ別ページ内リンク出力
+  static function OutputCategory(array $list) {
+    foreach ($list as $name) {
+      printf("<a href=\"#%s\">%s</a>\n", $name, OptionManager::GenerateCaption($name));
     }
-    echo '<tr>' . $tag . '</tr>'."\n";
-    if ($key == $max) break;
-    if ($key % 20 == 0) echo $str;
   }
-  echo '</table>';
-}
 
-//カテゴリ別ページ内リンク出力
-function OutputCategoryLink(array $list) {
-  foreach ($list as $name) {
-    printf("<a href=\"#%s\">%s</a>\n", $name, OptionManager::GenerateCaption($name));
+  //配役テーブル出力
+  static function OutputCast($min = 0, $max = null) {
+    //設定されている役職名を取得
+    $stack = array();
+    foreach (CastConfig::$role_list as $key => $value) {
+      if ($key < $min) continue;
+      $stack = array_merge($stack, array_keys($value));
+      if ($key == $max) break;
+    }
+    $role_list = RoleData::SortRole(array_unique($stack)); //表示順を決定
+
+    $header = '<table class="member">';
+    $str = '<tr><th>人口</th>';
+    foreach ($role_list as $role) $str .= RoleData::GenerateMainRoleTag($role, 'th');
+    $str .= '</tr>'."\n";
+    echo $header . $str;
+
+    //人数毎の配役を表示
+    foreach (CastConfig::$role_list as $key => $value) {
+      if ($key < $min) continue;
+      $tag = sprintf('<td><strong>%s</strong></td>', $key);
+      foreach ($role_list as $role) {
+	$tag .= sprintf('<td>%d</td>', isset($value[$role]) ? $value[$role] : 0);
+      }
+      printf("<tr>%s</tr>\n", $tag);
+      if ($key == $max) break;
+      if ($key % 20 == 0) echo $str;
+    }
+    echo '</table>';
   }
-}
 
-//他のサーバの部屋画面ロード用データを出力
-function OutputSharedRoomList() {
-  if (SharedServerConfig::DISABLE) return false;
+  //お祭り村の配役リスト出力
+  static function OutputFestival() {
+    $stack  = CastConfig::$festival_role_list;
+    $format = '%' . strlen(max(array_keys($stack))) . 's人：';
+    $str    = '<pre>'."\n";
+    ksort($stack); //人数順に並び替え
+    foreach($stack as $count => $list){
+      $order_stack = array();
+      foreach(RoleData::SortRole(array_keys($list)) as $role){ //役職順に並び替え
+	$order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
+      }
+      $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
+    }
+    echo $str . '</pre>'."\n";
+  }
 
-  $str = HTML::LoadJavaScript('shared_room');
-  $count = 0;
-  foreach (SharedServerConfig::$server_list as $server => $array) {
-    $count++;
-    extract($array);
-    if ($disable) continue;
+  //オプションリスト表示 (闇鍋モード用)
+  static function OutputItem($option, $name, $version) {
+    $format = "<h3 id=\"%s_%s\">%s [%s～]</h3>\n";
+    printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name], $version);
+  }
 
-    $str .= <<<EOF
+  //個別オプション表示 (闇鍋モード用)
+  static function OutputItemList($option, $list) {
+    $format = "<a href=\"#%s_%s\">%s</a>\n";
+    foreach ($list as $name) {
+      printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);
+    }
+  }
+
+  //他のサーバの部屋画面ロード用データを出力
+  static function OutputSharedRoomList() {
+    if (SharedServerConfig::DISABLE) return false;
+
+    $str = HTML::LoadJavaScript('shared_room');
+    $count = 0;
+    foreach (SharedServerConfig::$server_list as $server => $array) {
+      $count++;
+      extract($array);
+      if ($disable) continue;
+
+      $str .= <<<EOF
 <div id="server{$count}"></div>
 <script language="javascript"><!--
 output_shared_room({$count}, "server{$count}");
 --></script>
 
 EOF;
+    }
+    echo $str;
   }
-  echo $str;
-}
 
-//他のサーバの部屋画面を出力
-function OutputSharedRoom($id) {
-  if (SharedServerConfig::DISABLE) return false;
+  //他のサーバの部屋画面を出力
+  static function OutputSharedRoom($id) {
+    if (SharedServerConfig::DISABLE) return false;
 
-  $count = 0;
-  foreach (SharedServerConfig::$server_list as $server => $array) {
-    if ($count++ == $id) break;
-  }
-  extract($array);
-  if ($disable) return false;
+    $count = 0;
+    foreach (SharedServerConfig::$server_list as $server => $array) {
+      if ($count++ == $id) break;
+    }
+    extract($array);
+    if ($disable) return false;
 
-  if (! ExternalLinkBuilder::CheckConnection($url)) { //サーバ通信状態チェック
-    $data = ExternalLinkBuilder::GenerateTimeOut($url);
+    if (! ExternalLinkBuilder::CheckConnection($url)) { //サーバ通信状態チェック
+      $data = ExternalLinkBuilder::GenerateTimeOut($url);
+      echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
+      return false;
+    }
+
+    //部屋情報を取得
+    if (($data = @file_get_contents($url.'room_manager.php')) == '') return false;
+    if ($encode != '' && $encode != ServerConfig::ENCODE) {
+      $data = mb_convert_encoding($data, ServerConfig::ENCODE, $encode);
+    }
+    if (ord($data{0}) == '0xef' && ord($data{1}) == '0xbb' && ord($data{2}) == '0xbf') { //BOM 消去
+      $data = substr($data, 3);
+    }
+    if ($separator != '') {
+      $split_list = mb_split($separator, $data);
+      $data = array_pop($split_list);
+    }
+    if ($footer != '') {
+      if (($position = mb_strrpos($data, $footer)) === false) return false;
+      $data = mb_substr($data, 0, $position + mb_strlen($footer));
+    }
+    if ($data == '') return false;
+
+    $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
+    $data = strtr($data, $replace_list);
     echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
-    return false;
   }
 
-  //部屋情報を取得
-  if (($data = @file_get_contents($url.'room_manager.php')) == '') return false;
-  if ($encode != '' && $encode != ServerConfig::ENCODE) {
-    $data = mb_convert_encoding($data, ServerConfig::ENCODE, $encode);
-  }
-  if (ord($data{0}) == '0xef' && ord($data{1}) == '0xbb' && ord($data{2}) == '0xbf') { //BOM 消去
-    $data = substr($data, 3);
-  }
-  if ($separator != '') {
-    $split_list = mb_split($separator, $data);
-    $data = array_pop($split_list);
-  }
-  if ($footer != '') {
-    if (($position = mb_strrpos($data, $footer)) === false) return false;
-    $data = mb_substr($data, 0, $position + mb_strlen($footer));
-  }
-  if ($data == '') return false;
+  //謝辞・素材情報出力
+  static function OutputCopyright(){
+    $stack = CopyrightConfig::$list;
+    foreach (CopyrightConfig::$add_list as $class => $list) {
+      $stack[$class] = array_key_exists($class, $stack) ?
+	array_merge($stack[$class], $list) : $list;
+    }
 
-  $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
-  $data = strtr($data, $replace_list);
-  echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
+    foreach ($stack as $class => $list) {
+      $str = '<h2>' . $class . "</h2>\n<ul>\n";
+      foreach ($list as $name => $url) {
+	$str .= '<li><a href="' . $url . '">' . $name . "</a></li>\n";
+      }
+      echo $str . "</ul>\n";
+    }
+
+    $str = <<<EOF
+<h2>パッケージ情報</h2>
+<ul>
+<li>PHP Ver. %s</li>
+<li>%s %s (Rev. %d)</li>
+<li>LastUpdate: %s</li>
+</ul>%s
+EOF;
+    printf($str, PHP_VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::REVISION,
+	   ScriptInfo::LAST_UPDATE, "\n");
+  }
 }

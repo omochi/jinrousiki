@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputRolePageHeader('人狼陣営');
+InfoHTML::OutputRoleHeader('人狼陣営');
 ?>
 <p>
 <a href="#partner">仲間表示</a>
@@ -1461,4 +1461,5 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 「人狼に襲撃される」ことが勝利条件の特殊役職は他国に実在します。
 それを元に狂人系の劣化種としてデザインしました。
 </pre>
-</body></html>
+</body>
+</html>

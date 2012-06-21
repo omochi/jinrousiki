@@ -2,38 +2,7 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('cast_config', 'role_data_class', 'room_option_class', 'info_functions');
-
-//-- 関数定義 --//
-//追加役職の人数と説明ページリンク出力
-function OutputAddRole($role, $add = false){
-  echo '村の人口が' . CastConfig::$$role . '人以上になったら' .
-    RoleData::GenerateRoleLink($role) . ($add ? 'を追加' : 'が登場') . 'します';
-}
-
-//お祭り村の配役リスト出力
-function OutputFestivalList(){
-  $stack  = CastConfig::$festival_role_list;
-  $format = '%' . strlen(max(array_keys($stack))) . 's人：';
-  $str    = '<pre>'."\n";
-  ksort($stack); //人数順に並び替え
-  foreach($stack as $count => $list){
-    $order_stack = array();
-    foreach(RoleData::SortRole(array_keys($list)) as $role){ //役職順に並び替え
-      $order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
-    }
-    $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
-  }
-  echo $str . '</pre>'."\n";
-}
-
-//村人置換系オプションのサーバ設定出力
-function OutputReplaceRole($option){
-  echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
-    RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
-}
-
-//-- 表示 --//
-OutputInfoPageHeader('ゲームオプション');
+InfoHTML::OutputHeader('ゲームオプション');
 ?>
 <p>
 <a href="#basic_option">基本</a>
@@ -46,7 +15,7 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2 id="basic_option">基本設定</h2>
 <p>
-<?php OutputCategoryLink(array('wish_role', 'real_time', 'wait_morning', 'open_vote',
+<?php InfoHTML::OutputCategory(array('wish_role', 'real_time', 'wait_morning', 'open_vote',
 'seal_message', 'open_day')); ?>
 </p>
 
@@ -101,7 +70,7 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2 id="dummy_boy_option">身代わり君設定</h2>
 <p>
-<?php OutputCategoryLink(array('dummy_boy', 'gm_login', 'gerd')); ?>
+<?php InfoHTML::OutputCategory(array('dummy_boy', 'gm_login', 'gerd')); ?>
 </p>
 
 <h3 id="dummy_boy"><?php OptionManager::OutputCaption('dummy_boy'); ?></h3>
@@ -130,7 +99,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h2 id="open_cast_option">霊界公開設定</h2>
 <p>
 <a href="#open_cast">常時霊界公開</a>
-<?php OutputCategoryLink(array('not_open_cast', 'auto_open_cast')); ?>
+<?php InfoHTML::OutputCategory(array('not_open_cast', 'auto_open_cast')); ?>
 </p>
 
 <h3 id="open_cast">常時霊界公開</h3>
@@ -168,70 +137,70 @@ OutputInfoPageHeader('ゲームオプション');
 (例：村人1の場合、<a href="#poison"><?php OptionManager::OutputCaption('poison'); ?></a>は適用されない)</li>
 </ul>
 <p>
-<?php OutputCategoryLink(array('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
+<?php InfoHTML::OutputCategory(array('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
 'possessed_wolf', 'sirius_wolf', 'fox')); ?>
 </p>
 <p>
-<?php OutputCategoryLink(array('child_fox', 'cupid', 'medium', 'mania', 'decide', 'authority')); ?>
+<?php InfoHTML::OutputCategory(array('child_fox', 'cupid', 'medium', 'mania', 'decide', 'authority')); ?>
 </p>
 
 <h3 id="poison"><?php OptionManager::OutputCaption('poison'); ?></h3>
 <ul>
-<li><?php OutputAddRole('poison'); ?></li>
+<li><?php Info::OutputAddRole('poison'); ?></li>
 <li><?php OptionManager::OutputExplain('poison'); ?></li>
 </ul>
 
 <h3 id="assassin"><?php OptionManager::OutputCaption('assassin'); ?> [Ver. 1.4.0 β4～]</h3>
 <ul>
-<li><?php OutputAddRole('assassin'); ?></li>
+<li><?php Info::OutputAddRole('assassin'); ?></li>
 <li><?php OptionManager::OutputExplain('assassin'); ?></li>
 </ul>
 
 <h3 id="wolf"><?php OptionManager::OutputCaption('wolf'); ?> [Ver. 1.5.0 β14～]</h3>
 <ul>
-<li><?php OutputAddRole('wolf', true); ?></li>
+<li><?php Info::OutputAddRole('wolf', true); ?></li>
 <li><?php OptionManager::OutputExplain('wolf'); ?></li>
 </ul>
 
 <h3 id="boss_wolf"><?php OptionManager::OutputCaption('boss_wolf'); ?> [Ver. 1.4.0 α3-7～]</h3>
 <ul>
-<li><?php OutputAddRole('boss_wolf'); ?></li>
+<li><?php Info::OutputAddRole('boss_wolf'); ?></li>
 <li><?php OptionManager::OutputExplain('boss_wolf'); ?></li>
 </ul>
 
 <h3 id="poison_wolf"><?php OptionManager::OutputCaption('poison_wolf'); ?> [Ver. 1.4.0 α14～]</h3>
 <ul>
-<li><?php OutputAddRole('poison_wolf'); ?></li>
+<li><?php Info::OutputAddRole('poison_wolf'); ?></li>
 <li><?php OptionManager::OutputExplain('poison_wolf'); ?></li>
 </ul>
 
 <h3 id="possessed_wolf"><?php OptionManager::OutputCaption('possessed_wolf'); ?> [Ver. 1.4.0 β4～]</h3>
 <ul>
-<li><?php OutputAddRole('possessed_wolf'); ?></li>
+<li><?php Info::OutputAddRole('possessed_wolf'); ?></li>
 <li><?php OptionManager::OutputExplain('possessed_wolf'); ?></li>
 </ul>
 
 <h3 id="sirius_wolf"><?php OptionManager::OutputCaption('sirius_wolf'); ?> [Ver. 1.4.0 β9～]</h3>
 <ul>
-<li><?php OutputAddRole('sirius_wolf'); ?></li>
+<li><?php Info::OutputAddRole('sirius_wolf'); ?></li>
 <li><?php OptionManager::OutputExplain('sirius_wolf'); ?></li>
 </ul>
 
 <h3 id="fox"><?php OptionManager::OutputCaption('fox'); ?> [Ver. 1.5.0 β12～]</h3>
 <ul>
-<li><?php OutputAddRole('fox', true); ?></li>
+<li><?php Info::OutputAddRole('fox', true); ?></li>
 <li><?php OptionManager::OutputExplain('fox'); ?></li>
 </ul>
 
 <h3 id="child_fox"><?php OptionManager::OutputCaption('child_fox'); ?> [Ver. 1.5.0 β12～]</h3>
 <ul>
-<li><?php OutputAddRole('child_fox'); ?></li>
+<li><?php Info::OutputAddRole('child_fox'); ?></li>
 <li><?php OptionManager::OutputExplain('child_fox'); ?></li>
 </ul>
 
 <h3 id="cupid"><?php OptionManager::OutputCaption('cupid'); ?> [Ver. 1.2.0～]</h3>
 <ul>
-<li><?php OutputAddRole('cupid'); ?></li>
+<li><?php Info::OutputAddRole('cupid'); ?></li>
 <li><?php OptionManager::OutputExplain('cupid'); ?></li>
 </ul>
 <h4>Ver. 1.4.0 β17～</h4>
@@ -241,26 +210,26 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h3 id="medium"><?php OptionManager::OutputCaption('medium'); ?> [Ver. 1.4.0 α14～]</h3>
 <ul>
-<li><?php OutputAddRole('medium'); ?></li>
+<li><?php Info::OutputAddRole('medium'); ?></li>
 <li><?php OptionManager::OutputExplain('medium'); ?></li>
 </ul>
 
 <h3 id="mania"><?php OptionManager::OutputCaption('mania'); ?> [Ver. 1.4.0 α14～]</h3>
 <ul>
-<li><?php OutputAddRole('mania') ?></li>
+<li><?php Info::OutputAddRole('mania') ?></li>
 <li><?php OptionManager::OutputExplain('mania'); ?></li>
 </ul>
 
 <h3 id="decide"><?php OptionManager::OutputCaption('decide'); ?></h3>
 <ul>
-<li><?php OutputAddRole('decide') ?></li>
+<li><?php Info::OutputAddRole('decide') ?></li>
 <li><?php OptionManager::OutputExplain('decide'); ?></li>
 <li>自分が決定者であることはわかりません</li>
 </ul>
 
 <h3 id="authority"><?php OptionManager::OutputCaption('authority'); ?></h3>
 <ul>
-<li><?php OutputAddRole('authority') ?></li>
+<li><?php Info::OutputAddRole('authority') ?></li>
 <li><?php OptionManager::OutputExplain('authority'); ?></li>
 <li>自分が権力者であることはわかります</li>
 </ul>
@@ -268,21 +237,21 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2 id="special_option">特殊村設定</h2>
 <p>
-<?php OutputCategoryLink(array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder',
+<?php InfoHTML::OutputCategory(array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder',
 'mind_open', 'critical', 'sudden_death', 'perverseness')); ?>
 </p>
 <p>
-<?php OutputCategoryLink(array('joker', 'death_note', 'weather', 'festival')); ?>
+<?php InfoHTML::OutputCategory(array('joker', 'death_note', 'weather', 'festival')); ?>
 </p>
 <p>
-<?php OutputCategoryLink(array('replace_human', 'full_mad', 'full_cupid', 'full_quiz',
+<?php InfoHTML::OutputCategory(array('replace_human', 'full_mad', 'full_cupid', 'full_quiz',
 'full_vampire', 'full_chiroptera', 'full_mania', 'full_unknown_mania')); ?>
 <p>
-<?php OutputCategoryLink(array('change_common', 'change_hermit_common', 'change_mad',
+<?php InfoHTML::OutputCategory(array('change_common', 'change_hermit_common', 'change_mad',
 'change_fanatic_mad','change_whisper_mad','change_immolate_mad')); ?>
 </p>
 <p>
-<?php OutputCategoryLink(array('change_cupid', 'change_mind_cupid','change_triangle_cupid',
+<?php InfoHTML::OutputCategory(array('change_cupid', 'change_mind_cupid','change_triangle_cupid',
 'change_angel')); ?>
 </p>
 
@@ -375,7 +344,7 @@ OutputInfoPageHeader('ゲームオプション');
 <li>編成の初期設定はバージョンアップ時に変更される事があります</li>
 <li><a href="#replace_human"><?php OptionManager::OutputCaption('replace_human'); ?></a>・<a href="#special_role_option">特殊配役設定</a>は無効になります</li>
 </ul>
-<?php OutputFestivalList(); ?>
+<?php InfoHTML::OutputFestival(); ?>
 <pre>
 出展：
  9人：狩人村 (特殊F) ＠桃栗鯖
@@ -394,7 +363,7 @@ OutputInfoPageHeader('ゲームオプション');
 <li><?php OptionManager::OutputExplain('replace_human'); ?></li>
 <li><a href="#full_mania"><?php OptionManager::OutputCaption('full_mania'); ?></a>を拡張して実装したオプションです</li>
 <li>表記が村人となる役職が存在する事に注意してください</li>
-<li>「<?php OptionManager::OutputCaption('replace_human'); ?>」<?php OutputReplaceRole('replace_human'); ?></li>
+<li>「<?php OptionManager::OutputCaption('replace_human'); ?>」<?php Info::OutputReplaceRole('replace_human'); ?></li>
 </ul>
 
 <h4 id="full_mad"><?php OptionManager::OutputCaption('full_mad'); ?> [Ver. 1.5.0 β10～]</h4>
@@ -437,7 +406,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="change_common"><?php OptionManager::OutputCaption('change_common'); ?> [Ver. 1.5.0 β10～]</h3>
 <ul>
 <li><?php OptionManager::OutputExplain('change_common'); ?></li>
-<li>「<?php OptionManager::OutputCaption('change_common'); ?>」<?php OutputReplaceRole('change_common'); ?></li>
+<li>「<?php OptionManager::OutputCaption('change_common'); ?>」<?php Info::OutputReplaceRole('change_common'); ?></li>
 </ul>
 
 <h4 id="change_hermit_common"><?php OptionManager::OutputCaption('change_hermit_common'); ?> [Ver. 1.5.0 β10～]</h4>
@@ -448,7 +417,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="change_mad"><?php OptionManager::OutputCaption('change_mad'); ?> [Ver. 1.5.0 β6～]</h3>
 <ul>
 <li><?php OptionManager::OutputExplain('change_mad'); ?></li>
-<li>「<?php OptionManager::OutputCaption('change_mad'); ?>」<?php OutputReplaceRole('change_mad'); ?></li>
+<li>「<?php OptionManager::OutputCaption('change_mad'); ?>」<?php Info::OutputReplaceRole('change_mad'); ?></li>
 <li><a href="#full_mad"><?php OptionManager::OutputCaption('full_mad'); ?></a>の処理が先に適用されます</li>
 </ul>
 
@@ -470,7 +439,7 @@ OutputInfoPageHeader('ゲームオプション');
 <h3 id="change_cupid"><?php OptionManager::OutputCaption('change_cupid'); ?> [Ver. 1.5.0 β17～]</h3>
 <ul>
 <li><?php OptionManager::OutputExplain('change_cupid'); ?></li>
-<li>「<?php OptionManager::OutputCaption('change_cupid'); ?>」<?php OutputReplaceRole('change_cupid'); ?></li>
+<li>「<?php OptionManager::OutputCaption('change_cupid'); ?>」<?php Info::OutputReplaceRole('change_cupid'); ?></li>
 <li><a href="#full_cupid"><?php OptionManager::OutputCaption('full_cupid'); ?></a>の処理が先に適用されます</li>
 </ul>
 
@@ -491,7 +460,7 @@ OutputInfoPageHeader('ゲームオプション');
 
 <h2 id="special_role_option">特殊配役設定</h2>
 <p>
-<?php OutputCategoryLink(array('special_role', 'chaos', 'duel', 'gray_random', 'quiz')); ?>
+<?php InfoHTML::OutputCategory(array('special_role', 'chaos', 'duel', 'gray_random', 'quiz')); ?>
 </p>
 
 <h3 id="special_role"><?php OptionManager::OutputCaption('special_role'); ?> [Ver. 1.4.0 β17～]</h3>
@@ -547,4 +516,5 @@ OutputInfoPageHeader('ゲームオプション');
     <li>以下、勝敗が決まるまで繰り返す</li>
   </ol>
 </ul>
-</body></html>
+</body>
+</html>

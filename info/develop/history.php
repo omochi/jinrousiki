@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('info_functions');
-OutputInfoPageHeader('開発履歴', 1, 'develop_history');
+InfoHTML::OutputHeader('開発履歴', 1, 'develop_history');
 ?>
 <p>
 Ver. 2.1.0
@@ -27,4 +27,5 @@ Ver. 2.1.0
 <ul>
 <li>Ver. 1.5.2 から「因幡兎」を移植</li>
 </ul>
-</body></html>
+</body>
+</html>
