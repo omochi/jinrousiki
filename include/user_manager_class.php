@@ -97,7 +97,7 @@ class UserManager {
 	HTML::OutputResult($title, sprintf($format, $handle_name, $back_url));
       }
 
-      $query = "%s user_no <> '%d' AND handle_name = '%s'";
+      $query = "%s user_no <> '%d' AND handle_name = '%s' AND live = 'live'";
       if (DB::Count(sprintf($query, $query_count, $user_no, $handle_name)) > 0) {
 	$str = '村人名が既に登録されています。';
 	HTML::OutputResult('村人登録 [重複登録エラー]', $str . $footer);

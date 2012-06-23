@@ -97,13 +97,13 @@ class DB {
     $stack       = array($trace_stack['line'], $error, $query);
     $trace_stack = array_shift($backtrace);
     array_unshift($stack, $trace_stack['function'] . '()');
-    Text::p(implode(': ', $stack), 'SQLエラー');
+    $str = 'SQLエラー: ' . implode(': ', $stack) . "<br>\n";
 
     foreach ($backtrace as $trace_stack) { //呼び出し元があるなら追加で出力
       $stack = array($trace_stack['function'] . '()', $trace_stack['line']);
-      Text::p(implode(': ', $stack), 'Caller');
+      $str .= 'Caller: ' . implode(': ', $stack) . "<br>\n";
     }
-    return false;
+    HTML::OutputResult(ServerConfig::TITLE . ' [エラー]', $str);
   }
 
   //コミット付き実行
@@ -118,8 +118,7 @@ class DB {
 
   //単体の値を取得
   static function FetchResult($query) {
-    if (($sql = self::Execute($query)) === false) return false;
-
+    $sql  = self::Execute($query);
     $data = mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false;
     mysql_free_result($sql);
 
@@ -128,8 +127,7 @@ class DB {
 
   //該当するデータの行数を取得
   static function Count($query) {
-    if (($sql = self::Execute($query)) === false) return 0;
-
+    $sql  = self::Execute($query);
     $data = mysql_num_rows($sql);
     mysql_free_result($sql);
 
@@ -138,9 +136,8 @@ class DB {
 
   //一次元の配列を取得
   static function FetchArray($query) {
+    $sql   = self::Execute($query);
     $stack = array();
-    if (($sql = self::Execute($query)) === false) return $stack;
-
     $count = mysql_num_rows($sql);
     for ($i = 0; $i < $count; $i++) $stack[] = mysql_result($sql, $i, 0);
     mysql_free_result($sql);
@@ -150,9 +147,8 @@ class DB {
 
   //連想配列を取得
   static function FetchAssoc($query, $shift = false) {
+    $sql   = self::Execute($query);
     $stack = array();
-    if (($sql = self::Execute($query)) === false) return $stack;
-
     while (($array = mysql_fetch_assoc($sql)) !== false) $stack[] = $array;
     mysql_free_result($sql);
 
@@ -161,9 +157,8 @@ class DB {
 
   //オブジェクト形式の配列を取得
   static function FetchObject($query, $class, $shift = false) {
+    $sql   = self::Execute($query);
     $stack = array();
-    if (($sql = self::Execute($query)) === false) return $stack;
-
     while (($object = mysql_fetch_object($sql, $class)) !== false) $stack[] = $object;
     mysql_free_result($sql);
 

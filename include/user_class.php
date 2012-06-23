@@ -1217,8 +1217,6 @@ EOF;
 
   //ユーザ情報を User クラスでパースして登録
   private function Parse(array $user_list) {
-    if (! is_array($user_list)) return false;
-
     //初期化処理
     $this->rows = array();
     $this->kick = array();
