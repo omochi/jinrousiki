@@ -2,8 +2,7 @@
 error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-Loader::LoadFile('room_config', 'image_class', 'icon_class', 'user_class','role_class',
-		 'game_vote_functions');
+Loader::LoadFile('image_class', 'test_class');
 
 //-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
@@ -11,9 +10,7 @@ RQ::$get->room_no = 94;
 RQ::$get->reverse_log = null;
 RQ::$get->TestItems = new StdClass();
 RQ::GetTest()->test_room = array(
-  'id' => RQ::$get->room_no,
-  'name' => '投票テスト村',
-  'comment' => '',
+  'id' => RQ::$get->room_no, 'name' => '投票テスト村', 'comment' => '',
   //'game_option' => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 joker',
   'game_option' => 'dummy_boy chaosfull chaos_open_cast no_sub_role real_time:6:4 joker weather',
   'date' => 9,
@@ -27,176 +24,86 @@ RQ::AddTestRoom('game_option', 'open_vote death_note');
 #RQ::AddTestRoom('game_option', 'seal_message');
 #RQ::AddTestRoom('game_option', 'quiz');
 RQ::GetTest()->is_virtual_room = true;
-RQ::GetTest()->test_users = array();
-for ($id = 1; $id <= 25; $id++) RQ::GetTest()->test_users[$id] = new User();
+Dev::InitializeUser(25);
 
-RQ::GetTest()->test_users[1]->uname = 'dummy_boy';
-RQ::GetTest()->test_users[1]->handle_name = '身代わり君';
-RQ::GetTest()->test_users[1]->sex = 'female';
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
-RQ::GetTest()->test_users[1]->icon_filename = '../img/dummy_boy_user_icon.jpg';
-RQ::GetTest()->test_users[1]->color = '#000000';
 
-RQ::GetTest()->test_users[2]->uname = 'light_gray';
-RQ::GetTest()->test_users[2]->handle_name = '明灰';
-RQ::GetTest()->test_users[2]->sex = 'male';
 RQ::GetTest()->test_users[2]->role = 'trap_wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
-RQ::GetTest()->test_users[3]->uname = 'dark_gray';
-RQ::GetTest()->test_users[3]->handle_name = '暗灰';
-RQ::GetTest()->test_users[3]->sex = 'male';
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
 RQ::GetTest()->test_users[3]->live = 'live';
 
-RQ::GetTest()->test_users[4]->uname = 'yellow';
-RQ::GetTest()->test_users[4]->handle_name = '黄色';
-RQ::GetTest()->test_users[4]->sex = 'female';
 RQ::GetTest()->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel';
 RQ::GetTest()->test_users[4]->live = 'live';
 
-RQ::GetTest()->test_users[5]->uname = 'orange';
-RQ::GetTest()->test_users[5]->handle_name = 'オレンジ';
-RQ::GetTest()->test_users[5]->sex = 'female';
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
 RQ::GetTest()->test_users[5]->live = 'live';
 
-RQ::GetTest()->test_users[6]->uname = 'red';
-RQ::GetTest()->test_users[6]->handle_name = '赤';
-RQ::GetTest()->test_users[6]->sex = 'female';
 RQ::GetTest()->test_users[6]->role = 'seal_medium possessed[4-15]';
 RQ::GetTest()->test_users[6]->live = 'dead';
 
-RQ::GetTest()->test_users[7]->uname = 'light_blue';
-RQ::GetTest()->test_users[7]->handle_name = '水色';
-RQ::GetTest()->test_users[7]->sex = 'male';
 RQ::GetTest()->test_users[7]->role = 'dummy_guard lovers[16]';
 RQ::GetTest()->test_users[7]->live = 'live';
 
-RQ::GetTest()->test_users[8]->uname = 'blue';
-RQ::GetTest()->test_users[8]->handle_name = '青';
-RQ::GetTest()->test_users[8]->sex = 'male';
 RQ::GetTest()->test_users[8]->role = 'blind_guard';
 RQ::GetTest()->test_users[8]->live = 'live';
 
-RQ::GetTest()->test_users[9]->uname = 'green';
-RQ::GetTest()->test_users[9]->handle_name = '緑';
-RQ::GetTest()->test_users[9]->sex = 'female';
 RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->uname = 'purple';
-RQ::GetTest()->test_users[10]->handle_name = '紫';
-RQ::GetTest()->test_users[10]->sex = 'female';
 RQ::GetTest()->test_users[10]->role = 'reverse_assassin death_note[5]';
 RQ::GetTest()->test_users[10]->live = 'live';
 
-RQ::GetTest()->test_users[11]->uname = 'cherry';
-RQ::GetTest()->test_users[11]->handle_name = 'さくら';
-RQ::GetTest()->test_users[11]->sex = 'female';
 RQ::GetTest()->test_users[11]->role = 'revive_priest downer_luck';
 RQ::GetTest()->test_users[11]->live = 'live';
 
-RQ::GetTest()->test_users[12]->uname = 'white';
-RQ::GetTest()->test_users[12]->handle_name = '白';
-RQ::GetTest()->test_users[12]->sex = 'male';
 RQ::GetTest()->test_users[12]->role = 'amaze_mad death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->uname = 'black';
-RQ::GetTest()->test_users[13]->handle_name = '黒';
-RQ::GetTest()->test_users[13]->sex = 'male';
 RQ::GetTest()->test_users[13]->role = 'whisper_mad mind_presage[23] changed_disguse';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->uname = 'gold';
-RQ::GetTest()->test_users[14]->handle_name = '金';
-RQ::GetTest()->test_users[14]->sex = 'female';
 RQ::GetTest()->test_users[14]->role = 'divorce_jealousy';
 RQ::GetTest()->test_users[14]->live = 'live';
 
-RQ::GetTest()->test_users[15]->uname = 'frame';
-RQ::GetTest()->test_users[15]->handle_name = '炎';
-RQ::GetTest()->test_users[15]->sex = 'female';
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
 RQ::GetTest()->test_users[15]->live = 'live';
 
-RQ::GetTest()->test_users[16]->uname = 'scarlet';
-RQ::GetTest()->test_users[16]->handle_name = '紅';
-RQ::GetTest()->test_users[16]->sex = 'female';
 RQ::GetTest()->test_users[16]->role = 'sweet_fairy lovers[16] challenge_lovers';
 RQ::GetTest()->test_users[16]->live = 'live';
 
-RQ::GetTest()->test_users[17]->uname = 'sky';
-RQ::GetTest()->test_users[17]->handle_name = '空';
-RQ::GetTest()->test_users[17]->sex = 'male';
 RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
 RQ::GetTest()->test_users[17]->live = 'dead';
 
-RQ::GetTest()->test_users[18]->uname = 'sea';
-RQ::GetTest()->test_users[18]->handle_name = '海';
-RQ::GetTest()->test_users[18]->sex = 'male';
 RQ::GetTest()->test_users[18]->role = 'detective_common no_last_words';
 RQ::GetTest()->test_users[18]->live = 'live';
 
-RQ::GetTest()->test_users[19]->uname = 'land';
-RQ::GetTest()->test_users[19]->handle_name = '陸';
-RQ::GetTest()->test_users[19]->sex = 'female';
 RQ::GetTest()->test_users[19]->role = 'enchant_mad psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
-RQ::GetTest()->test_users[20]->uname = 'rose';
-RQ::GetTest()->test_users[20]->handle_name = '薔薇';
-RQ::GetTest()->test_users[20]->sex = 'female';
 RQ::GetTest()->test_users[20]->role = 'vampire';
 RQ::GetTest()->test_users[20]->live = 'live';
 
-RQ::GetTest()->test_users[21]->uname = 'peach';
-RQ::GetTest()->test_users[21]->handle_name = '桃';
-RQ::GetTest()->test_users[21]->sex = 'female';
 RQ::GetTest()->test_users[21]->role = 'mania panelist';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->uname = 'gust';
-RQ::GetTest()->test_users[22]->handle_name = '霧';
-RQ::GetTest()->test_users[22]->sex = 'female';
 RQ::GetTest()->test_users[22]->role = 'echo_brownie reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->uname = 'cloud';
-RQ::GetTest()->test_users[23]->handle_name = '雲';
-RQ::GetTest()->test_users[23]->sex = 'male';
 RQ::GetTest()->test_users[23]->role = 'revive_pharmacist deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
-RQ::GetTest()->test_users[24]->uname = 'moon';
-RQ::GetTest()->test_users[24]->handle_name = '月';
-RQ::GetTest()->test_users[24]->sex = 'female';
 RQ::GetTest()->test_users[24]->role = 'barrier_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
-RQ::GetTest()->test_users[25]->uname = 'sun';
-RQ::GetTest()->test_users[25]->handle_name = '太陽';
-RQ::GetTest()->test_users[25]->sex = 'male';
 RQ::GetTest()->test_users[25]->role = 'poison_ogre[1] disfavor';
 RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
-//RQ::GetTest()->test_users = 30;
-$icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
-			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-foreach (RQ::GetTest()->test_users as $id => $user) {
-  $user->room_no = RQ::$get->room_no;
-  $user->user_no = $id;
-  $user->role_id = $id;
-  if (! isset($user->profile)) $user->profile = $id;
-  $user->last_load_scene = 'night';
-  if ($id > 1) {
-    $user->color = $icon_color_list[($id - 2) % 10];
-    $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
-  }
-}
+//RQ::GetTest()->test_users = 25;
+Dev::ComplementUser();
 
 //-- 仮想投票データをセット --//
 $set_date = 6;
@@ -347,6 +254,7 @@ if ($set_date == 1) { //初日用
 
 //-- 仮想システムメッセージをセット --//
 RQ::GetTest()->winner = 'wolf';
+RQ::GetTest()->event          = array();
 RQ::GetTest()->result_ability = array();
 RQ::GetTest()->result_dead    = array();
 RQ::GetTest()->system_message = array(
@@ -358,7 +266,6 @@ RQ::GetTest()->system_message = array(
   8 => array('WEATHER' => array(33)
 	     )
 );
-RQ::GetTest()->event = array();
 
 //-- 仮想発言をセット --//
 RQ::$get->say = '';

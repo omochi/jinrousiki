@@ -10,7 +10,7 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
 $DISABLE_TABLE_DATA_MANIPULATOR = true; //false にすると使用可能になる
-if($DISABLE_TABLE_DATA_MANIPULATOR){
+if ($DISABLE_TABLE_DATA_MANIPULATOR) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
@@ -65,29 +65,28 @@ HTML::OutputFooter();
   value: 入力内容
   from / to: 入力対象アイコン (from ～ to まで)
 */
-function UpdateIconInfo($type, $value, $from, $to = NULL){
+function UpdateIconInfo($type, $value, $from, $to = null) {
   $query = isset($to) ? "{$from} <= icon_no AND icon_no <= {$to}" : "icon_no = {$from}";
   DB::Execute("UPDATE user_icon SET {$type} = '{$value}' WHERE {$query}");
 }
 
 //ファイルの IO テスト
-function OpenFile($file){
-  $io = file_get_contents(JINRO_ROOT . '/' . $file);
-  Text::p($io);
+function OpenFile($file) {
+  Text::p(file_get_contents(JINRO_ROOT . '/' . $file));
 }
 
 //使用されているアイコンを削除する (from: 対象番号 / to: 代替番号)
-/* ロック処理を再設計しているので 2.0 では使用できない */
-function DeleteUsedIcon($from, $to){
-  if(DB::FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = {$to}") < 1){
+/* ロック処理を再設計しているので 2.0 以降では使用できない */
+function DeleteUsedIcon($from, $to) {
+  if (DB::FetchResult("SELECT COUNT(icon_no) FROM user_icon WHERE icon_no = {$to}") < 1) {
     Text::p($to, 'Invalid Icon No');
     return false;
   }
-  if(LockTable('icon_delete')){
+  if (LockTable('icon_delete')) {
     Text::p('Lock Failed', 'icon_delete');
     return false;
   }
-  if(DB::Execute("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")){
+  if (DB::Execute("UPDATE user_entry SET icon_no = {$to} WHERE icon_no = {$from}")) {
     $file = DB::FetchResult("SELECT icon_filename FROM user_icon WHERE icon_no = {$from}");
     unlink(JINRO_ROOT . '/user_icon/' . $file); //ファイルの存在をチェックしていないので要注意
     DB::Execute("DELETE FROM user_icon WHERE icon_no = {$from}");
@@ -97,7 +96,7 @@ function DeleteUsedIcon($from, $to){
 }
 
 //アイコンの欠番を埋める
-function SqueezeIcon(){
+function SqueezeIcon() {
   $query = 'SELECT icon_no, icon_filename FROM user_icon WHERE icon_no > 0 ORDER BY icon_no';
   $icon_list = DB::FetchAssoc($query);
 
@@ -105,9 +104,9 @@ function SqueezeIcon(){
   $query_icon = 'UPDATE user_icon SET icon_filename = ';
   $query_user = 'UPDATE user_entry SET icon_no = ';
   $icon_count = count($icon_list);
-  for($i = 1; $i <= $icon_count; $i++){
+  for ($i = 1; $i <= $icon_count; $i++) {
     $icon = array_shift($icon_list);
-    if($i == $icon['icon_no']) continue;
+    if ($i == $icon['icon_no']) continue;
     $ext = array_pop(explode('.', $icon['icon_filename']));
     $file_name = sprintf("%03s.%s", $i, $ext);
     $footer = ' WHERE icon_no = ' . $icon['icon_no'];
@@ -120,19 +119,19 @@ function SqueezeIcon(){
   DB::Optimize('user_icon');
 }
 
-//村立て時刻再生成関数 (for 1.4, 1.5)
-function ReconstructEstablishTime($test = false){
+//村立て時刻再生成関数 (for 1.4 / 1.5)
+function ReconstructEstablishTime($test = false) {
   $room_list = DB::FetchArray("SELECT room_no FROM room WHERE establish_time IS NULL ORDER BY room_no");
   //Text::p($room_list);
   $keyword = '村作成：';
-  foreach($room_list as $room_no){
-    #if($room_no == 434) return;
+  foreach ($room_list as $room_no) {
+    #if ($room_no == 434) return;
     $query = "SELECT sentence, talk_id FROM talk WHERE room_no = {$room_no} AND " .
       "sentence LIKE '%{$keyword}%'";
     $talk = DB::FetchAssoc($query, true);
-    if(count($talk) > 0){
+    if (count($talk) > 0) {
       $str = array_pop(explode($keyword, $talk['sentence']));
-      if($test){
+      if ($test) {
 	$time = DB::FetchResult("SELECT STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s')");
 	Text::p($time, $room_no . ': ' . $str);
       }
@@ -147,7 +146,7 @@ function ReconstructEstablishTime($test = false){
       continue;
       $query = "SELECT time FROM talk WHERE room_no = {$room_no} ORDER BY talk_id";
       $talk = DB::FetchResult($query);
-      if($test){
+      if ($test) {
 	$time = gmdate('Y/m/d (D) H:i:s', $talk);
 	$date = DB::FetchResult('SELECT establish_time FROM room WHERE room_no = ' . $room_no);
 	//$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
@@ -164,19 +163,19 @@ function ReconstructEstablishTime($test = false){
   }
 }
 
-//ゲーム開始時刻再生成関数 (for 1.4, 1.5)
-function ReconstructStartTime($test = false){
+//ゲーム開始時刻再生成関数 (for 1.4 / 1.5)
+function ReconstructStartTime($test = false) {
   $room_list = DB::FetchArray("SELECT room_no FROM room WHERE start_time IS NULL ORDER BY room_no");
   $keyword = 'ゲーム開始：';
   //Text::p($room_list);
-  foreach($room_list as $room_no){
-    #if($room_no == 434) return;
+  foreach ($room_list as $room_no) {
+    #if ($room_no == 434) return;
     $query = "SELECT sentence, talk_id FROM talk WHERE room_no = {$room_no} " .
       "AND sentence LIKE '%{$keyword}%'";
     $talk = DB::FetchAssoc($query, true);
-    if(count($talk) > 0){
+    if (count($talk) > 0) {
       $str = array_pop(explode($keyword, $talk['sentence']));
-      if($test){
+      if ($test) {
 	$time = DB::FetchResult("SELECT STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s')");
 	Text::p($time, $room_no . ': ' . $str);
       }
@@ -191,7 +190,7 @@ function ReconstructStartTime($test = false){
       continue;
       $query = "SELECT time FROM talk WHERE room_no = {$room_no} AND date = 1 ORDER BY talk_id";
       $talk = DB::FetchResult($query);
-      if($test){
+      if ($test) {
 	$time = gmdate('Y/m/d (D) H:i:s', $talk);
 	$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
 	Text::p($date, $room_no . ': ' . $time);
@@ -205,19 +204,19 @@ function ReconstructStartTime($test = false){
   }
 }
 
-//ゲーム終了時刻再生成関数 (for 1.4, 1.5)
-function ReconstructFinishTime($test = false){
+//ゲーム終了時刻再生成関数 (for 1.4 / 1.5)
+function ReconstructFinishTime($test = false) {
   $room_list = DB::FetchArray("SELECT room_no FROM room WHERE finish_time IS NULL ORDER BY room_no");
   //Text::p($room_list);
   $keyword = 'ゲーム終了：';
-  foreach($room_list as $room_no){
-    #if($room_no == 434) return;
+  foreach ($room_list as $room_no) {
+    #if ($room_no == 434) return;
     $query = "SELECT sentence, talk_id FROM talk WHERE room_no = {$room_no} " .
       "AND sentence LIKE '%{$keyword}%'";
     $talk = DB::FetchAssoc($query, true);
-    if(count($talk) > 0){
+    if (count($talk) > 0) {
       $str = array_pop(explode($keyword, $talk['sentence']));
-      if($test){
+      if ($test) {
 	$time = DB::FetchResult("SELECT STR_TO_DATE('{$str}', '%Y/%m/%d (%a) %H:%i:%s')");
 	Text::p($time, $room_no . ': ' . $str);
       }
@@ -233,7 +232,7 @@ function ReconstructFinishTime($test = false){
       $query = "SELECT time FROM talk WHERE room_no = {$room_no} " .
 	"AND ! (location LIKE '%aftergame%') ORDER BY talk_id DESC";
       $talk = DB::FetchResult($query);
-      if($test){
+      if ($test) {
 	$time = gmdate('Y/m/d (D) H:i:s', $talk);
 	$date = DB::FetchResult("SELECT FROM_UNIXTIME('{$talk}' - 32400)");
 	Text::p($date, $room_no . ': ' . $time);
@@ -253,15 +252,15 @@ function ReconstructFinishTime($test = false){
   value : 入力内容
   id    : 村番号
 */
-function UpdateRoomInfo($item, $value, $id){
+function UpdateRoomInfo($item, $value, $id) {
   DB::Execute("UPDATE room SET {$item} = '{$value}' WHERE room_no = {$id}");
 }
 
-//テーブルデータの文字コード変換 (for 1.4, 1.5)
+//テーブルデータの文字コード変換 (for 1.4 / 1.5)
 /* table : TABLE  */
-function ConvertTableEncode($table){
+function ConvertTableEncode($table) {
   $max = 0;
-  switch($table){
+  switch($table) {
   case 'admin_manage':
     $recode_list = array();
     break;
@@ -304,21 +303,21 @@ function ConvertTableEncode($table){
   }
   $new_table = $table . '_utf';
   DB::Execute("CREATE TABLE {$new_table} AS SELECT * FROM {$table}");
-  if(is_array($alter)) foreach($alter as $add_query) DB::Execute($alter);
-  elseif(isset($alter)) DB::Execute($alter);
+  if (is_array($alter)) foreach ($alter as $add_query) DB::Execute($alter);
+  elseif (isset($alter)) DB::Execute($alter);
   $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
-  if($table == 'talk'){
+  if ($table == 'talk') {
     ConvertTalkTableEncode($new_table, $recode_list, 0);
   }
-  elseif(is_array($room_list)){
+  elseif (is_array($room_list)) {
     ConvertCurrentTableEncode($new_table, $recode_list, 0);
   }
   else{
-    foreach(DB::FetchAssoc($query) as $stack){
-      foreach($recode_list as $recode){
+    foreach (DB::FetchAssoc($query) as $stack) {
+      foreach ($recode_list as $recode) {
 	$from = $stack[$recode];
 	$encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-	if($encode != '' && $encode != 'UTF-8'){
+	if ($encode != '' && $encode != 'UTF-8') {
 	  $to = mb_convert_encoding($from, 'UTF-8', $encode);
 	  DB::Execute("UPDATE {$new_table} SET {$recode} = '{$to}' WHERE {$recode} = '{$from}'");
 	}
@@ -328,8 +327,8 @@ function ConvertTableEncode($table){
   Text::p($new_table, 'Code Convert');
 }
 
-function ConvertCurrentTableEncode($table, $start){
-  switch($table){
+function ConvertCurrentTableEncode($table, $start) {
+  switch($table) {
   case 'admin_manage':
     $recode_list = array();
     break;
@@ -360,12 +359,12 @@ function ConvertCurrentTableEncode($table, $start){
 
   $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
   $room_list = DB::FetchArray("SELECT room_no FROM {$table} WHERE room_no > {$start} GROUP BY room_no");
-  foreach($room_list as $room_no){
-    foreach(DB::FetchAssoc($query . " WHERE room_no = {$room_no}") as $stack){
-      foreach($recode_list as $recode){
+  foreach ($room_list as $room_no) {
+    foreach (DB::FetchAssoc($query . " WHERE room_no = {$room_no}") as $stack) {
+      foreach ($recode_list as $recode) {
 	$from = $stack[$recode];
 	$encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-	if($encode != '' && $encode != 'UTF-8'){
+	if ($encode != '' && $encode != 'UTF-8') {
 	  $to = mb_convert_encoding($from, 'UTF-8', $encode);
 	  DB::Execute("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
 			"AND {$recode} = '{$from}'");
@@ -375,17 +374,17 @@ function ConvertCurrentTableEncode($table, $start){
   }
 }
 
-function ConvertTalkTableEncode($table, $recode_list, $start){
+function ConvertTalkTableEncode($table, $recode_list, $start) {
   $query = 'SELECT ' . implode(', ', $recode_list) . ' FROM ' . $table;
   $room_list = DB::FetchArray("SELECT room_no FROM {$table} WHERE room_no > {$start} GROUP BY room_no");
-  foreach($room_list as $room_no){
+  foreach ($room_list as $room_no) {
     $talk_list = DB::FetchArray("SELECT talk_id FROM {$table} WHERE room_no = $room_no");
-    foreach($talk_list as $talk_id){
-      foreach(DB::FetchAssoc($query . " WHERE room_no = {$room_no} AND talk_id = {$talk_id}") as $stack){
-	foreach($recode_list as $recode){
+    foreach ($talk_list as $talk_id) {
+      foreach (DB::FetchAssoc($query . " WHERE room_no = {$room_no} AND talk_id = {$talk_id}") as $stack) {
+	foreach ($recode_list as $recode) {
 	  $from = $stack[$recode];
 	  $encode = mb_detect_encoding($from, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-	  if($encode != '' && $encode != 'UTF-8'){
+	  if ($encode != '' && $encode != 'UTF-8') {
 	    $to = mb_convert_encoding($from, 'UTF-8', $encode);
 	    DB::Execute("UPDATE {$table} SET {$recode} = '{$to}' WHERE room_no = {$room_no} " .
 			  "AND talk_id = {$talk_id} AND {$recode} = '{$from}'");
@@ -396,14 +395,14 @@ function ConvertTalkTableEncode($table, $recode_list, $start){
   }
 }
 
-function OutputExportIconTable(){
+function OutputExportIconTable() {
   $query = 'SELECT * FROM user_icon ORDER BY icon_no';
   $str = 'INSERT INTO `user_icon` (`icon_no`, `icon_name`, `icon_filename`, `icon_width`, ' .
     '`icon_height`, `color`, `session_id`, `appearance`, `category`, `author`, `regist_date`, ' .
     '`disable`) VALUES'."\n".'<br>';
-  foreach(DB::FetchAssoc($query) as $stack){
+  foreach (DB::FetchAssoc($query) as $stack) {
     extract($stack);
-    if($icon_no <= 10) continue;
+    if ($icon_no <= 10) continue;
     $date = is_null($regist_date) ? 'NULL' : "'$regist_date'";
     $bool = is_null($disable) ? 'NULL' : "'$disable'";
     $str .= "({$icon_no}, '{$icon_name}', '{$icon_filename}', {$icon_width}, " .

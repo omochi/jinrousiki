@@ -6,7 +6,7 @@ $disable = false; true; //使用時には false に変更する
 if ($disable) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
-Loader::LoadFile('room_config', 'cast_config', 'icon_class', 'user_class', 'game_vote_functions');
+Loader::LoadFile('cast_config', 'test_class');
 
 //-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
@@ -14,85 +14,33 @@ RQ::$get->room_no = 1;
 RQ::$get->reverse_log = null;
 RQ::$get->TestItems = new StdClass();
 RQ::GetTest()->test_room = array(
-  'id' => RQ::$get->room_no,
-  'name' => '配役テスト村',
-  'comment' => '',
-  'game_option'  => 'dummy_boy real_time:6:4',
+  'id' => RQ::$get->room_no, 'name' => '表示テスト村', 'comment' => '',
+  'date' => 0, 'scene' => 'day', 'status' => 'waiting',
+  'game_option' => 'dummy_boy real_time:6:4',
   'option_role' => '',
-  'date' => 0,
-  'scene' => 'day',
-  'status' => 'waiting'
 );
 RQ::GetTest()->is_virtual_room = true;
 RQ::$get->vote_times = 1;
-RQ::GetTest()->test_users = array();
-for($id = 1; $id <= 11; $id++) RQ::GetTest()->test_users[$id] = new User();
 
-RQ::GetTest()->test_users[1]->uname = 'dummy_boy';
-RQ::GetTest()->test_users[1]->handle_name = '身代わり君';
-RQ::GetTest()->test_users[1]->role = 'mage';
-RQ::GetTest()->test_users[1]->icon_filename = '../img/dummy_boy_user_icon.jpg';
-RQ::GetTest()->test_users[1]->color = '#000000';
+Dev::InitializeUser(11,
+  array( 1 => 'mage',
+	 2 => 'human',
+	 3 => 'human',
+	 4 => 'human',
+	 5 => 'human',
+	 6 => 'human',
+	 7 => 'necromancer',
+	 8 => 'guard',
+	 9 => 'wolf',
+	10 => 'wolf',
+	11 => 'mad'));
+Dev::ComplementUser();
+//Text::p(RQ::GetTest()->test_users[10]);
 
-RQ::GetTest()->test_users[2]->uname = 'light_gray';
-RQ::GetTest()->test_users[2]->handle_name = '明灰';
-RQ::GetTest()->test_users[2]->role = 'human';
-
-RQ::GetTest()->test_users[3]->uname = 'dark_gray';
-RQ::GetTest()->test_users[3]->handle_name = '暗灰';
-RQ::GetTest()->test_users[3]->role = 'human';
-
-RQ::GetTest()->test_users[4]->uname = 'yellow';
-RQ::GetTest()->test_users[4]->handle_name = '黄色';
-RQ::GetTest()->test_users[4]->role = 'human';
-
-RQ::GetTest()->test_users[5]->uname = 'orange';
-RQ::GetTest()->test_users[5]->handle_name = 'オレンジ';
-RQ::GetTest()->test_users[5]->role = 'human';
-
-RQ::GetTest()->test_users[6]->uname = 'red';
-RQ::GetTest()->test_users[6]->handle_name = '赤';
-RQ::GetTest()->test_users[6]->role = 'human';
-
-RQ::GetTest()->test_users[7]->uname = 'light_blue';
-RQ::GetTest()->test_users[7]->handle_name = '水色';
-RQ::GetTest()->test_users[7]->role = 'necromancer';
-
-RQ::GetTest()->test_users[8]->uname = 'blue';
-RQ::GetTest()->test_users[8]->handle_name = '青';
-RQ::GetTest()->test_users[8]->role = 'guard';
-
-RQ::GetTest()->test_users[9]->uname = 'green';
-RQ::GetTest()->test_users[9]->handle_name = '緑';
-RQ::GetTest()->test_users[9]->role = 'wolf';
-
-RQ::GetTest()->test_users[10]->uname = 'purple';
-RQ::GetTest()->test_users[10]->handle_name = '紫';
-RQ::GetTest()->test_users[10]->role = 'wolf';
-
-RQ::GetTest()->test_users[11]->uname = 'cherry';
-RQ::GetTest()->test_users[11]->handle_name = 'さくら';
-RQ::GetTest()->test_users[11]->role = 'mad';
-
-$icon_color_list = array('#DDDDDD', '#999999', '#FFD700', '#FF9900', '#FF0000',
-			 '#99CCFF', '#0066FF', '#00EE00', '#CC00CC', '#FF9999');
-foreach (RQ::GetTest()->test_users as $id => $user) {
-  $user->room_no = RQ::$get->room_no;
-  $user->user_no = $id;
-  $user->sex = $id % 1 == 0 ? 'female' : 'male';
-  $user->profile = '';
-  $user->live = 'live';
-  $user->last_load_scene = 'beforegame';
-  if ($id > 1) {
-    $user->color = $icon_color_list[($id - 2) % 10];
-    $user->icon_filename = sprintf('%03d.gif', ($id - 2) % 10 + 1);
-  }
-}
-//Text::p(RQ::GetTest()->test_users[22]);
-RQ::GetTest()->system_message = array();
+RQ::GetTest()->event          = array();
 RQ::GetTest()->result_ability = array();
 RQ::GetTest()->result_dead    = array();
-RQ::GetTest()->event = array();
+RQ::GetTest()->system_message = array();
 
 //-- 設定調整 --//
 #CastConfig::$decide = 11;
@@ -123,8 +71,8 @@ DB::$USER->rows[3]->live = 'dead';
 DB::$USER->rows[7]->live = 'dead';
 DB::$USER->rows[8]->live = 'dead';
 
-if(false){
-  switch(intval($_GET['dummy_boy'])){
+if (false) {
+  switch (intval($_GET['dummy_boy'])) {
   case '1':
     IconConfig::$dead = JINRO_ROOT . '/dev/skin/icon/normal/dummy_boy/dummy_boy_01.jpg';
     break;
@@ -140,12 +88,12 @@ if(false){
 
   $dead_list = array();
   $dead = intval($_GET['dead']);
-  if(array_key_exists($dead - 1, $dead_list)){
+  if (array_key_exists($dead - 1, $dead_list)) {
     IconConfig::$dead = JINRO_ROOT . '/dev/skin/normal/dead/' . $dead_list[$dead];
   }
 
   $wolf = intval($_GET['wolf']) - 1;
-  switch($wolf){
+  switch ($wolf) {
   case '0':
     IconConfig::$dead = IconConfig::$wolf;
     break;
@@ -160,19 +108,19 @@ if(false){
 
   $t_dummy_list = array();
   $t_dummy = is_null($_GET['t_dummy_boy']) ? -1 : intval($_GET['t_dummy_boy']);
-  if(array_key_exists($t_dummy, $t_dummy_list)){
+  if (array_key_exists($t_dummy, $t_dummy_list)) {
     IconConfig::$dead = JINRO_ROOT . '/dev/skin/icon/touhou/dummy_boy/' . $t_dummy_list[$t_dummy];
   }
 
   $t_wolf_list = array();
   $t_wolf = is_null($_GET['t_wolf']) ? -1 : intval($_GET['t_wolf']);
-  if(array_key_exists($t_wolf, $t_wolf_list)){
+  if (array_key_exists($t_wolf, $t_wolf_list)) {
     IconConfig::$dead = JINRO_ROOT . '/dev/skin/icon/touhou/wolf/' . $t_wolf_list[$t_wolf];
   }
 
   $t_dead_list = array();
   $t_dead = is_null($_GET['t_dead']) ? -1 : intval($_GET['t_dead']);
-  if(array_key_exists($t_dead, $t_dead_list)){
+  if (array_key_exists($t_dead, $t_dead_list)) {
     IconConfig::$dead = JINRO_ROOT . '/dev/skin/icon/touhou/dead/' . $t_dead_list[$t_dead];
   }
 }
@@ -201,7 +149,7 @@ echo <<<EOF
 死亡：
 EOF;
 
-foreach(array_keys($dead_list) as $id){
+foreach (array_keys($dead_list) as $id) {
   echo '<a href="view_test.php?dead=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -209,7 +157,7 @@ echo <<<EOF
 <br>
 身代わり君(東方)：
 EOF;
-foreach(array_keys($t_dummy_list) as $id){
+foreach (array_keys($t_dummy_list) as $id) {
   echo '<a href="view_test.php?t_dummy_boy=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -217,7 +165,7 @@ echo <<<EOF
 <br>
 人狼(東方)：
 EOF;
-foreach(array_keys($t_wolf_list) as $id){
+foreach (array_keys($t_wolf_list) as $id) {
   echo '<a href="view_test.php?t_wolf=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -225,7 +173,7 @@ echo <<<EOF
 <br>
 死亡(東方)：
 EOF;
-foreach(array_keys($t_dead_list) as $id){
+foreach (array_keys($t_dead_list) as $id) {
   echo '<a href="view_test.php?t_dead=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -245,7 +193,7 @@ echo <<<EOF
 <a href="view_test.php?scene=night&wolf=5">5</a><br>
 死亡：
 EOF;
-foreach(array_keys($dead_list) as $id){
+foreach (array_keys($dead_list) as $id) {
   echo '<a href="view_test.php?scene=night&dead=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -253,7 +201,7 @@ echo <<<EOF
 <br>
 身代わり君(東方)：
 EOF;
-foreach(array_keys($t_dummy_list) as $id){
+foreach (array_keys($t_dummy_list) as $id) {
   echo '<a href="view_test.php?scene=night&t_dummy_boy=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -261,7 +209,7 @@ echo <<<EOF
 <br>
 人狼(東方)：
 EOF;
-foreach(array_keys($t_wolf_list) as $id){
+foreach (array_keys($t_wolf_list) as $id) {
   echo '<a href="view_test.php?scene=night&t_wolf=' . $id . '">' . $id . '</a> /'."\n";
 }
 
@@ -269,7 +217,7 @@ echo <<<EOF
 <br>
 死亡(東方)：
 EOF;
-foreach(array_keys($t_dead_list) as $id){
+foreach (array_keys($t_dead_list) as $id) {
   echo '<a href="view_test.php?scene=night&t_dead=' . $id . '">' . $id . '</a> /'."\n";
 }
 

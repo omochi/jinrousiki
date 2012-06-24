@@ -47,6 +47,8 @@ class Loader {
     'sound_class'            => 'sound_config',
     'cookie_class'           => 'sound_class',
     'twitter_class'          => array('twitter_config', 'twitter'),
+    'test_class'             => array('room_config', 'icon_class', 'user_class', 'role_class',
+				      'game_vote_functions'),
     'room_manager_class'     => array('image_class', 'room_option_class'),
     'login_class'            => 'session_class',
     'game_view_class'        => array('icon_class', 'talk_class'),
@@ -67,7 +69,7 @@ class Loader {
     'oldlog_functions'       => array('oldlog_config', 'cast_config', 'image_class',
 				      'room_option_class'),
     'setup_class'            => array('setup_config', 'version', 'database_class'),
-    'test/objection'         => array('game_config', 'sound_class')
+    'test/objection'         => array('game_config', 'sound_class', 'test_class')
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)
@@ -169,6 +171,7 @@ class Loader {
     case 'feedengine':
     case 'paparazzi':
     case 'paparazzi_class':
+    case 'test_class':
       $path = JINRO_INC . '/' . @array_shift(explode('_', $name));
       break;
 

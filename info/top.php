@@ -7,22 +7,22 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0 α2アップロード (2012/04/30 (Mon) 1:16) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/55729/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0 α3アップロード (2012/06/24 (Sun) 06:21) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56282/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「傾奇者」実装</li>
-  <li>「長老」「老兵」仕様変更</li>
-  <li>システムクラスを再設計</li>
+  <li>「朔狼」実装</li>
+  <li>サブ役職「告白」実装</li>
+  <li>「縁切地蔵」「蛇姫」仕様変更</li>
+  <li>初期化処理を再設計</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>朔狼：処刑投票先が人狼系だった場合は囁き狂人に変化する人狼</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>「縁切地蔵」「蛇姫」仕様変更</li>
-  <li>告白：昼の間だけ、低確率で発言が自分の恋人の名前に入れ替わってしまう</li>
+  <li>なし</li>
 </ul>
