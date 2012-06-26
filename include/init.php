@@ -59,7 +59,7 @@ class Loader {
     'game_log_class'         => array('session_class', 'talk_class'),
     'user_manager_class'     => array('room_config', 'game_config', 'message', 'session_class',
 				      'room_class', 'user_class', 'icon_functions'),
-    'icon_view_class'        => 'icon_functions',
+    'icon_view_class'        => array('session_class', 'icon_functions'),
     'icon_edit_class'        => 'icon_functions',
     'icon_upload_class'      => array('session_class', 'icon_functions'),
     'paparazzi_class'        => 'paparazzi',

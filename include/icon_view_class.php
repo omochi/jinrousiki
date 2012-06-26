@@ -15,6 +15,7 @@ class IconView {
 </div>
 
 EOF;
+    Session::Start();
     IconHTML::Output();
     HTML::OutputFooter();
   }

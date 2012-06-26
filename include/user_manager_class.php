@@ -88,7 +88,7 @@ class UserManager {
 	'color, icon_name FROM user_entry AS u INNER JOIN user_icon USING (icon_no) ' .
 	'WHERE room_no = %d AND user_no = %d';
       $target = DB::FetchObject(sprintf($query, $room_no, $user_no), 'User', true);
-      if ($target->session_id != Session::Get()) {
+      if ($target->session_id != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
       }
 
@@ -171,7 +171,7 @@ EOF;
     //DB にユーザデータを登録
     $user_no = count(DB::$USER->name) + 1; //KICK された住人も含めた新しい番号を振る
     if (DB::InsertUser($room_no, $uname, $handle_name, $password, $user_no, $icon_no, $profile,
-		       $sex, $role, Session::Get(true))) {
+		       $sex, $role, Session::GetID(true))) {
       //クッキーの初期化
       DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
       $cookie_time = DB::$ROOM->system_time - 3600;
@@ -200,7 +200,7 @@ EOF;
     if ($user_no > 0) { //登録情報変更モード
       $query = 'SELECT * FROM user_entry WHERE room_no = %d AND user_no = %d';
       $stack = DB::FetchAssoc(sprintf($query, $room_no, $user_no), true);
-      if ($stack['session_id'] != Session::Get()) {
+      if ($stack['session_id'] != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
       }
       foreach ($stack as $key => $value) {

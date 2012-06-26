@@ -42,7 +42,7 @@ class Login {
     if (DB::Count($query) != 1) return false;
 
     //DB のセッション ID を再登録
-    $query = sprintf("UPDATE user_entry SET session_id = '%s' %s", Session::Get(true), $where);
+    $query = sprintf("UPDATE user_entry SET session_id = '%s' %s", Session::GetID(true), $where);
     return DB::FetchBool($query);
   }
 

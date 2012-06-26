@@ -38,7 +38,7 @@ class IconUpload {
       if (count($stack) < 1) HTML::OutputResult($title, $str . $back_url);
       extract($stack);
 
-      if ($session_id != Session::Get()) { //セッション ID 確認
+      if ($session_id != Session::GetID()) { //セッション ID 確認
 	$str = '削除失敗：アップロードセッションが一致しません';
 	HTML::OutputResult('アイコン削除失敗', $str . $back_url);
       }

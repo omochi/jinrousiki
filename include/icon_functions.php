@@ -44,9 +44,9 @@ class IconDB {
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
   static function GetSelectionByType($type) {
     //選択状態の抽出
-    $data   = RQ::$get->search ? RQ::$get->$type : $_SESSION['icon_view'][$type];
+    $data   = RQ::$get->search ? RQ::$get->$type : Session::Get('icon_view', $type);
     $target = empty($data) ? array() : (is_array($data) ? $data : array($data));
-    $_SESSION['icon_view'][$type] = $target;
+    Session::Set('icon_view', $type, $target);
     if ($type == 'keyword') return $target;
 
     $format = 'SELECT DISTINCT %s FROM user_icon WHERE %s IS NOT NULL';
@@ -81,7 +81,7 @@ class IconHTML {
       現時点では GET で直接検索を試みたユーザーのセッション情報まで配慮していないが、
       いずれ必要になるかも知れない (enogu)
     */
-    if (is_null(RQ::$get->page)) unset($_SESSION['icon_view']);
+    if (is_null(RQ::$get->page)) Session::Clear('icon_view');
 
     //編集フォームの表示
     if ($base_url == 'icon_view') {
@@ -300,11 +300,11 @@ HTML;
 EOF;
     printf($format, $type, $caption, $type, "\n");
 
-    $list   = IconDB::GetSelectionByType($type);
+    $list = IconDB::GetSelectionByType($type);
     array_unshift($list, '__null__');
 
-    $target = $_SESSION['icon_view'][$type];
     $format = '<option value="%s"%s>%s</option>';
+    $target = Session::Get('icon_view', $type);
     foreach ($list as $name) {
       printf($format,
 	     $name, in_array($name, $target) ? ' selected' : '',

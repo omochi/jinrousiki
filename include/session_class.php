@@ -4,26 +4,44 @@ class Session {
   private static $id      = null;
   private static $user_no = null;
 
-  //セッションスタート
+  //初期化
   private function __construct() {
     session_start();
-    return self::Set();
+    return self::SetID();
   }
 
-  //ID 取得
-  static function Get($uniq = false) {
+  //セッションスタート
+  static function Start() {
     if (is_null(self::$id)) new self();
+  }
+
+  //データ取得
+  static function Get($type, $key) { return $_SESSION[$type][$key]; }
+
+  //ID 取得
+  static function GetID($uniq = false) {
+    self::Start();
     return $uniq ? self::GetUniq() : self::$id;
   }
 
   //認証したユーザの ID 取得
   static function GetUser() { return self::$user_no; }
 
+  //データセット
+  static function Set($type, $key, $value) {
+    $_SESSION[$type][$key] = $value;
+  }
+
+  //データ削除
+  static function Clear($type) {
+    unset($_SESSION[$type]);
+  }
+
   //ID リセット
   static function Reset() {
-    if (is_null(self::$id)) new self();
+    self::Start();
     session_regenerate_id();
-    return self::Set();
+    return self::SetID();
   }
 
   //認証
@@ -32,13 +50,13 @@ class Session {
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = %d AND session_id = '%s'" .
       " AND live <> 'kick'";
-    $stack = DB::FetchArray(sprintf($query, RQ::$get->room_no, self::Get()));
+    $stack = DB::FetchArray(sprintf($query, RQ::$get->room_no, self::GetID()));
     if (count($stack) == 1) {
       self::$user_no = array_shift($stack);
       return true;
     }
 
-    if ($exit) self::OutputCertifyError(); //エラー処理
+    if ($exit) self::Output(); //エラー処理
     return false;
   }
 
@@ -56,12 +74,12 @@ class Session {
       HTML::OutputResult($title, sprintf($body, $url, HTML::GenerateSetLocation()), $url);
     }
     else {
-      self::OutputCertiryError();
+      self::Output();
     }
   }
 
   //ID セット
-  private function Set() {
+  private function SetID() {
     return self::$id = session_id();
   }
 
@@ -70,12 +88,12 @@ class Session {
     $query = "SELECT room_no FROM user_entry WHERE session_id = '%s'";
     do {
       self::Reset();
-    } while (DB::Count(sprintf($query, self::Get())) > 0);
-    return self::Get();
+    } while (DB::Count(sprintf($query, self::GetID())) > 0);
+    return self::GetID();
   }
 
   //エラー出力
-  private function OutputCertifyError() {
+  private function Output() {
     $title = 'セッション認証エラー';
     $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
     HTML::OutputResult($title, $body);
