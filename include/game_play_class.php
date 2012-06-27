@@ -403,27 +403,31 @@ EOF;
     //音でお知らせ処理
     if (RQ::$get->play_sound && (DB::$ROOM->IsBeforeGame() || DB::$ROOM->IsDay())) {
       if (DB::$ROOM->IsBeforeGame()) { //入村・満員
-	$user_count = DB::$USER->GetUserCount();
-	$max_user   = DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'max_user'));
-	if ($user_count == $max_user && JinroCookie::$user_count != $max_user) {
-	  Sound::Output('full');
-	}
-	elseif (JinroCookie::$user_count != $user_count) {
-	  Sound::Output('entry');
+	if (JinroCookie::$user_count > 0) {
+	  $user_count = DB::$USER->GetUserCount();
+	  $max_user   = DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'max_user'));
+	  if ($user_count == $max_user && JinroCookie::$user_count != $max_user) {
+	    Sound::Output('full');
+	  }
+	  elseif (JinroCookie::$user_count != $user_count) {
+	    Sound::Output('entry');
+	  }
 	}
       }
-      elseif (JinroCookie::$scene != DB::$ROOM->scene) { //夜明け
+      elseif (JinroCookie::$scene != '' && JinroCookie::$scene != DB::$ROOM->scene) { //夜明け
 	Sound::Output('morning');
       }
 
       //「異議」あり
       $cookie = explode(',', JinroCookie::$objection); //クッキーの値を配列に格納する
-      $stack  = JinroCookie::$objection_list;
-      $count  = count($stack);
-      for ($i = 0; $i < $count; $i++) { //差分を計算 (index は 0 から)
-	//差分があれば性別を確認して音を鳴らす
-	if (isset($cookie[$i]) && $stack[$i] > $cookie[$i]) {
-	  Sound::Output('objection_' . DB::$USER->ByID($i + 1)->sex);
+      if (count($cookie) > 0) {
+	$stack  = JinroCookie::$objection_list;
+	$count  = count($stack);
+	for ($i = 0; $i < $count; $i++) { //差分を計算 (index は 0 から)
+	  //差分があれば性別を確認して音を鳴らす
+	  if (isset($cookie[$i]) && $stack[$i] > $cookie[$i]) {
+	    Sound::Output('objection_' . DB::$USER->ByID($i + 1)->sex);
+	  }
 	}
       }
     }

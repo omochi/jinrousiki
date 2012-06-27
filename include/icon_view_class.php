@@ -2,8 +2,6 @@
 //-- IconView 出力クラス --//
 class IconView {
   static function Output(){
-    DB::Connect();
-
     HTML::OutputHeader('ユーザアイコン一覧', 'icon_view');
     HTML::OutputJavaScript('submit_icon_search');
     HTML::OutputBodyHeader();
@@ -15,7 +13,6 @@ class IconView {
 </div>
 
 EOF;
-    Session::Start();
     IconHTML::Output();
     HTML::OutputFooter();
   }
