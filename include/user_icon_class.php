@@ -1,6 +1,6 @@
 <?php
 //-- ユーザアイコンクラス --//
-class UserIcon extends UserIconConfig {
+class UserIcon {
   const LENGTH_LIMIT = '半角で%d文字、全角で%d文字まで';
   const MAX_LENGTH   = 'maxlength="%d" size="%d"';
   const FILE_LIMIT   = '%sByte まで';
@@ -8,13 +8,13 @@ class UserIcon extends UserIconConfig {
 
   //文字数制限
   static function GetLengthLimit() {
-    $name = self::LENGTH;
-    return sprintf(self::LENGTH_LIMIT, $name, floor($name / 2));
+    $length = UserIconConfig::LENGTH;
+    return sprintf(self::LENGTH_LIMIT, $length, floor($length / 2));
   }
 
   //文字数制限 (フォーム用)
   static function GetMaxLength($limit = false) {
-    $length = self::LENGTH;
+    $length = UserIconConfig::LENGTH;
     $format = self::MAX_LENGTH;
     if ($limit) $format .= '>' . self::GetLengthLimit();
     return sprintf($format, $length, $length);
@@ -22,18 +22,18 @@ class UserIcon extends UserIconConfig {
 
   //ファイルサイズ制限
   static function GetFileLimit() {
-    $size = self::FILE;
+    $size = UserIconConfig::FILE;
     return sprintf(self::FILE_LIMIT, $size > 1024 ? sprintf('%dk', floor($size / 1024)) : $size);
   }
 
   //アイコンのサイズ制限
   static function GetSizeLimit() {
-    return sprintf(self::SIZE_LIMIT, self::WIDTH, self::HEIGHT);
+    return sprintf(self::SIZE_LIMIT, UserIconConfig::WIDTH, UserIconConfig::HEIGHT);
   }
 
   //アイコンアップロード時の注意事項
   static function GetCaution() {
-    $caution = self::CAUTION;
+    $caution = UserIconConfig::CAUTION;
     return isset($caution) ? '<br>' . $caution : '';
   }
 
@@ -46,7 +46,7 @@ class UserIcon extends UserIconConfig {
 		   'author'     => 'アイコンの作者');
     foreach ($list as $key => $label) {
       $value = RQ::$get->$key;
-      if (strlen($value) > self::LENGTH) {
+      if (strlen($value) > UserIconConfig::LENGTH) {
 	HTML::OutputResult($title, $label . ': ' . self::GetLengthLimit() . $url);
       }
       $stack[$key] = strlen($value) > 0 ? $value : null;

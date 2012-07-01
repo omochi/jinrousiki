@@ -1,7 +1,7 @@
 <?php
-//-- IconView 出力クラス --//
+//-- アイコン表示出力クラス --//
 class IconView {
-  static function Output(){
+  static function Output() {
     HTML::OutputHeader('ユーザアイコン一覧', 'icon_view');
     HTML::OutputJavaScript('submit_icon_search');
     HTML::OutputBodyHeader();

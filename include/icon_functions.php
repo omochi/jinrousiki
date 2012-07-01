@@ -1,18 +1,65 @@
 <?php
 //-- DB アクセス (アイコン拡張) --//
 class IconDB {
-  //村で使用中のアイコンチェック
-  static function IsUsing($icon_no) {
-    $format = 'SELECT icon_no FROM user_icon INNER JOIN ' .
-      '(user_entry INNER JOIN room USING (room_no)) USING (icon_no) ' .
-      "WHERE icon_no = %d AND room.status IN ('waiting', 'playing')";
+  //アイコン存在チェック
+  static function Exists($icon_no) {
+    $format = 'SELECT icon_no FROM user_icon WHERE icon_no = %d';
     return DB::Count(sprintf($format, $icon_no)) > 0;
   }
 
+  //アイコン名存在チェック
+  static function ExistsName($icon_name) {
+    $format = "SELECT icon_no FROM user_icon WHERE icon_name = '%s'";
+    return DB::Count(sprintf($format, $icon_name)) > 0;
+  }
+
+  //アイコン名重複チェック
+  static function IsDuplicate($icon_no, $icon_name) {
+    $format = "SELECT icon_no FROM user_icon WHERE icon_no <> %d AND icon_name = '%s'";
+    return DB::Count(sprintf($format, $icon_no, $icon_name)) > 0;
+  }
+
+  //非表示フラグチェック
+  static function IsDisable($icon_no) {
+    $format = 'SELECT icon_no FROM user_icon WHERE icon_no = %d AND disable = TRUE';
+    return DB::Count(sprintf($format, $icon_no)) > 0;
+  }
+
+  //村で使用中のアイコンチェック
+  static function IsUsing($icon_no) {
+    $format = 'SELECT icon_no FROM user_icon ' .
+      'INNER JOIN user_entry USING (icon_no) INNER JOIN room USING (room_no) ' .
+      "WHERE icon_no = %d AND status IN ('waiting', 'playing')";
+    return DB::Count(sprintf($format, $icon_no)) > 0;
+  }
+
+  //登録数上限チェック
+  static function IsOver() {
+    return DB::Count('SELECT icon_no FROM user_icon') >= UserIconConfig::NUMBER;
+  }
+
   //アイコン情報取得
-  static function GetInfo($icon_no) {
+  static function Get($icon_no) {
     $format = 'SELECT * FROM user_icon WHERE icon_no = %d';
-    return DB::FetchAssoc(sprintf($format, $icon_no));;
+    return DB::FetchAssoc(sprintf($format, $icon_no));
+  }
+
+  //セッション情報取得
+  static function GetSession($icon_no) {
+    $format = 'SELECT icon_filename, session_id FROM user_icon WHERE icon_no = %d';
+    return DB::FetchAssoc(sprintf($format, $icon_no), true);
+  }
+
+  //アイコン数取得
+  static function GetCount(array $where) {
+    $format  = 'SELECT icon_no FROM user_icon WHERE %s';
+    $where[] = 'icon_no > 0';
+    return DB::Count(sprintf($format, implode(' AND ', $where)));
+  }
+
+  //次のアイコン番号取得
+  static function GetNumber() {
+    return DB::FetchResult('SELECT MAX(icon_no) + 1 FROM user_icon');
   }
 
   //アイコンリスト取得
@@ -26,13 +73,6 @@ class IconDB {
       $query .= sprintf(' LIMIT %d, %d', $limit, IconConfig::VIEW);
     }
     return DB::FetchAssoc($query);
-  }
-
-  //アイコン数取得
-  static function GetCount(array $where) {
-    $format  = 'SELECT icon_no FROM user_icon WHERE %s';
-    $where[] = 'icon_no > 0';
-    return DB::Count(sprintf($format, implode(' AND ', $where)));
   }
 
   //カテゴリ取得
@@ -61,6 +101,12 @@ class IconDB {
     return $type . sprintf(' IN (%s)', implode(',', $stack));
   }
 
+  //アイコン情報更新
+  static function Update($icon_no, $data) {
+    $format = 'UPDATE user_icon SET %s WHERE icon_no = %d';
+    return DB::ExecuteCommit(sprintf($format, $data, $icon_no));
+  }
+
   //アイコン削除
   static function Delete($icon_no, $file) {
     $query = sprintf('DELETE FROM user_icon WHERE icon_no = %d', $icon_no);
@@ -68,6 +114,12 @@ class IconDB {
     unlink(Icon::GetFile($file)); //ファイル削除
     DB::Optimize('user_icon'); //テーブル最適化 + コミット
     return true;
+  }
+
+  //セッション削除
+  static function ClearSession($icon_no) {
+    $format = 'UPDATE user_icon SET session_id = NULL WHERE icon_no = %d';
+    return DB::FetchBool(sprintf($format, $icon_no));
   }
 }
 
@@ -111,7 +163,7 @@ HTML;
   //アイコン編集フォーム出力
   private function OutputEdit($icon_no) {
     $size = UserIcon::GetMaxLength();
-    foreach (IconDB::GetInfo($icon_no) as $stack) {
+    foreach (IconDB::Get($icon_no) as $stack) {
       extract($stack);
       $location = Icon::GetFile($icon_filename);
       $checked  = $disable > 0 ? ' checked' : '';
@@ -161,7 +213,7 @@ EOF;
   //アイコン情報を収集して表示する
   private function OutputConcrete($base_url = 'icon_view') {
     //-- ヘッダ出力 --//
-    $colspan       = UserIcon::COLUMN * 2;
+    $colspan       = UserIconConfig::COLUMN * 2;
     $line_header   = sprintf('<tr><td colspan="%d">', $colspan);
     $line_footer   = '</td></tr>'."\n";
     $url_header    = sprintf('<a href="%sphp?', $base_url);
@@ -275,7 +327,7 @@ HTML;
       $column = 0;
       foreach (IconDB::GetList($where) as $icon_info) {
 	self::$method($icon_info, 162);
-	if (UserIcon::COLUMN <= ++$column) {
+	if (UserIconConfig::COLUMN <= ++$column) {
 	  $column = 0;
 	  echo '</tr><tr>';
 	}

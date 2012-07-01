@@ -1,14 +1,14 @@
 <?php
 //-- アイコンアップロード処理クラス --//
 class IconUpload {
+  const TITLE = 'アイコン登録エラー';
+  const URL   = "<br>\n<a href=\"icon_upload.php\">戻る</a>";
+
   //投稿処理
   static function Execute(){
     if (Security::CheckReferer('icon_upload.php')) { //リファラチェック
       HTML::OutputResult('ユーザアイコンアップロード', '無効なアクセスです');
     }
-    $title    = 'アイコン登録エラー'; // エラーページ用タイトル
-    $back_url = '<br>'. "\n" . '<a href="icon_upload.php">戻る</a>';
-    $query_no = sprintf(' WHERE icon_no = %d', RQ::$get->icon_no);
 
     switch (RQ::$get->command) {
     case 'upload':
@@ -19,7 +19,7 @@ class IconUpload {
       $str = '登録完了：アイコン一覧のページに飛びます。<br>'."\n" .
 	'切り替わらないなら <a href="%s">ここ</a> 。';
       DB::Connect();
-      if (! DB::FetchBool('UPDATE user_icon SET session_id = NULL' . $query_no)) {
+      if (! IconDB::ClearSession(RQ::$get->icon_no)) {
 	$str .= "<br>\nセッションの削除に失敗しました。";
       }
       HTML::OutputResult('アイコン登録完了', sprintf($str, $url), $url);
@@ -29,22 +29,22 @@ class IconUpload {
       //負荷エラー用
       $str = "サーバが混雑しているため、削除に失敗しました。<br>\n管理者に問い合わせてください。";
 
-      DB::Connect();
       //トランザクション開始
-      if (! DB::Lock('icon')) HTML::OutputResult($title, $str . $back_url);
+      DB::Connect();
+      if (! DB::Lock('icon')) HTML::OutputResult(self::TITLE, $str . self::URL);
 
       //アイコンのファイル名と登録時のセッション ID を取得
-      $stack = DB::FetchAssoc('SELECT icon_filename, session_id FROM user_icon' . $query_no, true);
-      if (count($stack) < 1) HTML::OutputResult($title, $str . $back_url);
+      $stack = IconDB::GetSession(RQ::$get->icon_no);
+      if (count($stack) < 1) HTML::OutputResult(self::TITLE, $str . self::URL);
       extract($stack);
 
       if ($session_id != Session::GetID()) { //セッション ID 確認
 	$str = '削除失敗：アップロードセッションが一致しません';
-	HTML::OutputResult('アイコン削除失敗', $str . $back_url);
+	HTML::OutputResult('アイコン削除失敗', $str . self::URL);
       }
 
       if (! IconDB::Delete(RQ::$get->icon_no, $icon_filename)) { //削除処理
-	HTML::OutputResult($title, $str . $back_url);
+	HTML::OutputResult(self::TITLE, $str . self::URL);
       }
       DB::Disconnect();
 
@@ -55,26 +55,28 @@ class IconUpload {
       break;
 
     default:
-      HTML::OutputResult($title, '無効なコマンドです' . $back_url);
+      HTML::OutputResult(self::TITLE, '無効なコマンドです' . self::URL);
       break;
     }
 
     //アップロードされたファイルのエラーチェック
     if ($_FILES['upfile']['error'][$i] != 0) {
       $str = "ファイルのアップロードエラーが発生しました。<br>\n再度実行してください。";
-      HTML::OutputResult($title, $str . $back_url);
+      HTML::OutputResult(self::TITLE, $str . self::URL);
     }
     extract(RQ::ToArray()); //引数を展開
 
     //空白チェック
-    if ($icon_name == '') HTML::OutputResult($title, 'アイコン名を入力してください' . $back_url);
-    UserIcon::CheckText($title, $back_url); //アイコン名の文字列長のチェック
-    $color = UserIcon::CheckColor($color, $title, $back_url); //色指定のチェック
+    if ($icon_name == '') {
+      HTML::OutputResult(self::TITLE, 'アイコン名を入力してください' . self::URL);
+    }
+    UserIcon::CheckText(self::TITLE, self::URL); //アイコン名の文字列長のチェック
+    $color = UserIcon::CheckColor($color, self::TITLE, self::URL); //色指定のチェック
 
     //ファイルサイズのチェック
-    if ($size == 0) HTML::OutputResult($title, 'ファイルが空です' . $back_url);
-    if ($size > UserIcon::FILE) {
-      HTML::OutputResult($title, 'ファイルサイズは ' . UserIcon::GetFileLimit() . $back_url);
+    if ($size == 0) HTML::OutputResult(self::TITLE, 'ファイルが空です' . self::URL);
+    if ($size > UserIconConfig::FILE) {
+      HTML::OutputResult(self::TITLE, 'ファイルサイズは ' . UserIcon::GetFileLimit() . self::URL);
     }
 
     //ファイルの種類のチェック
@@ -95,43 +97,42 @@ class IconUpload {
 
     default:
       $str = $type . ' : jpg、gif、png 以外のファイルは登録できません';
-      HTML::OutputResult($title, $str . $back_url);
+      HTML::OutputResult(self::TITLE, $str . self::URL);
       break;
     }
 
     //アイコンの高さと幅をチェック
     list($width, $height) = getimagesize($tmp_name);
-    if ($width > UserIcon::WIDTH || $height > UserIcon::HEIGHT) {
-      $str = 'アイコンは ' . UserIcon::GetSizeLimit() . ' しか登録できません。<br>'."\n" .
-	'送信されたファイル → <span class="color">幅 ' . $width . '、高さ ' . $height . '</span>';
-      HTML::OutputResult($title, $str . $back_url);
+    if ($width > UserIconConfig::WIDTH || $height > UserIconConfig::HEIGHT) {
+      $format = 'アイコンは %s しか登録できません。<br>'."\n" .
+	'送信されたファイル → <span class="color">幅 %d、高さ %d</span>';
+      $str = sprintf($format, UserIcon::GetSizeLimit(), $width, $height);
+      HTML::OutputResult(self::TITLE, $str . self::URL);
     }
 
     //負荷エラー用
-    $str = "サーバが混雑しています。<br>\n時間を置いてから再登録をお願いします。" . $back_url;
+    $str = "サーバが混雑しています。<br>\n時間を置いてから再登録をお願いします。" . self::URL;
 
     DB::Connect();
-    if (! DB::Lock('icon')) HTML::OutputResult($title, $str); //トランザクション開始
+    if (! DB::Lock('icon')) HTML::OutputResult(self::TITLE, $str); //トランザクション開始
 
     //登録数上限チェック
-    if (DB::Count('SELECT icon_no FROM user_icon') >= UserIcon::NUMBER) {
-      HTML::OutputResult($title, 'これ以上登録できません');
-    }
+    if (IconDB::IsOver()) HTML::OutputResult(self::TITLE, 'これ以上登録できません');
 
     //アイコン名チェック
-    if (DB::Count("SELECT icon_no FROM user_icon WHERE icon_name = '{$icon_name}'") > 0) {
-      $str = 'アイコン名 "' . $icon_name . '" は既に登録されています';
-      HTML::OutputResult($title, $str . $back_url);
+    if (IconDB::ExistsName($icon_name)) {
+      $str = sprintf('アイコン名 "%s" は既に登録されています', $icon_name);
+      HTML::OutputResult(self::TITLE, $str . self::URL);
     }
 
-    $icon_no = DB::FetchResult('SELECT MAX(icon_no) + 1 FROM user_icon'); //次のアイコン No を取得
-    if ($icon_no === false) HTML::OutputResult($title, $str); //負荷エラー対策
+    $icon_no = IconDB::GetNumber(); //次のアイコン番号取得
+    if ($icon_no === false) HTML::OutputResult(self::TITLE, $str); //負荷エラー対策
 
     //ファイルをテンポラリからコピー
     $file_name = sprintf('%03s.%s', $icon_no, $ext); //ファイル名の桁を揃える
     if (! move_uploaded_file($tmp_name, Icon::GetFile($file_name))) {
       $str = "ファイルのコピーに失敗しました。<br>\n再度実行してください。";
-      HTML::OutputResult($title, $str . $back_url);
+      HTML::OutputResult(self::TITLE, $str . self::URL);
     }
 
     //データベースに登録
@@ -163,7 +164,7 @@ class IconUpload {
       DB::Disconnect();
     }
     else {
-      HTML::OutputResult($title, $str);
+      HTML::OutputResult(self::TITLE, $str);
     }
 
     //確認ページを出力
@@ -193,13 +194,13 @@ EOF;
   }
 
   //アップロードフォーム出力
-  static function Output(){
+  static function Output() {
     HTML::OutputHeader('ユーザアイコンアップロード', 'icon_upload', true);
     $file      = UserIcon::GetFileLimit();
     $length    = UserIcon::GetMaxLength(true);
     $size      = UserIcon::GetSizeLimit();
     $caution   = UserIcon::GetCaution();
-    $file_size = UserIcon::FILE;
+    $file_size = UserIconConfig::FILE;
     echo <<<EOF
 <a href="./">←戻る</a><br>
 <img class="title" src="img/icon_upload_title.jpg" title="アイコン登録" alt="アイコン登録"><br>

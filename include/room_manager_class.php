@@ -177,7 +177,7 @@ EOF;
 	if (RQ::$get->dummy_boy &&
 	    DB::Count('SELECT uname FROM user_entry WHERE room_no = ' . $room_no) == 0) {
 	  if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-			       1, RQ::$get->gerd ? UserIcon::GERD : 0)) break;
+			       1, RQ::$get->gerd ? UserIconConfig::GERD : 0)) break;
 	}
       }
 

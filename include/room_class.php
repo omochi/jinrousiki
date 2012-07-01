@@ -599,6 +599,17 @@ class Room {
     }
   }
 
+  //仮想的にシーンをずらす
+  function ShiftScene($unshift = false) {
+    if ($unshift) {
+      DB::$ROOM->date--;
+      DB::$ROOM->scene = 'night';
+    } else {
+      DB::$ROOM->date++;
+      DB::$ROOM->scene = 'day';
+    }
+  }
+
   //背景設定 CSS タグを生成
   function GenerateCSS() {
     if (isset($this->scene)) return HTML::LoadCSS(sprintf('%s/game_%s', JINRO_CSS, $this->scene));

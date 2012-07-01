@@ -53,7 +53,7 @@ RQ::GetTest()->test_users[8]->live = 'live';
 RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'reverse_assassin death_note[5]';
+RQ::GetTest()->test_users[10]->role = 'doom_assassin death_note[5]';
 RQ::GetTest()->test_users[10]->live = 'live';
 
 RQ::GetTest()->test_users[11]->role = 'revive_priest downer_luck';
@@ -291,7 +291,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-DB::$SELF = DB::$USER->ByID(7);
+#DB::$SELF = DB::$USER->ByID(7);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 
 //-- データ出力 --//

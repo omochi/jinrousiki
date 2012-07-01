@@ -63,7 +63,7 @@ class User {
 
   //ユーザ ID 取得
   public function GetID($role = null) {
-    return isset($role) ? $role . '[' . $this->user_no . ']' : $this->user_no;
+    return isset($role) ? sprintf('%s[%d]', $role, $this->user_no) : $this->user_no;
   }
 
   //HN 取得 (システムメッセージ用)
@@ -561,7 +561,7 @@ class User {
     $camp = $this->GetCamp();
     $name = RoleData::$short_role_list[$this->main_role];
     $str  = '<span class="add-role"> [';
-    $str .= $camp == 'human' ? $name : '<span class="' . $camp . '">' . $name . '</span>';
+    $str .= $camp == 'human' ? $name : sprintf('<span class="%s">%s</span>', $camp, $name);
     if ($main_only) {
       $str = $this->handle_name . $str . ']</span>';
       if (isset($this->role_id)) DB::$USER->short_role_main[$this->role_id] = $str;
@@ -618,22 +618,22 @@ EOF;
   public function Update($item, $value) {
     if (DB::$ROOM->test_mode) {
       if (is_null($value)) $value = 'NULL (reset)';
-      Text::p($value, "Change [{$item}] ({$this->uname})");
+      Text::p($value, sprintf('Change [%s] (%s)', $item, $this->uname));
       return true;
     }
-    $value = is_null($value) ? 'NULL' : "'{$value}'";
-    $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    return DB::FetchBool("UPDATE user_entry SET {$item} = {$value} {$query}");
+    $value  = is_null($value) ? 'NULL' : "'{$value}'";
+    $format = 'UPDATE user_entry SET %s = %s WHERE room_no = %d AND user_no = %d';
+    return DB::FetchBool(sprintf($format, $item, $value, $this->room_no, $this->user_no));
   }
 
   //ID 更新処理 (KICK 後処理用)
   public function UpdateID($id) {
     if (DB::$ROOM->test_mode) {
-      Text::p("{$this->user_no} -> {$id}: {$this->uname}", 'Change ID');
+      Text::p(sprintf('%d -> %d: %s', $this->user_no, $id, $this->uname), 'Change ID');
       return;
     }
-    $query = "WHERE room_no = {$this->room_no} AND uname = '{$this->uname}'";
-    return DB::FetchBool("UPDATE user_entry SET user_no = {$id} {$query}");
+    $format = "UPDATE user_entry SET user_no = %d WHERE room_no = %d AND uname = '%s'";
+    return DB::FetchBool(sprintf($format, $id, $this->room_no, $this->uname));
   }
 
   //player 更新処理
@@ -641,7 +641,7 @@ EOF;
     if (! isset($this->updated['role'])) return true;
     $role = $this->updated['role'];
     if (DB::$ROOM->test_mode) {
-      Text::p($role, "Player ({$this->uname})");
+      Text::p($role, sprintf('Player (%s)', $this->uname));
       return true;
     }
     $items  = 'room_no, date, scene, user_no, role';
@@ -649,17 +649,6 @@ EOF;
 		      DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, $this->user_no, $role);
     if (! DB::Insert('player', $items, $values)) return false;
     return $this->Update('role_id', mysql_insert_id());
-  }
-
-  //総合 DB 更新処理 (この関数はまだ実用されていません)
-  public function Save() {
-    if (empty($this->updated)) return false;
-    foreach ($this->updated as $item) {
-      $update_list[] = "$item = '{$this->item}'";
-    }
-    $update = implode(', ', $update_list);
-    $query = "WHERE room_no = {$this->room_no} AND user_no = {$this->user_no}";
-    DB::FetchBool("UPDATE user_entry SET {$update} {$query}");
   }
 
   //基幹死亡処理
@@ -709,32 +698,26 @@ EOF;
 
   //死の宣告処理
   public function AddDoom($date, $role = 'death_warrant') {
-    $this->AddRole($role . '[' . (DB::$ROOM->date + $date) . ']');
+    $this->AddRole(sprintf('%s[%d]', $role, DB::$ROOM->date + $date));
   }
 
   //ジョーカーの移動処理
   public function AddJoker($shift = false) {
-    if ($shift) { //一時的に前日に巻戻す
-      DB::$ROOM->date--;
-      DB::$ROOM->scene = 'night';
-    }
+    if ($shift) DB::$ROOM->ShiftScene(true); //一時的に前日に巻戻す
     $this->AddDoom(1, 'joker');
     DB::$ROOM->ResultDead($this->handle_name, 'JOKER_MOVED');
-
-    if ($shift) { //日時を元に戻す
-      DB::$ROOM->date++;
-      DB::$ROOM->scene = 'day';
-    }
+    if ($shift) DB::$ROOM->ShiftScene(); //日時を元に戻す
   }
 
+  //能力喪失処理
   public function LostAbility() {
     $this->AddRole('lost_ability');
     $this->lost_flag = true;
   }
 
+  //憑依解除処理
   public function ReturnPossessed($type) {
-    $date = DB::$ROOM->date + 1;
-    $this->AddRole("${type}[{$date}-{$this->user_no}]");
+    $this->AddRole(sprintf('%s[%d-%d]', $type, DB::$ROOM->date + 1, $this->user_no));
   }
 
   //遺言を取得して保存する
@@ -746,8 +729,8 @@ EOF;
       return true;
     }
 
-    $query = "SELECT last_words FROM user_entry WHERE room_no = {$this->room_no} " .
-      "AND user_no = {$this->user_no}";
+    $format = 'SELECT last_words FROM user_entry WHERE room_no = %d AND user_no = %d';
+    $query  = sprintf($format, $this->room_no, $this->user_no);
     if (is_null($message = DB::FetchResult($query))) return true;
 
     $items  = 'room_no, date, handle_name, message';
@@ -765,7 +748,7 @@ EOF;
 	//Text::p($stack, 'Vote');
       }
       else {
-	Text::p("{$action}: {$this->uname}: {$target}", 'Vote');
+	Text::p(sprintf('%s: %s: %s', $action, $this->uname, $target), 'Vote');
       }
       return true;
     }
@@ -774,12 +757,12 @@ EOF;
 		      DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, $action,
 		      $this->uname, $this->user_no, DB::$ROOM->vote_count);
     if (isset($target)) {
-      $items .= ', target_no';
-      $values .= ", '{$target}'";
+      $items  .= ', target_no';
+      $values .= sprintf(", '%s'", $target);
     }
     if (isset($vote_number)) {
-      $items .= ', vote_number, revote_count';
-      $values .= sprintf(", %d, %d", $vote_number, RQ::$get->revote_count);
+      $items  .= ', vote_number, revote_count';
+      $values .= sprintf(', %d, %d', $vote_number, RQ::$get->revote_count);
     }
     return DB::Insert('vote', $items, $values);
   }
@@ -1095,11 +1078,9 @@ class UserDataSet {
     if (count($stack) < 1) return;
     $user = Lottery::Get($stack);
     $user->AddDoom(0, 'death_note');
-    DB::$ROOM->date--;
-    DB::$ROOM->scene = 'night';
+    DB::$ROOM->ShiftScene(true); //一時的に前日に巻戻す
     DB::$ROOM->ResultDead($user->handle_name, 'DEATH_NOTE_MOVED');
-    DB::$ROOM->date++;
-    DB::$ROOM->scene = 'day';
+    DB::$ROOM->ShiftScene();
   }
 
   //仮想役職リストの保存 (ログ処理用)
@@ -1124,32 +1105,32 @@ class UserDataSet {
   private function Load(RequestBase $request, $lock = false) {
     if ($request->IsVirtualRoom()) { //仮想モード
       $user_list = $request->GetTest()->test_users;
-      if (is_int($user_list)) $user_list = $this->LoadByUserCount($user_list);
+      if (is_int($user_list)) $user_list = $this->LoadRandom($user_list);
     }
     elseif (isset($request->retrive_type)) { //特殊モード
       switch ($request->retrive_type) {
-      case 'entry_user': //入村処理用
-	$user_list = $this->LoadForEntryUser($request->room_no);
+      case 'entry_user': //入村処理
+	$user_list = $this->LoadEntryUser($request->room_no);
 	break;
 
-      case 'beforegame': //入村処理用
-	$user_list = $this->LoadForBeforegame($request->room_no);
+      case 'beforegame': //ゲーム開始前
+	$user_list = $this->LoadBeforegame($request->room_no);
 	break;
 
-      case 'day': //昼 + 下界専用
-	$user_list = $this->LoadForPlayingDay($request->room_no);
+      case 'day': //昼 + 下界
+	$user_list = $this->LoadDay($request->room_no);
 	break;
       }
     }
     else {
-      $user_list = $this->LoadByRoom($request->room_no, $lock);
+      $user_list = $this->LoadRoom($request->room_no, $lock);
     }
     if (class_exists('RoleManager')) RoleManager::$get = new StdClass;
     $this->Parse($user_list);
   }
 
   //特定の村のユーザ情報取得
-  private function LoadByRoom($room_no, $lock = false) {
+  private function LoadRoom($room_no, $lock = false) {
     $query = <<<EOF
 SELECT room_no, user_no, uname, handle_name, profile, sex, role, role_id, objection, live,
   last_load_scene, icon_filename, color
@@ -1160,21 +1141,8 @@ EOF;
     return DB::FetchObject($query, 'User');
   }
 
-  //指定した人数分のユーザ情報を全村からランダムに取得する (テスト用)
-  private function LoadByUserCount($user_count) {
-    mysql_query('SET @new_user_no := 0');
-    $query = <<<EOF
-SELECT room_no, (@new_user_no := @new_user_no + 1) AS user_no, uname, handle_name, profile,
-  sex, role, role_id, objection, live, last_load_scene, icon_filename, color
-FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) AS finder
-  LEFT JOIN user_entry USING (room_no, uname) LEFT JOIN user_icon USING (icon_no)
-ORDER BY RAND() LIMIT {$user_count}
-EOF;
-    return DB::FetchObject($query, 'User');
-  }
-
   //入村処理用のユーザデータ取得
-  private function LoadForEntryUser($room_no) {
+  private function LoadEntryUser($room_no) {
     $query = <<<EOF
 SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry
 WHERE room_no = {$room_no} ORDER BY user_no ASC FOR UPDATE
@@ -1183,7 +1151,7 @@ EOF;
   }
 
   //ゲーム開始前のユーザデータ取得
-  private function LoadForBeforegame($room_no) {
+  private function LoadBeforegame($room_no) {
     if ($room_no != DB::$ROOM->id) return null;
     $vote_count = DB::$ROOM->vote_count;
     $room_no    = DB::$ROOM->id;
@@ -1199,7 +1167,7 @@ EOF;
   }
 
   //昼 + 下界用のユーザデータを取得する
-  private function LoadForPlayingDay($room_no) {
+  private function LoadDay($room_no) {
     if ($room_no != DB::$ROOM->id) return null;
     $date       = DB::$ROOM->date;
     $vote_count = DB::$ROOM->vote_count;
@@ -1211,6 +1179,19 @@ FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
   u.room_no = v.room_no AND v.date = {$date} AND v.vote_count = {$vote_count} AND
   u.user_no = v.user_no AND v.type = 'VOTE_KILL'
 WHERE u.room_no = {$room_no} ORDER BY user_no ASC
+EOF;
+    return DB::FetchObject($query, 'User');
+  }
+
+  //指定した人数分のユーザ情報を全村からランダムに取得する (テスト用)
+  private function LoadRandom($count) {
+    mysql_query('SET @new_user_no := 0');
+    $query = <<<EOF
+SELECT room_no, (@new_user_no := @new_user_no + 1) AS user_no, uname, handle_name, profile,
+  sex, role, role_id, objection, live, last_load_scene, icon_filename, color
+FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) AS finder
+  LEFT JOIN user_entry USING (room_no, uname) LEFT JOIN user_icon USING (icon_no)
+ORDER BY RAND() LIMIT {$count}
 EOF;
     return DB::FetchObject($query, 'User');
   }
