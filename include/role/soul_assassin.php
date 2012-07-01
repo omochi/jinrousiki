@@ -14,9 +14,10 @@ class Role_soul_assassin extends Role_assassin {
 
   function Assassin(User $user) {
     if (! parent::Assassin($user)) return false;
+    $id = $this->GetID();
     $target = DB::$USER->GetHandleName($user->uname, true);
-    DB::$ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetActor()->user_no);
+    DB::$ROOM->ResultAbility($this->result, $user->main_role, $target, $id);
 
-    if ($user->IsPoison()) DB::$USER->Kill($this->GetActor()->user_no, 'POISON_DEAD'); //毒死判定
+    if ($user->IsPoison()) DB::$USER->Kill($id, 'POISON_DEAD'); //毒死判定
   }
 }

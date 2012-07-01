@@ -13,7 +13,7 @@ class Role_mind_scanner extends Role {
 
   protected function OutputPartner() {
     if (DB::$ROOM->date < 2 || is_null($this->mind_role)) return;
-    $id = $this->GetActor()->user_no;
+    $id = $this->GetID();
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($this->mind_role, $id)) $stack[] = $user->handle_name;

@@ -17,6 +17,8 @@ class Role_possessed_fox extends Role_fox {
 
   function IsVote() { return $this->filter->IsVote(); }
 
+  function IsFinishVote(array $list) { return $this->filter->IsFinishVote($list); }
+
   function IsMindReadPossessed(User $user) { return $this->GetTalkFlag('fox'); }
 
   function SetVoteNight() { $this->filter->SetVoteNight(); }

@@ -18,6 +18,11 @@ class Role_ogre extends Role {
 
   function IsVote() { return DB::$ROOM->date > 1; }
 
+  function IsFinishVote(array $list) {
+    if (DB::$ROOM->IsEvent('force_assassin_do')) unset($list[$this->not_action]);
+    return parent::IsFinishVote($list);
+  }
+
   function Win($winner) {
     if ($this->IsDead()) return false;
     if ($winner == 'wolf') return true;
@@ -42,7 +47,7 @@ class Role_ogre extends Role {
     }
     if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //無効判定
     if ($user->IsRefrectAssassin()) { //反射判定
-      $this->AddSuccess($this->GetActor()->user_no, 'ogre');
+      $this->AddSuccess($this->GetID(), 'ogre');
       return;
     }
     if ($this->IgnoreAssassin($user)) return; //個別無効判定

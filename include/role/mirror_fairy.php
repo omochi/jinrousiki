@@ -40,7 +40,7 @@ class Role_mirror_fairy extends Role_fairy {
   }
 
   function VoteKillCounter(array $list) {
-    DB::$ROOM->SystemMessage($this->GetActor()->user_no, 'VOTE_DUEL', 1);
+    DB::$ROOM->SystemMessage($this->GetID(), 'VOTE_DUEL', 1);
   }
 
   function SetEvent($USERS) {

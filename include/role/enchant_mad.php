@@ -12,6 +12,8 @@ class Role_enchant_mad extends Role {
 
   function IsVote() { return $this->filter->IsVote(); }
 
+  function IsFinishVote(array $list) { return $this->filter->IsFinishVote($list); }
+
   function SetVoteNight() { $this->filter->SetVoteNight(); }
 
   function BadStatus(UserDataSet $USERS) {

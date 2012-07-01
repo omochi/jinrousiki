@@ -13,7 +13,6 @@ class Role_soul_patron extends Role_patron {
   }
 
   protected function AddDuelistRole(User $user) {
-    $id = $this->GetActor()->user_no;
-    DB::$ROOM->ResultAbility($this->result, $user->main_role, $user->handle_name, $id);
+    DB::$ROOM->ResultAbility($this->result, $user->main_role, $user->handle_name, $this->GetID());
   }
 }

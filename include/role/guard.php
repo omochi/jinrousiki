@@ -89,7 +89,7 @@ class Role_guard extends Role {
     DB::$USER->Kill($user->user_no, 'HUNTED');
     if (! DB::$ROOM->IsOption('seal_message')) { //狩りメッセージを登録
       $target = DB::$USER->GetHandleName($user->uname, true);
-      DB::$ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $target, $this->GetActor()->user_no);
+      DB::$ROOM->ResultAbility('GUARD_HUNTED', 'hunted', $target, $this->GetID());
     }
   }
 

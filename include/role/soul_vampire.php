@@ -20,6 +20,6 @@ class Role_soul_vampire extends Role_vampire {
   function Infect(User $user) {
     parent::Infect($user);
     $target = DB::$USER->GetHandleName($user->uname, true);
-    DB::$ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetActor()->user_no);
+    DB::$ROOM->ResultAbility($this->result, $user->main_role, $target, $this->GetID());
   }
 }

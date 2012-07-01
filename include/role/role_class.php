@@ -252,7 +252,7 @@ class RoleManager {
     return new $class();
   }
 
-  //個別クラス取得
+  //個別クラス取得 ($actor を参照していない事を確認すること)
   static function GetClass($role) {
     return (self::LoadFile($role) && self::LoadClass($role)) ? self::$class[$role] : null;
   }
@@ -335,11 +335,13 @@ abstract class Role {
     return call_user_func_array(array($this->filter, $name), $args);
   }
 
+  //メソッド保持クラス取得 (Mixin 用)
   protected function GetClass($method) {
     $class = 'Role_' . $this->role;
     return method_exists($class, $method) ? new $class() : $this;
   }
 
+  //プロパティ取得 (Mixin 用)
   protected function GetProperty($property) {
     $class  = 'Role_' . $this->role;
     $mix_in = new $class();
@@ -352,6 +354,9 @@ abstract class Role {
   //-- 汎用関数 --//
   //ユーザ取得
   protected function GetActor() { return RoleManager::$actor; }
+
+  //ユーザ ID 取得
+  protected function GetID() { return $this->GetActor()->user_no; }
 
   //ユーザ名取得
   protected function GetUname($uname = null) {
@@ -763,6 +768,15 @@ abstract class Role {
   function GetVoteCheckboxHeader() { return '<input type="radio" name="target_no"'; }
 
   //-- 投票処理 (夜) --//
+  //未投票チェック
+  function IsFinishVote(array $list) {
+    if (! $this->IsVote()) return true;
+#Text::p($list, $this->role);
+    $id = $this->GetID();
+    return (isset($list[$this->not_action]) && array_key_exists($id, $list[$this->not_action])) ||
+      isset($list[$this->action][$id]);
+  }
+
   //投票結果チェック (夜)
   function CheckVoteNight() {
     $this->SetStack(RQ::$get->situation, 'message');

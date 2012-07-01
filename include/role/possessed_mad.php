@@ -23,6 +23,10 @@ class Role_possessed_mad extends Role {
 
   function IsVote() { return DB::$ROOM->date > 1; }
 
+  function IsFinishVote(array $list) {
+    return ! $this->GetActor()->IsActive() || parent::IsFinishVote($list);
+  }
+
   function IsMindReadPossessed(User $user) { return $user->IsSame($this->GetViewer()->uname); }
 
   function IgnoreVote() {

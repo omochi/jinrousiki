@@ -12,7 +12,7 @@ class Role_cupid extends Role {
   public $shoot_count = 2;
 
   protected function OutputPartner() {
-    $id = $this->GetActor()->user_no;
+    $id = $this->GetID();
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner('lovers', $id)) $stack[] = $user->handle_name;

@@ -30,7 +30,7 @@ class Role_challenge_lovers extends Role {
     $stack  = array_keys($target, $target[$this->GetUname()]);
     //Text::p($stack, $this->GetUname());
 
-    $id = $this->GetActor()->user_no;
+    $id = $this->GetID();
     foreach ($this->GetActor()->GetPartner('lovers') as $cupid_id) {
       if (! array_key_exists($cupid_id, $cupid_list)) return;
       foreach ($cupid_list[$cupid_id] as $lovers_id) {

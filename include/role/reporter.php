@@ -26,10 +26,10 @@ class Role_reporter extends Role {
       if (! $user->wolf_eat) return; //人狼襲撃が失敗していたらスキップ
       $result = DB::$USER->GetHandleName($this->GetWolfVoter()->uname, true);
       $name   = DB::$USER->GetHandleName($target->uname, true);
-      DB::$ROOM->ResultAbility($this->result, $result, $name, $this->GetActor()->user_no);
+      DB::$ROOM->ResultAbility($this->result, $result, $name, $this->GetID());
     }
     elseif ($user->IsLiveRoleGroup('wolf', 'fox')) { //尾行対象が人狼か妖狐なら殺される
-      DB::$USER->Kill($this->GetActor()->user_no, 'REPORTER_DUTY');
+      DB::$USER->Kill($this->GetID(), 'REPORTER_DUTY');
     }
   }
 }

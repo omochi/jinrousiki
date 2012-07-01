@@ -26,7 +26,7 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
     foreach ($this->GetStack('vote_data') as $action => $vote_stack) {
       if (strpos($action, '_NOT_DO') !== false ||
 	  ! array_key_exists($user->user_no, $vote_stack)) continue;
-      $actor_id     = $this->GetActor()->user_no;
+      $actor_id     = $this->GetID();
       $target_name  = DB::$USER->ByVirtual($user->user_no)->handle_name;
       $target_stack = $vote_stack[$user->user_no];
 

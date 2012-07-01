@@ -12,7 +12,7 @@ class Role_vampire extends Role {
   protected function OutputPartner() {
     /* 2日目の時点で感染者・洗脳者が発生する特殊イベントを実装したら対応すること */
     if (DB::$ROOM->date < 2) return;
-    $id = $this->GetActor()->user_no;
+    $id = $this->GetID();
     $partner = 'infected';
     $role    = 'psycho_infected';
     $partner_list = array();
@@ -44,7 +44,7 @@ class Role_vampire extends Role {
     foreach (array_keys($this->GetStack('escaper'), $user->uname) as $uname) { //逃亡巻き添え判定
       $this->SetInfectTarget($uname);
     }
-    if (RoleManager::LoadMain(new User('guard'))->Guard($user, true)) return; //護衛判定
+    if (RoleManager::GetClass('guard')->Guard($user, true)) return; //護衛判定
     if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //スキップ判定
 
     //吸血リスト登録
@@ -68,7 +68,7 @@ class Role_vampire extends Role {
 
   //対吸血処理
   protected function InfectVampire(User $user) {
-    $this->AddSuccess($this->GetActor()->user_no, 'vampire_kill');
+    $this->AddSuccess($this->GetID(), 'vampire_kill');
   }
 
   //吸血死＆吸血処理

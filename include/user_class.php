@@ -399,14 +399,6 @@ class User {
     return $this->IsRole($stack) || $this->IsSiriusWolf() || $this->IsChallengeLovers();
   }
 
-  //投票済み判定
-  public function IsVoted($vote_data, $action, $not_action = null) {
-    return (isset($vote_data[$not_action]) &&
-	    array_key_exists($this->user_no, $vote_data[$not_action])) ||
-      ($action == 'WOLF_EAT' ? isset($vote_data[$action]) :
-       isset($vote_data[$action][$this->user_no]));
-  }
-
   //所属陣営判別 (ラッパー)
   public function DistinguishCamp() { return RoleData::DistinguishCamp($this->main_role); }
 
@@ -438,80 +430,14 @@ class User {
   }
 
   //未投票チェック
-  public function CheckVote($vote_data) {
+  public function CheckVote(array $list) {
     if ($this->IsDummyBoy() || $this->IsDead()) return true;
     if ($this->IsDoomRole('death_note')) {
-      if (! $this->IsVoted($vote_data, 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')) return false;
+      if (! ((isset($list['DEATH_NOTE_NOT_DO']) &&
+	      array_key_exists($this->user_no, $list['DEATH_NOTE_NOT_DO'])) ||
+	     isset($list['DEATH_NOTE_DO'][$this->user_no]))) return false;
     }
-    if ($this->IsWolf()) return $this->IsVoted($vote_data, 'WOLF_EAT');
-    if ($this->IsRoleGroup('mage')) return $this->IsVoted($vote_data, 'MAGE_DO');
-    if ($this->IsRole('voodoo_killer')) return $this->IsVoted($vote_data, 'VOODOO_KILLER_DO');
-    if ($this->IsRole('jammer_mad', 'jammer_fox')) {
-      return $this->IsVoted($vote_data, 'JAMMER_MAD_DO');
-    }
-    if ($this->IsRole('voodoo_mad')) return $this->IsVoted($vote_data, 'VOODOO_MAD_DO');
-    if ($this->IsRole('emerald_fox')) {
-      return ! $this->IsActive() || $this->IsVoted($vote_data, 'MAGE_DO');
-    }
-    if ($this->IsRole('voodoo_fox')) return $this->IsVoted($vote_data, 'VOODOO_FOX_DO');
-    if ($this->IsChildFox(true)) return $this->IsVoted($vote_data, 'CHILD_FOX_DO');
-    if (($this->IsRoleGroup('fairy') && ! $this->IsRole('mirror_fairy', 'sweet_fairy')) ||
-       $this->IsRole('enchant_mad')) {
-      return $this->IsVoted($vote_data, 'FAIRY_DO');
-    }
-
-    if (DB::$ROOM->date == 1) { //初日限定
-      if ($this->IsRole('mind_scanner', 'presage_scanner')) {
-	return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
-      }
-      if ($this->IsRoleGroup('cupid', 'angel') ||
-	 $this->IsRole('dummy_chiroptera', 'mirror_fairy', 'sweet_fairy')) {
-	return $this->IsVoted($vote_data, 'CUPID_DO');
-      }
-      if ($this->IsRoleGroup('duelist', 'avenger', 'patron')) {
-	return $this->IsVoted($vote_data, 'DUELIST_DO');
-      }
-      if ($this->IsRoleGroup('mania')) return $this->IsVoted($vote_data, 'MANIA_DO');
-
-      if (DB::$ROOM->IsOpenCast()) return true;
-      if ($this->IsRole('evoke_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
-      return true;
-    }
-
-    //二日目以降
-    if ($this->IsRoleGroup('guard')) return $this->IsVoted($vote_data, 'GUARD_DO');
-    if ($this->IsRole('reporter')) return $this->IsVoted($vote_data, 'REPORTER_DO');
-    if ($this->IsRole('anti_voodoo')) return $this->IsVoted($vote_data, 'ANTI_VOODOO_DO');
-    if ($this->IsRoleGroup('assassin') || $this->IsRole('doom_fox')) {
-      $event = DB::$ROOM->IsEvent('force_assassin_do') ? null : 'ASSASSIN_NOT_DO';
-      return $this->IsVoted($vote_data, 'ASSASSIN_DO', $event);
-    }
-    if ($this->IsRole('clairvoyance_scanner')) return $this->IsVoted($vote_data, 'MIND_SCANNER_DO');
-    if ($this->IsRole('barrier_wizard')) return $this->IsVoted($vote_data, 'SPREAD_WIZARD_DO');
-    if ($this->IsRoleGroup('wizard') && ! $this->IsRole('spiritism_wizard', 'philosophy_wizard')) {
-      return $this->IsVoted($vote_data, 'WIZARD_DO');
-    }
-    if ($this->IsRoleGroup('escaper')) return $this->IsVoted($vote_data, 'ESCAPE_DO');
-    if ($this->IsRole('dream_eater_mad')) return $this->IsVoted($vote_data, 'DREAM_EAT');
-    if ($this->IsRole('trap_mad', 'trap_fox')) {
-      return ! $this->IsActive() || $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
-    }
-    if ($this->IsRole('snow_trap_mad')) {
-      return $this->IsVoted($vote_data, 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO');
-    }
-    if ($this->IsRole('possessed_mad', 'possessed_fox')) {
-      return ! $this->IsActive() || $this->IsVoted($vote_data, 'POSSESSED_DO', 'POSSESSED_NOT_DO');
-    }
-    if ($this->IsRoleGroup('vampire')) return $this->IsVoted($vote_data, 'VAMPIRE_DO');
-    if ($this->IsOgre()) {
-      $event = DB::$ROOM->IsEvent('force_assassin_do') ? null : 'OGRE_NOT_DO';
-      return $this->IsVoted($vote_data, 'OGRE_DO', $event);
-    }
-    if (DB::$ROOM->IsOpenCast()) return true;
-    if ($this->IsReviveGroup(true)) {
-      return $this->IsVoted($vote_data, 'POISON_CAT_DO', 'POISON_CAT_NOT_DO');
-    }
-    return true;
+    return RoleManager::LoadMain($this)->IsFinishVote($list);
   }
 
   //役職情報から表示情報を作成する
@@ -935,10 +861,10 @@ class UserDataSet {
 	if ((DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) && ! RQ::$get->reverse_log) {
 	  $date--;
 	}
-	RoleManager::LoadMain(new User($role))->BadStatus($this, $date);
+	RoleManager::GetClass($role)->BadStatus($this, $date);
       }
       if ($this->IsAppear($role = 'enchant_mad')) { //狢の処理
-	RoleManager::LoadMain(new User($role))->BadStatus($this);
+	RoleManager::GetClass($role)->BadStatus($this);
       }
     }
   }

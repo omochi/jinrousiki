@@ -12,6 +12,8 @@ class Role_doom_fox extends Role_fox {
 
   function IsVote() { return $this->filter->IsVote(); }
 
+  function IsFinishVote(array $list) { return $this->filter->IsFinishVote($list); }
+
   function SetVoteNight() { $this->filter->SetVoteNight(); }
 
   function Assassin(User $user) {

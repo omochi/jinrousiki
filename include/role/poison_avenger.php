@@ -9,7 +9,6 @@ class Role_poison_avenger extends Role_avenger {
   public $mix_in = 'poison';
 
   function IsPoisonTarget(User $user) {
-    return $user->IsRoleGroup('wolf', 'fox') ||
-      $user->IsPartner('enemy', $this->GetActor()->user_no);
+    return $user->IsRoleGroup('wolf', 'fox') || $user->IsPartner('enemy', $this->GetID());
   }
 }

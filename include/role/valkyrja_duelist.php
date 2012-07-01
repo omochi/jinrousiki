@@ -15,7 +15,7 @@ class Role_valkyrja_duelist extends Role {
   public $shoot_count = 2;
 
   protected function OutputPartner() {
-    $id = $this->GetActor()->user_no;
+    $id = $this->GetID();
     $stack = array();
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($this->partner_role, $id)) $stack[] = $user->handle_name;

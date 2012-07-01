@@ -15,6 +15,11 @@ class Role_assassin extends Role {
 
   function IsVote() { return DB::$ROOM->date > 1; }
 
+  function IsFinishVote(array $list) {
+    if (DB::$ROOM->IsEvent('force_assassin_do')) unset($list[$this->not_action]);
+    return parent::IsFinishVote($list);
+  }
+
   function SetVoteNight() {
     parent::SetVoteNight();
     if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');

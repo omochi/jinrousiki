@@ -11,6 +11,8 @@ class Role_jammer_fox extends Role_child_fox {
 
   function OutputAction() { $this->filter->OutputAction(); }
 
+  function IsFinishVote(array $list) { return $this->filter->IsFinishVote($list); }
+
   function SetVoteNight() { $this->filter->SetVoteNight(); }
 
   function SetJammer(User $user) {

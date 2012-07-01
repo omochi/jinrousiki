@@ -8,7 +8,7 @@
 RoleManager::LoadFile('guard');
 class Role_hunter_guard extends Role_guard {
   function GuardAction(User $user, $flag) {
-    if (! $flag) DB::$USER->Kill($this->GetActor()->user_no, 'WOLF_KILLED');
+    if (! $flag) DB::$USER->Kill($this->GetID(), 'WOLF_KILLED');
   }
 
   protected function IsHunt(User $user) { return parent::IsHunt($user) || $user->IsFox(); }

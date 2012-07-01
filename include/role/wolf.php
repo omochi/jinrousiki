@@ -38,6 +38,8 @@ class Role_wolf extends Role {
     RoleHTML::OutputVote('wolf-eat', 'wolf_eat', $this->action);
   }
 
+  function IsFinishVote(array $list) { return isset($list[$this->action]); }
+
   //遠吠え
   function Howl(TalkBuilder $builder, $voice) {
     if (! $builder->flag->wolf_howl) return false; //スキップ判定
@@ -126,5 +128,5 @@ class Role_wolf extends Role {
   }
 
   //毒死処理
-  function PoisonDead() { DB::$USER->Kill($this->GetActor()->user_no, 'POISON_DEAD'); }
+  function PoisonDead() { DB::$USER->Kill($this->GetID(), 'POISON_DEAD'); }
 }
