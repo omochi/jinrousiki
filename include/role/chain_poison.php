@@ -3,9 +3,12 @@
   ◆連毒者 (chain_poison)
   ○仕様
   ・役職表示：村人
+  ・毒：特殊
 */
 class Role_chain_poison extends Role {
   public $display_role = 'human';
+
+  function IsPoison() { return false; }
 
   //毒処理
   function Poison(User $user) {

@@ -771,7 +771,6 @@ abstract class Role {
   //未投票チェック
   function IsFinishVote(array $list) {
     if (! $this->IsVote()) return true;
-#Text::p($list, $this->role);
     $id = $this->GetID();
     return (isset($list[$this->not_action]) && array_key_exists($id, $list[$this->not_action])) ||
       isset($list[$this->action][$id]);

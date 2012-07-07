@@ -2,7 +2,7 @@
 /*
   ◆埋毒者 (poison)
   ○仕様
-  ・毒：制限なし
+  ・毒：常時 / 制限なし
 */
 class Role_poison extends Role {
   //毒対象者選出 (処刑)
@@ -17,6 +17,9 @@ class Role_poison extends Role {
     }
     return $stack;
   }
+
+  //毒発動判定
+  function IsPoison() { return true; }
 
   //毒対象者判定
   function IsPoisonTarget(User $user) { return true; }

@@ -603,6 +603,10 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|狡狼|です。一定日数後に、あなたの元に訪れた人を|罠|で撃退することができます。\n　我が叡智に見抜けぬ人の動き無し。我が命を狙う無法者と我が身に近づく愚か者に災厄を。",
     'type' => 'wolf');
 
+  public $fire_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|火狼|です。襲撃が#護衛#に阻まれたら#護衛#した人に_天火_を灯すことができます。\n　炎の牙にて業火を齎し、敵対者を炭の衣で粧しましょう。反撃の狼煙をあげるのです！",
+    'type' => 'wolf', 'delimiter' => array('#' => 'guard', '_' => 'wisp'));
+
   public $blue_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
     'type' => 'wise_wolf', 'delimiter' => array('_' => 'mind'));
@@ -611,13 +615,13 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|翠狼|です。|人狼|を襲撃した場合はあなたと_共鳴者_になります。孤立している仲間と思い通わす心の根を育てるのです！",
     'type' => 'blue_wolf');
 
+  public $decieve_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|欺狼|です。襲撃した人に成りすました遺言を追加で残すことができます。",
+    'type' => 'wolf', 'delimiter' => array('#' => 'chicken'));
+
   public $doom_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|冥狼|です。襲撃した人に#死の宣告#を行うことができます。|狼|に抗う者に迫り来る死の恐怖を与えて屠るのです！",
     'type' => 'wolf', 'delimiter' => array('#' => 'chicken'));
-
-  public $fire_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|火狼|です。一度だけ襲撃した人を噛み殺す代りに#天火#を灯すことができます。\n　炎の牙にて業火を齎し、敵対者を炭の衣で粧しましょう。反撃の狼煙をあげるのです！",
-    'type' => 'wolf', 'delimiter' => array('#' => 'wisp'));
 
   public $sex_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雛狼|です。襲撃した人の性別を知ることができますが、殺すことはできません。\n　あなたの未熟な襲撃は、小賢しい大人どもの計算を大いに狂わすことができるはずです。",
@@ -1825,10 +1829,11 @@ class RoleMessageList{
   public $result_resist_wolf = array('message' => "さんは|抗毒狼|でした", 'type' => 'result_wolf');
   public $result_revive_wolf = array('message' => "さんは|仙狼|でした", 'type' => 'result_wolf');
   public $result_trap_wolf = array('message' => "さんは|狡狼|でした", 'type' => 'result_wolf');
+  public $result_fire_wolf = array('message' => "さんは|火狼|でした", 'type' => 'result_wolf');
   public $result_blue_wolf = array('message' => "さんは|蒼狼|でした", 'type' => 'result_wolf');
   public $result_emerald_wolf = array('message' => "さんは|翠狼|でした", 'type' => 'result_wolf');
+  public $result_decieve_wolf = array('message' => "さんは|欺狼|でした", 'type' => 'result_wolf');
   public $result_doom_wolf = array('message' => "さんは|冥狼|でした", 'type' => 'result_wolf');
-  public $result_fire_wolf = array('message' => "さんは|火狼|でした", 'type' => 'result_wolf');
   public $result_sex_wolf = array('message' => "さんは|雛狼|でした", 'type' => 'result_wolf');
   public $result_sharp_wolf = array('message' => "さんは|鋭狼|でした", 'type' => 'result_wolf');
   public $result_hungry_wolf = array('message' => "さんは|餓狼|でした", 'type' => 'result_wolf');
@@ -2177,4 +2182,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 #$builder->Output('fire_mania');
 #$builder->Output('eccentricer');
-$builder->Output('disguise_wolf');
+$builder->Output('decieve_wolf');
+#$builder->Output('disguise_wolf');

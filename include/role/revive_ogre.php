@@ -8,7 +8,8 @@
 RoleManager::LoadFile('ogre');
 class Role_revive_ogre extends Role_ogre {
   public $mix_in = 'revive_pharmacist';
-  public $reduce_rate = 2;
+  public $reduce_rate  = 2;
+  public $reflect_rate = 40;
 
   function Win($winner) {
     if ($this->IsDead()) return false;

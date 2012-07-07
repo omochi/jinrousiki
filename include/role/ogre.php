@@ -8,8 +8,9 @@
 class Role_ogre extends Role {
   public $action     = 'OGRE_DO';
   public $not_action = 'OGRE_NOT_DO';
-  public $resist_rate = 30;
-  public $reduce_rate =  5;
+  public $resist_rate  = 30;
+  public $reduce_rate  =  5;
+  public $reflect_rate = 30;
   public $ignore_message = '初日は人攫いできません';
 
   function OutputAction() {

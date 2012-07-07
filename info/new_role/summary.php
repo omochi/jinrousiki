@@ -97,6 +97,7 @@ Ver. 1.5.0
 Ver. 2.1.0
 <a href="#ver210a2">α2</a>
 <a href="#ver210a3">α3</a>
+<a href="#ver210a4">α4</a>
 </p>
 
 <p>
@@ -2504,7 +2505,7 @@ Ver. 2.1.0
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>
   <td>人狼</td>
-  <td class="ability">一度だけ、襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。</td>
+  <td class="ability">襲撃が<a href="ability.php#guard">護衛</a>で阻まれたら護衛成功者に<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。</td>
   <td>Ver. 1.5.0 β7</td>
 </tr>
 <tr>
@@ -2899,6 +2900,15 @@ Ver. 2.1.0
   <td>人狼</td>
   <td class="ability">処刑投票先が<a href="wolf.php#wolf_group">人狼系</a> (種類は不問) だった場合は<a href="wolf.php#whisper_mad">囁き狂人</a>に変化する人狼。</td>
   <td>Ver. 2.1.0 α3</td>
+</tr>
+<tr id="ver210a4">
+  <td><a href="wolf.php#decieve_wolf">欺狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">襲撃に成功したら、襲撃した人の名前で自分の遺言を残すことができる人狼。</td>
+  <td>Ver. 2.1.0 α4</td>
 </tr>
 </table>
 

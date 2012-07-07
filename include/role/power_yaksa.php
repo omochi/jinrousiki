@@ -7,10 +7,10 @@
 */
 RoleManager::LoadFile('yaksa');
 class Role_power_yaksa extends Role_yaksa {
-  public $resist_rate = 30;
-  function __construct(){ parent::__construct(); }
+  public $resist_rate  = 30;
+  public $reflect_rate = 30;
 
-  function Win($winner){
+  function Win($winner) {
     if ($this->IsDead()) return false;
     $camp_list = array();
     $live_list = array();
@@ -22,7 +22,7 @@ class Role_power_yaksa extends Role_yaksa {
     return count($live_list) <= ceil(count($camp_list) / 2);
   }
 
-  protected function IgnoreAssassin($user){ return $user->IsCamp('human', true); }
+  protected function IgnoreAssassin(User $user) { return $user->IsCamp('human', true); }
 
-  function GetReduceRate(){ return 3 / 5; }
+  function GetReduceRate() { return 3 / 5; }
 }

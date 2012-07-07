@@ -11,6 +11,7 @@
 RoleManager::LoadFile('ogre');
 class Role_sacrifice_ogre extends Role_ogre {
   public $mix_in = 'protected';
+  public $reflect_rate = 50;
 
   protected function OutputPartner() {
     /* 2日目の時点で洗脳者が発生する特殊イベントを実装したら対応すること */

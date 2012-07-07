@@ -86,6 +86,9 @@ class Role_wolf extends Role {
     return null;
   }
 
+  //護衛カウンター
+  function GuardCounter() {}
+
   //人狼襲撃失敗判定
   function WolfEatSkip(User $user) {
     if ($user->IsWolf()) { //人狼系判定 (例：銀狼出現)

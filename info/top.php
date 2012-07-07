@@ -19,7 +19,9 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>「欺狼」実装</li>
+  <li>「火狼」仕様変更</li>
+  <li>固定追加配役モード：K(覚醒村)・仕様変更</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

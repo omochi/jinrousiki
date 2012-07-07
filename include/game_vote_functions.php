@@ -934,7 +934,7 @@ class Vote {
 
       //狡狼の自動罠設置判定 (花曇・雪明りは無効)
       if (DB::$ROOM->date > 2 && ! DB::$ROOM->IsEvent('no_contact') &&
-	  ! DB::$ROOM->IsEvent('no_trap')) {
+	  ! DB::$ROOM->IsEvent('no_trap') && DB::$USER->IsAppear('trap_wolf')) {
 	foreach (DB::$USER->role['trap_wolf'] as $id) {
 	  $user = DB::$USER->ByID($id);
 	  if ($user->IsLive()) RoleManager::LoadMain($user)->SetTrap($user->uname);
@@ -982,6 +982,8 @@ class Vote {
 
       RoleManager::$get->voter = $voted_wolf; //護衛判定
       if (RoleManager::GetClass('guard')->Guard($wolf_target) && ! $voted_wolf->IsSiriusWolf()) {
+	//Text::p(RoleManager::$get->guard_success, 'GuardSuccess');
+	RoleManager::LoadMain($voted_wolf)->GuardCounter();
 	break;
       }
 

@@ -61,6 +61,12 @@ class User {
     $this->Parse(DB::$USER->player->roles[$id]);
   }
 
+  //遺言取得
+  public function LoadLastWords() {
+    $format = 'SELECT last_words FROM user_entry WHERE room_no = %d AND user_no = %d';
+    return DB::FetchResult(sprintf($format, $this->room_no, $this->user_no));
+  }
+
   //ユーザ ID 取得
   public function GetID($role = null) {
     return isset($role) ? sprintf('%s[%d]', $role, $this->user_no) : $this->user_no;
@@ -299,13 +305,8 @@ class User {
 
   //毒能力の発動判定
   public function IsPoison() {
-    //旱魃、無毒・連毒者
-    if (DB::$ROOM->IsEvent('no_poison') ||
-	! $this->IsRoleGroup('poison') || $this->IsRole('chain_poison')) return false;
-    if ($this->IsRole('poison_guard'))    return DB::$ROOM->IsNight(); //騎士
-    if ($this->IsRole('incubate_poison')) return DB::$ROOM->date >= 5; //潜毒者
-    if ($this->IsRole('dummy_poison'))    return DB::$ROOM->IsDay();   //夢毒者
-    return true;
+    if (DB::$ROOM->IsEvent('no_poison') || ! $this->IsRoleGroup('poison')) return false; //無効判定
+    return RoleManager::GetClass($this->main_role)->IsPoison();
   }
 
   //蘇生能力者判定
@@ -318,7 +319,7 @@ class User {
   public function IsReviveLimited() {
     return $this->IsRoleGroup('cat', 'revive') || $this->IsLovers() || $this->IsDrop() ||
       $this->IsRole('detective_common', 'scarlet_vampire', 'resurrect_mania') ||
-      (property_exists($this, 'possessed_reset') && $this->possessed_reset);
+      (isset($this->possessed_reset) && $this->possessed_reset);
   }
 
   //暗殺反射判定
@@ -337,24 +338,7 @@ class User {
       //天候判定
       if (DB::$ROOM->IsEvent('full_ogre')) return true;
       if (DB::$ROOM->IsEvent('seal_ogre')) return false;
-
-      if ($this->IsRole('sacrifice_ogre')) {
-	$rate = 50;
-      }
-      elseif ($this->IsRole(
-        'west_ogre', 'east_ogre', 'north_ogre', 'south_ogre', 'incubus_ogre', 'wise_ogre',
-	'power_ogre', 'revive_ogre', 'power_yaksa', 'dowser_yaksa')) {
-	$rate = 40;
-      }
-      elseif ($this->IsRole('power_yaksa')) {
-	$rate = 30;
-      }
-      elseif ($this->IsRoleGroup('yaksa')) {
-	$rate = 20;
-      }
-      else {
-	$rate = 30;
-      }
+      $rate = RoleManager::GetClass($this->main_role)->reflect_rate;
     }
     else {
       return false;
@@ -655,9 +639,7 @@ EOF;
       return true;
     }
 
-    $format = 'SELECT last_words FROM user_entry WHERE room_no = %d AND user_no = %d';
-    $query  = sprintf($format, $this->room_no, $this->user_no);
-    if (is_null($message = DB::FetchResult($query))) return true;
+    if (is_null($message = $this->LoadLastWords())) return true;
 
     $items  = 'room_no, date, handle_name, message';
     $values = sprintf("%d, %d, '%s', '%s'", DB::$ROOM->id, DB::$ROOM->date, $handle_name, $message);

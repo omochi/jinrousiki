@@ -29,7 +29,7 @@ Dev::InitializeUser(25);
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
-RQ::GetTest()->test_users[2]->role = 'trap_wolf authority';
+RQ::GetTest()->test_users[2]->role = 'fire_wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
@@ -47,7 +47,7 @@ RQ::GetTest()->test_users[6]->live = 'dead';
 RQ::GetTest()->test_users[7]->role = 'dummy_guard lovers[16]';
 RQ::GetTest()->test_users[7]->live = 'live';
 
-RQ::GetTest()->test_users[8]->role = 'blind_guard';
+RQ::GetTest()->test_users[8]->role = 'poison_guard';
 RQ::GetTest()->test_users[8]->live = 'live';
 
 RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
@@ -65,7 +65,7 @@ RQ::GetTest()->test_users[12]->live = 'live';
 RQ::GetTest()->test_users[13]->role = 'snow_trap_mad mind_presage[23] changed_disguse lost_ability';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->role = 'mirror_fairy';
+RQ::GetTest()->test_users[14]->role = 'dummy_poison';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
@@ -95,7 +95,7 @@ RQ::GetTest()->test_users[22]->live = 'live';
 RQ::GetTest()->test_users[23]->role = 'echo_brownie deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
-RQ::GetTest()->test_users[24]->role = 'philosophy_wizard infected[20]';
+RQ::GetTest()->test_users[24]->role = 'barrier_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
 RQ::GetTest()->test_users[25]->role = 'poison_ogre[1] disfavor';
@@ -192,7 +192,7 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    array('user_no' => 2, 	'target_no' => 13,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
     #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
@@ -201,7 +201,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
     #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 10, 	'target_no' => 12,	'type' => 'ASSASSIN_DO'),
+    array('user_no' => 10, 	'target_no' => 25,	'type' => 'ASSASSIN_DO'),
     #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
     #array('user_no' => 10, 	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
     array('user_no' => 10, 	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
@@ -245,8 +245,8 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
     #array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
     #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
-    array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
-    #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 18'),
+    #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
+    array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 18'),
     #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
     #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
     array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 8),

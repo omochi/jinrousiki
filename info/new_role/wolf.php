@@ -88,15 +88,16 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#resist_wolf">抗毒狼</a>
 <a href="#revive_wolf">仙狼</a>
 <a href="#trap_wolf">狡狼</a>
+<a href="#fire_wolf">火狼</a>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
+<a href="#decieve_wolf">欺狼</a>
 <a href="#doom_wolf">冥狼</a>
-<a href="#fire_wolf">火狼</a>
 <a href="#sex_wolf">雛狼</a>
 <a href="#sharp_wolf">鋭狼</a>
-<a href="#hungry_wolf">餓狼</a>
 </p>
 <p>
+<a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
 <a href="#sirius_wolf">天狼</a>
@@ -188,7 +189,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <h5>Ver. 1.4.0 β3～</h5>
 <pre>
-霊能結果を「人狼」から「呪狼」に変更 (<a href="human.php#necromancer_rule">基本ルール [霊能]</a>対応抜け)。
+霊能結果：「人狼」→「呪狼」(<a href="human.php#necromancer_rule">基本ルール [霊能]</a>対応抜け)
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -325,7 +326,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </ol>
 <h5>Ver. 1.5.0 β7～</h5>
 <pre>
-罠の発動日を 5 日目から 3 日目に変更。
+罠の発動日：5 日目 → 3 日目
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -335,6 +336,31 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <pre>
 <a href="fox.php#trap_fox">狡狐</a>の人狼バージョンです。
 騙りの腕次第で接触系能力者を一網打尽にすることができます。
+</pre>
+
+<h3 id="fire_wolf">火狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 β7～]</h3>
+<pre>
+襲撃が<a href="ability.php#guard">護衛</a>で阻まれたら護衛成功者に<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。
+<a href="human.php#guard_limit">護衛制限</a>で突破できた場合は無効。
+</pre>
+<h5>Ver. 2.1.0 α4～</h5>
+<pre>
+能力を大幅変更 (以下、旧仕様)。
+
+[耐性] 封印：有効
+一度だけ、襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。
+<a href="fox.php">妖狐陣営</a>にも付加可能。
+付加に成功すると能力を失い (<a href="sub_role.php#lost_ability">能力喪失</a>)、普通に噛み殺せるようになる。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#wisp">鬼火付加能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#doom_wolf">冥狼</a>の<a href="sub_role.php#black_wisp">天火</a>バージョンです。
+襲撃失敗時の対応に幅を持たせることができます。
+Ver. 2.1.0 α4 からは貴重な対護衛能力者として生まれ変わりました。
 </pre>
 
 <h3 id="blue_wolf">蒼狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
@@ -369,6 +395,20 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 襲撃失敗した時の情報が増えるという副次的効果もあります。
 </pre>
 
+<h3 id="decieve_wolf">欺狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.1.0 α4～]</h3>
+<pre>
+襲撃に成功したら、襲撃した人の名前で自分の遺言を残すことができる人狼。
+追加で遺言を残すたびに自分の遺言がリセットされる。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#possessed_wolf">憑狼</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+遺言を偽装することで噛み殺した人の正体を惑わせることができます。
+</pre>
+
 <h3 id="doom_wolf">冥狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β15～]</h3>
 <pre>
 襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#death_warrant">死の宣告</a>を付加する人狼。
@@ -379,7 +419,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </ol>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>
-死の宣告の発動日を 4 日後から 2 日後に変更。
+死の宣告の発動日：4 日後 → 2 日後
 </pre>
 <h5>Ver. 1.4.0 β17～</h5>
 <pre>
@@ -388,29 +428,12 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
+<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#doom">死の宣告能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#sex_wolf">雛狼</a>の<a href="human.php#doom_assassin">死神</a>能力バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/614" target="_top">新役職考案スレ(614)</a> が原型です。
 強化されたことで、<a href="ability.php#poison">毒能力者</a>・<a href="fox.php">妖狐</a>の排除に向いた能力を獲得しています。
-</pre>
-
-<h3 id="fire_wolf">火狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.5.0 β7～]</h3>
-<h4>[耐性] 封印：有効</h4>
-<pre>
-一度だけ、襲撃に成功した人を噛み殺す代わりに<a href="sub_role.php#black_wisp">天火</a>を付加する人狼。
-<a href="fox.php">妖狐陣営</a>にも付加可能。
-付加に成功すると能力を失い (<a href="sub_role.php#lost_ability">能力喪失</a>)、普通に噛み殺せるようになる。
-</pre>
-<h4>関連役職</h4>
-<pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#wisp">鬼火付加能力者</a>・<a href="ability.php#seal">封印対象者</a>
-</pre>
-<h4>[作成者からのコメント]</h4>
-<pre>
-<a href="#doom_wolf">冥狼</a>の<a href="sub_role.php#black_wisp">天火</a>バージョンです。
-襲撃失敗時の対応に幅を持たせることができます。
 </pre>
 
 <h3 id="sex_wolf">雛狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
@@ -424,7 +447,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#sex">性別関連能力者</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#sharp_wolf">鋭狼</a>・<a href="#hungry_wolf">餓狼</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -441,7 +464,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#hungry_wolf">餓狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -465,7 +488,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#doom_wolf">冥狼</a>・<a href="#fire_wolf">火狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>
+<a href="#doom_wolf">冥狼</a>・<a href="#sex_wolf">雛狼</a>・<a href="#sharp_wolf">鋭狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -831,7 +854,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#possessed">憑依能力者</a>
+<a href="#decieve_wolf">欺狼</a>・<a href="ability.php#possessed">憑依能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1076,7 +1099,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h5>Ver. 1.4.0 α21～</h5>
 <pre>
-名称を邪魔狂人から月兎に変更。
+名称変更：邪魔狂人 → 月兎
 </pre>
 <h4>関連役職</h4>
 <pre>

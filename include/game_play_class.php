@@ -75,11 +75,7 @@ class GamePlay {
 	GameTime::GetRealPass($left_time) :
 	GameTime::GetTalkPass($left_time, true);
 
-      if ($left_time == 0) {
-	//最終発言時刻からの差分を取得
-	$query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-	DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - DB::FetchResult($query);
-      }
+      if ($left_time == 0) DB::$ROOM->SetSuddenDeath(); //最終発言時刻からの差分を取得
     }
 
     //-- データ出力 --//
@@ -129,14 +125,11 @@ class GamePlay {
       if (! DB::Transaction()) return false; //判定条件が全て DB なので即ロック
 
       //現在のシーンを再取得して切り替わっていたらスキップ
-      $query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
-      if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
+      if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
       $silence_pass_time = GameTime::GetTalkPass($left_time, true);
 
       if ($left_time > 0) { //制限時間超過判定
-	//最終発言時刻からの差分を取得
-	$query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-	if (DB::FetchResult($query) <= TimeConfig::SILENCE) return DB::Rollback(); //沈黙判定
+	if (DB::$ROOM->LoadTime() <= TimeConfig::SILENCE) return DB::Rollback(); //沈黙判定
 
 	//沈黙メッセージを発行してリセット
 	$str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . Message::$silence;
@@ -152,8 +145,7 @@ class GamePlay {
 	if (! DB::Transaction()) return false;
 
 	//現在のシーンを再取得して切り替わっていたらスキップ
-	$query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
-	if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
+	if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
       }
       DB::$ROOM->ChangeNight(); //夜に切り替え
       DB::$ROOM->UpdateTime(); //最終書き込み時刻を更新
@@ -165,8 +157,7 @@ class GamePlay {
 	if (! DB::Transaction()) return false;
 
 	//現在のシーンを再取得して切り替わっていたらスキップ
-	$query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
-	if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
+	if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
       }
 
       //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
@@ -181,23 +172,19 @@ class GamePlay {
     //最終発言時刻からの差分を取得
     /*  DB::$ROOM から推定値を計算する場合 (リアルタイム制限定 + 再投票などがあると大幅にずれる) */
     //DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - (DB::$ROOM->system_time - $end_time);
-    $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-    DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - DB::FetchResult($query);
+    DB::$ROOM->SetSuddenDeath();
 
     //制限時間前ならスキップ (この段階でロックしているのは非リアルタイム制のみ)
-    if (DB::$ROOM->sudden_death > 0) return DB::$ROOM->IsRealTime() ? true : DB::Rollback();
+    if (DB::$ROOM->sudden_death > 0) return DB::$ROOM->IsRealTime() || DB::Rollback();
 
     //制限時間を過ぎていたら未投票の人を突然死させる
     if (DB::$ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
       if (! DB::Transaction()) return false;
 
       //現在のシーンを再取得して切り替わっていたらスキップ
-      $query = DB::$ROOM->GetQueryHeader('room', 'scene') . ' FOR UPDATE';
-      if (DB::FetchResult($query) != DB::$ROOM->scene) return DB::Rollback();
+      if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
 
-      //制限時間を再計算
-      $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-      DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH - DB::FetchResult($query);
+      DB::$ROOM->SetSuddenDeath(); //制限時間を再計算
       if (DB::$ROOM->sudden_death > 0) return DB::Rollback();
     }
 
@@ -352,7 +339,7 @@ class GamePlay {
 	if (DB::$ROOM->date > 0) {
 	  printf($format, DB::$ROOM->date, 'day', DB::$ROOM->date, '昼');
 	}
-	if (DB::FetchResult(DB::$ROOM->GetQuery(true, 'talk') . " AND scene = 'night'") > 0) {
+	if (DB::$ROOM->LoadLastNightTalk() > 0) {
 	  printf($format, DB::$ROOM->date, 'night', DB::$ROOM->date, '夜');
 	}
 
@@ -405,7 +392,7 @@ EOF;
       if (DB::$ROOM->IsBeforeGame()) { //入村・満員
 	if (JinroCookie::$user_count > 0) {
 	  $user_count = DB::$USER->GetUserCount();
-	  $max_user   = DB::FetchResult(DB::$ROOM->GetQueryHeader('room', 'max_user'));
+	  $max_user   = DB::$ROOM->LoadMaxUser();
 	  if ($user_count == $max_user && JinroCookie::$user_count != $max_user) {
 	    Sound::Output('full');
 	  }
@@ -516,9 +503,9 @@ EOF;
   private function OutputLastWords() {
     if (DB::$ROOM->IsAfterGame()) return false; //ゲーム終了後は表示しない
 
-    $query = 'SELECT last_words FROM user_entry' . DB::$ROOM->GetQuery(false) .
-      " AND user_no = " . DB::$SELF->user_no;
-    if (($str = DB::FetchResult($query)) == '') return false;
+    $str = DB::$SELF->LoadLastWords();
+    if ($str == '') return false;
+
     Text::LineToBR($str); //改行コードを変換
     if ($str == '') return false;
 

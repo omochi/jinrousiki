@@ -8,11 +8,10 @@
 RoleManager::LoadFile('yaksa');
 class Role_cursed_yaksa extends Role_yaksa {
   public $reduce_rate = 3;
-  function __construct(){ parent::__construct(); }
 
-  protected function IgnoreWin($winner){ return false; }
+  protected function IgnoreWin($winner) { return false; }
 
-  protected function IgnoreAssassin($user){
+  protected function IgnoreAssassin(User $user) {
     return ! ($user->IsRoleGroup('mage', 'wizard') || $user->IsRole('voodoo_killer'));
   }
 }

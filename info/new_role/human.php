@@ -714,7 +714,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#fire_wolf">火狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<br>
+<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<br>
   <a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="duelist.php#revive_avenger">夜刀神</a>。</li>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
 <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
@@ -722,6 +722,10 @@ PP ラインの計算を難しくさせるために作成してみました。
 <li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 </ol>
+<h5>Ver. 2.1.0 α4～</h5>
+<pre>
+<a href="wolf.php#fire_wolf">火狼</a>の仕様変更
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#sudden_death">ショック死発動能力者</a>
@@ -1077,7 +1081,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 </ol>
 <h5>Ver. 2.1.0 α2～</h5>
 <pre>
-<a href="#elder_guard">老兵</a>の仕様変更を追加。
+<a href="#elder_guard">老兵</a>の仕様変更。
 </pre>
 <h5>Ver. 1.5.0 α6～</h5>
 <pre>

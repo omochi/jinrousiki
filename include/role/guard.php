@@ -51,6 +51,7 @@ class Role_guard extends Role {
 
       $filter->GuardAction($this->GetWolfVoter(), $flag); //護衛実行処理
       //護衛成功メッセージを登録
+      $this->AddSuccess($actor->user_no, 'guard_success'); //成功者を登録
       if (! DB::$ROOM->IsOption('seal_message') && $actor->IsFirstGuardSuccess($user->uname)) {
 	$target = DB::$USER->GetHandleName($user->uname, true);
 	DB::$ROOM->ResultAbility('GUARD_SUCCESS', 'success', $target, $actor->user_no);

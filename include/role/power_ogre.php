@@ -6,7 +6,8 @@
 */
 RoleManager::LoadFile('ogre');
 class Role_power_ogre extends Role_ogre {
-  public $resist_rate = 40;
+  public $resist_rate  = 40;
+  public $reflect_rate = 40;
 
   function Win($winner) {
     return $this->IsLive() &&

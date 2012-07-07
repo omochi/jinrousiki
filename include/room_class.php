@@ -51,6 +51,30 @@ class Room {
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
   }
 
+  //最大参加人数を取得する
+  function LoadMaxUser() {
+    $format = 'SELECT max_user FROM room WHERE room_no = %d';
+    return DB::FetchResult(sprintf($format, $this->id));
+  }
+
+  //シーンを取得する
+  function LoadScene() {
+    $format = 'SELECT scene FROM room WHERE room_no = %d FOR UPDATE';
+    return DB::FetchResult(sprintf($format, $this->id));
+  }
+
+  //経過時間取得
+  function LoadTime() {
+    $format = 'SELECT UNIX_TIMESTAMP() - last_update_time FROM room WHERE room_no = %d';
+    return DB::FetchResult(sprintf($format, $this->id));
+  }
+
+  //最終シーンの夜の発言数を取得する
+  function LoadLastNightTalk() {
+    $format = "SELECT uname FROM talk WHERE room_no = %d AND date = %d AND scene = 'night'";
+    return DB::Count(sprintf($format, $this->id, $this->date));
+  }
+
   //発言を取得する
   function LoadTalk($heaven = false) {
     if (RQ::$get->IsVirtualRoom()) return RQ::GetTest()->talk;
@@ -176,8 +200,10 @@ class Room {
     }
     $type_list = array("'WEATHER'", "'EVENT'", "'BLIND_VOTE'", "'SAME_FACE'");
     if ($this->IsDay()) $type_list[] = "'VOTE_DUEL'";
-    $query = $this->GetQueryHeader('system_message', 'type', 'message') .
-      " AND date = '{$this->date}' AND type IN (" . implode(',', $type_list) . ")";
+
+    $format = 'SELECT type, message FROM system_message WHERE room_no = %d AND date = %d ' .
+      'AND type IN (%s)';
+    $query = sprintf($format, $this->id, $this->date, implode(',', $type_list));
     $this->event->rows = DB::FetchAssoc($query);
   }
 
@@ -186,9 +212,9 @@ class Room {
     if (! $this->IsPlaying()) return null;
     $date = $this->date;
     if (($shift && RQ::$get->reverse_log) || $this->IsAfterGame()) $date++;
-    $query = $this->GetQueryHeader('system_message', 'message') .
-      " AND date = {$date} AND type = 'WEATHER'";
-    $result = DB::FetchResult($query);
+    $format = 'SELECT message FROM system_message WHERE room_no = %d AND date = %d ' .
+      "AND type = 'WEATHER'";
+    $result = DB::FetchResult(sprintf($format, $this->id, $date));
     $this->event->weather = $result === false ? null : $result; //天候を格納
   }
 
@@ -203,16 +229,15 @@ class Room {
 
   //player 情報を DB から取得する
   function LoadPlayer() {
-    $query = 'SELECT id AS role_id, date, scene, user_no, role FROM player' .
-      $this->GetQuery(false);
+    $format = 'SELECT id AS role_id, date, scene, user_no, role FROM player WHERE room_no = %d';
     $result = new StdClass();
-    foreach (DB::FetchAssoc($query) as $stack) {
+    foreach (DB::FetchAssoc(sprintf($format, $this->id)) as $stack) {
       extract($stack);
       $result->roles[$role_id] = $role;
       $result->users[$user_no][] = $role_id;
       $result->timeline[$date][$scene][] = $role_id;
     }
-    //Text::p($result);
+    //Text::p($result, 'Player');
     return $result;
   }
 
@@ -389,6 +414,11 @@ class Room {
       }
     }
     $this->LoadWeather(true);
+  }
+
+  //突然死タイマーセット
+  function SetSuddenDeath() {
+    $this->sudden_death = TimeConfig::SUDDEN_DEATH - $this->LoadTime();
   }
 
   //発言登録
