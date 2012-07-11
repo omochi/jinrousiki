@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-Loader::LoadClass('TIME_CALC');
+Loader::LoadClass('InfoTime');
 InfoHTML::OutputHeader('ルール', 0, 'rule');
 ?>
 <img src="../img/rule_title.jpg" alt="ルール" title="ルールの説明">
@@ -263,11 +263,11 @@ InfoHTML::OutputHeader('ルール', 0, 'rule');
 <div>
 村作成のオプションで「リアルタイム制」にチェックを入れない場合はこちらになります。<br>
 非リアルタイム制では発言することで時間が消費されます。<br>
-半角100文字(全角50文字)の発言で、仮想時間が昼: [ <?php echo $TIME_CALC->spend_day; ?> ] 夜: [ <?php echo $TIME_CALC->spend_night; ?> ] ずつ消費されていきます。<br>
+半角100文字(全角50文字)の発言で、仮想時間が昼: [ <?php echo InfoTime::$spend_day; ?> ] 夜: [ <?php echo InfoTime::$spend_night; ?> ] ずつ消費されていきます。<br>
 （夜は人狼の発言だけ仮想時間に加算されていきます）<br>
 たくさんの文字を使って発言するとそれだけ仮想時間の消費量が多くなります。<br>
 しかし、半角400字以上は消費時間は加算されず半角400字の消費量と同じです。<br>
-一定時間( 実時間 [ <?php echo $TIME_CALC->silence; ?> ] )発言が無いと皆沈黙したこととなり、昼： [ <?php echo $TIME_CALC->silence_day; ?> ] 夜： [ <?php echo $TIME_CALC->silence_night; ?> ] が消費されてしまいます。<br>
+一定時間( 実時間 [ <?php echo InfoTime::$silence; ?> ] )発言が無いと皆沈黙したこととなり、昼： [ <?php echo InfoTime::$silence_day; ?> ] 夜： [ <?php echo InfoTime::$silence_night; ?> ] が消費されてしまいます。<br>
 黙っているとどんどん時間が消費されていきます、積極的に発言しましょう。<br>
 </div>
 
@@ -277,7 +277,7 @@ InfoHTML::OutputHeader('ルール', 0, 'rule');
 処刑するための投票は毎日、昼に行われます。<br>
 投票は議論中いつでも可能ですが投票をやり直すことはできません、慎重に投票先を決めてください。<br>
 また全員が投票した場合、その時点で残り時間に関係なく即処刑が実行され夜になります。<br>
-昼の仮想時間12時間を使いきり、それでも投票してない人は [ <?php echo $TIME_CALC->sudden_death; ?> ] 以内に投票を完了しないと突然死となり<br>
+昼の仮想時間12時間を使いきり、それでも投票してない人は [ <?php echo InfoTime::$sudden_death; ?> ] 以内に投票を完了しないと突然死となり<br>
 無条件で死亡してしまいます。<br>
 時間がなくなってきたらすみやかに投票してください。
 </div>
@@ -290,7 +290,7 @@ InfoHTML::OutputHeader('ルール', 0, 'rule');
 占い師、狩人は個人でそれぞれ指定できます。<br>
 キューピッドは１日目のみ、結び付けたい二人を指定してください。<br>
 ただし、村の総人数が [ <?php printf('%d人', GameConfig::CUPID_SELF_SHOOT); ?> ] に満たない場合は、必ず自分と誰かを指定してください。<br>
-夜の仮想時間6時間を使いきり、それでも投票してない人は [ <?php echo $TIME_CALC->sudden_death; ?> ] 以内に投票を完了しないと突然死となり<br>
+夜の仮想時間6時間を使いきり、それでも投票してない人は [ <?php echo InfoTime::$sudden_death; ?> ] 以内に投票を完了しないと突然死となり<br>
 無条件で死亡します。<br>
 </div>
 
@@ -298,7 +298,7 @@ InfoHTML::OutputHeader('ルール', 0, 'rule');
 <div>
 昼12時間、夜6時間の制限時間が過ぎると発言できなくなります。<br>
 村の住人達はこれまでの情報を元に投票しなくてはなりません。<br>
-投票せずに [ <?php echo $TIME_CALC->sudden_death; ?> ] 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
+投票せずに [ <?php echo InfoTime::$sudden_death; ?> ] 過ぎてしまうと投票されて無い方は突然死となり強制的に死んでしまいます。<br>
 誰かが突然死になってしまうと投票がリセットされてしまいますので注意してください。<br>
 投票は時間に余裕を持って早めにしましょう。<br>
 また、制限時間が来なくても全員の投票が完了していた場合はその時点で即、次の場面（昼→夜、夜→次の日の朝）になります。<br>

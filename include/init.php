@@ -27,9 +27,9 @@ class Loader {
 
   //依存ファイル情報 (読み込むデータ => 依存するファイル)
   static $depend_file = array(
-    'TIME_CALC'              => array('time_config', 'room_config', 'game_config', 'cast_config',
-				      'role_data_class', 'image_class', 'info_functions'),
     'PAPARAZZI'              => 'paparazzi_class',
+    'InfoTime'               => array('time_config', 'room_config', 'game_config', 'cast_config',
+				      'role_data_class', 'image_class', 'info_functions'),
     'server_config'          => array('system_class', 'functions'), //常時ロードされる
     'chaos_config'           => 'cast_config',
     'shared_server_config'   => 'info_functions',
@@ -79,7 +79,6 @@ class Loader {
 
   //クラス名情報 (グローバル変数名 => 読み込むクラス)
   static $class_list = array(
-    'TIME_CALC' => 'TimeCalculation',
     'PAPARAZZI' => 'Paparazzi'
   );
 
@@ -112,9 +111,14 @@ class Loader {
     if (is_null($name) || in_array($name, self::$class)) return false;
     self::LoadDependence($name);
 
-    if (is_null($class_name = self::$class_list[$name])) return false;
-    $GLOBALS[$name] = new $class_name();
-    self::$class[] = $name;
+    if (is_null($class_name = self::$class_list[$name])) {
+      $class_name = $name;
+      new $class_name();
+    }
+    else {
+      $GLOBALS[$name] = new $class_name();
+    }
+    self::$class[] = $class_name;
     return true;
   }
 

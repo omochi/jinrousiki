@@ -2,7 +2,7 @@
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('message', 'user_icon_class', 'room_option_class');
-Loader::LoadClass('TIME_CALC');
+Loader::LoadClass('InfoTime');
 InfoHTML::OutputHeader('仕様', 0, 'script_info');
 HTML::OutputJavaScript('output_diff_time');
 ?>
@@ -73,7 +73,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 このスクリプトではゲームマスターは居ません、村を作成した人は改めて住民登録をしてゲームにご参加ください。<br>
 ゲームを開始するにはプレイヤー全員が「ゲームの開始」に投票する必要があります。<br>
-ゲーム中の仮想時間 (昼12時間、夜6時間) を経過した後に [ <?php echo $TIME_CALC->sudden_death; ?> ] 経過すると投票していない人は自動で突然死となります。<br>
+ゲーム中の仮想時間 (昼12時間、夜6時間) を経過した後に [ <?php echo InfoTime::$sudden_death; ?> ] 経過すると投票していない人は自動で突然死となります。<br>
 突然死が発生するとその日の投票がリセットされて再投票となります、注意してください。
 </div>
 
@@ -154,7 +154,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 「音でお知らせ」をOnにすると、「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」<br>
 「夜が明けた時」「再投票になった時」「未投票者への告知 (超過時間経過1分毎)」<br>
-「未投票者への警告 (超過時間残り [ <?php echo $TIME_CALC->alert; ?> ] より、[ <?php echo $TIME_CALC->alert_distance; ?> ] 毎) 」「異議ありの時」に音でお知らせしてくれます。<br>
+「未投票者への警告 (超過時間残り [ <?php echo InfoTime::$alert; ?> ] より、[ <?php echo InfoTime::$alert_distance; ?> ] 毎) 」「異議ありの時」に音でお知らせしてくれます。<br>
 「異議あり」については<a href="#difference_objection">別項目</a>で説明します。
 </div>
 <h4>Ver. 1.4.14～ / Ver. 1.5.0 ～</h4>
@@ -209,7 +209,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h3 id="difference_establish_wait">次の村を立てられるまでの待ち時間 [Ver. 1.4.0 β1～]</h3>
 <div>
 打ち合わせミスや、リロードによる多重村立て事故を防ぐため、一つの村が立ってから次の村を立てられるまでの待ち時間をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo $TIME_CALC->establish_wait; ?> ] です。
+現在の設定は [ <?php echo InfoTime::$establish_wait; ?> ] です。
 </div>
 
 <h3 id="difference_ip">同じ村には同じ IP アドレスで複数登録することはできません</h3>
@@ -222,7 +222,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h3 id="difference_die_room">自動廃村</h3>
 <div>
-ゲームが開始されない場合、最後に発言された時間から [ <?php echo $TIME_CALC->die_room; ?> ] 放置されると自動で村は廃墟になります。<br>
+ゲームが開始されない場合、最後に発言された時間から [ <?php echo InfoTime::$die_room; ?> ] 放置されると自動で村は廃墟になります。<br>
 手動で廃村にする方法はありません、連絡用の掲示板やゲーム内の発言で村に登録しないように促してください。
 </div>
 
@@ -253,14 +253,14 @@ PC の時計をサーバと合わせる必要がなくなりました。
 
 <h3 id="difference_spend_time">非リアルタイム制の会話の時間消費の上限</h3>
 <div>
-半角100文字 (全角50文字) で 昼： [ <?php echo $TIME_CALC->spend_day; ?> ] 夜：[ <?php echo $TIME_CALC->spend_night; ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字 (全角200文字) までの消費時間までしか増えません。<br>
+半角100文字 (全角50文字) で 昼： [ <?php echo InfoTime::$spend_day; ?> ] 夜：[ <?php echo InfoTime::$spend_night; ?> ] ずつ消費されていきますが、どれだけ文字が増えても最大半角400文字 (全角200文字) までの消費時間までしか増えません。<br>
 半角400文字以上で発言しても消費される時間は半角400文字分と同じです。
 </div>
 
 <h3 id="difference_silence">強制沈黙</h3>
 <div>
-非リアルタイム制の場合、誰も発言をせず [ <?php echo $TIME_CALC->silence; ?> ] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
-消費される時間は 昼： [ <?php echo $TIME_CALC->silence_day; ?> ] 夜： [ <?php echo $TIME_CALC->silence_night; ?> ]です。
+非リアルタイム制の場合、誰も発言をせず [ <?php echo InfoTime::$silence; ?> ] 過ぎた場合には強制的に沈黙となり時間が消費されます。<br>
+消費される時間は 昼： [ <?php echo InfoTime::$silence_day; ?> ] 夜： [ <?php echo InfoTime::$silence_night; ?> ]です。
 </div>
 
 <h3 id="difference_wait_morning">早朝待機制オプション [Ver. 1.4.0 β17～]</h3>

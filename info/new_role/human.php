@@ -2389,7 +2389,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#philosophy_wizard">賢者</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="#philosophy_wizard">賢者</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2442,7 +2442,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
+<a href="ability.php#febris">熱病能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2522,7 +2522,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
+<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#frostbite">凍傷能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2546,7 +2546,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#frostbite">凍傷能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

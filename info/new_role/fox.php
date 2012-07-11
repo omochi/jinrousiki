@@ -65,12 +65,14 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <a href="#mist_fox">霧狐</a>
 <a href="#gold_fox">金狐</a>
 <a href="#phantom_fox">幻狐</a>
+<a href="#purple_fox">紫狐</a>
+<a href="#snow_fox">雪狐</a>
 <a href="#poison_fox">管狐</a>
 <a href="#blue_fox">蒼狐</a>
-<a href="#spell_fox">宙狐</a>
-<a href="#sacrifice_fox">白蔵主</a>
 </p>
 <p>
+<a href="#spell_fox">宙狐</a>
+<a href="#sacrifice_fox">白蔵主</a>
 <a href="#emerald_fox">翠狐</a>
 <a href="#voodoo_fox">九尾</a>
 <a href="#revive_fox">仙狐</a>
@@ -79,10 +81,10 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <a href="#trap_fox">狡狐</a>
 <a href="#cursed_fox">天狐</a>
 <a href="#elder_fox">古狐</a>
-<a href="#cute_fox">萌狐</a>
-<a href="#scarlet_fox">紅狐</a>
 </p>
 <p>
+<a href="#cute_fox">萌狐</a>
+<a href="#scarlet_fox">紅狐</a>
 <a href="#silver_fox">銀狐</a>
 <a href="#immolate_fox">野狐禅</a>
 </p>
@@ -169,6 +171,47 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <pre>
 <a href="wolf.php#phantom_wolf">幻狼</a>の妖狐バージョンです。
 二回占われると呪殺されてしまうので、どう対応するかがポイントです。
+</pre>
+
+<h3 id="purple_fox">紫狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 2.1.0 β5～]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+処刑投票先が<a href="wolf.php">人狼陣営</a>だった場合は自分に<a href="sub_role.php#death_warrant">死の宣告</a>を付加してしまう妖狐。
+</pre>
+<ol>
+<li><a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定する。</li>
+<li><a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した昼から数えて 3 日後の昼。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合は無効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#purple_wolf">紫狼</a>の妖狐バージョンです。
+<a href="wolf.php#mad_group">狂人系</a>や<a href="mania.php#unknown_mania_group">鵺系</a>も含むので対象は意外と広いことに注意してください。
+</pre>
+
+<h3 id="snow_fox">雪狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 2.1.0 β5～]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+自分に処刑投票してきた人が<a href="wolf.php#mad_group">狂人系</a>だった場合は自分に<a href="sub_role.php#frostbite">凍傷</a>を付加してしまう妖狐。
+</pre>
+<ol>
+<li><a href="sub_role.php#frostbite">凍傷</a>の発動日は投票された翌日の昼。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#frostbite">凍傷能力者</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#snow_wolf">雪狼</a>の妖狐バージョンです。
 </pre>
 
 <h3 id="poison_fox">管狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 α17～]</h3>
@@ -596,7 +639,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

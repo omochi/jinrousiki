@@ -178,7 +178,7 @@ InfoHTML::OutputRoleHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#brownie">座敷童子</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -194,7 +194,7 @@ InfoHTML::OutputRoleHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#harvest_brownie">豊穣神</a>・<a href="human.php#maple_brownie">紅葉神</a>・<a href="wolf.php#snow_trap_mad">雪女</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="chiroptera.php#ice_fairy">氷妖精</a>
+<a href="ability.php#frostbite">凍傷能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

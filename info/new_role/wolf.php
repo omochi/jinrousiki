@@ -82,9 +82,11 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#quiet_wolf">静狼</a>
 <a href="#wise_wolf">賢狼</a>
 <a href="#disguise_wolf">朔狼</a>
-<a href="#poison_wolf">毒狼</a>
+<a href="#purple_wolf">紫狼</a>
 </p>
 <p>
+<a href="#snow_wolf">雪狼</a>
+<a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
 <a href="#revive_wolf">仙狼</a>
 <a href="#trap_wolf">狡狼</a>
@@ -93,10 +95,10 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#emerald_wolf">翠狼</a>
 <a href="#decieve_wolf">欺狼</a>
 <a href="#doom_wolf">冥狼</a>
-<a href="#sex_wolf">雛狼</a>
-<a href="#sharp_wolf">鋭狼</a>
 </p>
 <p>
+<a href="#sex_wolf">雛狼</a>
+<a href="#sharp_wolf">鋭狼</a>
 <a href="#hungry_wolf">餓狼</a>
 <a href="#tongue_wolf">舌禍狼</a>
 <a href="#possessed_wolf">憑狼</a>
@@ -105,6 +107,8 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#cute_wolf">萌狼</a>
 <a href="#scarlet_wolf">紅狼</a>
 <a href="#silver_wolf">銀狼</a>
+</p>
+<p>
 <a href="#emperor_wolf">帝狼</a>
 </p>
 
@@ -230,7 +234,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 名称は他国に実在しますが、仕様はオリジナルです。
-狼サイドから妖狐の生存がわかります。
+人狼サイドから妖狐の生存がわかります。
 <a href="fox.php#silver_fox">銀狐</a>や<a href="fox.php#child_fox">子狐</a>など、念話できない妖狐の
 生存は感知できないので注意してください。
 </pre>
@@ -254,6 +258,46 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 能力発動が敵対陣営に察知されにくいので、効果的に生存カウントを調整できます。
 </pre>
 
+<h3 id="purple_wolf">紫狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.1.0 α5～]</h3>
+<pre>
+処刑投票先が<a href="fox.php">妖狐陣営</a>だった場合は自分に<a href="sub_role.php#death_warrant">死の宣告</a>を付加してしまう人狼。
+</pre>
+<ol>
+<li><a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定する。</li>
+<li><a href="sub_role.php#death_warrant">死の宣告</a>の発動日は投票した昼から数えて 3 日後の昼。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合は無効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ローゼンメイデンの薔薇水晶がモチーフです。
+処刑投票で妖狐を探すことができ、投票し続けることで
+延命を図ることもできますが、村に察知されると一網打尽にされます。
+</pre>
+
+<h3 id="snow_wolf">雪狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.1.0 α5～]</h3>
+<pre>
+自分に処刑投票してきた人が<a href="fox.php#child_fox_group">子狐系</a>だった場合は自分に<a href="sub_role.php#frostbite">凍傷</a>を付加してしまう人狼。
+</pre>
+<ol>
+<li><a href="sub_role.php#frostbite">凍傷</a>の発動日は投票された翌日の昼。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#frostbite">凍傷能力者</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+ローゼンメイデンの雪華綺晶がモチーフです。
+</pre>
+
 <h3 id="poison_wolf">毒狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12～]</h3>
 <h4>[毒能力] 処刑：人狼系以外 / 襲撃：無し / 薬師判定：有り</h4>
 <pre>
@@ -264,7 +308,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="human.php#poison">埋毒者</a>の人狼バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/31" target="_top">新役職考案スレ(31)</a> が原型です。
-吊られてもただでは死なないので、破綻を恐れず積極的に騙ると効果的です。
+処刑されてもただでは死なないので、破綻を恐れず積極的に騙ると効果的です。
 </pre>
 
 <h3 id="resist_wolf">抗毒狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α17～]</h3>
@@ -1259,7 +1303,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#trap">罠能力者</a>
+<a href="ability.php#frostbite">凍傷能力者</a>・<a href="ability.php#trap">罠能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1365,7 +1409,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#philosophy_wizard">賢者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

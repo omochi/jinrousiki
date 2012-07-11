@@ -62,10 +62,10 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'anti_voodoo death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'snow_trap_mad mind_presage[23] changed_disguse lost_ability';
+RQ::GetTest()->test_users[13]->role = 'mad mind_presage[23] changed_disguse lost_ability';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->role = 'dummy_poison';
+RQ::GetTest()->test_users[14]->role = 'purple_fox';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
@@ -282,8 +282,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-#DB::$ROOM->scene = 'day';
-DB::$ROOM->scene = 'night';
+DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード

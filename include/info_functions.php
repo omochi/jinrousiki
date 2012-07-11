@@ -1,34 +1,4 @@
 <?php
-//-- 時間設定表示用クラス --//
-class TimeCalculation {
-  public $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
-  public $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
-  public $silence_day;    //非リアルタイム制の沈黙で経過する時間 (昼)
-  public $silence_night;  //非リアルタイム制の沈黙で経過する時間 (夜)
-  public $silence;        //非リアルタイム制の沈黙になるまでの時間
-  public $sudden_death;   //制限時間を消費後に突然死するまでの時間
-  public $alert;          //警告音開始
-  public $alert_distance; //警告音の間隔
-  public $die_room;       //自動廃村になるまでの時間
-  public $establish_wait; //次の村を立てられるまでの待ち時間
-
-  function __construct() {
-    $day_seconds   = floor(12 * 60 * 60 / TimeConfig::DAY);
-    $night_seconds = floor( 6 * 60 * 60 / TimeConfig::NIGHT);
-
-    $this->spend_day      = Time::Convert($day_seconds);
-    $this->spend_night    = Time::Convert($night_seconds);
-    $this->silence_day    = Time::Convert(TimeConfig::SILENCE_PASS * $day_seconds);
-    $this->silence_night  = Time::Convert(TimeConfig::SILENCE_PASS * $night_seconds);
-    $this->silence        = Time::Convert(TimeConfig::SILENCE);
-    $this->sudden_death   = Time::Convert(TimeConfig::SUDDEN_DEATH);
-    $this->alert          = Time::Convert(TimeConfig::ALERT);
-    $this->alert_distance = Time::Convert(TimeConfig::ALERT_DISTANCE);
-    $this->die_room       = Time::Convert(RoomConfig::DIE_ROOM);
-    $this->establish_wait = Time::Convert(RoomConfig::ESTABLISH_WAIT);
-  }
-}
-
 //-- Info 情報生成クラス --//
 class Info {
   //村の最大人数設定出力
@@ -67,6 +37,36 @@ class Info {
   static function OutputReplaceRole($option) {
     echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
       RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
+  }
+}
+
+//-- 日時関連 (Info 拡張) --//
+class InfoTime {
+  public static $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
+  public static $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
+  public static $silence_day;    //非リアルタイム制の沈黙で経過する時間 (昼)
+  public static $silence_night;  //非リアルタイム制の沈黙で経過する時間 (夜)
+  public static $silence;        //非リアルタイム制の沈黙になるまでの時間
+  public static $sudden_death;   //制限時間を消費後に突然死するまでの時間
+  public static $alert;          //警告音開始
+  public static $alert_distance; //警告音の間隔
+  public static $die_room;       //自動廃村になるまでの時間
+  public static $establish_wait; //次の村を立てられるまでの待ち時間
+
+  function __construct() {
+    $day_seconds   = floor(12 * 60 * 60 / TimeConfig::DAY);
+    $night_seconds = floor( 6 * 60 * 60 / TimeConfig::NIGHT);
+
+    self::$spend_day      = Time::Convert($day_seconds);
+    self::$spend_night    = Time::Convert($night_seconds);
+    self::$silence_day    = Time::Convert(TimeConfig::SILENCE_PASS * $day_seconds);
+    self::$silence_night  = Time::Convert(TimeConfig::SILENCE_PASS * $night_seconds);
+    self::$silence        = Time::Convert(TimeConfig::SILENCE);
+    self::$sudden_death   = Time::Convert(TimeConfig::SUDDEN_DEATH);
+    self::$alert          = Time::Convert(TimeConfig::ALERT);
+    self::$alert_distance = Time::Convert(TimeConfig::ALERT_DISTANCE);
+    self::$die_room       = Time::Convert(RoomConfig::DIE_ROOM);
+    self::$establish_wait = Time::Convert(RoomConfig::ESTABLISH_WAIT);
   }
 }
 
@@ -232,7 +232,7 @@ EOF;
   }
 
   //謝辞・素材情報出力
-  static function OutputCopyright(){
+  static function OutputCopyright() {
     $stack = CopyrightConfig::$list;
     foreach (CopyrightConfig::$add_list as $class => $list) {
       $stack[$class] = array_key_exists($class, $stack) ?

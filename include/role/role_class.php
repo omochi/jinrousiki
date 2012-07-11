@@ -105,11 +105,11 @@ class RoleManager {
     'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'spell_common',
     'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
-    'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie', 'corpse_courier_mad',
-    'amaze_mad', 'agitate_mad', 'miasma_mad', 'critical_mad', 'follow_mad', 'disguise_wolf',
-    'critical_fox', 'sweet_cupid', 'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger',
-    'impatience', 'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck',
-    'authority', 'rebel');
+    'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie',  'disguise_wolf',
+    'purple_wolf', 'snow_wolf', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
+    'critical_mad', 'follow_mad', 'purple_fox', 'snow_fox', 'critical_fox', 'sweet_cupid',
+    'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague',
+    'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   static $rebel_list = array('rebel');
@@ -132,8 +132,8 @@ class RoleManager {
   static $vote_action_list = array(
     'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
     'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
-    'critical_fox', 'critical_avenger', 'cursed_avenger', 'sweet_cupid', 'snow_cupid',
-    'disguise_wolf');
+    'critical_fox', 'critical_avenger', 'purple_wolf', 'purple_fox', 'cursed_avenger',
+    'sweet_cupid', 'snow_cupid', 'disguise_wolf');
 
   //霊能
   static $necromancer_list = array(
@@ -159,7 +159,7 @@ class RoleManager {
 
   //処刑得票カウンター
   static $vote_kill_reaction_list = array('divorce_jealousy', 'harvest_brownie', 'maple_brownie',
-					  'cursed_brownie');
+					  'cursed_brownie', 'snow_wolf', 'snow_fox');
 
   //道連れ
   static $followed_list = array('follow_mad');

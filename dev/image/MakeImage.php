@@ -587,6 +587,14 @@ class RoleMessageList{
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|朔狼|です。|人狼系|に_処刑投票_すると|囁き狂人|に変化します。",
     'type' => 'poison_wolf');
 
+  public $purple_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紫狼|です。_処刑_投票先が#妖狐陣営#だった場合は自分に^死の宣告^がついてしまいます。",
+    'type' => 'wise_wolf', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
+
+  public $snow_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雪狼|です。あなたに_処刑_投票してきた人が#子狐系#だった場合は自分に^凍傷^がついてしまいます。",
+    'type' => 'purple_wolf');
+
   public $poison_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|毒狼|です。たとえ_処刑_されても体内に流れる#毒#で村人一人を道連れにできます。強気に村をかく乱するのです！",
     'type' => 'resist_wolf', 'delimiter' => array('_' => 'vote'));
@@ -771,6 +779,14 @@ class RoleMessageList{
   public $phantom_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|幻狐|です。一度だけ_占い_を無効化することができます。_占い師_を煙に巻き、村を幻へと誘うのです。",
     'type' => 'fox', 'delimiter' => array('_' => 'mage'));
+
+  public $purple_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紫狐|です。_処刑_投票先が#人狼陣営#だった場合は自分に^死の宣告^がついてしまいます。",
+    'type' => 'fox', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
+
+  public $snow_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|雪狐|です。あなたに_処刑_投票してきた人が#狂人系#だった場合は自分に^凍傷^がついてしまいます。",
+    'type' => 'purple_fox');
 
   public $poison_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|管狐|、_毒_を持っています。身に蓄えし災いを以てあなたを亡き者にしようとする者共に禍をもたらすのです！",
@@ -1825,6 +1841,8 @@ class RoleMessageList{
   public $result_quiet_wolf = array('message' => "さんは|静狼|でした", 'type' => 'result_wolf');
   public $result_wise_wolf = array('message' => "さんは|賢狼|でした", 'type' => 'result_wolf');
   public $result_disguise_wolf = array('message' => "さんは|朔狼|でした", 'type' => 'result_wolf');
+  public $result_purple_wolf = array('message' => "さんは|紫狼|でした", 'type' => 'result_wolf');
+  public $result_snow_wolf = array('message' => "さんは|雪狼|でした", 'type' => 'result_wolf');
   public $result_poison_wolf = array('message' => "さんは|毒狼|でした", 'type' => 'result_wolf');
   public $result_resist_wolf = array('message' => "さんは|抗毒狼|でした", 'type' => 'result_wolf');
   public $result_revive_wolf = array('message' => "さんは|仙狼|でした", 'type' => 'result_wolf');
@@ -1871,6 +1889,8 @@ class RoleMessageList{
   public $result_mist_fox = array('message' => "さんは|霧狐|でした", 'type' => 'result_fox');
   public $result_gold_fox = array('message' => "さんは|金狐|でした", 'type' => 'result_fox');
   public $result_phantom_fox = array('message' => "さんは|幻狐|でした", 'type' => 'result_fox');
+  public $result_purple_fox = array('message' => "さんは|紫狐|でした", 'type' => 'result_fox');
+  public $result_snow_fox = array('message' => "さんは|雪狐|でした", 'type' => 'result_fox');
   public $result_poison_fox = array('message' => "さんは|管狐|でした", 'type' => 'result_fox');
   public $result_blue_fox = array('message' => "さんは|蒼狐|でした", 'type' => 'result_fox');
   public $result_spell_fox = array('message' => "さんは|宙狐|でした", 'type' => 'result_fox');
@@ -2182,5 +2202,9 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 #$builder->Output('fire_mania');
 #$builder->Output('eccentricer');
-$builder->Output('decieve_wolf');
+#$builder->Output('decieve_wolf');
 #$builder->Output('disguise_wolf');
+#$builder->Output('purple_wolf');
+#$builder->Output('snow_wolf');
+#$builder->Output('purple_fox');
+$builder->Output('snow_fox');

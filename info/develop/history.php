@@ -9,6 +9,7 @@ Ver. 2.1.0
 <a href="#ver210a1">α1</a>
 <a href="#ver210a2">α2</a>
 <a href="#ver210a3">α3</a>
+<a href="#ver210a4">α4</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -16,6 +17,13 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210a4">Ver. 2.1.0 α4 (Rev. 614) : 2012/07/07 (Sat) 21:20</h2>
+<ul>
+<li>「欺狼」実装</li>
+<li>「火狼」仕様変更</li>
+<li>固定追加配役モード：K(覚醒村)・仕様変更</li>
+</ul>
 
 <h2 id="ver210a3">Ver. 2.1.0 α3 (Rev. 608) : 2012/06/24 (Sun) 06:21</h2>
 <ul>

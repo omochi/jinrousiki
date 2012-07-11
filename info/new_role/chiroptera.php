@@ -484,7 +484,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#pierrot_wizard">道化師</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="human.php#pierrot_wizard">道化師</a>・<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#frostbite">凍傷能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

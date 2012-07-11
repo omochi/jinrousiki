@@ -98,6 +98,7 @@ Ver. 2.1.0
 <a href="#ver210a2">α2</a>
 <a href="#ver210a3">α3</a>
 <a href="#ver210a4">α4</a>
+<a href="#ver210a5">α5</a>
 </p>
 
 <p>
@@ -2909,6 +2910,42 @@ Ver. 2.1.0
   <td>人狼</td>
   <td class="ability">襲撃に成功したら、襲撃した人の名前で自分の遺言を残すことができる人狼。</td>
   <td>Ver. 2.1.0 α4</td>
+</tr>
+<tr id="ver210a5">
+  <td><a href="wolf.php#snow_wolf">雪狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">自分に処刑投票してきた人が<a href="fox.php#child_fox_group">子狐系</a>だった場合は自分に<a href="sub_role.php#frostbite">凍傷</a>を付加してしまう人狼。</td>
+  <td>Ver. 2.1.0 α5</td>
+</tr>
+<tr>
+  <td><a href="fox.php#snow_fox">雪狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability">自分に処刑投票してきた人が<a href="wolf.php#mad_group">狂人系</a>だった場合は自分に<a href="sub_role.php#frostbite">凍傷</a>を付加してしまう妖狐。</td>
+  <td>Ver. 2.1.0 α5</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#purple_wolf">紫狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">処刑投票先が<a href="fox.php">妖狐陣営</a>だった場合は自分に<a href="sub_role.php#death_warrant">死の宣告</a>を付加してしまう人狼。</td>
+  <td>Ver. 2.1.0 α5</td>
+</tr>
+<tr>
+  <td><a href="fox.php#purple_fox">紫狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability">処刑投票先が<a href="wolf.php">人狼陣営</a>だった場合は自分に<a href="sub_role.php#death_warrant">死の宣告</a>を付加してしまう妖狐。</td>
+  <td>Ver. 2.1.0 α5</td>
 </tr>
 </table>
 
