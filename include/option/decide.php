@@ -2,10 +2,9 @@
 /*
   ◆決定者登場 (decide)
   ○仕様
+  ・配役：誰か一人に決定者
 */
 class Option_decide extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::ROLE_OPTION); }
-
   function GetCaption() { return '決定者登場'; }
 
   function GetExplain() { return '投票が同数の時、決定者の投票先が優先されます [兼任]'; }

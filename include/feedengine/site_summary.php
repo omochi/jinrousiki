@@ -10,8 +10,8 @@ class SiteSummary extends FeedEngine {
     foreach ($rooms->rows as $room) {
       $title = "{$room->name}村";
       $url = "{$this->uri}game_view.php?room_no={$room->id}";
-      $options = RoomOption::Wrap($room->game_option->row, $room->option_role->row)->GenerateImageList();
-      $status = Image::Room()->Generate($room->status);
+      $options = RoomOption::GenerateImage($room->game_option->row, $room->option_role->row);
+      $status  = Image::Room()->Generate($room->status);
       $description = <<<XHTML
 <div>
 <a href="{$url}">

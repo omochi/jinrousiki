@@ -5,8 +5,6 @@
   ・配役：人狼 → 毒狼 / 村人 → 薬師
 */
 class Option_poison_wolf extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::ROLE_OPTION); }
-
   function GetCaption() { return '毒狼登場'; }
 
   function GetExplain() {
@@ -14,7 +12,7 @@ class Option_poison_wolf extends CheckRoomOptionItem {
       '　　　[人狼1→毒狼1 / 村人1→薬師1]';
   }
 
-  function SetRole(&$list, $count) {
+  function SetRole(array &$list, $count) {
     if ($count >= CastConfig::${$this->name} && $list['wolf'] > 0 && $list['human'] > 0) {
       $list['wolf']--;
       $list[$this->name]++;

@@ -109,8 +109,7 @@ class OldLogHTML {
       DB::$ROOM->scene  = 'day';
     }
     $title  = sprintf(self::TITLE, DB::$ROOM->id, DB::$ROOM->name, $base_title);
-    $option_role = DB::$ROOM->option_role->row;
-    $option = RoomOption::Wrap(DB::$ROOM->game_option->row, $option_role)->GenerateImageList();
+    $option = RoomOption::GenerateImage(DB::$ROOM->game_option->row, DB::$ROOM->option_role->row);
     $player = GameHTML::GeneratePlayer();
     $log    = RQ::$get->heaven_only ? self::LayoutHeaven() : self::Layout();
     $link = self::DATE_BEFORE;
@@ -203,7 +202,7 @@ EOF;
 	$log_link = $base . ' )' . $add . ' )';
       }
       $max_user    = Image::GenerateMaxUser($ROOM->max_user);
-      $game_option = RoomOption::Wrap($ROOM->game_option, $ROOM->option_role)->GenerateImageList();
+      $game_option = RoomOption::GenerateImage($ROOM->game_option, $ROOM->option_role);
       $winner      = RQ::$get->watch ? '-' : Image::Winner()->Generate($ROOM->winner);
       $str .= <<<EOF
 <tr>

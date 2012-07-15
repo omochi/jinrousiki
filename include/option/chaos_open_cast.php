@@ -3,8 +3,7 @@
   ◆配役を通知する (セレクタ)
 */
 class Option_chaos_open_cast extends SelectorRoomOptionItem {
-  public $formtype = 'group';
-  public $item_list = array();
+  public $type = 'group';
 
   function __construct() {
     parent::__construct();
@@ -22,6 +21,10 @@ class Option_chaos_open_cast extends SelectorRoomOptionItem {
 		   'camp' => OptionManager::GetClass('chaos_open_cast_camp'),
 		   'role' => OptionManager::GetClass('chaos_open_cast_role'),
 		   'full' => OptionManager::GetClass('chaos_open_cast_full'));
+    foreach ($items as $key => $item) {
+      $item->form_name  = $this->form_name;
+      $item->form_value = $this->item_list[$item->name];
+    }
     if (isset($items[$this->value])) $items[$this->value]->value = true;
     return $items;
   }

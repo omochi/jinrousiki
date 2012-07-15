@@ -62,7 +62,7 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'anti_voodoo death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'mad mind_presage[23] changed_disguse lost_ability';
+RQ::GetTest()->test_users[13]->role = 'possessed_mad lost_ability mind_presage[23] changed_disguse';
 RQ::GetTest()->test_users[13]->live = 'live';
 
 RQ::GetTest()->test_users[14]->role = 'purple_fox';
@@ -221,7 +221,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 13, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
     #array('user_no' => 13, 	'type' => 'POISON_CAT_DO',	'target_no' => 6),
     #array('user_no' => 13, 	'type' => 'POISON_CAT_NOT_DO',	'target_no' => null),
-    array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
+    #array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
     #array('user_no' => 13, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
     #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
     array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
@@ -282,8 +282,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード

@@ -5,11 +5,7 @@
 */
 class Option_dummy_boy extends CheckRoomOptionItem {
   public $group = RoomOption::GAME_OPTION;
-
-  function __construct() {
-    parent::__construct();
-    $this->formtype = 'radio';
-  }
+  public $type  = 'radio';
 
   function GetCaption() { return '初日の夜は身代わり君'; }
 

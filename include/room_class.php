@@ -48,7 +48,7 @@ class Room {
     $option_role = RQ::$get->IsVirtualRoom() ? RQ::GetTest()->test_room['option_role'] :
       DB::FetchResult($this->GetQueryHeader('room', 'option_role'));
     $this->option_role = new OptionParser($option_role);
-    $this->option_list = array_merge($this->option_list, array_keys($this->option_role->options));
+    $this->option_list = array_merge($this->option_list, array_keys($this->option_role->list));
   }
 
   //最大参加人数を取得する
@@ -260,14 +260,13 @@ class Room {
     $this->game_option = new OptionParser($this->game_option);
     $this->option_role = new OptionParser($this->option_role);
     $this->option_list = $join ?
-      array_merge(array_keys($this->game_option->options),
-		  array_keys($this->option_role->options)) :
-      array_keys($this->game_option->options);
+      array_merge(array_keys($this->game_option->list), array_keys($this->option_role->list)) :
+      array_keys($this->game_option->list);
 
     if ($this->IsRealTime()) {
       $this->real_time = new StdClass();
-      $this->real_time->day   = $this->game_option->options['real_time'][0];
-      $this->real_time->night = $this->game_option->options['real_time'][1];
+      $this->real_time->day   = $this->game_option->list['real_time'][0];
+      $this->real_time->night = $this->game_option->list['real_time'][1];
     }
   }
 
@@ -316,7 +315,7 @@ class Room {
   //特殊オプションの配役データ取得
   function GetOptionList($option) {
     return $this->IsOption($option) ?
-      ChaosConfig::${$option . '_list'}[$this->option_role->options[$option][0]] : array();
+      ChaosConfig::${$option . '_list'}[$this->option_role->list[$option][0]] : array();
   }
 
   //オプション判定

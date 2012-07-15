@@ -27,7 +27,7 @@ class Role_revive_fox extends Role_fox {
     }
   }
 
-  function IsVote() { return $this->filter->IsVote(); }
+  function IsVote() { return $this->filter->IsVote() && $this->GetActor()->IsActive(); }
 
   function SetVoteNight() { $this->filter->SetVoteNight(); }
 

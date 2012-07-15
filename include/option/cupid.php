@@ -5,8 +5,6 @@
   ・配役：村人 → キューピッド
 */
 class Option_cupid extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::ROLE_OPTION); }
-
   function GetCaption() { return 'キューピッド登場'; }
 
   function GetExplain() {
@@ -14,7 +12,7 @@ class Option_cupid extends CheckRoomOptionItem {
       '　　　[村人1→キューピッド1]';
   }
 
-  function SetRole(&$list, $count) {
+  function SetRole(array &$list, $count) {
     if ($count >= CastConfig::${$this->name} && ! DB::$ROOM->IsOption('full_' . $this->name) &&
 	$list['human'] > 0) {
       $list['human']--;

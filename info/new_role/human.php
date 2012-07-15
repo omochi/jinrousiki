@@ -148,7 +148,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 </ol>
 <h5>Ver. 2.1.0 α2～</h5>
 <pre>
-3% の確率で +100 される仕様に変更。
+処刑投票数 +100 (3%)。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -157,7 +157,7 @@ iM@S人狼のプレイヤーさんの誕生日プレゼントです。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="sub_role.php#authority">権力者</a>相当の能力を持った村人です。
-PP ラインの計算を難しくさせるために作成してみました。
+PP ラインの計算を複雑にするために作成してみました。
 能力の性質上、これを騙るのはほぼ不可能なので同じ能力を持った他陣営種が存在します。
 </pre>
 
@@ -179,7 +179,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 
 <h3 id="eccentricer">傾奇者 (占い結果：村人 / 霊能結果：村人) [Ver. 2.1.0 α2～]</h3>
 <pre>
-一定期間に (5 日目以降) なるまで処刑投票数が +1 される村人。
+一定期間 (5 日目以降) になるまで処刑投票数が +1 される村人。
 能力を失ったら本人に追加のシステムメッセージが表示される。
 <a href="sub_role.php#authority_group">権力者系</a>との関係は<a href="#elder">長老</a>と同じ。
 </pre>
@@ -190,6 +190,7 @@ PP ラインの計算を難しくさせるために作成してみました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#scripter">執筆者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/195" target="_top">新役職考案スレ 2(195)</a> が原型です。
+<a href="ability.php#authority">投票数変化能力者</a>の騙りの幅を広げるのが狙いです。
 </pre>
 
 <h3 id="suspect">不審者 (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9～]</h3>
@@ -714,14 +715,17 @@ PP ラインの計算を難しくさせるために作成してみました。
 処刑投票先が回数限定の能力を持っている人外の場合に封じることができる上位巫女。
 </pre>
 <ol>
-<li>対象は<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<br>
-  <a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="duelist.php#revive_avenger">夜刀神</a>。</li>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
 <li>投票先がすでに能力を失っている状態 (<a href="sub_role.php#lost_ability">能力喪失</a>) であればショック死させる。</li>
 <li>ショック死させた場合の死因は「封印された」で、<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は無効。</li>
 <li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
 <li>自分が処刑された場合は無効。</li>
 </ol>
+<h4>封印対象</h4>
+<pre>
+<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#revive_mad">尸解仙</a>
+<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="duelist.php#revive_avenger">夜刀神</a>
+</pre>
 <h5>Ver. 2.1.0 α4～</h5>
 <pre>
 <a href="wolf.php#fire_wolf">火狼</a>の仕様変更
@@ -1834,8 +1838,9 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <li>何の「治療」に成功したのか (毒やショック死の種類など) は表示されない。</li>
 <li>再投票時には発動せず、処刑されたら解毒・ショック死抑制能力無効。</li>
 </ol>
+<h4>能力発動例</h4>
 <pre>
-例) A[河童] → B[村人][小心者]
+A[河童] → B[村人][小心者]
 この場合、B がショック死する条件を満たすが、河童の能力でキャンセルされる。
 キャンセルするだけで<a href="sub_role.php#chicken">小心者</a>が消える訳ではないので注意。
 </pre>

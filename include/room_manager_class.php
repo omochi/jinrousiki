@@ -221,8 +221,7 @@ EOF;
       extract($stack);
       $delete     = ServerConfig::DEBUG_MODE ? $delete_header . $room_no . $delete_footer : '';
       $status_img = Image::Room()->Generate($status, $status == 'waiting' ? '募集中' : 'プレイ中');
-      $option_img = RoomOption::Wrap($game_option, $option_role)->GenerateImageList() .
-	Image::GenerateMaxUser($max_user);
+      $option_img = RoomOption::Generate($game_option, $option_role, $max_user);
       echo <<<EOF
 {$delete}<a href="login.php?room_no={$room_no}">
 {$status_img}<span>[{$room_no}番地]</span>{$name}村<br>

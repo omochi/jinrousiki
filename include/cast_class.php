@@ -347,7 +347,7 @@ class Cast {
   //村人置換村の処理
   static function ReplaceRole(&$list) {
     $stack = array();
-    foreach (array_keys(DB::$ROOM->option_role->options) as $option) { //処理順にオプションを登録
+    foreach (array_keys(DB::$ROOM->option_role->list) as $option) { //処理順にオプションを登録
       if ($option == 'replace_human' || strpos($option, 'full_') === 0) {
 	$stack[0][] = $option;
       }

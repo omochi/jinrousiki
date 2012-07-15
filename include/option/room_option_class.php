@@ -1,5 +1,5 @@
 <?php
-class RoomOption extends OptionParser {
+class RoomOption {
   const NOT_OPTION  = '';
   const GAME_OPTION = 'game_option';
   const ROLE_OPTION = 'role_option';
@@ -46,55 +46,48 @@ class RoomOption extends OptionParser {
     }
   }
 
-  static function Wrap($option) {
-    $result = new RoomOption();
-    foreach (func_get_args() as $opt) {
-      if ($opt instanceof OptionParser) {
-        array_merge($result->options, $opt->options);
-      }
-      elseif (is_string($opt)) {
-        $result->Option($opt);
-      }
-    }
-    return $result;
-  }
-
   //ゲームオプション画像出力
   static function Output() {
     $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
     extract(DB::FetchAssoc($query, true));
-    echo '<div class="game-option">ゲームオプション：' .
-      self::Wrap($game_option, $option_role)->GenerateImageList() .
-      Image::GenerateMaxUser($max_user) . '</div>'."\n";
+    $format = "<div class=\"game-option\">ゲームオプション：%s</div>\n";
+    printf($format, self::Generate($game_option, $option_role, $max_user));
   }
 
-  function __construct($value = '') { parent::__construct($value); }
+  //ゲームオプション情報生成
+  static function Generate($game_option, $option_role, $max_user) {
+    return self::GenerateImage($game_option, $option_role) . Image::GenerateMaxUser($max_user);
+  }
 
-  /** ゲームオプションの画像タグを作成する */
-  function GenerateImageList() {
+  //ゲームオプション画像生成
+  static function GenerateImage($game_option, $option_role = '') {
+    //オプションパース
+    $list = array_merge(OptionParser::Parse($game_option), OptionParser::Parse($option_role));
+
     $str = '';
-    foreach (self::$icon_order as $option) {
-      $define = OptionManager::GetClass($option);
-      if (! isset($define, $this->$option)) continue;
-      $define->LoadMessages();
-      $footer = '';
-      $sentence = $define->caption;
+    foreach (array_intersect(self::$icon_order, array_keys($list)) as $option) {
+      $filter   = OptionManager::GetClass($option);
+      $sentence = $filter->GetCaption();
       if (isset(CastConfig::$option) && is_int(CastConfig::$$option)) {
 	$sentence .= sprintf('(%d人～)', CastConfig::$$option);
       }
       switch ($option) {
       case 'real_time':
-        list($day, $night) = $this->options[$option];
-        $sentence .= "　昼： {$day} 分　夜： {$night} 分";
-	$footer = '['. $day . '：' . $night . ']';
+        list($day, $night) = $list[$option];
+	$footer = sprintf('[%d：%d]', $day, $night);
+        $sentence .= sprintf('　昼： %d 分　夜： %d 分', $day, $night);
 	break;
-	
+
       case 'topping':
       case 'boost_rate':
-	$type = $this->options[$option][0];
-	$items = $define->GetItems();
-	$sentence .= '(Type' . $items[$type] . ')';
-	$footer = '['. strtoupper($type) . ']';
+	$type   = $list[$option][0];
+	$item   = $filter->GetItems();
+	$footer = sprintf('[%s]', strtoupper($type));
+	$sentence .= sprintf('(Type%s)', $item[$type]);
+	break;
+
+      default:
+	$footer = '';
 	break;
       }
       $str .= Image::Room()->Generate($option, $sentence) . $footer;

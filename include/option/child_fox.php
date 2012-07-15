@@ -5,8 +5,6 @@
   ・配役：妖狐 → 子狐
 */
 class Option_child_fox extends CheckRoomOptionItem {
-  function __construct() { parent::__construct(RoomOption::ROLE_OPTION); }
-
   function GetCaption() { return '子狐登場'; }
 
   function GetExplain() {
@@ -14,7 +12,7 @@ class Option_child_fox extends CheckRoomOptionItem {
       '　　　[妖狐1→子狐1]';
   }
 
-  function SetRole(&$list, $count) {
+  function SetRole(array &$list, $count) {
     if ($count >= CastConfig::${$this->name} && $list['fox'] > 0) {
       $list['fox']--;
       $list[$this->name]++;

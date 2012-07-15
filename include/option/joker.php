@@ -11,5 +11,5 @@ class Option_joker extends CheckRoomOptionItem {
 
   function GetExplain() { return '誰か一人に「ジョーカー」がつきます'; }
 
-  function Cast(&$list, &$rand) { $this->CastOnce($list, $rand, '[2]'); }
+  function Cast(array &$list, &$rand) { $this->CastOnce($list, $rand, '[2]'); }
 }

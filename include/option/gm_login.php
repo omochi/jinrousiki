@@ -4,7 +4,7 @@
 */
 class Option_gm_login extends CheckRoomOptionItem {
   public $group = RoomOption::GAME_OPTION;
-  public $formtype = 'radio';
+  public $type  = 'radio';
 
   function GetCaption() { return '身代わり君は GM'; }
 

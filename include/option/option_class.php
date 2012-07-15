@@ -2,72 +2,23 @@
 //オプションパーサ
 class OptionParser {
   public $row;
-  public $options = array();
+  public $list = array();
 
-  function __construct($value){
-    $this->row = $value;
-    foreach (explode(' ', $this->row) as $option){
+  function __construct($value) {
+    $this->row  = $value;
+    $this->list = $this->Parse($this->row);
+  }
+
+  //パース (static call あり)
+  function Parse($value) {
+    $list = array();
+    foreach (explode(' ', $value) as $option) {
       if (empty($option)) continue;
       $items = explode(':', $option);
-      $this->options[$items[0]] = count($items) > 1 ? array_slice($items, 1) : true;
+      $list[$items[0]] = count($items) > 1 ? array_slice($items, 1) : true;
     }
+    return $list;
   }
-
-  function  __isset($name) {
-    return isset($this->options[$name]);
-  }
-
-  function  __unset($name) {
-    unset($this->options[$name]);
-  }
-
-  function __get($name){
-    if (isset($this->options[$name])) {
-      $value = $this->options[$name];
-      $this->$name = $value;
-      return $value;
-    }
-    $this->$name = false;
-    return null;
-  }
-
-  function __set($name, $value){
-    //Note:$value === falseの時unsetする代わりに__toStringで値がfalseの項目を省略する仕様に改めた(2011-01-14 enogu)
-    $this->options[$name] = $value;
-  }
-
-  function __toString(){
-    return $this->ToString();
-  }
-
-  function ToString($items = null) {
-    if (isset($items)) {
-      $filter = array_flip(is_array($items) ? $items : func_get_args());
-    }
-    else {
-      $filter = $this->options;
-    }
-    $result = array();
-    foreach (array_intersect_key($this->options, $filter) as $name => $value) {
-      if (is_bool($value)) {
-        if ($value) $result[] = $name;
-      }
-      elseif (is_array($value)) {
-        $result[] = "{$name}:" . implode(':', $value);
-      }
-      elseif (! empty($value)) {
-        $result[] = "{$name}:{$value}";
-      }
-    }
-    return implode(' ', $result);
-  }
-
-  function Option($value){
-    $this->__construct($value);
-    foreach ($this->options as $name => $value) $this->__get($name);
-  }
-
-  function Exists($name){ return array_key_exists($name, $this->options); }
 }
 
 //-- オプションマネージャ --//
@@ -102,7 +53,7 @@ class OptionManager {
   }
 
   //特殊普通村の配役処理
-  static function SetRole(&$list, $count) {
+  static function SetRole(array &$list, $count) {
     foreach (self::$role_list as $option) {
       if (DB::$ROOM->IsOption($option) && self::Load($option)) {
 	self::LoadClass($option)->SetRole($list, $count);
@@ -111,7 +62,7 @@ class OptionManager {
   }
 
   //ユーザ配役処理
-  function Cast(&$list, &$rand) {
+  static function Cast(array &$list, &$rand) {
     $delete = self::$stack;
     foreach (self::$cast_list as $option) {
       if (DB::$ROOM->IsOption($option) && self::Load($option)) {

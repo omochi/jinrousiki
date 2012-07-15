@@ -4,7 +4,7 @@
 */
 class Option_dummy_boy_selector extends SelectorRoomOptionItem {
   public $group = RoomOption::GAME_OPTION;
-  public $formtype = 'group';
+  public $type = 'group';
   public $item_list = array('dummy_boy' => 'on', 'gm_login' => 'gm_login');
 
   function __construct() {
@@ -20,6 +20,10 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
     $items = array(''         => new Option_no_dummy_boy(),
 		   'on'       => OptionManager::GetClass('dummy_boy'),
 		   'gm_login' => OptionManager::GetClass('gm_login'));
+    foreach ($items as $key => $item) {
+      $item->form_name  = $this->form_name;
+      $item->form_value = $this->item_list[$item->name];
+    }
     if (isset($items[$this->value])) $items[$this->value]->value = true;
     return $items;
   }
@@ -43,7 +47,7 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 */
 class Option_no_dummy_boy extends CheckRoomOptionItem {
   public $group = RoomOption::GAME_OPTION;
-  public $formtype = 'radio';
+  public $type  = 'radio';
 
   function GetCaption() { return '身代わり君なし'; }
 }

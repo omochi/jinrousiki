@@ -2200,11 +2200,10 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('fire_mania');
 #$builder->Output('eccentricer');
-#$builder->Output('decieve_wolf');
-#$builder->Output('disguise_wolf');
+$builder->Output('disguise_wolf');
 #$builder->Output('purple_wolf');
 #$builder->Output('snow_wolf');
+#$builder->Output('decieve_wolf');
 #$builder->Output('purple_fox');
-$builder->Output('snow_fox');
+#$builder->Output('snow_fox');

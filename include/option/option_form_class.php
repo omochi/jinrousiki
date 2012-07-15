@@ -4,98 +4,59 @@
  * @author enogu
  */
 class OptionForm {
-  const TEXTBOX         = '<input type="%s" name="%s" id="%s" size="%d" value="">%s';
-  const TEXTBOX_EXPLAIN = " <span class=\"explain\">%s</span>\n";
+  const SEPARATOR = "  <tr><td colspan=\"2\"><hr></td></tr>\n";
+  const TEXTBOX = '<input type="%s" name="%s" id="%s" size="%d" value="">%s';
+  const TEXTBOX_EXPLAIN = ' <span class="explain">%s</span>';
+  const CHECKBOX = '<input type="%s" id="%s" name="%s" value="%s"%s> <span class="explain">%s</span>';
+  const REALTIME = '(%s　昼：<input type="text" name="%s_day" value="%d" size="2" maxlength="2">分 夜：<input type="text" name="%s_night" value="%d" size="2" maxlength="2">分)';
+  const SELECTOR = "  <option value=\"%s\"%s>%s</option>\n";
 
+  private static $order = array(
+    'room_name', 'room_comment', 'max_user', null,
+    'wish_role', 'real_time', 'wait_morning', 'open_vote', 'seal_message', 'open_day', null,
+    'dummy_boy_selector', 'gm_password', 'gerd', null,
+    'not_open_cast_selector', null,
+    'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf',
+    'fox', 'child_fox', 'cupid', 'medium', 'mania', 'decide', 'authority', null,
+    'liar', 'gentleman', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open', 'blinder',
+    'critical', 'joker', 'death_note', 'detective', 'weather', 'festival', 'replace_human_selector',
+    'change_common_selector', 'change_mad_selector', 'change_cupid_selector', null,
+    'special_role', null,
+    'topping', 'boost_rate', 'chaos_open_cast', 'sub_role_limit', 'secret_sub_role'
+  );
+
+  //出力
   static function Output() {
-    self::GenerateRow('room_name');
-    self::GenerateRow('room_comment');
-    self::GenerateRow('max_user');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('wish_role');
-    self::GenerateRow('real_time');
-    self::GenerateRow('wait_morning');
-    self::GenerateRow('open_vote');
-    self::GenerateRow('seal_message');
-    self::GenerateRow('open_day');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('dummy_boy_selector');
-    self::GenerateRow('gm_password');
-    self::GenerateRow('gerd');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('not_open_cast_selector');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('poison');
-    self::GenerateRow('assassin');
-    self::GenerateRow('wolf');
-    self::GenerateRow('boss_wolf');
-    self::GenerateRow('poison_wolf');
-    self::GenerateRow('possessed_wolf');
-    self::GenerateRow('sirius_wolf');
-    self::GenerateRow('fox');
-    self::GenerateRow('child_fox');
-    self::GenerateRow('cupid');
-    self::GenerateRow('medium');
-    self::GenerateRow('mania');
-    self::GenerateRow('decide');
-    self::GenerateRow('authority');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('liar');
-    self::GenerateRow('gentleman');
-    self::GenerateRow('sudden_death');
-    self::GenerateRow('perverseness');
-    self::GenerateRow('deep_sleep');
-    self::GenerateRow('mind_open');
-    self::GenerateRow('blinder');
-    self::GenerateRow('critical');
-    self::GenerateRow('joker');
-    self::GenerateRow('death_note');
-    self::GenerateRow('detective');
-    self::GenerateRow('weather');
-    self::GenerateRow('festival');
-    self::GenerateRow('replace_human_selector');
-    self::GenerateRow('change_common_selector');
-    self::GenerateRow('change_mad_selector');
-    self::GenerateRow('change_cupid_selector');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('special_role');
-
-    self::HorizontalRule();
-
-    self::GenerateRow('topping');
-    self::GenerateRow('boost_rate');
-
-    self::GenerateRow('chaos_open_cast');
-    self::GenerateRow('sub_role_limit');
-    self::GenerateRow('secret_sub_role');
+    foreach (self::$order as $name) {
+      is_null($name) ? print(self::SEPARATOR) : self::Generate($name);
+    }
   }
 
-  function GenerateRow($name) {
+  //生成 (振り分け処理用)
+  private function Generate($name) {
     $item = OptionManager::GetClass($name);
-    if (! $item->enable || ! (isset($item->type)|| isset($item->formtype))) return;
-    //if (! $item->enable || ! isset($item->type)) return;
-    $item->LoadMessages();
+    if (! $item->enable || ! isset($item->type)) return;
     switch ($item->type) {
     case 'textbox':
     case 'password':
       $str = self::GenerateTextbox($item);
       break;
 
-    default:
-      $type = $item->formtype;
-      $str = self::$type($item);
+    case 'checkbox':
+    case 'radio':
+      $str = self::GenerateCheckbox($item);
+      break;
+
+    case 'realtime':
+      $str = self::GenerateRealtime($item);
+      break;
+
+    case 'selector':
+      $str = self::GenerateSelector($item);
+      break;
+
+    case 'group':
+      $str = self::GenerateGroup($item);
       break;
     }
     $format = <<<EOF
@@ -107,79 +68,66 @@ EOF;
     printf($format, $item->name, $item->GetCaption(), $str, "\n");
   }
 
-  function HorizontalRule() {
-    echo '<tr><td colspan="2"><hr></td></tr>';
-  }
-
   //テキストボックス生成
-  function GenerateTextbox(TextRoomOptionItem $item) {
-    $size    = sprintf('%s_input', $item->name);
-    $str     = $item->GetExplain();
-    $explain = isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '';
+  private function GenerateTextbox(TextRoomOptionItem $item) {
+    $size = sprintf('%s_input', $item->name);
+    $str  = $item->GetExplain();
     return sprintf(self::TEXTBOX, $item->type, $item->name, $item->name, RoomConfig::$$size,
-		   $explain);
+		   isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '');
   }
 
-  function checkbox(RoomOptionItem $item, $type = 'checkbox') {
-    $footer = isset($item->footer) ? $item->footer : '('.$item->explain.')';
-    $footer = Text::LineToBR($footer);
-    $checked = $item->value ? ' checked' : '';
-    return <<<HTML
-<input type="{$type}" id="{$item->name}" name="{$item->formname}" value="{$item->formvalue}"{$checked}>
-<span class="explain">{$footer}</span>
-HTML;
+  //チェックボックス生成
+  private function GenerateCheckbox(CheckRoomOptionItem $item) {
+    $footer = isset($item->footer) ? $item->footer : sprintf('(%s)', $item->GetExplain());
+    return sprintf(self::CHECKBOX, $item->type, $item->name, $item->form_name, $item->form_value,
+		   $item->value ? ' checked' : '', Text::LineToBR($footer));
   }
 
-  function radio(RoomOptionItem $item) {
-    return self::checkbox($item, 'radio');
+  //チェックボックス生成 (リアルタイム制専用)
+  private function GenerateRealtime(Option_real_time $item) {
+    $footer = sprintf(self::REALTIME, Text::LineToBR($item->GetExplain()),
+		      $item->name, TimeConfig::DEFAULT_DAY,
+		      $item->name, TimeConfig::DEFAULT_NIGHT);
+    return sprintf(self::CHECKBOX, 'checkbox', $item->name, $item->name, $item->form_value,
+		   $item->value ? ' checked' : '', $footer);
   }
 
-  function select(RoomOptionItem $item) {
-    $options = '';
+  //セレクタ生成
+  private function GenerateSelector(SelectorRoomOptionItem $item) {
+    $str = '';
     foreach ($item->GetItems() as $code => $child) {
       if ($child instanceof RoomOptionItem) {
-	$child->LoadMessages();
-	$label = $child->caption;
+	$label = $child->GetCaption();
       }
       else {
 	$label = $child;
       }
-      if (!is_string($code)) {
-	$code = $label;
-      }
-      $selected = $code == $item->value ? ' selected' : '';
-      $options .= "<option value=\"{$code}\" {$selected}>{$label}</option>\n";
+      if (! is_string($code)) $code = $label;
+      $str .= sprintf(self::SELECTOR, $code, $code == $item->value ? ' selected' : '', $label);
     }
-    $explain = Text::LineToBR($item->explain);
-    return <<<HTML
-<select id="{$item->name}" name="{$item->formname}">
-<optgroup label="{$item->label}">
-{$options}</optgroup>
+    $explain = Text::LineToBR($item->GetExplain());
+    $format = <<<EOF
+<select id="%s" name="%s">
+<optgroup label="%s">
+%s</optgroup>
 </select>
-<span class="explain">({$explain})</span>
-HTML;
+<span class="explain">(%s)</span>
+EOF;
+    return sprintf($format, $item->name, $item->form_name, $item->label, $str, $explain);
   }
 
-  function realtime(Option_real_time $item) {
-    $checked = $item->value ? ' checked' : '';
-    $explain = Text::LineToBR($item->explain);
-    return <<<HTML
-<input type="checkbox" id="{$item->name}" name="{$item->formname}" value="on"{$checked}>
-<span class='explain'>({$explain}　昼：<input type="text" name="{$item->formname}_day" value="{$item->defaultDayTime}" size="2" maxlength="2">分 夜：<input type="text" name="{$item->formname}_night" value="{$item->defaultNightTime}" size="2" maxlength="2">分)</span>
-HTML;
-  }
-
-  function group(RoomOptionItem $item) {
+  //グループ生成
+  private function GenerateGroup(RoomOptionItem $item) {
     $str  = '';
     foreach ($item->GetItems() as $key => $child) {
-      $type = $child->formtype;
+      $type = $child->type;
       if (! empty($type)) {
-	$child->LoadMessages();
-	if ($type == 'radio') {
-	  $child->formname = $item->formname;
-	  $child->formvalue = $key;
+	switch ($type) {
+	case 'radio':
+	  $str .= self::GenerateCheckbox($child);
+	  break;
 	}
-	$str .= self::$type($child) . "<br>\n";
+	$str .= "<br>\n";
       }
     }
     return $str;
