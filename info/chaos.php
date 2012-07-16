@@ -734,7 +734,7 @@ InfoHTML::OutputHeader('闇鍋モード');
 <li>内容は設定ファイルで変更できます。</li>
 </ol>
 <p>
-<?php InfoHTML::OutputItemList('boost_rate', range('a', 'g')); ?>
+<?php InfoHTML::OutputItemList('boost_rate', range('a', 'h')); ?>
 </p>
 
 <?php InfoHTML::OutputItem('boost_rate', 'a', 'Ver. 1.5.0 β7'); ?>
@@ -772,6 +772,11 @@ InfoHTML::OutputHeader('闇鍋モード');
 <?php InfoHTML::OutputItem('boost_rate', 'g', 'Ver. 2.0.0'); ?>
 <pre>
 <a href="new_role/human.php#jealousy">橋姫系</a>・<a href="new_role/lovers.php">恋人陣営</a>の出現率が 0 になります。
+</pre>
+
+<?php InfoHTML::OutputItem('boost_rate', 'h', 'Ver. 2.1.0 α5'); ?>
+<pre>
+<a href="new_role/human.php#pharmacist">薬師系</a>・<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/ability.php#poison">毒能力者</a>の出現率が 0 になります。
 </pre>
 
 <h2 id="chaos_open_cast"><?php OptionManager::OutputCaption('chaos_open_cast'); ?> [Ver. 1.4.0 α14～]</h2>

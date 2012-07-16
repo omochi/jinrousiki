@@ -294,31 +294,44 @@ class GameHTML {
   }
 
   //プレイヤー一覧生成
-  static function GeneratePlayer() {
+  static function GeneratePlayer($heaven = false) {
     //Text::p(DB::$ROOM->event);
     //キャッシュデータをセット
-    $beforegame = DB::$ROOM->IsBeforeGame();
+    $admin      = DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOption('gm_login');
     $open_data  = DB::$ROOM->IsOpenData(true);
+    $beforegame = DB::$ROOM->IsBeforegame();
     $base_path  = Icon::GetPath();
     $img_format = '<img src="%s" style="border-color: %s;" alt="icon" title="%s" ' .
       Icon::GetTag() . '%s>';
+    if ($admin && DB::$ROOM->IsNight()) $vote_data = DB::$ROOM->ParseVote(); //投票情報をパース
     if ($open_data) {
       $trip_from = array('◆', '◇');
       $trip_to   = array('◆<br>', '◇<br>');
     }
-
     $count = 0; //改行カウントを初期化
-    $str = '<div class="player"><table><tr>'."\n";
+    $str   = '<div class="player"><table><tr>'."\n";
     foreach (DB::$USER->rows as $id => $user) {
       if ($count > 0 && ($count % 5) == 0) $str .= "</tr>\n<tr>\n"; //5個ごとに改行
       $count++;
 
-      //ゲーム開始投票をしていたら背景色を変える
-      if ($beforegame && ($user->vote_type == 'GAMESTART' || $user->IsDummyBoy(true))) {
-	$td_header = '<td class="already-vote">';
-      }
-      else {
+      //投票済み判定
+      switch (DB::$ROOM->scene) {
+      case 'beforegame':
+	$td_header = $user->vote_type == 'GAMESTART' || $user->IsDummyBoy(true) ?
+	  '<td class="already-vote">' : '<td>';
+	break;
+
+      case 'day':
+	$td_header = $open_data && $user->target_no > 0 ? '<td class="already-vote">' : '<td>';
+	break;
+
+      case 'night':
+	$td_header = $admin && $user->CheckVote($vote_data) ? '<td class="already-vote">' : '<td>';
+	break;
+
+      default:
 	$td_header = '<td>';
+	break;
       }
       $str .= $td_header;
 

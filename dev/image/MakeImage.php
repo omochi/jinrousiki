@@ -1,7 +1,7 @@
 <?php
 require_once('MessageImageGenerator2.php');
 
-class MessageImageBuilder{
+class MessageImageBuilder {
   public $font = 'azuki.ttf';
   #public $font = 'azukiP.ttf';
   #public $font = 'uzura.ttf';
@@ -51,51 +51,51 @@ class MessageImageBuilder{
     'wisp'		=> array('R' => 170, 'G' => 102, 'B' => 255)
 			  );
 
-  function __construct($list){
+  function __construct($list) {
     $font = $this->font_path . $this->font;
     $size = ($trans = $list == 'WishRoleList') ? 12 : 10;
     $this->generator = new MessageImageGenerator($font, $size, 3, 3, $trans);
     $this->list = new $list();
   }
 
-  function LoadDelimiter($delimiter, $colors){
+  function LoadDelimiter($delimiter, $colors) {
     if(! is_array($colors)) $colors = $this->color_list[$colors];
     return new Delimiter($delimiter, $colors['R'], $colors['G'], $colors['B']);
   }
 
-  function AddDelimiter($list){
+  function AddDelimiter(array $list) {
     foreach($list['delimiter'] as $delimiter => $colors){
       $this->generator->AddDelimiter($this->LoadDelimiter($delimiter, $colors));
     }
   }
 
-  function SetDelimiter($list){
+  function SetDelimiter(array $list) {
     if(isset($list['type'])) $this->SetDelimiter($this->list->{$list['type']});
     if(is_null($list['delimiter'])) $list['delimiter'] = array();
     $this->AddDelimiter($list);
   }
 
-  function Generate($name, $calib = array()){
+  function Generate($name, $calib = array()) {
     $this->SetDelimiter($this->list->$name);
     return $this->generator->GetImage($this->list->{$name}['message'], $calib);
   }
 
-  function Output($name, $calib = array()){
+  function Output($name, $calib = array()) {
     header('Content-Type: image/gif');
     imagegif($this->Generate($name, $calib));
   }
 
-  function Save($name){
+  function Save($name) {
     $image = $this->Generate($name);
     imagegif($image, "./test/{$name}.gif"); //出力先ディレクトリのパーミッションに注意
     imagedestroy($image);
     echo $name . '<br>';
   }
 
-  function Test($name){ $this->Generate($name); }
+  function Test($name) { $this->Generate($name); }
 
   //まとめて画像ファイル生成
-  function OutputAll(){
+  function OutputAll() {
     foreach($this->list as $name => $list){
       $image = $this->Generate($name);
       imagegif($image, "./test/{$name}.gif"); //出力先ディレクトリのパーミッションに注意
@@ -105,7 +105,7 @@ class MessageImageBuilder{
   }
 }
 
-class RoleMessageList{
+class RoleMessageList {
   public $human = array(
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|村人|です。特殊な能力はありませんが、あなたの知恵と勇気で村を救えるはずです。",
     'delimiter' => array('|' => 'human'));
@@ -119,7 +119,7 @@ class RoleMessageList{
     'type' => 'elder');
 
   public $eccentricer = array(
-    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|傾奇者|です。一定日数まで、あなたの#処刑#_投票数は +1 されます。",
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|傾奇者|です。一定日数まで、あなたの#処刑#_投票数_は +1 されます。纏うは艶やか、彩るは歌舞伎。宵越しの銭は持たぬが粋。",
     'type' => 'elder');
 
   public $mage = array(
@@ -624,7 +624,7 @@ class RoleMessageList{
     'type' => 'blue_wolf');
 
   public $decieve_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|欺狼|です。襲撃した人に成りすました遺言を追加で残すことができます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|欺狼|です。襲撃した人に成りすました遺言を追加で残すことができます。死者の魂すら操るその能力、騙せないものなど何も無い。",
     'type' => 'wolf', 'delimiter' => array('#' => 'chicken'));
 
   public $doom_wolf = array(
@@ -2145,7 +2145,7 @@ class RoleMessageList{
   public $prediction_weather_aurora = array('message' => "|極光|です", 'type' => 'no_last_words');
 }
 
-class WishRoleList{
+class WishRoleList {
   public $role_none             = array('message' => "←無し");
   public $role_human            = array('message' => "←村人");
   public $role_mage             = array('message' => "←占い師");
@@ -2200,10 +2200,9 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('eccentricer');
-$builder->Output('disguise_wolf');
+$builder->Output('eccentricer');	//
+#$builder->Output('disguise_wolf');
 #$builder->Output('purple_wolf');
-#$builder->Output('snow_wolf');
-#$builder->Output('decieve_wolf');
-#$builder->Output('purple_fox');
+#$builder->Output('snow_wolf');		//
+#$builder->Output('purple_fox');	//
 #$builder->Output('snow_fox');

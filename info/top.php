@@ -26,5 +26,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>出現率変動モード：H (無毒村) 追加</li>
 </ul>

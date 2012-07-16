@@ -224,7 +224,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
     #array('user_no' => 13, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
     #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
-    array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
+    #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
     #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
     #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
     #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
@@ -286,6 +286,7 @@ DB::$ROOM->date = $set_date;
 DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
+if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();
 DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
 if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
@@ -514,6 +515,7 @@ do {
     unset($user->virtual_role);
     $user->live = $user->IsLive(true) ? 'live' : 'dead';
     $user->Reparse();
+    $user->target_no = 0;
   }
 
   foreach (RQ::GetTest()->vote->night as $stack) {

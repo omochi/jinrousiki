@@ -75,8 +75,7 @@ class GameLog {
     }
 
     //能力発動ログを出力 (管理者限定)
-    if (RQ::$get->user_no > 0 &&
-	DB::$SELF->IsDummyBoy() && DB::$SELF->handle_name == '身代わり君') {
+    if (RQ::$get->user_no > 0 && DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOption('gm_login')) {
       DB::$SELF = DB::$USER->ByID(RQ::$get->user_no);
       DB::$SELF->live = 'live';
       RoleHTML::OutputAbility();

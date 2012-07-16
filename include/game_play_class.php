@@ -487,7 +487,13 @@ EOF;
     if ($left_time == 0) {
       printf($str, $time_message . Message::$vote_announce);
       if (DB::$ROOM->sudden_death > 0) {
-	echo Message::$sudden_death_time . Time::Convert(DB::$ROOM->sudden_death) . '<br>'."\n";
+	$format = "%s%s / 投票済み：%d人<br>\n";
+	$time   = Time::Convert(DB::$ROOM->sudden_death);
+	$count  = 0;
+	foreach (DB::$USER->rows as $user) {
+	  if (count($user->target_no) > 0) $count++;
+	}
+	printf($format, Message::$sudden_death_time, $time, $count);
       }
     }
     elseif (DB::$ROOM->IsEvent('wait_morning')) {

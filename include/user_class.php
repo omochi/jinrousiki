@@ -457,7 +457,6 @@ class User {
   //役職をパースして省略名を返す
   public function GenerateShortRoleName($heaven = false, $main_only = false) {
     if (empty($this->main_role)) return;
-
     if (isset($this->role_id)) { //キャッシュ判定
       if ($main_only && isset(DB::$USER->short_role_main[$this->role_id])) {
 	return DB::$USER->short_role_main[$this->role_id];
@@ -487,18 +486,18 @@ class User {
       case 'lovers':
       case 'possessed_exchange':
       case 'challenge_lovers':
-	$str .= '<span class="lovers">' . $name . '</span>';
+	$str .= sprintf('<span class="%s">%s</span>', 'lovers', $name);
 	break;
 
       case 'infected':
       case 'psycho_infected':
-	$str .= '<span class="vampire">' . $name . '</span>';
+	$str .= sprintf('<span class="%s">%s</span>', 'vampire', $name);
 	break;
 
       case 'rival':
       case 'enemy':
       case 'supported':
-	$str .= '<span class="duelist">' . $name . '</span>';
+	$str .= sprintf('<span class="%s">%s</span>', 'duelist', $name);
 	break;
 
       default:
@@ -508,7 +507,9 @@ class User {
     }
     $uname = $heaven ? $this->uname : DB::$USER->TraceExchange($this->user_no)->uname;
     $str .= '] (' . $uname . ')</span>';
-    if (isset($this->role_id)) DB::$USER->short_role[$this->role_id] = $str;
+    if (isset($this->role_id) && ! $this->IsRole('possessed_exchange')) {
+      DB::$USER->short_role[$this->role_id] = $str;
+    }
     return $str;
   }
 

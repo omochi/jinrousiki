@@ -972,7 +972,29 @@ class ChaosConfig {
 		 'ark_angel'         =>  0,
 		 'sacrifice_angel'   =>  0,
 		 'scarlet_angel'     =>  0,
-		 'cursed_angel'      =>  0)
+		 'cursed_angel'      =>  0),
+    'h' => array('poison_guard'         => 0,
+		 'poison'               => 0,
+		 'strong_poison'        => 0,
+		 'incubate_poison'      => 0,
+		 'guide_poison'         => 0,
+		 'snipe_poison'         => 0,
+		 'chain_poison'         => 0,
+		 'dummy_poison'         => 0,
+		 'poison_cat'           => 0,
+		 'pharmacist'           => 0,
+		 'cure_pharmacist'      => 0,
+		 'revive_pharmacist'    => 0,
+		 'alchemy_pharmacist'   => 0,
+		 'centaurus_pharmacist' => 0,
+		 'poison_jealousy'      => 0,
+		 'poison_doll'          => 0,
+		 'poison_wolf'          => 0,
+		 'resist_wolf'          => 0,
+		 'poison_fox'           => 0,
+		 'poison_chiroptera'    => 0,
+		 'poison_ogre'          => 0,
+		 'poison_avenger'       => 0)
 			       );
 
   //サブ役職制限：EASYモード
