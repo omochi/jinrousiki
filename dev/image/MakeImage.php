@@ -119,7 +119,7 @@ class RoleMessageList {
     'type' => 'elder');
 
   public $eccentricer = array(
-    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|傾奇者|です。一定日数まで、あなたの#処刑#_投票数_は +1 されます。纏うは艶やか、彩るは歌舞伎。宵越しの銭は持たぬが粋。",
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|傾奇者|です。一定日数まで、あなたの#処刑#_投票数_が +1 されます。纏うは艶やか、彩るは歌舞伎。宵越しの銭は持たぬが粋。",
     'type' => 'elder');
 
   public $mage = array(
@@ -781,11 +781,11 @@ class RoleMessageList {
     'type' => 'fox', 'delimiter' => array('_' => 'mage'));
 
   public $purple_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紫狐|です。_処刑_投票先が#人狼陣営#だった場合は自分に^死の宣告^がついてしまいます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紫狐|です。_処刑_投票先が#人狼陣営#だった場合は自分に^死の宣告^がついてしまいます。\n　汝の衣は高貴の証。汝に害なす狼達に、その威風にて冥府へと誘う死の宣告を下すのです。",
     'type' => 'fox', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
 
   public $snow_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|雪狐|です。あなたに_処刑_投票してきた人が#狂人系#だった場合は自分に^凍傷^がついてしまいます。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|雪狐|です。あなたに_処刑_投票してきた人が#狂人系#だった場合は自分に^凍傷^がついてしまいます。\n　夢に映し出されるのです。凍てついた空間の闇から、悪しき#狼#の手先が私に手をかけようとしてるのを。",
     'type' => 'purple_fox');
 
   public $poison_fox = array(
@@ -2200,9 +2200,7 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-$builder->Output('eccentricer');	//
 #$builder->Output('disguise_wolf');
 #$builder->Output('purple_wolf');
-#$builder->Output('snow_wolf');		//
-#$builder->Output('purple_fox');	//
-#$builder->Output('snow_fox');
+#$builder->Output('snow_wolf');
+$builder->Output('purple_fox');
