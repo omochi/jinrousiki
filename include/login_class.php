@@ -2,7 +2,7 @@
 //-- ログイン処理クラス --//
 class Login {
   //基幹処理
-  static function Execute(){
+  static function Execute() {
     DB::Connect();
     if (RQ::$get->login_manually) { //ユーザ名とパスワードで手動ログイン
       if (self::LoginManually()) {
@@ -17,8 +17,7 @@ class Login {
 
     if (Session::Certify(false)) { //セッション ID から自動ログイン
       self::Output('ログインしています', 'game_frame');
-    }
-    else { //単に呼ばれただけなら観戦ページに移動させる
+    } else { //単に呼ばれただけなら観戦ページに移動させる
       self::Output('観戦ページにジャンプ', 'game_view', '観戦ページに移動します');
     }
   }
@@ -28,12 +27,12 @@ class Login {
     セッションを失った場合、ユーザ名とパスワードでログインする
     ログイン成功/失敗を true/false で返す
   */
-  private function LoginManually(){
+  private function LoginManually() {
     extract(RQ::ToArray()); //引数を展開
     if ($uname == '' || $password == '') return false;
 
     //$ip = $_SERVER['REMOTE_ADDR']; //IPアドレス取得 //現在は IP アドレス認証は行っていない
-    $crypt = Text::CryptPassword($password);
+    $crypt = Text::Crypt($password);
     //$crypt = $password; //デバッグ用
 
     //該当するユーザ名とパスワードがあるか確認
@@ -47,7 +46,7 @@ class Login {
   }
 
   //結果出力関数
-  private function Output($title, $jump, $body = null){
+  private function Output($title, $jump, $body = null) {
     if (is_null($body)) $body = $title;
     if (is_null($jump)) {
       $url = '';

@@ -46,32 +46,23 @@ class Room {
   //option_role を追加ロードする
   function LoadOption() {
     $option_role = RQ::$get->IsVirtualRoom() ? RQ::GetTest()->test_room['option_role'] :
-      DB::FetchResult($this->GetQueryHeader('room', 'option_role'));
+      RoomDB::Fetch('option_role');
     $this->option_role = new OptionParser($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->list));
   }
 
   //最大参加人数を取得する
-  function LoadMaxUser() {
-    $format = 'SELECT max_user FROM room WHERE room_no = %d';
-    return DB::FetchResult(sprintf($format, $this->id));
-  }
+  function LoadMaxUser() { return RoomDB::Fetch('max_user'); }
 
   //シーンを取得する
-  function LoadScene() {
-    $format = 'SELECT scene FROM room WHERE room_no = %d FOR UPDATE';
-    return DB::FetchResult(sprintf($format, $this->id));
-  }
+  function LoadScene() { return RoomDB::Fetch('scene', true); }
 
   //経過時間取得
-  function LoadTime() {
-    $format = 'SELECT UNIX_TIMESTAMP() - last_update_time FROM room WHERE room_no = %d';
-    return DB::FetchResult(sprintf($format, $this->id));
-  }
+  function LoadTime() { return RoomDB::Fetch('UNIX_TIMESTAMP() - last_update_time'); }
 
   //最終シーンの夜の発言数を取得する
   function LoadLastNightTalk() {
-    $format = "SELECT uname FROM talk WHERE room_no = %d AND date = %d AND scene = 'night'";
+    $format = 'SELECT uname FROM talk' . RoomDB::DATE . " AND scene = 'night'";
     return DB::Count(sprintf($format, $this->id, $this->date));
   }
 
@@ -116,22 +107,21 @@ class Room {
       if (is_null($vote_list = RQ::GetTest()->vote->{$this->scene})) return null;
     }
     else {
-      $action = "scene = '{$this->scene}' AND vote_count = {$this->vote_count}";
+      $format = 'SELECT %s FROM vote' . RoomDB::DATE . " AND scene = '%s' AND vote_count = %d";
       switch ($this->scene) {
       case 'beforegame':
       case 'night':
 	$data = 'user_no, target_no, type';
 	break;
 
-      case 'day':
+      case 'day': //必要に応じて revote_count を WHERE に足す (不要のはず)
 	$data = 'user_no, target_no, vote_number';
-	//$action .= " AND revote_count = {$this->revote_count}"; //vote_count だけで一意のはず
 	break;
 
       default:
 	return null;
       }
-      $query = "SELECT {$data} FROM vote {$this->GetQuery()} AND {$action}";
+      $query = sprintf($format, $data, $this->id, $this->date, $this->scene, $this->vote_count);
       $vote_list = DB::FetchAssoc($query);
     }
 
@@ -201,9 +191,8 @@ class Room {
     $type_list = array("'WEATHER'", "'EVENT'", "'BLIND_VOTE'", "'SAME_FACE'");
     if ($this->IsDay()) $type_list[] = "'VOTE_DUEL'";
 
-    $format = 'SELECT type, message FROM system_message WHERE room_no = %d AND date = %d ' .
-      'AND type IN (%s)';
-    $query = sprintf($format, $this->id, $this->date, implode(',', $type_list));
+    $format = 'SELECT type, message FROM system_message' . RoomDB::DATE . ' AND type IN (%s)';
+    $query  = sprintf($format, $this->id, $this->date, implode(',', $type_list));
     $this->event->rows = DB::FetchAssoc($query);
   }
 
@@ -212,8 +201,7 @@ class Room {
     if (! $this->IsPlaying()) return null;
     $date = $this->date;
     if (($shift && RQ::$get->reverse_log) || $this->IsAfterGame()) $date++;
-    $format = 'SELECT message FROM system_message WHERE room_no = %d AND date = %d ' .
-      "AND type = 'WEATHER'";
+    $format = 'SELECT message FROM system_message' . RoomDB::DATE . " AND type = 'WEATHER'";
     $result = DB::FetchResult(sprintf($format, $this->id, $date));
     $this->event->weather = $result === false ? null : $result; //天候を格納
   }
@@ -221,8 +209,7 @@ class Room {
   //勝敗情報を DB から取得する
   function LoadWinner() {
     if (! isset($this->winner)) { //未設定ならキャッシュする
-      $this->winner = $this->test_mode ? RQ::GetTest()->winner :
-	DB::FetchResult($this->GetQueryHeader('room', 'winner'));
+      $this->winner = $this->test_mode ? RQ::GetTest()->winner : RoomDB::Fetch('winner');
     }
     return $this->winner;
   }
@@ -400,7 +387,7 @@ class Room {
 
   //超過警告メッセージ出力済み判定
   function IsOvertimeAlert() {
-    $query = $this->GetQueryHeader('room', 'overtime_alert') . ' AND overtime_alert IS FALSE';
+    $query = RoomDB::SetID('overtime_alert') . ' AND overtime_alert IS FALSE';
     return DB::Count($query) < 1;
   }
 
@@ -430,7 +417,7 @@ class Room {
     }
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$scene}: {$location}: {$action}: {$font_type}";
-      Text::p(Text::LineToBR($sentence), $str);
+      Text::p(Text::ConvertLine($sentence), $str);
       return true;
     }
 
@@ -471,7 +458,7 @@ class Room {
   function TalkBeforeGame($sentence, $uname, $handle_name, $color, $font_type = null) {
     if ($this->test_mode) {
       $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
-      Text::p(Text::LineToBR($sentence), $str);
+      Text::p(Text::ConvertLine($sentence), $str);
       return true;
     }
 
@@ -648,6 +635,35 @@ class Room {
   function GenerateTitleTag() {
     return '<td class="room"><span>' . $this->name . '村</span>　[' . $this->id .
       '番地]<br>～' . $this->comment . '～</td>'."\n";
+  }
+}
+
+//-- DB アクセス (Room 拡張) --//
+class RoomDB {
+  const SELECT = 'SELECT %s FROM room';
+  const ID     = ' WHERE room_no = %d';
+  const DATE   = ' WHERE room_no = %d AND date = %d';
+  const LOCK   = ' FOR UPDATE';
+
+  //基礎条件取得
+  static function GetID($lock = false) {
+    return self::SELECT . self::ID . ($lock ? self::LOCK : '');
+  }
+
+  //日付入り条件取得
+  static function GetDate() { return self::SELECT . self::Date; }
+
+  //基礎 SQL セット
+  static function SetID($data, $lock = false) {
+    return sprintf(self::GetID($lock), $data, DB::$ROOM->id);
+  }
+
+  //日付入り SQL セット
+  static function SetDate() { return sprintf(self::DATE, DB::$ROOM->id, DB::$ROOM->date); }
+
+  //基礎 SQL 取得
+  static function Fetch($data, $lock = false) {
+    return DB::FetchResult(self::SetID($data, $lock));
   }
 }
 

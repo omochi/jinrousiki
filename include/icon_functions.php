@@ -312,7 +312,7 @@ HTML;
     if (RQ::$get->room_no > 0) $CONF->option[] = 'room_no=' . RQ::$get->room_no;
     if (RQ::$get->icon_no > 0) $CONF->option[] = 'icon_no=' . RQ::$get->icon_no;
     printf('<td colspan="%d" class="page-link">', $colspan);
-    OutputPageLink($CONF);
+    self::OutputPageLink($CONF);
     echo <<<HTML
 </td>
 </tr>
@@ -413,5 +413,66 @@ HTML;
 <font color="{$color}">◆</font>{$icon_name}</label></td>
 
 HTML;
+  }
+
+  //ページ送り用のリンクタグを出力する (PageLinkBuilder と統合できるかも)
+  private function OutputPageLink(StdClass $CONFIG) {
+    $page_count = ceil($CONFIG->count / $CONFIG->view);
+    $start_page = $CONFIG->current== 'all' ? 1 : $CONFIG->current;
+    if ($page_count - $CONFIG->current < $CONFIG->page) {
+      $start_page = $page_count - $CONFIG->page + 1;
+      if ($start_page < 1) $start_page = 1;
+    }
+    $end_page = $CONFIG->current + $CONFIG->page - 1;
+    if ($end_page > $page_count) $end_page = $page_count;
+
+    $url_stack = array('[' . (is_null($CONFIG->title) ? 'Page' : $CONFIG->title) . ']');
+    $url_header = '<a href="' . $CONFIG->url . '.php?';
+
+    if ($page_count > $CONFIG->page && $CONFIG->current> 1) {
+      $url_stack[] = self::GeneratePageLink($CONFIG, 1, '[1]...');
+      $url_stack[] = self::GeneratePageLink($CONFIG, $start_page - 1, '&lt;&lt;');
+    }
+
+    for ($page_number = $start_page; $page_number <= $end_page; $page_number++) {
+      $url_stack[] = self::GeneratePageLink($CONFIG, $page_number);
+    }
+
+    if ($page_number <= $page_count) {
+      $url_stack[] = self::GeneratePageLink($CONFIG, $page_number, '&gt;&gt;');
+      $url_stack[] = self::GeneratePageLink($CONFIG, $page_count, '...[' . $page_count . ']');
+    }
+    $url_stack[] = self::GeneratePageLink($CONFIG, 'all');
+
+    if ($CONFIG->url == 'old_log') {
+      $list = $CONFIG->option;
+      $list['page'] = 'page=' . $CONFIG->current;
+      $list['reverse'] = 'reverse=' . ($CONFIG->is_reverse ? 'off' : 'on');
+      $url_stack[] = '[表示順]';
+      $url_stack[] = $CONFIG->is_reverse ? '新↓古' : '古↓新';
+
+      $url = $url_header . implode('&', $list) . '">';
+      $name = ($CONFIG->is_reverse xor $CONFIG->reverse) ? '元に戻す' : '入れ替える';
+      $url_stack[] =  $url . $name . '</a>';
+    }
+    echo implode(' ', $url_stack);
+  }
+
+  //ページ送り用のリンクタグを作成する
+  private function GeneratePageLink(StdClass $CONFIG, $page, $title = null) {
+    if ($page == $CONFIG->current) return sprintf('[%s]', $page);
+    $option = (is_null($CONFIG->page_type) ? 'page' : $CONFIG->page_type) . '=' . $page;
+    $list   = $CONFIG->option;
+    array_unshift($list, $option);
+    $url = $CONFIG->url . '.php?' . implode('&', $list);
+    $attributes = array();
+    if (isset($CONFIG->attributes)) {
+      foreach($CONFIG->attributes as $attr => $value) {
+	$attributes[] = $attr . '="'. eval($value) . '"';
+      }
+    }
+    $attrs = implode(' ', $attributes);
+    if (is_null($title)) $title = sprintf('[%s]', $page);
+    return sprintf('<a href="%s" %s>%s</a>', $url, $attrs, $title);
   }
 }

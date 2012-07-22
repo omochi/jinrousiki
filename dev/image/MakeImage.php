@@ -365,6 +365,14 @@ class RoleMessageList {
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#おしら様#です。夜に村人一人を#オシラ遊び#の対象に選ぶことができます。村の敵に命日を定め、天に召して平和を願いましょう。",
     'type' => 'assassin');
 
+  public $sweep_assassin = array(
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#掃除屋#です。夜に村人一人を必ず#暗殺#しなければいけません。",
+    'type' => 'assassin');
+
+  public $professional_assassin = array(
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#仕事人#です。|村人陣営|、_人狼系_、^妖狐陣営^は#暗殺#できません。",
+    'type' => 'assassin', 'delimiter' => array('_' => 'wolf', '^' => 'fox'));
+
   public $reverse_assassin = array(
     'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#反魂師#です。夜に選んだ人が生きていたら#暗殺#し、死んでいたら_蘇生_することができます。\n　あなたの秘術は生死を操る禁忌。夜陰にその力を振るい、村のための舞台を秘密裏に整えるのです。",
     'type' => 'assassin', 'delimiter' => array('_' => 'revive'));
@@ -584,15 +592,15 @@ class RoleMessageList {
     'type' => 'wolf', 'delimiter' => array('#' => 'fox'));
 
   public $disguise_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|朔狼|です。|人狼系|に_処刑投票_すると|囁き狂人|に変化します。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|朔狼|です。|人狼系|に_処刑投票_すると|囁き狂人|に変化します。隠れた月を捕らえられるものはいません、村を絶望へと誘うのです。",
     'type' => 'poison_wolf');
 
   public $purple_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紫狼|です。_処刑_投票先が#妖狐陣営#だった場合は自分に^死の宣告^がついてしまいます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|紫狼|です。_処刑_投票先が#妖狐陣営#だった場合は自分に^死の宣告^がついてしまいます。\n　我等が頂点だと示すため。憎く小賢しき宿敵を見つけ出そう。我が身の死への誘いと引換に…",
     'type' => 'wise_wolf', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
 
   public $snow_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雪狼|です。あなたに_処刑_投票してきた人が#子狐系#だった場合は自分に^凍傷^がついてしまいます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|雪狼|です。あなたに_処刑_投票してきた人が#子狐系#だった場合は自分に^凍傷^がついてしまいます。\n　舞散る華が、輝く雪が、儚く瞬く刹那の刻に。白銀を汚す不届き者にその罪の深さを教えてあげなさい。",
     'type' => 'purple_wolf');
 
   public $poison_wolf = array(
@@ -781,7 +789,7 @@ class RoleMessageList {
     'type' => 'fox', 'delimiter' => array('_' => 'mage'));
 
   public $purple_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紫狐|です。_処刑_投票先が#人狼陣営#だった場合は自分に^死の宣告^がついてしまいます。\n　汝の衣は高貴の証。汝に害なす狼達に、その威風にて冥府へと誘う死の宣告を下すのです。",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|紫狐|です。_処刑_投票先が#人狼陣営#だった場合は自分に^死の宣告^がついてしまいます。\n　冥府へ続く道筋を、衣は輝き止めるだろう。その輝きの代償が、冥府へ続く事となろうとも…",
     'type' => 'fox', 'delimiter' => array('_' => 'vote', '^' => 'chicken'));
 
   public $snow_fox = array(
@@ -1782,6 +1790,8 @@ class RoleMessageList {
   public $result_assassin = array('message' => "さんは|暗殺者|でした", 'delimiter' => array('|' => 'assassin'));
   public $result_doom_assassin = array('message' => "さんは|死神|でした", 'type' => 'result_assassin');
   public $result_select_assassin = array('message' => "さんは|おしら様|でした", 'type' => 'result_assassin');
+  public $result_sweep_assassin = array('message' => "さんは|掃除屋|でした", 'type' => 'result_assassin');
+  public $result_professional_assassin = array('message' => "さんは|仕事人|でした", 'type' => 'result_assassin');
   public $result_reverse_assassin = array('message' => "さんは|反魂師|でした", 'type' => 'result_assassin');
   public $result_soul_assassin = array('message' => "さんは|辻斬り|でした", 'type' => 'result_assassin');
   public $result_eclipse_assassin = array('message' => "さんは|蝕暗殺者|でした", 'type' => 'result_assassin');
@@ -2200,7 +2210,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('disguise_wolf');
-#$builder->Output('purple_wolf');
-#$builder->Output('snow_wolf');
-$builder->Output('purple_fox');
+$builder->Output('sweep_assassin', array(0, 0, 0, 0, 0, 0, -1, 0.5));
+#$builder->Output('professional_assassin', array(0,0,0,0,-0.5,0,0,0.8,0.3,1,0.5,1));

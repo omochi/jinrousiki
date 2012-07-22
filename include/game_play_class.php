@@ -213,8 +213,8 @@ class GamePlay {
 
     //未投票突然死処理
     foreach ($novote_list as $id) DB::$USER->SuddenDeath($id, 'NOVOTED');
-    LoversFollowed(true);
-    InsertMediumMessage();
+    RoleManager::GetClass('lovers')->Followed(true);
+    RoleManager::GetClass('medium')->InsertResult();
 
     DB::$ROOM->Talk(Message::$vote_reset); //投票リセットメッセージ
     DB::$ROOM->UpdateVoteCount(true); //投票回数を更新
@@ -487,13 +487,18 @@ EOF;
     if ($left_time == 0) {
       printf($str, $time_message . Message::$vote_announce);
       if (DB::$ROOM->sudden_death > 0) {
-	$format = "%s%s / 投票済み：%d人<br>\n";
-	$time   = Time::Convert(DB::$ROOM->sudden_death);
-	$count  = 0;
-	foreach (DB::$USER->rows as $user) {
-	  if (count($user->target_no) > 0) $count++;
+	$time = Time::Convert(DB::$ROOM->sudden_death);
+	if (DB::$ROOM->IsDay()) {
+	  $count = 0;
+	  foreach (DB::$USER->rows as $user) {
+	    if (count($user->target_no) > 0) $count++;
+	  }
+	  $voted = sprintf(' / 投票済み：%d人', $count);
 	}
-	printf($format, Message::$sudden_death_time, $time, $count);
+	else {
+	  $voted = '';
+	}
+	printf("%s%s%s<br>\n", Message::$sudden_death_time, $time, $voted);
       }
     }
     elseif (DB::$ROOM->IsEvent('wait_morning')) {
@@ -512,7 +517,7 @@ EOF;
     $str = DB::$SELF->LoadLastWords();
     if ($str == '') return false;
 
-    Text::LineToBR($str); //改行コードを変換
+    Text::ConvertLine($str); //改行コードを変換
     if ($str == '') return false;
 
     echo <<<EOF

@@ -6,11 +6,11 @@ class OptionParser {
 
   function __construct($value) {
     $this->row  = $value;
-    $this->list = $this->Parse($this->row);
+    $this->list = self::Parse($this->row);
   }
 
-  //パース (static call あり)
-  function Parse($value) {
+  //パース
+  static function Parse($value) {
     $list = array();
     foreach (explode(' ', $value) as $option) {
       if (empty($option)) continue;

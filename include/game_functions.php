@@ -4,13 +4,13 @@ class GameTime {
   //リアルタイムの経過時間
   static function GetRealPass(&$left_time) {
     $start_time = DB::$ROOM->scene_start_time; //シーンの最初の時刻を取得
-    $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間
+    $base_time  = DB::$ROOM->real_time->{DB::$ROOM->scene} * 60; //設定された制限時間 (秒)
     $pass_time  = DB::$ROOM->system_time - $start_time;
     if (DB::$ROOM->IsOption('wait_morning') && DB::$ROOM->IsDay()) { //早朝待機制
       $base_time += TimeConfig::WAIT_MORNING; //制限時間を追加する
       DB::$ROOM->event->wait_morning = $pass_time <= TimeConfig::WAIT_MORNING; //待機判定
     }
-    if (($left_time = $base_time - $pass_time) < 0) $left_time = 0; //残り時間
+    $left_time = max(0, $base_time - $pass_time); //残り時間
     return $start_time + $base_time;
   }
 
@@ -27,7 +27,7 @@ class GameTime {
       $base_time = TimeConfig::NIGHT;
       $full_time = 6;
     }
-    if (($left_time = $base_time - $spend_time) < 0) $left_time = 0; //残り時間
+    $left_time      = max(0, $base_time - $spend_time); //残り時間
     $base_left_time = $silence ? TimeConfig::SILENCE_PASS : $left_time; //仮想時間の計算
     return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
   }
@@ -60,9 +60,9 @@ EOF;
 
   //JavaScript の Date() オブジェクト作成コードを生成する
   private function GetJavaScriptDate($time) {
-    $time_list = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
-    $time_list[1]--;  //JavaScript の Date() の Month は 0 からスタートする
-    return sprintf('new Date(%s)', implode(',', $time_list));
+    $stack = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
+    $stack[1]--;  //JavaScript の Date() の Month は 0 からスタートする
+    return sprintf('new Date(%s)', implode(',', $stack));
   }
 }
 
@@ -109,23 +109,17 @@ class Winner {
     $winner = ''; //勝利陣営
     if ($human == $quiz && $wolf == 0 && $fox == 0) { //全滅
       $winner = $quiz > 0 ? 'quiz' : 'vanish';
-    }
-    elseif ($vampire) {//吸血鬼支配
+    } elseif ($vampire) { //吸血鬼支配
       $winner = $lovers > 1 ? 'lovers' : 'vampire';
-    }
-    elseif ($wolf == 0) { //狼全滅
+    } elseif ($wolf == 0) { //狼全滅
       $winner = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox1' : 'human');
-    }
-    elseif ($wolf >= $human) { //村全滅
+    } elseif ($wolf >= $human) { //村全滅
       $winner = $lovers > 1 ? 'lovers' : ($fox > 0 ? 'fox2' : 'wolf');
-    }
-    elseif ($human + $wolf + $fox == $lovers) { //恋人支配
+    } elseif ($lovers >= $human + $wolf + $fox) { //恋人支配
       $winner = 'lovers';
-    }
-    elseif (DB::$ROOM->IsQuiz() && $quiz == 0) { //クイズ村 GM 死亡
+    } elseif (DB::$ROOM->IsQuiz() && $quiz == 0) { //クイズ村 GM 死亡
       $winner = 'quiz_dead';
-    }
-    elseif ($check_draw && DB::$ROOM->revote_count >= GameConfig::DRAW) { //引き分け
+    } elseif ($check_draw && DB::$ROOM->revote_count >= GameConfig::DRAW) { //引き分け
       $winner = 'draw';
     }
 
@@ -134,9 +128,9 @@ class Winner {
     //ゲーム終了
     //OutputSiteSummary(); //RSS機能はテスト中
     $query = "UPDATE room SET status = 'finished', scene = 'aftergame', " .
-      "scene_start_time = UNIX_TIMESTAMP(), winner = '{$winner}', finish_datetime = NOW() ".
-      sprintf('WHERE room_no = %d', DB::$ROOM->id);
-    return DB::FetchBool($query);
+      "scene_start_time = UNIX_TIMESTAMP(), winner = '%s', finish_datetime = NOW() " .
+      'WHERE room_no = %d';
+    return DB::FetchBool(sprintf($query, $winner, DB::$ROOM->id));
   }
 
   //勝敗結果生成
@@ -147,22 +141,19 @@ class Winner {
     $text   = $winner;
 
     switch ($winner) { //特殊ケース対応
-      //妖狐勝利
-    case 'fox1':
+    case 'fox1': //妖狐勝利
     case 'fox2':
       $winner = 'fox';
       $class  = $winner;
       break;
 
-      //引き分け
     case 'draw': //引き分け
     case 'vanish': //全滅
     case 'quiz_dead': //クイズ村 GM 死亡
       $class = 'draw';
       break;
 
-      //廃村
-    case null:
+    case null:  //廃村
       $class = 'none';
       $text  = DB::$ROOM->date > 0 ? 'unfinished' : 'none';
       break;
@@ -185,8 +176,8 @@ EOF;
     $class  = null;
     $user   = $id > 0 ? DB::$USER->ByID($id) : DB::$SELF;
     if ($user->user_no < 1) return $str;
-    $camp   = $user->GetCamp(true); //所属陣営を取得
 
+    $camp = $user->GetCamp(true); //所属陣営を取得
     switch ($winner) {
     case 'draw':   //引き分け
     case 'vanish': //全滅
@@ -434,7 +425,7 @@ class GameHTML {
     $str = '';
     foreach ($stack as $list) {
       extract($list);
-      Text::LineToBR($message);
+      Text::ConvertLine($message);
       $str .= <<<EOF
 <tr>
 <td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
@@ -867,58 +858,6 @@ EOF;
     $weather = RoleData::$weather_list[DB::$ROOM->event->weather];
     $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
     return sprintf($str, $weather['name'], $weather['caption']);
-  }
-}
-
-//-- 役職関連 --//
-//巫女の判定結果 (システムメッセージ)
-function InsertMediumMessage() {
-  $flag  = false; //巫女の出現判定
-  $stack = array();
-  foreach (DB::$USER->rows as $user) {
-    $flag |= $user->IsRoleGroup('medium');
-    if ($user->suicide_flag) {
-      $virtual_user = DB::$USER->ByVirtual($user->user_no);
-      $id = $virtual_user->user_no;
-      $stack[$id] = array('target' => $virtual_user->handle_name, 'result' => $user->GetCamp());
-    }
-  }
-  if (! $flag) return;
-  ksort($stack);
-  foreach ($stack as $list) {
-    DB::$ROOM->ResultAbility('MEDIUM_RESULT', $list['result'], $list['target']);
-  }
-}
-
-//恋人の後追い死処理
-function LoversFollowed($sudden_death = false) {
-  $cupid_list      = array(); //キューピッドのID => 恋人のID
-  $lost_cupid_list = array(); //恋人が死亡したキューピッドのリスト
-  $checked_list    = array(); //処理済キューピッドのID
-
-  foreach (DB::$USER->rows as $user) { //キューピッドと死んだ恋人のリストを作成
-    foreach ($user->GetPartner('lovers', true) as $id) {
-      $cupid_list[$id][] = $user->user_no;
-      if ($user->dead_flag || $user->revive_flag) $lost_cupid_list[$id] = $id;
-    }
-  }
-
-  while (count($lost_cupid_list) > 0) { //対象キューピッドがいれば処理
-    $cupid_id = array_shift($lost_cupid_list);
-    $checked_list[] = $cupid_id;
-    foreach ($cupid_list[$cupid_id] as $lovers_id) { //キューピッドのリストから恋人の ID を取得
-      $user = DB::$USER->ById($lovers_id); //恋人の情報を取得
-      if (! DB::$USER->Kill($user->user_no, 'LOVERS_FOLLOWED')) continue;
-      //突然死の処理
-      if ($sudden_death) DB::$ROOM->Talk($user->handle_name . Message::$lovers_followed);
-      $user->suicide_flag = true;
-
-      foreach ($user->GetPartner('lovers') as $id) { //後追いした恋人のキューピッドのIDを取得
-	if (! (in_array($id, $checked_list) || in_array($id, $lost_cupid_list))) { //連鎖判定
-	  $lost_cupid_list[] = $id;
-	}
-      }
-    }
   }
 }
 

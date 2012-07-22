@@ -77,7 +77,7 @@ class DocumentBuilder {
     if ($row_class  != '') $row_class  = ' ' . $row_class;
     if ($user_class != '') $user_class = ' ' . $user_class;
     if ($say_class  != '') $say_class  = ' ' . $say_class;
-    Text::LineToBR($str);
+    Text::ConvertLine($str);
     if (GameConfig::QUOTE_TALK) $str = '「' . $str . '」';
 
     $this->cache .= <<<EOF
@@ -115,7 +115,7 @@ EOF;
   }
 
   function AddSystemTalk($str, $class = 'system-user'){
-    Text::LineToBR($str);
+    Text::ConvertLine($str);
     $this->cache .= <<<EOF
 <tr>
 <td class="{$class}" colspan="2">{$str}</td>

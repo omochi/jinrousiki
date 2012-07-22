@@ -436,7 +436,7 @@ class TalkBuilder {
     if ($row_class  != '') $row_class  = ' ' . $row_class;
     if ($user_class != '') $user_class = ' ' . $user_class;
     if ($say_class  != '') $say_class  = ' ' . $say_class;
-    Text::LineToBR($str);
+    Text::ConvertLine($str);
     if (GameConfig::QUOTE_TALK) $str = '「' . $str . '」';
 
     $this->cache .= <<<EOF
@@ -475,7 +475,7 @@ EOF;
 
   //システムユーザ発言
   function AddSystem($str, $class = 'system-user') {
-    Text::LineToBR($str);
+    Text::ConvertLine($str);
     $this->cache .= <<<EOF
 <tr>
 <td class="{$class}" colspan="2">{$str}</td>

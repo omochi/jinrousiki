@@ -1946,6 +1946,8 @@ A[河童] → B[村人][小心者]
 <a href="#assassin">暗殺者</a>
 <a href="#doom_assassin">死神</a>
 <a href="#select_assassin">おしら様</a>
+<a href="#sweep_assassin">掃除屋</a>
+<a href="#professional_assassin">仕事人</a>
 <a href="#reverse_assassin">反魂師</a>
 <a href="#soul_assassin">辻斬り</a>
 <a href="#eclipse_assassin">蝕暗殺者</a>
@@ -2026,6 +2028,32 @@ A[河童] → B[村人][小心者]
 <pre>
 時間差暗殺能力者です。
 主に<a href="../game_option.php#duel">決闘村</a>で「最期の夜を迎えた恋人」を演出するのが狙いです。
+</pre>
+
+<h3 id="sweep_assassin">掃除屋 (占い結果：村人 / 霊能結果：村人) [Ver. 2.1.0 α6～]</h3>
+<h4>[耐性] 罠：有効 / 護衛制限：有り</h4>
+<pre>
+<a href="#assassin_rule">暗殺しない</a>を選べない特殊な暗殺者。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+大人数村の進行を早めるための存在です。暗殺能力のリスクがよく分かることでしょう。
+</pre>
+
+<h3 id="professional_assassin">仕事人 (占い結果：村人 / 霊能結果：村人) [Ver. 2.1.0 α6～]</h3>
+<h4>[耐性] 罠：有効 / 護衛制限：有り</h4>
+<pre>
+村人陣営・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>を暗殺できない特殊な暗殺者。
+</pre>
+<ol>
+<li><a href="sub_role.php#lovers">恋人</a>は恋人陣営と判定される。</li>
+<li>変化前の<a href="wolf.php#therian_mad">獣人</a>・<a href="mania.php">神話マニア陣営</a>は暗殺可能。</li>
+<li><a href="fox.php">妖狐</a>についた<a href="mania.php#unknown_mania_group">鵺系</a>は暗殺可能。</li>
+</ol>
+<h4>[作成者からのコメント]</h4>
+<pre>
+「失敗」しない暗殺能力者ですが、対象は全て村人カウントなので
+本来の最終兵器とも呼ばれる威力はありません。
 </pre>
 
 <h3 id="reverse_assassin">反魂師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>

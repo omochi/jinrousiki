@@ -35,7 +35,7 @@ RQ::GetTest()->test_users[2]->live = 'live';
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
 RQ::GetTest()->test_users[3]->live = 'live';
 
-RQ::GetTest()->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel';
+RQ::GetTest()->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel frostbite[6]';
 RQ::GetTest()->test_users[4]->live = 'live';
 
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
@@ -50,10 +50,10 @@ RQ::GetTest()->test_users[7]->live = 'live';
 RQ::GetTest()->test_users[8]->role = 'poison_guard';
 RQ::GetTest()->test_users[8]->live = 'live';
 
-RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
+RQ::GetTest()->test_users[9]->role = 'revive_medium joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'doom_fox death_note[5]';
+RQ::GetTest()->test_users[10]->role = 'professional_assassin death_note[5]';
 RQ::GetTest()->test_users[10]->live = 'live';
 
 RQ::GetTest()->test_users[11]->role = 'dream_eater_mad downer_luck';
@@ -89,7 +89,7 @@ RQ::GetTest()->test_users[20]->live = 'live';
 RQ::GetTest()->test_users[21]->role = 'soul_mania[8] panelist';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter';
+RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter chicken';
 RQ::GetTest()->test_users[22]->live = 'live';
 
 RQ::GetTest()->test_users[23]->role = 'echo_brownie deep_sleep';
@@ -106,7 +106,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 Dev::ComplementUser();
 
 //-- 仮想投票データをセット --//
-$set_date = 5;
+$set_date = 6;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -201,10 +201,10 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
     #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 10, 	'target_no' => 25,	'type' => 'ASSASSIN_DO'),
+    array('user_no' => 10, 	'target_no' => 4,	'type' => 'ASSASSIN_DO'),
     #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
     #array('user_no' => 10, 	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
-    array('user_no' => 10, 	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
+    #array('user_no' => 10, 	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
     #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
     #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
     #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
@@ -282,8 +282,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-#DB::$ROOM->scene = 'day';
-DB::$ROOM->scene = 'night';
+DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();
@@ -294,8 +294,11 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(7);
+#DB::$SELF = DB::$USER->ByID(10);
 #DB::$SELF = DB::$USER->TraceExchange(14);
+foreach (DB::$USER->rows as $user) {
+  if (! isset($user->target_no)) $user->target_no = 0;
+}
 
 //-- データ出力 --//
 $vote_view_mode = false;
@@ -323,7 +326,7 @@ if ($vote_view_mode) { //投票表示モード
   }
   else {
     RQ::$get->post_url = 'vote_test.php';
-    #DB::$SELF->last_load_scene = DB::$ROOM->scene;
+    DB::$SELF->last_load_scene = DB::$ROOM->scene;
 
     if (DB::$SELF->IsDead()) {
       DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();

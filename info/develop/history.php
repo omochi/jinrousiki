@@ -10,6 +10,7 @@ Ver. 2.1.0
 <a href="#ver210a2">α2</a>
 <a href="#ver210a3">α3</a>
 <a href="#ver210a4">α4</a>
+<a href="#ver210a5">α5</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -17,6 +18,13 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210a5">Ver. 2.1.0 α5 (Rev. 618) : 2012/07/16 (Mon) 23:26</h2>
+<ul>
+<li>「雪狼」「雪狐」「紫狼」「紫狐」実装</li>
+<li>出現率変動モード：H (無毒村) 追加</li>
+<li>制限時間超過時に処刑投票済み人数が表示される仕様に変更</li>
+</ul>
 
 <h2 id="ver210a4">Ver. 2.1.0 α4 (Rev. 614) : 2012/07/07 (Sat) 21:20</h2>
 <ul>

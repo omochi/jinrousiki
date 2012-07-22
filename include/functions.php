@@ -15,8 +15,8 @@ class Text {
     echo '<br>';
   }
 
-  //パスワード暗号化
-  static function CryptPassword($str) { return sha1(ServerConfig::SALT . $str); }
+  //暗号化
+  static function Crypt($str) { return sha1(ServerConfig::SALT . $str); }
 
   //トリップ変換
   /*
@@ -81,6 +81,16 @@ class Text {
   }
 
   /* 更新系 */
+  //POST されたデータの文字コードを統一する
+  static function Encode() {
+    foreach ($_POST as $key => $value) {
+      $encode = @mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
+      if ($encode != '' && $encode != ServerConfig::ENCODE) {
+	$_POST[$key] = mb_convert_encoding($value, ServerConfig::ENCODE, $encode);
+      }
+    }
+  }
+
   //特殊文字のエスケープ処理
   //htmlentities() を使うと文字化けを起こしてしまうようなので敢えてべたに処理
   static function Escape(&$str, $trim = true) {
@@ -99,18 +109,8 @@ class Text {
   }
 
   //改行コードを <br> に変換する (PHP5.3 以下の nl2br() だと <br /> 固定なので HTML 4.01 だと不向き)
-  static function LineToBR(&$str) {
+  static function ConvertLine(&$str) {
     return $str = str_replace("\n", '<br>', $str);
-  }
-
-  //POST されたデータの文字コードを統一する
-  static function EncodePostData() {
-    foreach ($_POST as $key => $value) {
-      $encode = @mb_detect_encoding($value, 'ASCII, JIS, UTF-8, EUC-JP, SJIS');
-      if ($encode != '' && $encode != ServerConfig::ENCODE) {
-	$_POST[$key] = mb_convert_encoding($value, ServerConfig::ENCODE, $encode);
-      }
-    }
   }
 }
 
@@ -372,65 +372,4 @@ function OutputSiteSummary(){
   fclose($fp);
 
   return $rss;
-}
-
-//ページ送り用のリンクタグを出力する
-function OutputPageLink($CONFIG){
-  $page_count = ceil($CONFIG->count / $CONFIG->view);
-  $start_page = $CONFIG->current== 'all' ? 1 : $CONFIG->current;
-  if ($page_count - $CONFIG->current < $CONFIG->page){
-    $start_page = $page_count - $CONFIG->page + 1;
-    if ($start_page < 1) $start_page = 1;
-  }
-  $end_page = $CONFIG->current + $CONFIG->page - 1;
-  if ($end_page > $page_count) $end_page = $page_count;
-
-  $url_stack = array('[' . (is_null($CONFIG->title) ? 'Page' : $CONFIG->title) . ']');
-  $url_header = '<a href="' . $CONFIG->url . '.php?';
-
-  if ($page_count > $CONFIG->page && $CONFIG->current> 1){
-    $url_stack[] = GeneratePageLink($CONFIG, 1, '[1]...');
-    $url_stack[] = GeneratePageLink($CONFIG, $start_page - 1, '&lt;&lt;');
-  }
-
-  for($page_number = $start_page; $page_number <= $end_page; $page_number++){
-    $url_stack[] = GeneratePageLink($CONFIG, $page_number);
-  }
-
-  if ($page_number <= $page_count){
-    $url_stack[] = GeneratePageLink($CONFIG, $page_number, '&gt;&gt;');
-    $url_stack[] = GeneratePageLink($CONFIG, $page_count, '...[' . $page_count . ']');
-  }
-  $url_stack[] = GeneratePageLink($CONFIG, 'all');
-
-  if ($CONFIG->url == 'old_log'){
-    $list = $CONFIG->option;
-    $list['page'] = 'page=' . $CONFIG->current;
-    $list['reverse'] = 'reverse=' . ($CONFIG->is_reverse ? 'off' : 'on');
-    $url_stack[] = '[表示順]';
-    $url_stack[] = $CONFIG->is_reverse ? '新↓古' : '古↓新';
-
-    $url = $url_header . implode('&', $list) . '">';
-    $name = ($CONFIG->is_reverse xor $CONFIG->reverse) ? '元に戻す' : '入れ替える';
-    $url_stack[] =  $url . $name . '</a>';
-  }
-  echo implode(' ', $url_stack);
-}
-
-//ページ送り用のリンクタグを作成する
-function GeneratePageLink($CONFIG, $page, $title = null){
-  if ($page == $CONFIG->current) return '[' . $page . ']';
-  $option = (is_null($CONFIG->page_type) ? 'page' : $CONFIG->page_type) . '=' . $page;
-  $list = $CONFIG->option;
-  array_unshift($list, $option);
-  $url = $CONFIG->url . '.php?' . implode('&', $list);
-  $attributes = array();
-  if (isset($CONFIG->attributes)){
-    foreach($CONFIG->attributes as $attr => $value){
-      $attributes[] = $attr . '="'. eval($value) . '"';
-    }
-  }
-  $attrs = implode(' ', $attributes);
-  if (is_null($title)) $title = '[' . $page . ']';
-  return '<a href="' . $url . '" ' . $attrs . '>' . $title . '</a>';
 }

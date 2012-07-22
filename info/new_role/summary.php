@@ -99,6 +99,7 @@ Ver. 2.1.0
 <a href="#ver210a3">α3</a>
 <a href="#ver210a4">α4</a>
 <a href="#ver210a5">α5</a>
+<a href="#ver210a6">α6</a>
 </p>
 
 <p>
@@ -2946,6 +2947,24 @@ Ver. 2.1.0
   <td>村人</td>
   <td class="ability">処刑投票先が<a href="wolf.php">人狼陣営</a>だった場合は自分に<a href="sub_role.php#death_warrant">死の宣告</a>を付加してしまう妖狐。</td>
   <td>Ver. 2.1.0 α5</td>
+</tr>
+<tr id="ver210a6">
+  <td><a href="human.php#sweep_assassin">掃除屋</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#assassin_group">暗殺者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php#assassin_rule">暗殺しない</a>を選べない特殊な暗殺者。</td>
+  <td>Ver. 2.1.0 α6</td>
+</tr>
+<tr>
+  <td><a href="human.php#professional_assassin">仕事人</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#assassin_group">暗殺者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="human.php">村人陣営</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>を暗殺できない特殊な暗殺者。</td>
+  <td>Ver. 2.1.0 α6</td>
 </tr>
 </table>
 

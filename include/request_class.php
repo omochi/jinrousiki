@@ -178,7 +178,7 @@ class RequestBaseGamePlay extends RequestBaseGame {
 //-- icon 用共通クラス --//
 class RequestBaseIcon extends RequestBase {
   function __construct() {
-    Text::EncodePostData();
+    Text::Encode();
     $this->Parse('intval', 'post.icon_no');
     $this->Parse('Escape', 'post.icon_name', 'post.appearance', 'post.category',
 		 'post.author', 'post.color');
@@ -197,7 +197,7 @@ class RequestBaseIcon extends RequestBase {
 //-- login.php --//
 class RequestLogin extends RequestBase {
   function __construct() {
-    Text::EncodePostData();
+    Text::Encode();
     $this->Parse('intval', 'get.room_no');
     $this->Parse('IsOn', 'post.login_manually');
     $this->Parse('Escape', 'post.password');
@@ -208,7 +208,7 @@ class RequestLogin extends RequestBase {
 //-- user_manager.php --//
 class RequestUserManager extends RequestBaseIcon {
   function __construct() {
-    Text::EncodePostData();
+    Text::Encode();
     $this->Parse('IsRoomNo', 'get.room_no');
     $this->Parse('intval', 'post.icon_no', 'get.user_no');
     $this->Parse('IsOn', 'post.login_manually');
@@ -257,7 +257,7 @@ class RequestGameUp extends RequestBaseGamePlay {
 //-- game_play.php --//
 class RequestGamePlay extends RequestBaseGamePlay {
   function __construct() {
-    Text::EncodePostData();
+    Text::Encode();
     parent::__construct();
     $this->Parse('IsOn', 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
     $this->Parse('Escape', 'post.font_type');
@@ -374,7 +374,7 @@ class RequestSharedRoom extends RequestBase {
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase {
   function __construct() {
-    Text::EncodePostData();
+    Text::Encode();
     $this->Parse('Escape', 'post.name', 'post.caption', 'post.user', 'post.password');
   }
 }

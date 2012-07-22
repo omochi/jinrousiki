@@ -7,24 +7,22 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0 α4アップロード (2012/06/24 (Sun) 06:21) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56385/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0 α5アップロード (2012/07/16 (Mon) 23:26) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56446/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「欺狼」実装</li>
-  <li>「火狼」仕様変更</li>
-  <li>固定追加配役モード：K(覚醒村)・仕様変更</li>
+  <li>「雪狼」「雪狐」「紫狼」「紫狐」実装</li>
+  <li>出現率変動モード：H (無毒村) 追加</li>
+  <li>制限時間超過時に処刑投票済み人数が表示される仕様に変更</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>雪狼：自分に処刑投票してきた人が子狐系だった場合は自分に凍傷を付加してしまう人狼</li>
-  <li>雪狐：自分に処刑投票してきた人が狂人系だった場合は自分に凍傷を付加してしまう妖狐</li>
-  <li>紫狼：処刑投票先が妖狐陣営だった場合は自分に死の宣告を付加してしまう人狼</li>
-  <li>紫狐：処刑投票先が人狼陣営だった場合は自分に死の宣告を付加してしまう妖狐</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>出現率変動モード：H (無毒村) 追加</li>
+  <li>掃除屋：暗殺しないを選べない特殊な暗殺者</li>
+  <li>仕事人：村人陣営・人狼系・妖狐を暗殺できない特殊な暗殺者</li>
 </ul>

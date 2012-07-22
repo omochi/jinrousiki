@@ -27,6 +27,10 @@ class Role_revive_medium extends Role_medium {
     return $this->filter->IsVoteCheckbox($user, $live);
   }
 
+  function IsFinishVote(array $list) {
+    return $this->filter->IsFinishVote($list);
+  }
+
   function IgnoreVoteNight(User $user, $live) {
     return $this->filter->IgnoreVoteNight($user, $live);
   }

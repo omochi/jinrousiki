@@ -4,7 +4,7 @@ Loader::LoadFile('room_manager_class');
 
 if (! DB::ConnectInHeader()) return false;
 RoomManager::Maintenance();
-Text::EncodePostData();
+Text::Encode();
 if (@$_POST['command'] == 'CREATE_ROOM') {
   Loader::LoadFile('message', 'request_class', 'user_icon_class', 'twitter_class');
   //Loader::LoadFile('feedengine');

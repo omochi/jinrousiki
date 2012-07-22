@@ -766,8 +766,8 @@ class Vote {
     if (count(RoleManager::$get->$name) > 0) RoleManager::GetClass($role)->SaveResult();
     unset(RoleManager::$get->$name);
 
-    LoversFollowed(); //恋人後追い処理
-    InsertMediumMessage(); //巫女のシステムメッセージ
+    RoleManager::GetClass('lovers')->Followed(); //恋人後追い処理
+    RoleManager::GetClass('medium')->InsertResult(); //巫女のシステムメッセージ
 
     if (RoleManager::$get->vote_kill_uname != '') { //夜に切り替え
       //-- 処刑得票カウンターの処理 --//
@@ -1284,8 +1284,8 @@ class Vote {
       }
     }
 
-    LoversFollowed(); //恋人後追い処理
-    InsertMediumMessage(); //巫女のシステムメッセージ
+    RoleManager::GetClass('lovers')->Followed(); //恋人後追い処理
+    RoleManager::GetClass('medium')->InsertResult(); //巫女のシステムメッセージ
 
     //-- 司祭系レイヤー --//
     $role_flag = new StdClass(); //役職出現判定フラグを初期化

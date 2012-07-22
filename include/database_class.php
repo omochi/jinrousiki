@@ -173,7 +173,7 @@ class DB {
   //ユーザ登録処理
   static function InsertUser($room_no, $uname, $handle_name, $password, $user_no = 1, $icon_no = 0,
 			     $profile = null, $sex = 'male', $role = null, $session_id = null) {
-    $crypt_password = Text::CryptPassword($password);
+    $crypt_password = Text::Crypt($password);
     $items  = 'room_no, user_no, uname, handle_name, icon_no, sex, password, live';
     $values = "{$room_no}, {$user_no}, '{$uname}', '{$handle_name}', {$icon_no}, '{$sex}', " .
       "'{$crypt_password}', 'live'";
