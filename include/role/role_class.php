@@ -24,8 +24,8 @@ class RoleManager {
   static $display_none_list = array(
     'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'critical_voter',
     'critical_luck', 'confession', 'enemy', 'supported', 'infected', 'psycho_infected',
-    'possessed_target', 'possessed', 'bad_status', 'protected','changed_therian',
-    'changed_disguise');
+    'possessed_target', 'possessed', 'bad_status', 'protected', 'changed_disguise',
+    'changed_therian', 'changed_vindictive');
 
   //初期配役抑制役職
   static $disable_cast_list = array(
@@ -34,8 +34,9 @@ class RoleManager {
     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
     'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
     'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
-    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_therian',
-    'changed_disguise', 'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller');
+    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_disguise',
+    'changed_therian', 'changed_vindictive', 'copied', 'copied_trick', 'copied_basic',
+    'copied_soul', 'copied_teller');
 
   //発言表示
   static $talk_list = array('blinder', 'earplug', 'speaker');
@@ -84,8 +85,8 @@ class RoleManager {
 
   //処刑投票 (メイン)
   static $vote_do_main_list = array(
-    'human', 'elder', 'scripter', 'eccentricer', 'elder_guard', 'critical_common', 'elder_wolf',
-    'elder_fox', 'elder_chiroptera', 'critical_duelist', 'cowboy_duelist');
+    'human', 'elder', 'scripter', 'eccentricer', 'elder_guard', 'critical_common', 'ascetic_wolf',
+    'elder_wolf', 'elder_fox', 'elder_chiroptera', 'critical_duelist', 'cowboy_duelist');
 
   //処刑投票 (サブ)
   static $vote_do_sub_list = array(
@@ -167,7 +168,7 @@ class RoleManager {
   //人狼襲撃耐性 (順番依存あり)
   static $wolf_eat_resist_list = array(
     'challenge_lovers', 'protected', 'sacrifice_angel', 'doom_vampire', 'sacrifice_patron',
-    'sacrifice_mania', 'fend_guard', 'awake_wizard');
+    'sacrifice_mania', 'fend_guard', 'ascetic_assassin', 'awake_wizard');
 
   //人狼襲撃得票カウンター (+ 身代わり能力者)
   static $wolf_eat_reaction_list = array(

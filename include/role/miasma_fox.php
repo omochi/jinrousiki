@@ -7,6 +7,7 @@
 */
 RoleManager::LoadFile('child_fox');
 class Role_miasma_fox extends Role_child_fox {
+  public $mix_in = null;
   public $action = null;
   public $result = null;
 

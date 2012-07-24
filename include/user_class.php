@@ -122,6 +122,21 @@ class User {
   //死の宣告系の宣告日取得
   public function GetDoomDate($role) { return max($this->GetPartner($role)); }
 
+  //周辺 ID を取得
+  public function GetAround() {
+    $max   = count(DB::$USER->rows);
+    $num   = $this->user_no;
+    $stack = array();
+    for ($i = -1; $i < 2; $i++) {
+      $j = $num + $i * 5;
+      if ($j < 1 || $max + 1 < $j) continue;
+      if ($j <= $max) $stack[] = $j;
+      if (($j % 5) != 1 && $j > 1)    $stack[] = $j - 1;
+      if (($j % 5) != 0 && $j < $max) $stack[] = $j + 1;
+    }
+    return $stack;
+  }
+
   //生存フラグ判定
   public function IsLive($strict = false) {
     $dead = $this->IsDeadFlag($strict);
@@ -254,7 +269,9 @@ class User {
   //子狐系判定
   public function IsChildFox($vote = false) {
     $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
-    if (! $vote) array_push($stack, 'monk_fox', 'miasma_fox', 'howl_fox', 'critical_fox');
+    if (! $vote) {
+      array_push($stack, 'monk_fox', 'miasma_fox', 'howl_fox', 'vindictive_fox', 'critical_fox');
+    }
     return $this->IsRole($stack);
   }
 

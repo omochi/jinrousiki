@@ -1276,11 +1276,18 @@ class Vote {
       }
     }
 
-    if (DB::$ROOM->date == 3) { //覚醒者・夢語部のコピー処理
+    switch (DB::$ROOM->date) { //変化系能力者の処理
+    case 3: //覚醒者・夢語部のコピー処理
       foreach (DB::$USER->rows as $user) {
 	if ($user->IsDummyBoy() || ! $user->IsRole('soul_mania', 'dummy_mania')) continue;
 	if (is_null($id = $user->GetMainRoleTarget())) continue;
 	RoleManager::LoadMain($user)->DelayCopy(DB::$USER->ById($id));
+      }
+      break;
+
+    case 4: //昼狐の変化処理
+      foreach (DB::$USER->rows as $user) {
+	if ($user->IsRole('vindictive_fox')) RoleManager::LoadMain($user)->Change();
       }
     }
 

@@ -801,7 +801,7 @@ EOF;
 
     case 'REVIVE_FAILED':
       if (! DB::$ROOM->IsFinished() &&
-	  ! (DB::$SELF->IsDead() || DB::$SELF->IsRole('attempt_necromancer'))) {
+	  ! (DB::$SELF->IsDead() || DB::$SELF->IsRole('attempt_necromancer', 'vajra_yaksa'))) {
 	return;
       }
       $base  = false;

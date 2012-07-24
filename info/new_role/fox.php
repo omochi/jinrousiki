@@ -94,6 +94,10 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <pre>
 妖狐陣営の<a href="mania.php#basic_mania">基本種</a>。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#vindictive_fox">昼狐</a>
+</pre>
 
 <h3 id="white_fox">白狐 (占い結果：村人(呪殺無し) / 霊能結果：妖狐) [Ver. 1.4.0 α17～]</h3>
 <h4>[耐性] 人狼襲撃：死亡</h4>
@@ -537,12 +541,14 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <a href="#monk_fox">蛻庵</a>
 <a href="#miasma_fox">蟲狐</a>
 <a href="#howl_fox">化狐</a>
+<a href="#vindictive_fox">昼狐</a>
 <a href="#critical_fox">寿羊狐</a>
 </p>
 
 <h3 id="child_fox_rule">基本ルール</h3>
 <ol>
   <li>呪殺されない代わりに<a href="wolf.php#wolf_group">人狼</a>に襲撃されると死亡する。</li>
+  <li><a href="ability.php#necromancer">霊能</a>結果は「子狐」。</li>
   <li>夜の投票能力を持っている場合、成功率は 70%。</li>
 </ol>
 
@@ -575,7 +581,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <pre>
 <a href="human.php#sex_mage">ひよこ鑑定士</a>の子狐バージョンです。
 能力よりも、存在自体が脅威となるタイプですね。
-村や狼が疑心暗鬼になって<a href="human.php#sex_mage">ひよこ鑑定士</a>の排除に動くケースが出てくるでしょう。
+村や狼が疑心暗鬼になって<a href="human.php#sex_mage">ひよこ鑑定士</a>の排除に動くケースが出てくることでしょう。
 </pre>
 
 <h3 id="stargazer_fox">星狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.4.0 β13～]</h3>
@@ -665,6 +671,25 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 人狼の人数や<a href="wolf.php#silver_wolf">銀狼</a>の存在を誤認する可能性が出てくる事に注意しましょう。
 </pre>
 
+<h3 id="vindictive_fox">昼狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 2.1.0 α6～]</h3>
+<pre>
+一定日数後 (5日目以降) に<a href="#fox">妖狐</a>に変化する子狐。
+<a href="#fox">妖狐</a>に変化すると<a href="sub_role.php#changed_vindictive">元昼狐</a>がつく。
+</pre>
+<ol>
+  <li>入れ替わるのは 5 日目の朝で、それまでは昼狐のまま。</li>
+  <li>蘇生されるケースがあるので、死亡していても変化処理は行われる。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#disguise">変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+おさん狐と呼ばれる伝承がモチーフで、名称は別名「お三門真の昼狐」が出展です。
+変化の前後で耐性が大きく変わるのでそれを計算して立ち回ると効果的です。
+</pre>
+
 <h3 id="critical_fox">寿羊狐 (占い結果：村人(呪殺無し) / 霊能結果：子狐) [Ver. 1.5.0 β16～]</h3>
 <pre>
 妖狐陣営勝利に加えて、<a href="#fox_group">妖狐系</a>の全滅が勝利条件の子狐。
@@ -673,7 +698,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="wolf.php#emperor_wolf">帝狼</a>・<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

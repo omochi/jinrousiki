@@ -86,6 +86,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </p>
 <p>
 <a href="#snow_wolf">雪狼</a>
+<a href="#ascetic_wolf">印狼</a>
 <a href="#poison_wolf">毒狼</a>
 <a href="#resist_wolf">抗毒狼</a>
 <a href="#revive_wolf">仙狼</a>
@@ -94,9 +95,9 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
 <a href="#decieve_wolf">欺狼</a>
-<a href="#doom_wolf">冥狼</a>
 </p>
 <p>
+<a href="#doom_wolf">冥狼</a>
 <a href="#sex_wolf">雛狼</a>
 <a href="#sharp_wolf">鋭狼</a>
 <a href="#hungry_wolf">餓狼</a>
@@ -106,9 +107,9 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
 <a href="#scarlet_wolf">紅狼</a>
-<a href="#silver_wolf">銀狼</a>
 </p>
 <p>
+<a href="#silver_wolf">銀狼</a>
 <a href="#emperor_wolf">帝狼</a>
 </p>
 
@@ -296,6 +297,26 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 ローゼンメイデンの雪華綺晶がモチーフです。
+</pre>
+
+<h3 id="ascetic_wolf">印狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.1.0 α6～]</h3>
+<pre>
+周囲の人が一定数死亡する毎に処刑投票数が +1 される人狼。
+</pre>
+<ol>
+<li>本人に九字のシステムメッセージが表示される。</li>
+<li> 最初は「臨」一文字のみで、周囲の死者の人数に応じて変化する。</li>
+<li> 九字が三文字完成する毎に処刑投票数が +1 される (最大 +3)。</li>
+<li>死者判定は表記上の姿で判定され、<a href="ability.php#possessed">憑依</a>で実体が生存していても死者扱い。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="human.php#holy_priest">聖徳道士</a>・<a href="human.php#ascetic_assassin">修験者</a>・<a href="ability.php#authority">投票数変化能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#ascetic_assassin">修験者</a>の人狼バージョンです。
+状況次第で<a href="human.php#scripter">執筆者</a>を騙ることも可能になります。
 </pre>
 
 <h3 id="poison_wolf">毒狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 α12～]</h3>

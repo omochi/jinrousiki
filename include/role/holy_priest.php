@@ -17,18 +17,9 @@ class Role_holy_priest extends Role_priest {
 
   function Priest(StdClass $role_flag) {
     $event = $this->GetEvent();
-    $max   = count(DB::$USER->rows);
     foreach ($role_flag->{$this->role} as $uname) {
       $user = DB::$USER->ByUname($uname);
-      $num  = $user->user_no;
-      $list = array();
-      for ($i = -1; $i < 2; $i++) { //周辺 ID を取得
-	$j = $num + $i * 5;
-	if ($j < 1 || $max + 1 < $j) continue;
-	if ($j <= $max) $list[] = $j;
-	if (($j % 5) != 1 && $j > 1)    $list[] = $j - 1;
-	if (($j % 5) != 0 && $j < $max) $list[] = $j + 1;
-      }
+      $list = $user->GetAround();
       if (DB::$ROOM->IsDummyBoy() && ! in_array(1, $list)) $list[] = 1; //身代わり君を追加
       //Text::p($list, $num);
       $stack = array();

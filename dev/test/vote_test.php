@@ -29,13 +29,13 @@ Dev::InitializeUser(25);
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
-RQ::GetTest()->test_users[2]->role = 'fire_wolf authority';
+RQ::GetTest()->test_users[2]->role = 'ascetic_wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
 RQ::GetTest()->test_users[3]->live = 'live';
 
-RQ::GetTest()->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel frostbite[6]';
+RQ::GetTest()->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel';
 RQ::GetTest()->test_users[4]->live = 'live';
 
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
@@ -50,13 +50,13 @@ RQ::GetTest()->test_users[7]->live = 'live';
 RQ::GetTest()->test_users[8]->role = 'poison_guard';
 RQ::GetTest()->test_users[8]->live = 'live';
 
-RQ::GetTest()->test_users[9]->role = 'revive_medium joker[2]';
+RQ::GetTest()->test_users[9]->role = 'seal_medium joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'professional_assassin death_note[5]';
+RQ::GetTest()->test_users[10]->role = 'ascetic_assassin death_note[5]';
 RQ::GetTest()->test_users[10]->live = 'live';
 
-RQ::GetTest()->test_users[11]->role = 'dream_eater_mad downer_luck';
+RQ::GetTest()->test_users[11]->role = 'fox downer_luck changed_vindictive';
 RQ::GetTest()->test_users[11]->live = 'live';
 
 RQ::GetTest()->test_users[12]->role = 'anti_voodoo death_selected[5]';
@@ -65,7 +65,7 @@ RQ::GetTest()->test_users[12]->live = 'live';
 RQ::GetTest()->test_users[13]->role = 'possessed_mad lost_ability mind_presage[23] changed_disguse';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->role = 'purple_fox';
+RQ::GetTest()->test_users[14]->role = 'psycho_necromancer';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
@@ -86,7 +86,7 @@ RQ::GetTest()->test_users[19]->live = 'live';
 RQ::GetTest()->test_users[20]->role = 'vampire';
 RQ::GetTest()->test_users[20]->live = 'live';
 
-RQ::GetTest()->test_users[21]->role = 'soul_mania[8] panelist';
+RQ::GetTest()->test_users[21]->role = 'resurrect_mania[8] panelist';
 RQ::GetTest()->test_users[21]->live = 'live';
 
 RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter chicken';
@@ -98,7 +98,7 @@ RQ::GetTest()->test_users[23]->live = 'live';
 RQ::GetTest()->test_users[24]->role = 'barrier_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
-RQ::GetTest()->test_users[25]->role = 'poison_ogre[1] disfavor';
+RQ::GetTest()->test_users[25]->role = 'vajra_yaksa disfavor';
 RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -106,7 +106,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 Dev::ComplementUser();
 
 //-- 仮想投票データをセット --//
-$set_date = 6;
+$set_date = 4;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -192,7 +192,7 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2, 	'target_no' => 10,	'type' => 'WOLF_EAT'),
     #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
@@ -201,14 +201,14 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
     #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 10, 	'target_no' => 4,	'type' => 'ASSASSIN_DO'),
+    array('user_no' => 10, 	'target_no' => 11,	'type' => 'ASSASSIN_DO'),
     #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
     #array('user_no' => 10, 	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
     #array('user_no' => 10, 	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
     #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
     #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
     #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
-    array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 14),
+    #array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 14),
     #array('user_no' => 12, 	'type' => 'TRAP_MAD_DO',	'target_no' => 16),
     #array('user_no' => 12, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
     #array('user_no' => 12, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
@@ -249,7 +249,7 @@ if ($set_date == 1) { //初日用
     array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 18'),
     #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
     #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-    array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 8),
+    array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 9),
     #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
   );
 }
@@ -294,7 +294,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(10);
+#DB::$SELF = DB::$USER->ByID(25);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;

@@ -143,6 +143,7 @@ Ver. 1.5.0
 <a href="#sub_ver150b14">β14</a><br>
 Ver. 2.1.0
 <a href="#sub_ver210a3">α3</a>
+<a href="#sub_ver210a6">α6</a>
 </p>
 
 <table id="main_role">
@@ -2966,6 +2967,42 @@ Ver. 2.1.0
   <td class="ability"><a href="human.php">村人陣営</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>を暗殺できない特殊な暗殺者。</td>
   <td>Ver. 2.1.0 α6</td>
 </tr>
+<tr>
+  <td><a href="fox.php#vindictive_fox">昼狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#child_fox_group">子狐系</a></td>
+  <td>村人<br>(呪殺無し)</td>
+  <td>子狐</td>
+  <td class="ability">一定日数後 (5日目以降) に<a href="fox.php#fox">妖狐</a>に変化する子狐。</td>
+  <td>Ver. 2.1.0 α6</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#vajra_yaksa">金剛夜叉</a></td>
+  <td><a href="ogre.php">鬼</a></td>
+  <td><a href="ogre.php#yaksa_group">夜叉系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">夜叉系の一種で、勝利条件は「自分自身の生存 + <a href="ability.php#revive">蘇生能力者</a>の全滅 + 村人陣営以外の勝利」。</td>
+  <td>Ver. 2.1.0 α6</td>
+</tr>
+<tr>
+  <td><a href="human.php#ascetic_assassin">修験者</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#assassin_group">暗殺者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">周囲の人が一定数死亡する毎に一定確率の<a href="ability.php#resist_wolf">人狼襲撃耐性</a>を得る特殊な暗殺者。</td>
+  <td>Ver. 2.1.0 α6</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#purple_wolf">印狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">周囲の人が一定数死亡する毎に処刑投票数が +1 される人狼。</td>
+  <td>Ver. 2.1.0 α6</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -3705,6 +3742,13 @@ Ver. 2.1.0
     <td>無し</td>
     <td class="ability">昼の間だけ、低確率で発言が自分の<a href="sub_role.php#lovers">恋人</a>の名前に入れ替わってしまう。</td>
     <td>Ver. 2.1.0 α3</td>
+  </tr>
+  <tr id="sub_ver210a6">
+    <td><a href="sub_role.php#changed_vindictive">元昼狐</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>無し</td>
+    <td class="ability"><a href="fox.php#fox">妖狐</a>に変化した後の<a href="fox.php#vindictive_fox">昼狐</a>に付加される。</td>
+    <td>Ver. 2.1.0 α6</td>
   </tr>
 </table>
 

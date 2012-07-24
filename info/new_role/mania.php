@@ -312,6 +312,10 @@ CO するべきかどうかは、コピーした役職次第です。
 <pre>
 <a href="#dummy_mania">夢語部</a>
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="fox.php#vindictive_fox">昼狐</a>
+</pre>
 <h5>Ver. 1.4.0 β14～</h5>
 <pre>
 変化するまでは霊界は公開されない。
@@ -502,7 +506,7 @@ CO するべきかどうかは、コピーした役職次第です。
 </table>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#dummy">夢能力者</a>
+<a href="fox.php#vindictive_fox">昼狐</a>・<a href="ability.php#dummy">夢能力者</a>
 </pre>
 <h5>Ver. 1.4.0 β14～</h5>
 <pre>

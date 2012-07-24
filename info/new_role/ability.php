@@ -172,7 +172,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </pre>
 <h3 id="resist_wolf_limited">限定無効</h3>
 <pre>
-<a href="human.php#fend_guard">忍者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="ogre.php">鬼陣営</a>・<a href="sub_role.php#challenge_lovers">難題</a>
+<a href="human.php#fend_guard">忍者</a>・<a href="human.php#ascetic_assassin">修験者</a>・<a href="human.php#awake_wizard">比丘尼</a>・<a href="human.php#escaper_group">逃亡者系</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="ogre.php">鬼陣営</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 
 <h2 id="psycho">精神関連能力者</h2>
@@ -235,7 +235,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h2 id="authority">投票数変化能力者</h2>
 <h3 id="authority_direct">直接型</h3>
 <pre>
-<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#eccentricer">傾奇者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#critical_common">暴君</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#eccentricer">傾奇者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#critical_common">暴君</a>・<a href="wolf.php#ascetic_wolf">印狼</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
 <a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#authority_group">権力者系</a>
 </pre>
 <h3 id="authority_indirect">間接型</h3>
@@ -329,7 +329,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="disguise">変化能力者</h2>
 <pre>
-<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#therian_mad">獣人</a>
+<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="fox.php#vindictive_fox">昼狐</a>
 </pre>
 
 <h2 id="sacrifice">身代わり能力者</h2>

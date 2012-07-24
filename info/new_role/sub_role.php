@@ -1771,6 +1771,7 @@ B：「恋人陣営の勝利」
 <a href="#muster_ability">能力発現</a>
 <a href="#changed_disguise">元朔狼</a>
 <a href="#changed_therian">元獣人</a>
+<a href="#changed_vindictive">元昼狐</a>
 </p>
 
 <h3 id="possessed_target">憑依者 [Ver. 1.4.0 α24～]</h3>
@@ -1893,5 +1894,17 @@ B：「恋人陣営の勝利」
 <pre>
 <a href="wolf.php#therian_mad">獣人</a>用に実装されたサブ役職です。
 </pre>
+
+<h3 id="changed_vindictive">元昼狐 [Ver. 2.1.0 α6～]</h3>
+<h4>[役職表示] 表示無し</h4>
+<h4>[配役制限] 役職付加専用</h4>
+<pre>
+<a href="fox.php#fox">妖狐</a>に変化した後の<a href="fox.php#vindictive_fox">昼狐</a>に付加される。
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="fox.php#vindictive_fox">昼狐</a>用に実装されたサブ役職です。
+</pre>
+
 </body>
 </html>

@@ -499,12 +499,17 @@ PP ラインの計算を複雑にするために作成してみました。
 霊能結果は「～さんの前世は [役職] でした」と表示され、以下の順番で判定される。
 </pre>
 <ol>
-<li><a href="sub_role.php#changed_therian">元獣人</a> → 狂人</li>
 <li><a href="sub_role.php#copied_group">元神話マニア系</a> → 神話マニア</li>
+<li><a href="sub_role.php#changed_therian">元獣人</a> → 狂人</li>
+<li><a href="sub_role.php#changed_vindictive">元昼狐</a> → 子狐</li>
 <li><a href="wolf.php#mad_group">狂人系</a> → 人狼</li>
 <li><a href="#psycho_mage">精神鑑定士</a>の結果が「嘘つき」 → 狂人</li>
 <li>それ以外 → 村人</li>
 </ol>
+<h5>Ver. 2.1.0 α6～</h5>
+<pre>
+<a href="sub_role.php#copied_group">元神話マニア系</a>の判定を上位に移動
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="#spiritism_wizard">交霊術師</a>・<a href="ability.php#psycho">精神関連能力者</a>
@@ -582,7 +587,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#clairvoyance_scanner">猩々</a>
+<a href="#clairvoyance_scanner">猩々</a>・<a href="ogre.php#vajra_yaksa">金剛夜叉</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -972,6 +977,10 @@ PP ラインの計算を複雑にするために作成してみました。
 5: 4, 5, 9, 10 + 1 → 2
 7: 1, 2, 3, 6, 7, 8, 11, 12, 13 → 5
 9: 3, 4, 5, 8, 9, 10, 13 + 1 → 4
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#ascetic_assassin">修験者</a>・<a href="wolf.php#ascetic_wolf">印狼</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1948,6 +1957,7 @@ A[河童] → B[村人][小心者]
 <a href="#select_assassin">おしら様</a>
 <a href="#sweep_assassin">掃除屋</a>
 <a href="#professional_assassin">仕事人</a>
+<a href="#ascetic_assassin">修験者</a>
 <a href="#reverse_assassin">反魂師</a>
 <a href="#soul_assassin">辻斬り</a>
 <a href="#eclipse_assassin">蝕暗殺者</a>
@@ -2054,6 +2064,27 @@ A[河童] → B[村人][小心者]
 <pre>
 「失敗」しない暗殺能力者ですが、対象は全て村人カウントなので
 本来の最終兵器とも呼ばれる威力はありません。
+</pre>
+
+<h3 id="ascetic_assassin">修験者 (占い結果：村人 / 霊能結果：村人) [Ver. 2.1.0 α6～]</h3>
+<h4>[耐性] 人狼襲撃：確率無効 / 罠：有効 / 護衛制限：有り</h4>
+<pre>
+周囲の人が一定数死亡する毎に一定確率の<a href="ability.php#resist_wolf">人狼襲撃耐性</a>を得る特殊な暗殺者。
+</pre>
+<ol>
+<li>本人に九字のシステムメッセージが表示される。</li>
+<li> 最初は「臨」一文字のみで、周囲の死者の人数に応じて変化する。</li>
+<li> 九字が三文字完成する毎に +10% の人狼襲撃耐性を得る (最大 30%)。</li>
+<li>死者判定は表記上の姿で判定され、<a href="ability.php#possessed">憑依</a>で実体が生存していても死者扱い。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="#holy_priest">聖徳道士</a>・<a href="wolf.php#ascetic_wolf">印狼</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+役 小角がモチーフで、段階を経て覚醒していく能力者としてデザインしました。
+最終的には<a href="ogre.php">鬼陣営</a>に匹敵する耐性を獲得できます。
 </pre>
 
 <h3 id="reverse_assassin">反魂師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β9～]</h3>
