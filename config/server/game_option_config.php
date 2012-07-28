@@ -180,7 +180,8 @@ class GameOptionConfig {
     'i' => 'I：恋人村',
     'j' => 'J：宿敵村',
     'k' => 'K：覚醒村',
-    'l' => 'L：白銀村');
+    'l' => 'L：白銀村',
+    'm' => 'M：暗殺村');
 
   static $boost_rate_enable = true; //出現率変動モード
   static $boost_rate_list = array(

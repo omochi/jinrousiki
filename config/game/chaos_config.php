@@ -819,18 +819,19 @@ class ChaosConfig {
 			 'sacrifice_mania'  =>  5)),
 		 'count' => array(1, 1, 1)),
     'l' => array('fix' => array('ghost_common' => 1, 'boss_wolf' => 1,
-				'silver_wolf' => 1, 'howl_fox' => 1))
+				'silver_wolf' => 1, 'howl_fox' => 1)),
+    'm' => array('fix' => array('sweep_assassin' => 2, 'trap_wolf' => 1, 'doom_fox' => 1))
 			    );
 
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   static $boost_rate_list = array(
-    'a' => array('sweep_assassin'        => 11,
-		 'professional_assassin' => 10,
-		 'ascetic_assassin'      =>  7,
-		 'ascetic_wolf'          =>  7,
-		 'vindictive_fox'        =>  7,
-		 'vajra_yaksa'           => 10),
+    'a' => array('sweep_assassin'        => 12,
+		 'professional_assassin' => 11,
+		 'ascetic_assassin'      =>  9,
+		 'ascetic_wolf'          =>  8,
+		 'vindictive_fox'        =>  9,
+		 'vajra_yaksa'           => 11),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'eccentricer'       => 0,

@@ -2243,7 +2243,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('anti_voodoo');
-#$builder->Output('ascetic_wolf');
+$builder->Output('ascetic_wolf');
 #$builder->Output('whisper_mad');
 #$builder->Output('vindictive_fox', array(0.8,0,0.8,1));
-$builder->Output('vajra_yaksa', array(0.8));
