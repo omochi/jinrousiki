@@ -294,7 +294,10 @@ class GameHTML {
     $base_path  = Icon::GetPath();
     $img_format = '<img src="%s" style="border-color: %s;" alt="icon" title="%s" ' .
       Icon::GetTag() . '%s>';
-    if ($admin && DB::$ROOM->IsNight()) $vote_data = DB::$ROOM->ParseVote(); //投票情報をパース
+    if ($admin && DB::$ROOM->IsNight()) {
+      if (! isset(DB::$ROOM->vote)) DB::$ROOM->LoadVote();
+      $vote_data = DB::$ROOM->ParseVote(); //投票情報をパース
+    }
     if ($open_data) {
       $trip_from = array('◆', '◇');
       $trip_to   = array('◆<br>', '◇<br>');

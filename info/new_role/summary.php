@@ -1272,7 +1272,7 @@ Ver. 2.1.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">2日目夜以降、<a href="human.php#common_group">共有者系</a>に一方的に声が届く特殊なさとり。</td>
+  <td class="ability">2 日目夜以降、<a href="human.php#common_group">共有者系</a>に一方的に声が届く特殊なさとり。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -1281,7 +1281,7 @@ Ver. 2.1.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">2日目夜以降、<a href="wolf.php#talk">人狼系</a>に一方的に声が届く特殊なさとり。</td>
+  <td class="ability">2 日目夜以降、<a href="wolf.php#talk">人狼系</a>に一方的に声が届く特殊なさとり。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -1290,7 +1290,7 @@ Ver. 2.1.0
   <td><a href="human.php#mind_scanner_group">さとり系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">2日目夜以降、<a href="fox.php#talk">妖狐系</a>に一方的に声が届く特殊なさとり。</td>
+  <td class="ability">2 日目夜以降、<a href="fox.php#talk">妖狐系</a>に一方的に声が届く特殊なさとり。</td>
   <td>Ver. 1.4.0 β11</td>
 </tr>
 <tr>
@@ -2964,7 +2964,7 @@ Ver. 2.1.0
   <td><a href="human.php#assassin_group">暗殺者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability"><a href="human.php">村人陣営</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>を暗殺できない特殊な暗殺者。</td>
+  <td class="ability"><a href="human.php">村人陣営</a>・<a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐陣営</a>を暗殺できない特殊な暗殺者。</td>
   <td>Ver. 2.1.0 α6</td>
 </tr>
 <tr>
@@ -2995,7 +2995,7 @@ Ver. 2.1.0
   <td>Ver. 2.1.0 α6</td>
 </tr>
 <tr>
-  <td><a href="wolf.php#purple_wolf">印狼</a></td>
+  <td><a href="wolf.php#ascetic_wolf">印狼</a></td>
   <td><a href="wolf.php">人狼</a></td>
   <td><a href="wolf.php#wolf_group">人狼系</a></td>
   <td>人狼</td>

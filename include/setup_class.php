@@ -1,8 +1,16 @@
 <?php
-//データベース初期セットアップ用クラス
+//-- DB アクセス (データベース初期セットアップ拡張) --//
 class SetupDB {
+  //画面出力
+  static function Output() {
+    HTML::OutputHeader(ServerConfig::TITLE . ServerConfig::COMMENT . ' [初期設定]', null, true);
+    if (! DB::ConnectInHeader()) self::CreateDatabase();
+    self::CheckTable();
+    HTML::OutputFooter();
+  }
+
   //データベース作成
-  static function CreateDatabase() {
+  private function CreateDatabase() {
     $name   = DatabaseConfig::NAME;
     $result = DB::FetchBool(sprintf('CREATE DATABASE %s DEFAULT CHARSET utf8', $name));
     printf("データベース作成: %s: %s<br>\n", $name, $result ? '成功' : '失敗');
@@ -10,20 +18,20 @@ class SetupDB {
   }
 
   //テーブル作成
-  static function CreateTable($table, $query) {
+  private function CreateTable($table, $query) {
     $result = DB::FetchBool(sprintf('CREATE TABLE %s(%s) ENGINE = InnoDB', $table, $query));
     printf("テーブル作成: %s: %s<br>\n", $table, $result ? '成功' : '失敗');
   }
 
   //インデックス再生成
-  static function CreateIndex($table, $index, $value) {
+  private function CreateIndex($table, $index, $value) {
     $query  = 'ALTER TABLE %s DROP INDEX %s, ADD INDEX %s (%s)';
     $result = DB::FetchBool(sprintf($query, $table, $index, $index, $value));
     printf("インデックス再生成: %s (%s): %s <br>\n", $index, $table, $result ? '成功' : '失敗');
   }
 
   //必要なテーブルがあるか確認する
-  static function CheckTable() {
+  private function CheckTable() {
     $revision = ServerConfig::REVISION; //前回のパッケージのリビジョン番号を取得
     if ($revision >= ScriptInfo::REVISION) {
       echo '初期設定はすでに完了しています';

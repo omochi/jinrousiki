@@ -65,7 +65,7 @@ RQ::GetTest()->test_users[12]->live = 'live';
 RQ::GetTest()->test_users[13]->role = 'possessed_mad lost_ability mind_presage[23] changed_disguse';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->role = 'psycho_necromancer';
+RQ::GetTest()->test_users[14]->role = 'purple_fox death_warrant[6]';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
@@ -124,7 +124,7 @@ RQ::GetTest()->vote_target_day = array(
   array('id' => 11, 'target_no' => 13),
   array('id' => 12, 'target_no' => 13),
   array('id' => 13, 'target_no' =>  3),
-  array('id' => 14, 'target_no' => 13),
+  array('id' => 14, 'target_no' => 23),
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 11),
   //array('id' => 17, 'target_no' => 22),

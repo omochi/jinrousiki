@@ -366,15 +366,15 @@ class RoleMessageList {
     'type' => 'assassin');
 
   public $sweep_assassin = array(
-    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#掃除屋#です。夜に村人一人を必ず#暗殺#しなければいけません。",
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#掃除屋#です。夜に村人一人を必ず#暗殺#しなければいけません。薄汚れた野望を抱く輩共はこの手でお掃除してしまいましょう！",
     'type' => 'assassin');
 
   public $professional_assassin = array(
-    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#仕事人#です。|村人陣営|、_人狼系_、^妖狐陣営^は#暗殺#できません。",
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#仕事人#です。|村人陣営|・_人狼系_・^妖狐陣営^は#暗殺#できません。プロにミスは許されない。正確に、そして確実に標的を射抜くべし。",
     'type' => 'assassin', 'delimiter' => array('_' => 'wolf', '^' => 'fox'));
 
   public $ascetic_assassin = array(
-    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#修験者#です。あなたの周囲の人が一定数死亡する毎に_人狼_襲撃に耐えられる確率が上昇します。",
+    'message' => "[役割] [|村人|陣営] [#暗殺者#系]\n　あなたは#修験者#です。あなたの周囲の人が一定数死亡する毎に_人狼_襲撃に耐えられる確率が上昇します。\n　山に伏し、修行して得たのは怪を滅する為の力。印を結びて九字を切り、験力を高め悪しき獣を退けよ！",
     'type' => 'assassin', 'delimiter' => array('_' => 'wolf', '^' => 'fox'));
 
   public $reverse_assassin = array(
@@ -419,7 +419,7 @@ class RoleMessageList {
     'delimiter' => array('#' => 'jealousy', '_' => 'lovers', '^' => 'vote', ':' => 'chicken'));
 
   public $divorce_jealousy = array(
-    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#縁切地蔵#です。あなたに^処刑^投票してきた_恋人_を一定確率で=恋色迷彩=にすることができます。\n　恋は得てして盲目。その言葉をも惑わし、幸せな時に終焉を。恋の終着を、その目で見届けるのです！",
+    'message' => "[役割] [|村人|陣営] [#橋姫#系]\n　あなたは#縁切地蔵#です。あなたに^処刑^投票してきた_恋人_を一定確率で=告白=を付加することができます。\n　恋は得てして盲目。その言葉をも惑わし、幸せな時に終焉を。恋の終着を、その目で見届けるのです！",
     'type' => 'jealousy', 'delimiter' => array('=' => 'liar'));
 
   public $miasma_jealousy = array(
@@ -1174,7 +1174,7 @@ class RoleMessageList {
     'type' => 'yaksa', 'delimiter' => array('_' => 'fox', '^' => 'lovers'));
 
   public $vajra_yaksa = array(
-    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|金剛夜叉|です。あなた自身の生存と_蘇生_能力者の全滅、#村人陣営以外#の勝利が勝利条件になります。",
+    'message' => "[役割] [|鬼|陣営] [|夜叉|系]\n　あなたは|金剛夜叉|です。あなた自身の生存と_蘇生_能力者の全滅、#村人陣営以外#の勝利が勝利条件になります。\n　何者かが死者を蘇らせようとしています。そんな不届き者は全て攫ってしまい、村人達に絶望を与えなさい！",
     'type' => 'yaksa', 'delimiter' => array('_' => 'revive'));
 
   public $power_yaksa = array(
@@ -2241,9 +2241,9 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
-#$builder->Output('sweep_assassin', array(0, 0, 0, 0, 0, 0, -1, 0.5));
-#$builder->Output('professional_assassin', array(0,0,0,0,-0.5,0,0,0.8,0.3,1,0.5,1));
-$builder->Output('ascetic_assassin');
+//あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
+#$builder->Output('anti_voodoo');
 #$builder->Output('ascetic_wolf');
+#$builder->Output('whisper_mad');
 #$builder->Output('vindictive_fox', array(0.8,0,0.8,1));
-#$builder->Output('vajra_yaksa', array(0.8));
+$builder->Output('vajra_yaksa', array(0.8));
