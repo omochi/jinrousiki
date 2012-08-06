@@ -701,7 +701,7 @@ class RoleMessageList {
     'type' => 'mad');
 
   public $whisper_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|囁き狂人|です。夜の|人狼|の相談に参加することができます。|人狼|と完璧な連携を組んで村を殲滅するのです！",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|囁き狂人|です。夜の|人狼|の相談に参加することができます。|人狼|からの命をうけ、忠実な僕として尽くすのです！",
     'type' => 'mad');
 
   public $swindle_mad = array(
@@ -897,7 +897,7 @@ class RoleMessageList {
     'type' => 'child_fox');
 
   public $vindictive_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|昼狐|です。一定日数後に|妖狐|に変化します。",
+    'message' => "[役割] [|妖狐|陣営] [|子狐|系]\n　あなたは|昼狐|です。一定日数後に|妖狐|に変化します。あなたの執念深さで#狼#を追い詰め、化かすことで村を騙すのです！",
     'type' => 'child_fox');
 
   public $critical_fox = array(
@@ -981,6 +981,10 @@ class RoleMessageList {
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。\n　夜の闇にまぎれ、誰にも知られぬまま血をすすり、眷属を増やすのです。真の支配者はあなただと言う事を村に知らしめましょう！",
     'delimiter' => array('|' => 'vampire'));
 
+  public $poison_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|百々爺|、#毒#を持ち、#毒#に中りません。あなたが_処刑_された場合はあなたの|感染者|と|洗脳者|にのみ中ります。",
+    'type' => 'vampire', 'delimiter' => array('#' => 'poison', '_' => 'vote'));
+
   public $incubus_vampire = array(
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|青髭公|です。_女性_しか|感染者|にすることができず、#男性#を|吸血|すると殺してしまいます。\n　あなたの欲望を妨げるものはありません。今こそ美しい_女性_を拐し、邪魔な#男#を縊り殺すのです！",
     'type' => 'vampire', 'delimiter' => array('#' => 'sex_male', '_' => 'lovers'));
@@ -988,6 +992,10 @@ class RoleMessageList {
   public $succubus_vampire = array(
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|飛縁魔|です。#男性#しか|感染者|にすることができず、_女性_を|吸血|すると殺してしまいます。\n　数多くの国を傾けてきた世にも美しきその美貌で#男性#を堕落させ、この村を我が物にするのです！",
     'type' => 'incubus_vampire');
+
+  public $passion_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|牡丹灯篭|です。|吸血|先に一定確率で_恋色迷彩_を追加してしまいます。",
+    'type' => 'vampire', 'delimiter' => array('_' => 'liar'));
 
   public $doom_vampire = array(
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|冥血鬼|です。#人狼#に襲撃されても死ぬことはありませんが、|吸血|をする際に_死の宣告_を追加してしまいます。\n　#狼#など無視して玩具で遊びましょう。相手はいずれ壊れてしまいますが、代わりはいくらでも用意できるのですから。",
@@ -1652,6 +1660,10 @@ class RoleMessageList {
     'message' => "　あなたが最後の|狼|です。今や天に輝く|狼|となったあなたに、噛めないものはあんまりない。",
     'type' => 'sirius_wolf');
 
+  public $ability_possessed_mad = array(
+    'message' => "　あなたは呪詛が満ちたので、|処刑|_投票数_が +1 されます。",
+    'delimiter' => array('|' => 'vote', '_' => 'authority'));
+
   public $common_partner = array(
     'message' => "同じ|共有者|の仲間は以下の人たちです： ",
     'delimiter' => array('|' => 'common'));
@@ -1974,8 +1986,10 @@ class RoleMessageList {
   public $result_lovers = array('message' => "さんは|恋人|でした", 'type' => 'result_cupid');
   public $result_quiz = array('message' => "さんは|出題者|でした", 'delimiter' => array('|' => 'quiz'));
   public $result_vampire = array('message' => "さんは|吸血鬼|でした", 'delimiter' => array('|' => 'vampire'));
+  public $result_poison_vampire = array('message' => "さんは|百々爺|でした", 'type' => 'result_vampire');
   public $result_incubus_vampire = array('message' => "さんは|青髭公|でした", 'type' => 'result_vampire');
   public $result_succubus_vampire = array('message' => "さんは|飛縁魔|でした", 'type' => 'result_vampire');
+  public $result_passion_vampire = array('message' => "さんは|牡丹灯篭|でした", 'type' => 'result_vampire');
   public $result_doom_vampire = array('message' => "さんは|冥血鬼|でした", 'type' => 'result_vampire');
   public $result_sacrifice_vampire = array('message' => "さんは|吸血公|でした", 'type' => 'result_vampire');
   public $result_soul_vampire = array('message' => "さんは|吸血姫|でした", 'type' => 'result_vampire');
@@ -2243,6 +2257,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('anti_voodoo');
-$builder->Output('ascetic_wolf');
-#$builder->Output('whisper_mad');
-#$builder->Output('vindictive_fox', array(0.8,0,0.8,1));
+#$builder->Output('ascetic_wolf');
+#$builder->Output('poison_vampire', array(0.5,0,0.3,0,0,0,0,0,0,0,-1,0,-0.5,0.3));
+$builder->Output('passion_vampire', array(0.5,0,0.5,0,-1,-0.5));

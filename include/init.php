@@ -38,7 +38,8 @@ class Loader {
     'system_class'           => 'room_class', //常時ロードされる
     'room_class'             => 'option_class',
     'room_option_class'      => array('option_class', 'room_option_item_class'),
-    'room_option_item_class' => array('room_config', 'time_config', 'game_option_config'),
+    'room_option_item_class' => array('room_config', 'time_config', 'game_config',
+				      'game_option_config'),
     'option_form_class'      => 'room_option_class',
     'user_class'             => array('role_data_class', 'game_functions'),
     'talk_class'             => array('game_config', 'message', 'user_class', 'role_class'),

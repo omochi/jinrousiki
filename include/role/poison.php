@@ -11,7 +11,7 @@ class Role_poison extends Role {
     $class = $this->GetClass($method = 'IsPoisonTarget');
     foreach ($list as $uname) {
       $user = DB::$USER->ByRealUname($uname);
-      if ($user->IsLive(true) && ! $user->IsAvoid(true) && $class->$method($user)) {
+      if ($user->IsLive(true) && ! $user->IsAvoidPoison(true) && $class->$method($user)) {
 	$stack[] = $user->user_no;
       }
     }

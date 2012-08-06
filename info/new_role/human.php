@@ -1402,6 +1402,10 @@ PP ラインの計算を複雑にするために作成してみました。
 <pre>
 <a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外 (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#anti_assassin">暗殺耐性能力者</a>・<a href="ability.php#revive_limit">蘇生制限対象者</a>・<a href="ability.php#resist_poison">毒耐性能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 闇鍋モードでも<a href="../game_option.php#detective">探偵村</a>を実施できるようにチューニングした上位共有者です。
@@ -2398,7 +2402,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_reaction">処刑得票能力者</a>
+<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#talk_convert">発言変換能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

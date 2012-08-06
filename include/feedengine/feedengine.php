@@ -5,10 +5,10 @@ class FeedEngine {
   public $description;
   public $items = array();
 
-  function Initialize($filename){
+  function Initialize($filename) {
     if (include(JINRO_INC . "/feedengine/$filename")) {
       $segments = explode('_', substr($filename, 0, -4));
-      foreach($segments as $segment){
+      foreach ($segments as $segment) {
         $class .= ucfirst($segment);
       }
       return new $class();
@@ -39,7 +39,7 @@ class FeedEngine {
     $this->title = self::decode((string)$RDF->title);
     $this->url = (string)$RDF->link;
     $this->description = self::decode((string)$RDF->description);
-    foreach($RDF->item as $item) {
+    foreach ($RDF->item as $item) {
       $this->ImportItem($item);
     }
   }
@@ -54,7 +54,7 @@ class FeedEngine {
   function Export($filename) {
     $list_items = '';
     $item_contents = '';
-    foreach($this->items as $item) {
+    foreach ($this->items as $item) {
       extract($item, EXTR_PREFIX_ALL, 'item');
       $list_items .= '<rdf:li rdf:resource="'.$item_url.'"/>';
       $item_contents .= <<<XML_RDF

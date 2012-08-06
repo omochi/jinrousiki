@@ -350,7 +350,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#seal">封印対象者</a>
+<a href="ability.php#resist_poison">毒耐性能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -961,7 +961,7 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#soul_mania">覚醒者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#anti_assassin">暗殺耐性能力者</a>・<a href="ability.php#resist_poison">毒耐性能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1256,7 +1256,14 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
 <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
 <li>死亡した人狼にも憑依できるが、夜の発言は独り言になり、仲間の人狼と会話できない。</li>
+<li>憑依成立時の夜から 3 日後以降 (3 日目夜に憑依した場合は 6 日目昼以降)、処刑投票数が +1 される。</li>
+<li>投票数増加は本体の能力なので憑依先のサブ役職や<a href="../weather.php">天候</a>には影響されない。</li>
+<li>憑依を解除されても投票数増加能力は失わない。</li>
 </ol>
+<h5>Ver. 2.1.0 α7～</h5>
+<pre>
+投票数増加能力追加
+</pre>
 <h5>Ver. 1.4.11 / Ver. 1.5.0 β13～</h5>
 <pre>
 憑依無効
@@ -1267,7 +1274,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#sacrifice_cat">猫神</a>・<a href="ability.php#possessed">憑依能力者</a>・<a href="ability.php#seal">封印対象者</a>
+  <a href="human.php#sacrifice_cat">猫神</a>・<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#possessed">憑依能力者</a>・<a href="ability.php#seal">封印対象者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

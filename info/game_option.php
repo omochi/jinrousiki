@@ -18,6 +18,9 @@ InfoHTML::OutputHeader('ゲームオプション');
 <?php InfoHTML::OutputCategory(array('wish_role', 'real_time', 'wait_morning', 'open_vote',
 'seal_message', 'open_day')); ?>
 </p>
+<p>
+<?php InfoHTML::OutputCategory(array('necessary_name', 'necessary_trip')); ?>
+</p>
 
 <h3 id="wish_role"><?php OptionManager::OutputCaption('wish_role'); ?></h3>
 <ul>
@@ -65,6 +68,18 @@ InfoHTML::OutputHeader('ゲームオプション');
 <li><?php OptionManager::OutputExplain('open_day'); ?></li>
 <li>自分の役職は分かりますが1日目昼は投票できません</li>
 <li>制限時間を過ぎたら自動で夜に切り替わります (通常のゲーム開始相当)</li>
+</ul>
+
+<h3 id="necessary_name"><?php OptionManager::OutputCaption('necessary_name'); ?> [Ver. 2.1.0 α7～]</h3>
+<ul>
+<li><?php OptionManager::OutputExplain('necessary_name'); ?></li>
+<li><a href="script_info.php#difference_trip">トリップ</a>が使用可の時のみ有効です</li>
+</ul>
+
+<h3 id="necessary_trip"><?php OptionManager::OutputCaption('necessary_trip'); ?> [Ver. 2.1.0 α7～]</h3>
+<ul>
+<li><?php OptionManager::OutputExplain('necessary_trip'); ?></li>
+<li><a href="script_info.php#difference_trip">トリップ</a>が使用可の時のみ有効です</li>
 </ul>
 
 

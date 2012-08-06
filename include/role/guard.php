@@ -97,9 +97,10 @@ class Role_guard extends Role {
   //狩り対象判定
   protected function IsHunt(User $user) {
     return $user->IsRole(
-      'phantom_fox', 'voodoo_fox', 'revive_fox', 'possessed_fox', 'doom_fox', 'trap_fox',
-      'cursed_fox', 'cursed_angel', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera',
-      'cursed_avenger', 'critical_avenger') ||
+      'phantom_fox', 'voodoo_fox', 'revive_fox', 'doom_fox', 'trap_fox', 'cursed_fox',
+      'cursed_angel', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera', 'cursed_avenger',
+      'critical_avenger') ||
+      ($user->IsRole('possessed_fox') && count($user->GetPartner('possessed_target', true)) < 1) ||
       ($user->IsRoleGroup('mad') &&
        ! $user->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'swindle_mad', 'therian_mad',
 		       'revive_mad', 'immolate_mad')) ||

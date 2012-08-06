@@ -20,6 +20,12 @@ class GameOptionConfig {
   static $open_day_enable  = true; //オープニングあり
   static $default_open_day = false;
 
+  static $necessary_name_enable  = true; //ユーザ名必須
+  static $default_necessary_name = false;
+
+  static $necessary_trip_enable  = true; //トリップ必須
+  static $default_necessary_trip = false;
+
   //-- 身代わり君設定 --//
   static $dummy_boy_enable = true; //初日の夜は身代わり君
   //身代わり君のデフォルト ['':身代わり君無し / 'on':身代わり君有り / 'gm_login': GM有り ]

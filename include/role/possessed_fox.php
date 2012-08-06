@@ -9,7 +9,7 @@ class Role_possessed_fox extends Role_fox {
   public $mix_in = 'possessed_mad';
 
   protected function OutputResult() {
-    $this->filter->OutputResult();
+    $this->filter->OutputPossessed();
     parent::OutputResult();
   }
 

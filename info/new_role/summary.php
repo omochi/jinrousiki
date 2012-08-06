@@ -100,6 +100,7 @@ Ver. 2.1.0
 <a href="#ver210a4">α4</a>
 <a href="#ver210a5">α5</a>
 <a href="#ver210a6">α6</a>
+<a href="#ver210a7">α7</a>
 </p>
 
 <p>
@@ -3002,6 +3003,24 @@ Ver. 2.1.0
   <td>人狼</td>
   <td class="ability">周囲の人が一定数死亡する毎に処刑投票数が +1 される人狼。</td>
   <td>Ver. 2.1.0 α6</td>
+</tr>
+<tr id="ver210a7">
+  <td><a href="vampire.php#poison_vampire">百々爺</a></td>
+  <td><a href="vampire.php">吸血鬼</a></td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability">毒耐性を持ち、自身も毒を持つ特殊な吸血鬼。</td>
+  <td>Ver. 2.1.0 α7</td>
+</tr>
+<tr>
+  <td><a href="vampire.php#passion_vampire">牡丹灯篭</a></td>
+  <td><a href="vampire.php">吸血鬼</a></td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability">吸血先に一定確率 (50%) で<a href="sub_role.php#passion">恋色迷彩</a>もつけてしまう特殊な吸血鬼。</td>
+  <td>Ver. 2.1.0 α7</td>
 </tr>
 </table>
 

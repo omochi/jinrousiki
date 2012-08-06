@@ -145,7 +145,7 @@ class Security {
    * 実行環境にダメージを与える可能性がある値が含まれているかどうか検査します。
    * @param  : mixed   : $value 検査対象の変数
    * @param  : boolean : $found 疑わしい値が存在しているかどうかを示す値。
-   この値がtrueの場合、強制的に詳細なスキャンが実行されます。
+                         この値がtrueの場合、強制的に詳細なスキャンが実行されます。
    * @return : boolean : 危険な値が発見された場合 true、それ以外の場合 false
    */
   static function CheckValue($value, $found = false) {
@@ -192,10 +192,8 @@ class Time {
 
   //時間 (秒) を変換する
   static function Convert($seconds) {
-    $sentence = '';
-    $hours    = 0;
-    $minutes  = 0;
-
+    $hours   = 0;
+    $minutes = 0;
     if ($seconds >= 60) {
       $minutes = floor($seconds / 60);
       $seconds %= 60;
@@ -205,10 +203,11 @@ class Time {
       $minutes %= 60;
     }
 
-    if ($hours   > 0) $sentence .= $hours   . '時間';
-    if ($minutes > 0) $sentence .= $minutes . '分';
-    if ($seconds > 0) $sentence .= $seconds . '秒';
-    return $sentence;
+    $str = '';
+    if ($hours   > 0) $str .= $hours   . '時間';
+    if ($minutes > 0) $str .= $minutes . '分';
+    if ($seconds > 0) $str .= $seconds . '秒';
+    return $str;
   }
 
   //TIMESTAMP 形式の時刻を変換する
@@ -252,7 +251,7 @@ EOF;
 if (top != self) { top.location.href = self.location.href; }
 %s
 EOF;
-    return sprintf($str, '//--></script>'."\n");
+    return sprintf($str, "//--></script>\n");
   }
 
   //HTML ヘッダクローズ
@@ -359,7 +358,7 @@ EOF;
 
 //-- 出力関連 --//
 //村情報のRSSファイルを更新する
-function OutputSiteSummary(){
+function OutputSiteSummary() {
   Loader::LoadFile('feedengine');
 
   $filename = 'rss/rooms.rss';

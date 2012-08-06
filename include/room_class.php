@@ -683,8 +683,8 @@ EOF;
 
   function LoadEntryUser($room_no) {
     $query = <<<EOF
-SELECT room_no AS id, date, scene, status, max_user FROM room WHERE room_no = {$room_no}
-FOR UPDATE
+SELECT room_no AS id, date, scene, status, game_option, max_user FROM room
+WHERE room_no = {$room_no} FOR UPDATE
 EOF;
     return DB::FetchObject($query, 'Room', true);
   }

@@ -8,10 +8,8 @@ abstract class RoomOptionItem {
   public $form_name;
   public $form_value;
 
-  function __construct($group = null) {
+  function __construct() {
     $this->name = array_pop(explode('Option_', get_class($this)));
-
-    if (isset($group)) RoomOption::SetGroup($group, $this);
 
     $enable  = sprintf('%s_enable',  $this->name);
     $default = sprintf('default_%s', $this->name);

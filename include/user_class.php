@@ -400,6 +400,11 @@ class User {
     return $this->IsRole($stack) || $this->IsSiriusWolf() || $this->IsChallengeLovers();
   }
 
+  //毒回避判定
+  public function IsAvoidPoison() {
+    return $this->IsRole('poison_vampire') || $this->IsAvoid(true);
+  }
+
   //所属陣営判別 (ラッパー)
   public function DistinguishCamp() { return RoleData::DistinguishCamp($this->main_role); }
 

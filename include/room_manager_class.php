@@ -103,6 +103,7 @@ EOF;
     RoomOption::LoadPost(
       'open_vote', 'seal_message', 'open_day', 'dummy_boy_selector', 'not_open_cast_selector',
       'perverseness', 'replace_human_selector', 'special_role');
+    if (GameConfig::TRIP) RoomOption::LoadPost('necessary_name', 'necessary_trip');
 
     if (RQ::$get->quiz) { //クイズ村
       RQ::$get->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック

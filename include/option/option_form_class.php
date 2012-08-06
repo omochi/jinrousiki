@@ -13,7 +13,8 @@ class OptionForm {
 
   private static $order = array(
     'room_name', 'room_comment', 'max_user', null,
-    'wish_role', 'real_time', 'wait_morning', 'open_vote', 'seal_message', 'open_day', null,
+    'wish_role', 'real_time', 'wait_morning', 'open_vote', 'seal_message', 'open_day',
+    'necessary_name', 'necessary_trip', null,
     'dummy_boy_selector', 'gm_password', 'gerd', null,
     'not_open_cast_selector', null,
     'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf', 'sirius_wolf',

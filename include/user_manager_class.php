@@ -61,6 +61,7 @@ class UserManager {
     if (! DB::$ROOM->IsBeforeGame() || DB::$ROOM->status != 'waiting') { //ゲーム開始判定
       HTML::OutputResult('村人登録 [入村不可]', 'すでにゲームが開始されています。');
     }
+    DB::$ROOM->ParseOption(); //名前・トリップ必須オプション用
 
     //DB から現在のユーザ情報を取得 (ロック付き)
     RQ::Load('RequestBase', true);
@@ -148,6 +149,12 @@ EOF;
     }
 
     //ユーザ名・村人名
+    if (DB::$ROOM->IsOption('necessary_name') && strpos($uname, '◆') === 0) {
+      HTML::OutputResult($title, 'ユーザ名がありません (トリップのみは不可)');
+    }
+    if (DB::$ROOM->IsOption('necessary_trip') && strpos($uname, '◆') === false) {
+      HTML::OutputResult($title, 'トリップがありません');
+    }
     $query_count .= " live = 'live' AND";
     $query = sprintf("%s (uname = '%s' OR handle_name = '%s')", $query_count, $uname, $handle_name);
     if (DB::Count($query) > 0) {
@@ -255,6 +262,15 @@ EOF;
 EOF;
     }
     elseif (GameConfig::TRIP) {
+      if (DB::$ROOM->IsOption('necessary_name') && DB::$ROOM->IsOption('necessary_trip')) {
+	$add_message = '<br><span>必ずユーザ名・トリップの両方を入力してください</span>';
+      } elseif (DB::$ROOM->IsOption('necessary_name')) {
+	$add_message = '<br><span>必ずユーザ名を入力してください</span>';
+      } elseif (DB::$ROOM->IsOption('necessary_trip')) {
+	$add_message = '<br><span>必ずトリップを入力してください</span>';
+      } else {
+	$add_message = '';
+      }
       $uname_form = <<<EOF
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
@@ -263,7 +279,7 @@ EOF;
 </tr>
 <tr>
 <td></td>
-<td colspan="2" class="explain">普段は表示されず、他のユーザ名がわかるのは死亡したときとゲーム終了後のみです<br>＃の右側はトリップ専用入力欄です。</td>
+<td colspan="2" class="explain">普段は表示されず、他のユーザ名がわかるのは死亡したときとゲーム終了後のみです<br>＃の右側はトリップ専用入力欄です{$add_message}</td>
 </tr>
 EOF;
     }
@@ -272,7 +288,7 @@ EOF;
 <tr>
 <td class="img"><label for="uname"><img src="{$path}/uname.gif" alt="ユーザ名"></label></td>
 <td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="{$uname}"></td>
-<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです(トリップ使用不可)</td>
+<td class="explain">普段は表示されず、他のユーザ名がわかるのは<br>死亡したときとゲーム終了後のみです(<span>トリップ使用不可</span>)</td>
 </tr>
 EOF;
     }
@@ -282,7 +298,7 @@ EOF;
 <tr>
 <td class="img"><label for="password"><img src="{$path}/password.gif" alt="パスワード"></label></td>
 <td><input type="password" id="password" name="password" size="30" maxlength="30" value=""></td>
-<td class="explain">セッションが切れた場合のログイン時に使います<br> (暗号化されていないので要注意)</td>
+<td class="explain">セッションが切れた場合のログイン時に使います<br> (<span>暗号化されていないので要注意</span>)</td>
 </tr>
 EOF;
     }

@@ -3,22 +3,28 @@
   ◆犬神 (possessed_mad)
   ○仕様
   ・憑依無効陣営：妖狐/恋人
+  ・投票数：+1 (憑依成立 3 日後)
 */
 class Role_possessed_mad extends Role {
   public $action     = 'POSSESSED_DO';
   public $not_action = 'POSSESSED_NOT_DO';
   public $ignore_message = '初日は憑依できません';
+  public $ability = 'ability_possessed_mad';
 
-  //Mixin あり
   function OutputResult() {
-    //現在の憑依先
-    if (DB::$ROOM->date > 2 && ! $this->GetActor()->IsActive()) RoleHTML::OutputPossessed();
+    $this->OutputPossessed();
+    if ($this->IsAbility()) RoleHTML::OutputAbilityResult($this->ability, null);
   }
 
   function OutputAction() {
     if ($this->GetActor()->IsActive()) {
       RoleHTML::OutputVote('wolf-eat', 'possessed_do', $this->action, $this->not_action);
     }
+  }
+
+  //現在の憑依先 (Mixin あり)
+  function OutputPossessed() {
+    if (DB::$ROOM->date > 2 && ! $this->GetActor()->IsActive()) RoleHTML::OutputPossessed();
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
@@ -42,6 +48,10 @@ class Role_possessed_mad extends Role {
 
   function IgnoreVoteNight(User $user, $live) {
     return $live ? '死者以外には投票できません' : null;
+  }
+
+  function FilterVoteDo(&$number) {
+    if ($this->IsAbility()) $number++;
   }
 
   //憑依情報セット
@@ -71,5 +81,11 @@ class Role_possessed_mad extends Role {
 	$this->AddStack($target_uname, 'possessed', $uname);
       }
     }
+  }
+
+  //追加能力発動判定
+  private function IsAbility() {
+    $list = $this->GetActor()->GetPartner('possessed_target', true);
+    return count($list) > 0 && min(array_keys($list)) + 1 < DB::$ROOM->date;
   }
 }

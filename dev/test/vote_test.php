@@ -50,7 +50,7 @@ RQ::GetTest()->test_users[7]->live = 'live';
 RQ::GetTest()->test_users[8]->role = 'poison_guard';
 RQ::GetTest()->test_users[8]->live = 'live';
 
-RQ::GetTest()->test_users[9]->role = 'seal_medium joker[2]';
+RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
 RQ::GetTest()->test_users[10]->role = 'ascetic_assassin death_note[5]';
@@ -62,7 +62,7 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'anti_voodoo death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'possessed_mad lost_ability mind_presage[23] changed_disguse';
+RQ::GetTest()->test_users[13]->role = 'possessed_mad lost_ability';
 RQ::GetTest()->test_users[13]->live = 'live';
 
 RQ::GetTest()->test_users[14]->role = 'purple_fox death_warrant[6]';
@@ -83,13 +83,13 @@ RQ::GetTest()->test_users[18]->live = 'live';
 RQ::GetTest()->test_users[19]->role = 'enchant_mad psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
-RQ::GetTest()->test_users[20]->role = 'vampire';
+RQ::GetTest()->test_users[20]->role = 'passion_vampire bad_luck';
 RQ::GetTest()->test_users[20]->live = 'live';
 
 RQ::GetTest()->test_users[21]->role = 'resurrect_mania[8] panelist';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter chicken';
+RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
 RQ::GetTest()->test_users[23]->role = 'echo_brownie deep_sleep';
@@ -106,7 +106,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 Dev::ComplementUser();
 
 //-- 仮想投票データをセット --//
-$set_date = 4;
+$set_date = 6;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -119,10 +119,10 @@ RQ::GetTest()->vote_target_day = array(
   //array('id' =>  7, 'target_no' =>  3),
   array('id' =>  7, 'target_no' => 14),
   array('id' =>  8, 'target_no' =>  9),
-  array('id' =>  9, 'target_no' => 11),
-  array('id' => 10, 'target_no' => 11),
-  array('id' => 11, 'target_no' => 13),
-  array('id' => 12, 'target_no' => 13),
+  array('id' =>  9, 'target_no' => 20),
+  array('id' => 10, 'target_no' => 20),
+  array('id' => 11, 'target_no' => 20),
+  array('id' => 12, 'target_no' => 20),
   array('id' => 13, 'target_no' =>  3),
   array('id' => 14, 'target_no' => 23),
   array('id' => 15, 'target_no' =>  7),
@@ -197,7 +197,7 @@ if ($set_date == 1) { //初日用
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
     array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
-    array('user_no' => 8, 	'target_no' => 18,	'type' => 'GUARD_DO'),
+    array('user_no' => 8, 	'target_no' => 15,	'type' => 'GUARD_DO'),
     #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
     #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
@@ -282,8 +282,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();
@@ -447,8 +447,8 @@ if ($role_view_mode) { //画像表示モード
 $cast_view_mode = false;
 if ($cast_view_mode) { //配役情報表示モード
   Loader::LoadFile('chaos_config');
-  //Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));
-  //Text::p(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
+  #Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));
+  #Text::p(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
   //Text::p(ChaosConfig::$role_group_rate_list);
   echo '<table border="1" cellspacing="0">'."\n".'<tr><th>人口</th>';
   foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
@@ -457,7 +457,7 @@ if ($cast_view_mode) { //配役情報表示モード
     echo '<th class="' . $class . '">' . RoleData::$short_role_list[$role] . '</th>';
   }
   echo '</tr>'."\n";
-  for($i = 8; $i <= 32; $i++) {
+  for ($i = 8; $i <= 40; $i++) {
     echo '<tr align="right"><td><strong>' . $i . '</strong></td>';
     foreach (ChaosConfig::$role_group_rate_list as $rate) {
       echo '<td>' . round($i / $rate) . '</td>';
