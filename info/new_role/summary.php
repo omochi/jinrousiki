@@ -3014,7 +3014,7 @@ Ver. 2.1.0
   <td>Ver. 2.1.0 α7</td>
 </tr>
 <tr>
-  <td><a href="vampire.php#passion_vampire">牡丹灯篭</a></td>
+  <td><a href="vampire.php#passion_vampire">牡丹灯籠</a></td>
   <td><a href="vampire.php">吸血鬼</a></td>
   <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
   <td>蝙蝠</td>

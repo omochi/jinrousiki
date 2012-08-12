@@ -247,7 +247,7 @@ class RoleData {
     'poison_vampire'        => '百々爺',
     'incubus_vampire'       => '青髭公',
     'succubus_vampire'      => '飛縁魔',
-    'passion_vampire'       => '牡丹灯篭',
+    'passion_vampire'       => '牡丹灯籠',
     'doom_vampire'          => '冥血鬼',
     'sacrifice_vampire'     => '吸血公',
     'soul_vampire'          => '吸血姫',

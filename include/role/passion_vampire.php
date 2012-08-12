@@ -1,6 +1,6 @@
 <?php
 /*
-  ◆牡丹灯篭 (passion_vampire)
+  ◆牡丹灯籠 (passion_vampire)
   ○仕様
   ・吸血：恋色迷彩 (一定確率)
 */

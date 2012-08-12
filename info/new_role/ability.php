@@ -312,7 +312,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </pre>
 <h3 id="talk_convert_indirect">間接型</h3>
 <pre>
-<a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="vampire.php#passion_vampire">牡丹灯篭</a>・<a href="chiroptera.php#spring_fairy">春妖精</a>・<a href="chiroptera.php#summer_fairy">夏妖精</a>・<a href="chiroptera.php#autumn_fairy">秋妖精</a>・<a href="chiroptera.php#winter_fairy">冬妖精</a>・<a href="chiroptera.php#greater_fairy">大妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#sun_fairy">日妖精</a>
+<a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="vampire.php#passion_vampire">牡丹灯籠</a>・<a href="chiroptera.php#spring_fairy">春妖精</a>・<a href="chiroptera.php#summer_fairy">夏妖精</a>・<a href="chiroptera.php#autumn_fairy">秋妖精</a>・<a href="chiroptera.php#winter_fairy">冬妖精</a>・<a href="chiroptera.php#greater_fairy">大妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#sun_fairy">日妖精</a>
 </pre>
 <h3 id="talk_convert_cute">遠吠え置換型 (萌系)</h3>
 <pre>

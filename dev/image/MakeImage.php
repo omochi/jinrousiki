@@ -994,7 +994,7 @@ class RoleMessageList {
     'type' => 'incubus_vampire');
 
   public $passion_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|牡丹灯篭|です。|吸血|先に一定確率で_恋色迷彩_を追加してしまいます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|牡丹灯籠|です。|吸血|先に一定確率で_恋色迷彩_を追加してしまいます。",
     'type' => 'vampire', 'delimiter' => array('_' => 'liar'));
 
   public $doom_vampire = array(
@@ -1989,7 +1989,7 @@ class RoleMessageList {
   public $result_poison_vampire = array('message' => "さんは|百々爺|でした", 'type' => 'result_vampire');
   public $result_incubus_vampire = array('message' => "さんは|青髭公|でした", 'type' => 'result_vampire');
   public $result_succubus_vampire = array('message' => "さんは|飛縁魔|でした", 'type' => 'result_vampire');
-  public $result_passion_vampire = array('message' => "さんは|牡丹灯篭|でした", 'type' => 'result_vampire');
+  public $result_passion_vampire = array('message' => "さんは|牡丹灯籠|でした", 'type' => 'result_vampire');
   public $result_doom_vampire = array('message' => "さんは|冥血鬼|でした", 'type' => 'result_vampire');
   public $result_sacrifice_vampire = array('message' => "さんは|吸血公|でした", 'type' => 'result_vampire');
   public $result_soul_vampire = array('message' => "さんは|吸血姫|でした", 'type' => 'result_vampire');

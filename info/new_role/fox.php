@@ -363,6 +363,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <li>憑依中に<a href="human.php#anti_voodoo">厄神</a>に護衛されると憑依状態を解かれて元の体に戻される。</li>
 <li>複数の憑依能力者が同時に同じ人に憑依しようとした場合は全員憑依失敗扱いになる。</li>
 <li>憑依成立後の次の日から<a href="human.php#hunter_guard">猟師</a>以外の狩りを無効化する。</li>
+<li>憑依を解除されても狩り耐性は失わない。</li>
 </ol>
 <h5>Ver. 2.1.0 α7～</h5>
 <pre>

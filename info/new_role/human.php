@@ -1685,7 +1685,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
   例) 25% : 成功 : 20% / 誤爆 :  5%</li>
 <li>身代わり君・<a href="ability.php#revive">蘇生能力者</a>・<a href="sub_role.php#lovers">恋人</a>・<a href="#detective_common">探偵</a>は蘇生できない。</li>
 <li>蘇生対象外の人が選ばれた場合は確実に失敗する。</li>
-<li>蘇生に失敗した場合は霊界と<a href="#attempt_necromancer">蟲姫</a>にだけ見えるシステムメッセージが表示される。</li>
+<li>蘇生に失敗した場合は霊界と<a href="#attempt_necromancer">蟲姫</a>・<a href="ogre.php#vajra_yaksa">金剛夜叉</a>にだけ見えるシステムメッセージが表示される。</li>
 </ol>
 <h5>Ver. 1.4.0 β2～</h5>
 <pre>
@@ -1770,7 +1770,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#eclipse_cat">蝕仙狸</a>と違い、自覚があるので動き方が異なってくると思われます。
-<a href="../weather.php">天候</a>や<a href="#revive_brownie">蛇神</a>が絡んでくると通常蘇生も狙えます。
+<a href="../weather.php#weather_full_revive">天候</a>や<a href="#revive_brownie">蛇神</a>が絡んでくると通常蘇生も狙えます。
 </pre>
 
 <h3 id="eclipse_cat">蝕仙狸 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β17～]</h3>

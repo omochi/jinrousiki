@@ -82,7 +82,7 @@ InfoHTML::OutputRoleHeader('吸血鬼陣営');
 <a href="#poison_vampire">百々爺</a>
 <a href="#incubus_vampire">青髭公</a>
 <a href="#succubus_vampire">飛縁魔</a>
-<a href="#passion_vampire">牡丹灯篭</a>
+<a href="#passion_vampire">牡丹灯籠</a>
 <a href="#doom_vampire">冥血鬼</a>
 <a href="#sacrifice_vampire">吸血公</a>
 <a href="#soul_vampire">吸血姫</a>
@@ -155,7 +155,7 @@ InfoHTML::OutputRoleHeader('吸血鬼陣営');
 村の男女構成比次第で難易度が大きく変わることになります。
 </pre>
 
-<h3 id="passion_vampire">牡丹灯篭 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 2.1.0 α7～]</h3>
+<h3 id="passion_vampire">牡丹灯籠 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 2.1.0 α7～]</h3>
 <pre>
 吸血先に一定確率 (50%) で<a href="sub_role.php#passion">恋色迷彩</a>もつけてしまう特殊な吸血鬼。
 </pre>

@@ -26,5 +26,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <ul>
   <li>「犬神」「憑狐」仕様変更</li>
   <li>百々爺：毒耐性を持ち、自身も毒を持つ特殊な吸血鬼</li>
-  <li>牡丹灯篭：吸血先に一定確率で恋色迷彩もつけてしまう特殊な吸血鬼</li>
+  <li>牡丹灯籠：吸血先に一定確率で恋色迷彩もつけてしまう特殊な吸血鬼</li>
 </ul>
