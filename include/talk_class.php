@@ -318,6 +318,7 @@ class TalkBuilder {
 	}
 	$str = $talk->sentence; //改行を入れるため再セット
 	if (isset($talk->time)) $name .= sprintf('<br><span>%s</span>', $talk->date_time);
+	if (RQ::$get->icon) $symbol = Icon::GetUserIcon($actor) . $symbol;
 	return $this->AddRaw($symbol, $name, $str, $voice, '', $class);
       }
       else {
@@ -469,6 +470,7 @@ EOF;
     $voice = $talk->font_type;
     //発言フィルタ処理
     foreach ($this->filter as $filter) $filter->FilterTalk($user, $name, $voice, $str);
+    if (RQ::$get->icon && $name != '') $symbol = Icon::GetUserIcon($user) . $symbol;
     if (isset($talk->date_time)) $name .= "<br><span>{$talk->date_time}</span>";
     return $this->AddRaw($symbol, $name, $str, $voice);
   }

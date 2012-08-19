@@ -38,4 +38,10 @@ class Icon {
     }
     return self::$tag;
   }
+
+  //ユーザアイコンタグ取得
+  static function GetUserIcon(User $user) {
+    $format = '<img src="%s" style="border-color: %s;" alt="icon" align="left" %s>';
+    return sprintf($format, self::GetFile($user->icon_filename), $user->color, self::GetTag());
+  }
 }

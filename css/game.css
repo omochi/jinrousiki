@@ -190,6 +190,7 @@ body { /* AA 用 */
   font-size: 8pt;
 }
 .say { /* 発言の中身 */
+  padding: 3px 0;
   margin-left: 1px;
   width: 1000px;
   /* 草対策：ブラウザ依存があるのでひとまず不使用

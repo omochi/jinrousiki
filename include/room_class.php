@@ -23,12 +23,8 @@ class Room {
 
   function __construct($request = null, $lock = false) {
     if (is_null($request)) return;
-    if ($request->IsVirtualRoom()) {
-      $stack = $request->GetTestRoom();
-    }
-    else {
-      $stack = $this->LoadRoom($request->room_no, $lock);
-    }
+    $stack = $request->IsVirtualRoom() ? $request->GetTestRoom() :
+      $this->LoadRoom($request->room_no, $lock);
     foreach ($stack as $name => $value) $this->$name = $value;
     $this->ParseOption();
   }

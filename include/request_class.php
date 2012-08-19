@@ -77,21 +77,17 @@ class RequestBase {
 
       if (array_key_exists($item, $value_list)) {
 	$value = $value_list[$item];
-      }
-      elseif (! $this->GetDefault($item, $value)) {
+      } elseif (! $this->GetDefault($item, $value)) {
 	$value = null;
       }
 
       if (empty($processor)) {
 	$this->$item = $value;
-      }
-      elseif (method_exists($this, $processor)) {
+      } elseif (method_exists($this, $processor)) {
 	$this->$item = $this->$processor($value);
-      }
-      elseif (method_exists('Text', $processor)) {
+      } elseif (method_exists('Text', $processor)) {
 	$this->$item = Text::$processor($value);
-      }
-      else {
+      } else {
 	$this->$item = $processor($value);
       }
     }
@@ -171,7 +167,7 @@ class RequestBaseGame extends RequestBase {
 class RequestBaseGamePlay extends RequestBaseGame {
   function __construct() {
     parent::__construct();
-    $this->Parse('IsOn', 'get.list_down', 'get.play_sound');
+    $this->Parse('IsOn', 'get.icon', 'get.list_down', 'get.play_sound');
   }
 }
 
@@ -219,8 +215,7 @@ class RequestUserManager extends RequestBaseIcon {
     Text::Escape($this->profile, false);
     if ($this->entry) {
       $this->Parse('ConvertTrip', 'post.uname', 'post.handle_name');
-    }
-    else {
+    } else {
       $this->Parse('Escape', 'post.uname', 'post.trip', 'post.handle_name');
     }
   }
@@ -234,6 +229,7 @@ class RequestGameFrame extends RequestBaseGamePlay {
 
     $url = '?room_no=' . $this->room_no . '&auto_reload=' . $this->auto_reload;
     if ($this->play_sound) $url .= '&play_sound=on';
+    if ($this->icon)       $url .= '&icon=on';
     if ($this->list_down)  $url .= '&list_down=on';
     $this->url = $url;
   }
@@ -247,6 +243,7 @@ class RequestGameUp extends RequestBaseGamePlay {
 
     $url = '?room_no=' . $this->room_no . '&auto_reload=' . $this->auto_reload;
     if ($this->play_sound)  $url .= '&play_sound=on';
+    if ($this->icon)        $url .= '&icon=on';
     if ($this->list_down)   $url .= '&list_down=on';
     if ($this->dead_mode)   $url .= '&dead_mode=on';
     if ($this->heaven_mode) $url .= '&heaven_mode=on';
@@ -314,6 +311,7 @@ class RequestGameVote extends RequestBaseGamePlay {
     $url_option = 'room_no=' . $this->room_no;
     if ($this->auto_reload > 0) $url_option .= '&auto_reload=' . $this->auto_reload;
     if ($this->play_sound)      $url_option .= '&play_sound=on';
+    if ($this->icon)            $url_option .= '&icon=on';
     if ($this->list_down)       $url_option .= '&list_down=on';
     $this->post_url = 'game_vote.php?' . $url_option;
     $this->back_url = '<a href="game_up.php?' . $url_option . '">←戻る &amp; reload</a>';
@@ -324,7 +322,7 @@ class RequestGameVote extends RequestBaseGamePlay {
 class RequestOldLog extends RequestBase {
   function __construct() {
     $this->Parse('intval', 'get.db_no');
-    $this->Parse('IsOn', 'get.watch');
+    $this->Parse('IsOn', 'get.watch', 'get.icon');
     if ($this->is_room = isset($_GET['room_no'])) {
       $this->Parse('intval', 'get.room_no', 'get.user_no');
       $this->Parse('IsOn', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only',

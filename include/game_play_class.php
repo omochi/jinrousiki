@@ -303,6 +303,7 @@ class GamePlay {
     $url_room   = '?room_no=' . DB::$ROOM->id;
     $url_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
     $url_sound  = RQ::$get->play_sound      ? '&play_sound=on'  : '';
+    $url_icon   = RQ::$get->icon            ? '&icon=on'        : '';
     $url_list   = RQ::$get->list_down       ? '&list_down=on'   : '';
     $url_dead   = DB::$ROOM->dead_mode      ? '&dead_mode=on'   : '';
     $url_heaven = DB::$ROOM->heaven_mode    ? '&heaven_mode=on' : '';
@@ -356,23 +357,29 @@ class GamePlay {
 <input type="submit" value="更新">
 </form>%s
 EOF;
-	$url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload . $url_sound . $url_list;
+	$url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload . $url_sound .
+	  $url_icon . $url_list;
 	printf($str, $url, "\n");
       }
     }
 
     if (! DB::$ROOM->IsFinished()) { //ゲーム終了後は自動更新しない
-      $url_header = $url_frame . $url_room . $url_dead . $url_heaven . $url_list;
+      $url_header = $url_frame . $url_room . $url_dead . $url_heaven . $url_icon . $url_list;
       GameHTML::OutputAutoReloadLink($url_header . $url_sound);
 
       $url = $url_header . $url_reload;
-      printf("[音でお知らせ](%s)\n",
-	     RQ::$get->play_sound ? sprintf('on %s">off</a>', $url) :
-	     $url . '&play_sound=on">on</a> off');
+      printf("[音](%s)\n",
+	     RQ::$get->play_sound ? sprintf('【ON】 %s">OFF</a>', $url) :
+	     $url . '&play_sound=on">ON</a> 【OFF】');
     }
 
+    //アイコン表示
+    $url = $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound  . $url_list;
+    printf("[アイコン](%s)\n", RQ::$get->icon ? sprintf('【ON】 %s">OFF</a>', $url) :
+	   $url . '&icon=on">ON</a> 【OFF】');
+
     //プレイヤーリストの表示位置
-    echo $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound  .
+    echo $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound  . $url_icon .
       sprintf("%sリスト</a>\n", RQ::$get->list_down ? '">↑' : '&list_down=on">↓');
 
     //別ページリンク
@@ -474,7 +481,7 @@ EOF;
 <input type="image" name="objimage" src="%s">
 (%d)</form></td>%s
 EOF;
-      $url   = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_list;
+      $url   = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_icon . $url_list;
       $image = GameConfig::OBJECTION_IMAGE;
       $count = GameConfig::OBJECTION - DB::$SELF->objection;
       printf($str, $url, $image, $count, "\n");
