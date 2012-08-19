@@ -1,5 +1,5 @@
 <?php
-//オプションパーサ
+//-- オプションパーサ --//
 class OptionParser {
   public $row;
   public $list = array();

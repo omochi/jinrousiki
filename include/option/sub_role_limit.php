@@ -13,30 +13,30 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
     }
     foreach ($stack as $name => $class) {
       $filter = OptionManager::GetClass($class);
-      if (isset($filter) && $filter->enable) $this->item_list[$class] = $name;
+      if (isset($filter) && $filter->enable) $this->form_list[$class] = $name;
     }
   }
 
   function GetCaption() { return 'サブ役職制限'; }
 
-  function GetItems() {
-    $items = array('no_sub_role' => OptionManager::GetClass('no_sub_role'),
+  function GetItem() {
+    $stack = array('no_sub_role' => OptionManager::GetClass('no_sub_role'),
 		   'easy'        => OptionManager::GetClass('sub_role_limit_easy'),
 		   'normal'      => OptionManager::GetClass('sub_role_limit_normal'),
 		   'hard'        => OptionManager::GetClass('sub_role_limit_hard'),
 		   ''            => OptionManager::GetClass('sub_role_limit_none'));
-    foreach ($items as $key => $item) {
+    foreach ($stack as $key => $item) {
       $item->form_name  = $this->form_name;
-      $item->form_value = $this->item_list[$item->name];
+      $item->form_value = $this->form_list[$item->name];
     }
-    if (isset($items[$this->value])) $items[$this->value]->value = true;
-    return $items;
+    if (isset($stack[$this->value])) $stack[$this->value]->value = true;
+    return $stack;
   }
 
   function LoadPost() {
     if (! isset($_POST[$this->name])) return false;
     $post = $_POST[$this->name];
-    foreach ($this->item_list as $option => $value) {
+    foreach ($this->form_list as $option => $value) {
       if ($value == $post) {
 	RQ::$get->$option = true;
 	array_push(RoomOption::${$this->group}, $option);

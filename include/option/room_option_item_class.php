@@ -34,11 +34,13 @@ abstract class RoomOptionItem {
   //フォームデータ取得
   abstract function LoadPost();
 
+  //配役処理 (一人限定)
   function CastOnce(array &$list, &$rand, $str = '') {
     $list[array_pop($rand)] .= ' ' . $this->name . $str;
     return array($this->name);
   }
 
+  //配役処理 (全員)
   function CastAll(array &$list) {
     foreach (array_keys($list) as $id) $list[$id] .= ' ' . $this->name;
     return array($this->name);
@@ -65,47 +67,46 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   public $type  = 'selector';
   public $label = 'モード名';
   public $conf_name;
-  public $items;
-  public $items_source;
-  public $item_list = array();
+  public $source;
+  public $item_list;
+  public $form_list = array();
 
   function __construct() {
     parent::__construct();
-    $this->items_source = sprintf('%s_list', $this->name);
+    $this->source = sprintf('%s_list', $this->name);
   }
 
   function LoadPost() {
     if (! isset($_POST[$this->name]) || empty($_POST[$this->name])) return false;
     $post = $_POST[$this->name];
 
-    if (in_array($post, $this->item_list)) {
+    if (in_array($post, $this->form_list)) {
       RQ::$get->$post = true;
       array_push(RoomOption::${$this->group}, $post);
     }
   }
 
   //個別データ取得
-  function GetItems() {
-    if (! isset($this->items)) {
-      $this->items = array();
-      $stack = is_array($this->conf_name) ? $this->conf_name :
-	GameOptionConfig::${$this->items_source};
+  function GetItem() {
+    if (! isset($this->item_list)) {
+      $this->item_list = array();
+      $stack = is_array($this->conf_name) ? $this->conf_name : GameOptionConfig::${$this->source};
       if (isset($stack)) {
 	foreach ($stack as $key => $value) {
 	  if (is_string($key)) {
-	    if ($this->IsEnable($key)) $this->items[$key] = $value;
+	    if ($this->IsEnable($key)) $this->item_list[$key] = $value;
 	  }
 	  elseif (is_string($value)) {
 	    $item = OptionManager::GetClass($value);
-	    if (isset($item) && $item->enable) $this->items[$item->name] = $item;
+	    if (isset($item) && $item->enable) $this->item_list[$item->name] = $item;
 	  }
 	  else {
-	    $this->items[] = $value;
+	    $this->item_list[] = $value;
 	  }
 	}
       }
     }
-    return $this->items;
+    return $this->item_list;
   }
 
   //有効判定

@@ -4,8 +4,8 @@
 */
 class Option_dummy_boy_selector extends SelectorRoomOptionItem {
   public $group = RoomOption::GAME_OPTION;
-  public $type = 'group';
-  public $item_list = array('dummy_boy' => 'on', 'gm_login' => 'gm_login');
+  public $type  = 'group';
+  public $form_list = array('dummy_boy' => 'on', 'gm_login' => 'gm_login');
 
   function __construct() {
     parent::__construct();
@@ -16,23 +16,23 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 
   function GetExplain() { return '配役は<a href="info/rule.php">ルール</a>を確認して下さい'; }
 
-  function GetItems() {
-    $items = array(''         => new Option_no_dummy_boy(),
+  function GetItem() {
+    $stack = array(''         => new Option_no_dummy_boy(),
 		   'on'       => OptionManager::GetClass('dummy_boy'),
 		   'gm_login' => OptionManager::GetClass('gm_login'));
-    foreach ($items as $key => $item) {
+    foreach ($stack as $key => $item) {
       $item->form_name  = $this->form_name;
-      $item->form_value = $this->item_list[$item->name];
+      $item->form_value = $this->form_list[$item->name];
     }
-    if (isset($items[$this->value])) $items[$this->value]->value = true;
-    return $items;
+    if (isset($stack[$this->value])) $stack[$this->value]->value = true;
+    return $stack;
   }
 
   function LoadPost() {
     if (! isset($_POST[$this->name])) return false;
     $post = $_POST[$this->name];
 
-    foreach ($this->item_list as $option => $value) {
+    foreach ($this->form_list as $option => $value) {
       if ($post == $value) {
 	RQ::$get->$option = true;
 	array_push(RoomOption::${$this->group}, $option);

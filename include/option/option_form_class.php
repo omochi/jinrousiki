@@ -1,8 +1,5 @@
 <?php
-/**
- * オプション入力画面を表示するためのツールを提供します。
- * @author enogu
- */
+//-- オプション入力画面表示クラス --//
 class OptionForm {
   const SEPARATOR = "  <tr><td colspan=\"2\"><hr></td></tr>\n";
   const TEXTBOX = '<input type="%s" name="%s" id="%s" size="%d" value="">%s';
@@ -96,13 +93,8 @@ EOF;
   //セレクタ生成
   private function GenerateSelector(SelectorRoomOptionItem $item) {
     $str = '';
-    foreach ($item->GetItems() as $code => $child) {
-      if ($child instanceof RoomOptionItem) {
-	$label = $child->GetCaption();
-      }
-      else {
-	$label = $child;
-      }
+    foreach ($item->GetItem() as $code => $child) {
+      $label = $child instanceof RoomOptionItem ? $child->GetCaption() : $child;
       if (! is_string($code)) $code = $label;
       $str .= sprintf(self::SELECTOR, $code, $code == $item->value ? ' selected' : '', $label);
     }
@@ -120,7 +112,7 @@ EOF;
   //グループ生成
   private function GenerateGroup(RoomOptionItem $item) {
     $str  = '';
-    foreach ($item->GetItems() as $key => $child) {
+    foreach ($item->GetItem() as $child) {
       $type = $child->type;
       if (! empty($type)) {
 	switch ($type) {

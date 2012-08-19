@@ -9,7 +9,7 @@ class Option_special_role extends SelectorRoomOptionItem {
 
   function __construct() {
     parent::__construct();
-    $this->item_list = GameOptionConfig::${$this->items_source};
+    $this->form_list = GameOptionConfig::${$this->source};
   }
 
   function GetCaption() { return '特殊配役モード'; }

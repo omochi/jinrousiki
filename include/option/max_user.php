@@ -8,8 +8,7 @@ class Option_max_user extends SelectorRoomOptionItem {
   function __construct() {
     parent::__construct();
     $this->conf_name = RoomConfig::$max_user_list;
-    $this->items_source = 'max_user_list';
-    $this->value = RoomConfig::$default_max_user;
+    $this->value     = RoomConfig::$default_max_user;
   }
 
   function GetCaption() { return '最大人数'; }

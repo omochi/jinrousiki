@@ -10,30 +10,30 @@ class Option_chaos_open_cast extends SelectorRoomOptionItem {
     foreach (array('camp', 'role', 'full') as $name) {
       $class  = sprintf('%s_%s', $this->name, $name);
       $filter = OptionManager::GetClass($class);
-      if (isset($filter) && $filter->enable) $this->item_list[$class] = $name;
+      if (isset($filter) && $filter->enable) $this->form_list[$class] = $name;
     }
   }
 
   function GetCaption() { return '配役を通知する'; }
 
-  function GetItems() {
-    $items = array(''     => OptionManager::GetClass('chaos_open_cast_none'),
+  function GetItem() {
+    $stack = array(''     => OptionManager::GetClass('chaos_open_cast_none'),
 		   'camp' => OptionManager::GetClass('chaos_open_cast_camp'),
 		   'role' => OptionManager::GetClass('chaos_open_cast_role'),
 		   'full' => OptionManager::GetClass('chaos_open_cast_full'));
-    foreach ($items as $key => $item) {
+    foreach ($stack as $key => $item) {
       $item->form_name  = $this->form_name;
-      $item->form_value = $this->item_list[$item->name];
+      $item->form_value = $this->form_list[$item->name];
     }
-    if (isset($items[$this->value])) $items[$this->value]->value = true;
-    return $items;
+    if (isset($stack[$this->value])) $stack[$this->value]->value = true;
+    return $stack;
   }
 
   function LoadPost() {
     if (! isset($_POST[$this->name])) return false;
     $post = $_POST[$this->name];
 
-    foreach ($this->item_list as $option => $value) {
+    foreach ($this->form_list as $option => $value) {
       if ($value == $post) {
 	RQ::$get->$option = true;
 	array_push(RoomOption::${$this->group}, $option);

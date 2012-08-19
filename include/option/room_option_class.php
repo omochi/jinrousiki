@@ -1,4 +1,5 @@
 <?php
+//-- 村作成オプションクラス --//
 class RoomOption {
   const NOT_OPTION  = '';
   const GAME_OPTION = 'game_option';
@@ -38,23 +39,6 @@ class RoomOption {
     }
   }
 
-  static function SetGroup($group, $item) {
-    $item->group = $group;
-    if ($item instanceof RoomOptionItemGroup) {
-      foreach ($item->items as $child) {
-        self::SetGroup($group, $child);
-      }
-    }
-  }
-
-  //ゲームオプション画像出力
-  static function Output() {
-    $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
-    extract(DB::FetchAssoc($query, true));
-    $format = "<div class=\"game-option\">ゲームオプション：%s</div>\n";
-    printf($format, self::Generate($game_option, $option_role, $max_user));
-  }
-
   //ゲームオプション情報生成
   static function Generate($game_option, $option_role, $max_user) {
     return self::GenerateImage($game_option, $option_role) . Image::GenerateMaxUser($max_user);
@@ -82,7 +66,7 @@ class RoomOption {
       case 'topping':
       case 'boost_rate':
 	$type   = $list[$option][0];
-	$item   = $filter->GetItems();
+	$item   = $filter->GetItem();
 	$footer = sprintf('[%s]', strtoupper($type));
 	$sentence .= sprintf('(Type%s)', $item[$type]);
 	break;
@@ -94,5 +78,13 @@ class RoomOption {
       $str .= Image::Room()->Generate($option, $sentence) . $footer;
     }
     return $str;
+  }
+
+  //ゲームオプション画像出力
+  static function Output() {
+    $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
+    extract(DB::FetchAssoc($query, true));
+    $format = "<div class=\"game-option\">ゲームオプション：%s</div>\n";
+    printf($format, self::Generate($game_option, $option_role, $max_user));
   }
 }

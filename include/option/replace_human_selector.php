@@ -5,7 +5,7 @@
 class Option_replace_human_selector extends SelectorRoomOptionItem {
   function  __construct() {
     parent::__construct();
-    $this->item_list = GameOptionConfig::${$this->items_source};
+    $this->form_list = GameOptionConfig::${$this->source};
   }
 
   function GetCaption() { return '村人置換村'; }
