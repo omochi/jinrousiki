@@ -322,11 +322,11 @@ class RequestGameVote extends RequestBaseGamePlay {
 class RequestOldLog extends RequestBase {
   function __construct() {
     $this->Parse('intval', 'get.db_no');
-    $this->Parse('IsOn', 'get.watch', 'get.icon');
+    $this->Parse('IsOn', 'get.watch');
     if ($this->is_room = isset($_GET['room_no'])) {
       $this->Parse('intval', 'get.room_no', 'get.user_no');
       $this->Parse('IsOn', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only',
-		   'get.add_role', 'get.personal_result', 'get.time');
+		   'get.add_role', 'get.personal_result', 'get.time', 'get.icon');
       $this->AttachTestParameters();
     }
     else {

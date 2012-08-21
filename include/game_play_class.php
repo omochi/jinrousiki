@@ -374,7 +374,7 @@ EOF;
     }
 
     //アイコン表示
-    $url = $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound  . $url_list;
+    $url = $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound . $url_list;
     printf("[アイコン](%s)\n", RQ::$get->icon ? sprintf('【ON】 %s">OFF</a>', $url) :
 	   $url . '&icon=on">ON</a> 【OFF】');
 

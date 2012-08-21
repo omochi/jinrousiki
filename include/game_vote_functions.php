@@ -964,7 +964,7 @@ class Vote {
       //Text::p(RoleManager::$get->escaper, 'Target [escaper]');
     }
 
-    do { //人狼の襲撃成功判定
+    do { //-- 人狼の襲撃成功判定 --//
       $wolf_target->wolf_eat    = false;
       $wolf_target->wolf_killed = false;
       if ($skip || DB::$ROOM->IsQuiz()) break; //スキップモード・クイズ村仕様
@@ -974,14 +974,16 @@ class Vote {
 	  if ($filter->TrapStack($voted_wolf, $wolf_target->uname)) break 2;
 	}
       }
+      RoleManager::$get->voter = $voted_wolf;
 
       //逃亡者の巻き添え判定
       foreach (array_keys(RoleManager::$get->escaper, $wolf_target->uname) as $uname) {
 	DB::$USER->Kill(DB::$USER->UnameToNumber($uname), 'WOLF_KILLED'); //死亡処理
       }
 
-      RoleManager::$get->voter = $voted_wolf; //護衛判定
-      if (RoleManager::GetClass('guard')->Guard($wolf_target) && ! $voted_wolf->IsSiriusWolf()) {
+      //護衛判定
+      if (DB::$ROOM->date > 1 && RoleManager::GetClass('guard')->Guard($wolf_target) &&
+	  ! $voted_wolf->IsSiriusWolf()) {
 	//Text::p(RoleManager::$get->guard_success, 'GuardSuccess');
 	RoleManager::LoadMain($voted_wolf)->GuardCounter();
 	break;
@@ -1013,12 +1015,12 @@ class Vote {
 	}
       }
 
-      //-- 襲撃処理 --//
+      //襲撃処理
       $wolf_filter->WolfKill($wolf_target);
       $wolf_target->wolf_eat    = true;
       $wolf_target->wolf_killed = true;
 
-      if ($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()) { //-- 毒死判定 --//
+      if ($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()) { //毒死判定
 	$poison_target = $wolf_filter->GetPoisonEatTarget(); //対象選出
 	if ($poison_target->IsChallengeLovers()) break; //難題なら無効
 
