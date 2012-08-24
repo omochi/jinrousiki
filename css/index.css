@@ -20,12 +20,12 @@ noscript { /* JavaScript が無効の場合のワーニング */
   font-size: 15pt;
   font-weight: bold;
 }
-table.main { /* 全体の table */
+#main { /* 全体の table */
   border: 0;
   width: 100%;
   padding: 5px;
 }
-table.main td {
+#main td {
   vertical-align: top;
 }
 .menu {
@@ -63,13 +63,14 @@ input, select { /* 設定項目 */
   background-color: #FFFFFF;
   font-size: 80%;
 }
-.make { /* 作成ボタン */
+#make { /* 作成ボタン */
   text-align: right;
 }
-.make input {
+#make input {
   border: 1px solid #000000;
+  padding: 2px 5px;
 }
-.footer { /* フッター (バージョン情報など) */
+#footer { /* フッター (バージョン情報など) */
   margin-bottom: 5px;
   text-align: right;
   font-size: 80%;

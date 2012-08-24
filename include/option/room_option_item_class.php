@@ -2,6 +2,7 @@
 //-- 村作成オプションの基底クラス --//
 abstract class RoomOptionItem {
   public $name;
+  public $class;
   public $enable;
   public $value;
   public $type;
@@ -70,6 +71,7 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   public $source;
   public $item_list;
   public $form_list = array();
+  public $on_change = '';
 
   function __construct() {
     parent::__construct();

@@ -7,18 +7,16 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0 α6アップロード (2012/07/28 (Sat) 23:55) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56637/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0 β1アップロード (2012/08/22 (Wed) 00:10) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56690/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「ユーザ名必須」「トリップ必須」オプション実装</li>
-  <li>「百々爺」「牡丹灯籠」実装</li>
-  <li>「犬神」「憑狐」仕様変更</li>
+  <li>アイコン表示オプション (ゲーム内) 実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>アイコン表示オプション (ゲーム内) 実装</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

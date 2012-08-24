@@ -6,6 +6,8 @@
 */
 class Option_special_role extends SelectorRoomOptionItem {
   public $group = RoomOption::GAME_OPTION;
+  public $on_change  = ' onChange="change_special_role()"';
+  public $javascript = "change_option_display('chaos', 'none')";
 
   function __construct() {
     parent::__construct();

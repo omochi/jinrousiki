@@ -3,6 +3,8 @@
   ◆村人置換村 (セレクタ)
 */
 class Option_replace_human_selector extends SelectorRoomOptionItem {
+  public $on_change = ' onChange="change_replace_human()"';
+
   function  __construct() {
     parent::__construct();
     $this->form_list = GameOptionConfig::${$this->source};

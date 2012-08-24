@@ -12,6 +12,7 @@ Ver. 2.1.0
 <a href="#ver210a4">α4</a>
 <a href="#ver210a5">α5</a>
 <a href="#ver210a6">α6</a>
+<a href="#ver210b1">β1</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -19,6 +20,11 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210b1">Ver. 2.1.0 β1 (Rev. 629) : 2012/08/22 (Wed) 00:10</h2>
+<ul>
+<li>アイコン表示オプション (ゲーム内) 実装</li>
+</ul>
 
 <h2 id="ver210a7">Ver. 2.1.0 α7 (Rev. 624) : 2012/08/13 (Mon) 01:32</h2>
 <ul>

@@ -251,11 +251,12 @@ EOF;
       '<label for="room_password">村作成パスワード</label>：' .
       '<input type="password" id="room_password" name="room_password" size="20">　';
     echo <<<EOF
-<tr><td class="make" colspan="2">{$password}<input type="submit" value=" 作成 "></td></tr>
+<tr><td id="make" colspan="2">{$password}<input type="submit" value=" 作成 "></td></tr>
 </table>
 </form>
 
 EOF;
+
   }
 
   //結果出力
