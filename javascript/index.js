@@ -2,7 +2,7 @@
   ◆TOPページ制御関数
 */
 
-/* getElementsByClass() 代替関数 */
+/* メニュー折り畳み */
 function fold_menu(element) {
   var list = element.childNodes;
 

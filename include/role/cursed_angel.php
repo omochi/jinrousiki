@@ -13,7 +13,10 @@ class Role_cursed_angel extends Role_angel {
   protected function IsSympathy(User $a, User $b) { return $a->GetCamp() != $b->GetCamp(); }
 
   function SuddenDeath() {
-    if ($this->IgnoreSuddenDeath()) return;
+    if ($this->IgnoreSuddenDeath() ||
+	! $this->IsActor(DB::$USER->ByRealUname($this->GetActor()->uname)->uname)) {
+      return;
+    }
     foreach ($this->GetVotedUname() as $uname) {
       if (DB::$USER->ByRealUname($uname)->IsLovers()) {
 	$this->SetSuddenDeath($this->sudden_death);

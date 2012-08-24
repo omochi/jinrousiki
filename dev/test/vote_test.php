@@ -41,7 +41,7 @@ RQ::GetTest()->test_users[4]->live = 'live';
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
 RQ::GetTest()->test_users[5]->live = 'live';
 
-RQ::GetTest()->test_users[6]->role = 'seal_medium possessed[4-15]';
+RQ::GetTest()->test_users[6]->role = 'eclipse_medium possessed[4-15]';
 RQ::GetTest()->test_users[6]->live = 'dead';
 
 RQ::GetTest()->test_users[7]->role = 'dummy_guard lovers[16]';
@@ -83,7 +83,7 @@ RQ::GetTest()->test_users[18]->live = 'live';
 RQ::GetTest()->test_users[19]->role = 'enchant_mad psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
-RQ::GetTest()->test_users[20]->role = 'passion_vampire bad_luck';
+RQ::GetTest()->test_users[20]->role = 'passion_vampire';
 RQ::GetTest()->test_users[20]->live = 'live';
 
 RQ::GetTest()->test_users[21]->role = 'resurrect_mania[8] panelist';
@@ -282,8 +282,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-#DB::$ROOM->scene = 'day';
-DB::$ROOM->scene = 'night';
+DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();

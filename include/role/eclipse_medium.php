@@ -11,7 +11,8 @@ class Role_eclipse_medium extends Role_medium {
   public $sudden_death = 'SEALED';
 
   function SuddenDeath() {
-    if (! $this->IgnoreSuddenDeath() && $this->GetVoteKill() == '') {
+    if (! $this->IgnoreSuddenDeath() && $this->GetVoteKill() == '' &&
+	$this->IsActor(DB::$USER->ByRealUname($this->GetActor()->uname)->uname)) {
       $this->SetSuddenDeath($this->sudden_death);
     }
   }
