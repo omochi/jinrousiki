@@ -1,7 +1,11 @@
 <?php
 //-- GamePlay 出力クラス --//
 class GamePlay {
-  const VOTE_DAY = "<div class=\"self-vote\">投票 %d 回目：%s</div>\n%s";
+  const VOTE_DAY  = "<div class=\"self-vote\">投票 %d 回目：%s</div>\n%s";
+  const SAY_LIMIT = '<font color="#FF0000">%s</font><br>';
+  const NOT_VOTE  = '<font color="#FF0000">まだ投票していません</font>';
+  const VOTE_DO   = '<span class="ability vote-do">%s</span><br>';
+  private static $url_stack = array();
 
   //出力
   static function Output() {
@@ -81,14 +85,14 @@ class GamePlay {
     //-- データ出力 --//
     GameHTML::OutputHeader();
     self::OutputHeader();
-    if ($say_limit === false) printf('<font color="#FF0000">%s</font><br>', Message::$say_limit);
+    if ($say_limit === false) printf(self::SAY_LIMIT, Message::$say_limit);
     if (! DB::$ROOM->heaven_mode) {
       if (! RQ::$get->list_down) GameHTML::OutputPlayer();
       RoleHTML::OutputAbility();
       if (DB::$ROOM->IsDay() && DB::$SELF->IsLive() && DB::$ROOM->date != 1) { //処刑投票メッセージ
 	if (is_null(DB::$SELF->target_no)) {
-	  $str  = '<font color="#FF0000">まだ投票していません</font>';
-	  $vote = sprintf('<span class="ability vote-do">%s</span><br>', Message::$ability_vote);
+	  $str  = self::NOT_VOTE;
+	  $vote = sprintf(self::VOTE_DO, Message::$ability_vote);
 	}
 	else {
 	  $str  = DB::$USER->ByVirtual(DB::$SELF->target_no)->handle_name . ' さんに投票済み';
@@ -299,16 +303,9 @@ class GamePlay {
 
   //ヘッダ出力
   private function OutputHeader() {
-    $url_frame  = '<a target="_top" href="game_frame.php';
-    $url_room   = '?room_no=' . DB::$ROOM->id;
-    $url_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
-    $url_sound  = RQ::$get->play_sound      ? '&play_sound=on'  : '';
-    $url_icon   = RQ::$get->icon            ? '&icon=on'        : '';
-    $url_list   = RQ::$get->list_down       ? '&list_down=on'   : '';
-    $url_dead   = DB::$ROOM->dead_mode      ? '&dead_mode=on'   : '';
-    $url_heaven = DB::$ROOM->heaven_mode    ? '&heaven_mode=on' : '';
-
+    self::SetURL();
     echo '<table class="game-header"><tr>'."\n";
+
     //ゲーム終了後・霊界
     if (DB::$ROOM->IsFinished() || (DB::$ROOM->heaven_mode && DB::$SELF->IsDead())) {
       echo DB::$ROOM->IsFinished() ? DB::$ROOM->GenerateTitleTag() :
@@ -316,9 +313,8 @@ class GamePlay {
 
       //過去シーンのログへのリンク生成
       echo '<td class="view-option">ログ ';
-      $header = sprintf('<a href="game_log.php%s', $url_room);
-      $footer = '" target="_blank">';
-      $format = $header . '&date=%d&scene=%s' . $footer . '%d(%s)</a>'."\n";
+      $header = sprintf('<a target="_blank" href="game_log.php%s', self::SelectURL(array()));
+      $format = $header . '&date=%d&scene=%s">%d(%s)</a>'."\n";
 
       printf($format, 0, 'beforegame', 0, '前');
       if (DB::$ROOM->date > 1) {
@@ -344,7 +340,7 @@ class GamePlay {
 	  printf($format, DB::$ROOM->date, 'night', DB::$ROOM->date, '夜');
 	}
 
-	$format = $header . '&scene=%s' . $footer . '(%s)</a>'."\n";
+	$format = $header . '&scene=%s">(%s)</a>'."\n";
 	printf($format, 'aftergame', '後');
 	printf($format, 'heaven',    '霊');
       }
@@ -352,46 +348,53 @@ class GamePlay {
     else {
       echo DB::$ROOM->GenerateTitleTag() . '<td class="view-option">'."\n";
       if (DB::$SELF->IsDead() && DB::$ROOM->dead_mode) { //死亡者の場合の、真ん中の全表示地上モード
-	$str = <<<EOF
+	$format = <<<EOF
 <form method="POST" action="%s" name="reload_middle_frame" target="middle">
 <input type="submit" value="更新">
 </form>%s
 EOF;
-	$url = 'game_play.php' . $url_room . '&dead_mode=on' . $url_reload . $url_sound .
-	  $url_icon . $url_list;
-	printf($str, $url, "\n");
+	$url = self::GetURL(array('dead_mode', 'heaven_mode'), 'game_play.php') . '&dead_mode=on';
+	printf($format, $url, "\n");
       }
     }
 
-    if (! DB::$ROOM->IsFinished()) { //ゲーム終了後は自動更新しない
-      $url_header = $url_frame . $url_room . $url_dead . $url_heaven . $url_icon . $url_list;
-      GameHTML::OutputAutoReloadLink($url_header . $url_sound);
+    if (DB::$ROOM->IsFinished()) {
+      echo '<br>';
+    }
+    else { //ゲーム終了後は自動更新しない
+      GameHTML::OutputAutoReloadLink(self::GetURL(array('auto_reload')));
 
-      $url = $url_header . $url_reload;
-      printf("[音](%s)\n",
-	     RQ::$get->play_sound ? sprintf('【ON】 %s">OFF</a>', $url) :
-	     $url . '&play_sound=on">ON</a> 【OFF】');
+      $format  = "[%s\" class=\"option-%s\">音</a>]\n";
+      $url     = self::GetURL(array('play_sound'));
+      $add_url = '&play_sound=on';
+      RQ::$get->play_sound ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
     }
 
     //アイコン表示
-    $url = $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound . $url_list;
-    printf("[アイコン](%s)\n", RQ::$get->icon ? sprintf('【ON】 %s">OFF</a>', $url) :
-	   $url . '&icon=on">ON</a> 【OFF】');
+    $format = "[%s\" class=\"option-%s\">アイコン</a>]\n";
+    $url    = self::GetURL(array('icon'));
+    RQ::$get->icon ? printf($format, $url, 'on') : printf($format, $url . '&icon=on', 'off');
+
+    if (DB::$ROOM->IsFinished()) { //ユーザ名表示
+      $format = "[%s\" class=\"option-%s\">名前</a>]\n";
+      $url    = self::GetURL(array('name'));
+      RQ::$get->name ? printf($format, $url, 'on') : printf($format, $url . '&name=on', 'off');
+    }
 
     //プレイヤーリストの表示位置
-    echo $url_frame . $url_room . $url_dead . $url_heaven . $url_reload . $url_sound  . $url_icon .
-      sprintf("%sリスト</a>\n", RQ::$get->list_down ? '">↑' : '&list_down=on">↓');
+    $url = self::GetURL(array('list_down'));
+    echo $url . sprintf("%sリスト</a>\n", RQ::$get->list_down ? '">↑' : '&list_down=on">↓');
 
     //別ページリンク
-    $url = '<a target="_blank" href="game_play.php%s%s">別ページ</a>%s';
-    printf($url, $url_room, $url_list, "\n");
+    $format = '<a target="_blank" href="game_play.php%s">別ページ</a>%s';
+    printf($format, self::SelectURL(array('list_down')), "\n");
 
     if (DB::$ROOM->IsFinished()) {
       GameHTML::OutputLogLink();
     }
     elseif (DB::$ROOM->IsBeforegame()) {
-      $url = '<a target="_blank" href="user_manager.php%s&user_no=%d">登録情報変更</a>'."\n";
-      printf($url, $url_room, DB::$SELF->user_no);
+      $format = '<a target="_blank" href="user_manager.php%s&user_no=%d">登録情報変更</a>'."\n";
+      printf($format, self::SelectURL(array()), DB::$SELF->user_no);
     }
 
     //音でお知らせ処理
@@ -454,8 +457,8 @@ EOF;
     if (DB::$ROOM->IsBeforeGame()) {
       echo '<td class="real-time">';
       if (DB::$ROOM->IsRealTime()) { //実時間の制限時間を取得
-	$str = '設定時間： 昼 <span>%d分</span> / 夜 <span>%d分</span>';
-	printf($str, DB::$ROOM->real_time->day, DB::$ROOM->real_time->night);
+	$format = '設定時間： 昼 <span>%d分</span> / 夜 <span>%d分</span>';
+	printf($format, DB::$ROOM->real_time->day, DB::$ROOM->real_time->night);
       }
       printf('　突然死：<span>%s</span></td>', Time::Convert(TimeConfig::SUDDEN_DEATH));
     }
@@ -475,16 +478,17 @@ EOF;
     if (DB::$ROOM->IsBeforeGame() ||
 	(DB::$ROOM->IsDay() && ! DB::$ROOM->dead_mode &&
 	 ! DB::$ROOM->heaven_mode && $left_time > 0)) {
-      $str = <<<EOF
+      $format = <<<EOF
 <td class="objection"><form method="POST" action="%s">
 <input type="hidden" name="set_objection" value="on">
 <input type="image" name="objimage" src="%s">
 (%d)</form></td>%s
 EOF;
-      $url   = 'game_play.php' . $url_room . $url_reload . $url_sound . $url_icon . $url_list;
+      $list  = array('auto_reload', 'play_sound', 'icon', 'list_down');
+      $url   = self::SelectURL($list, 'game_play.php');
       $image = GameConfig::OBJECTION_IMAGE;
       $count = GameConfig::OBJECTION - DB::$SELF->objection;
-      printf($str, $url, $image, $count, "\n");
+      printf($format, $url, $image, $count, "\n");
     }
     echo "</tr></table>\n";
 
@@ -534,5 +538,40 @@ EOF;
 </tr></table>
 
 EOF;
+  }
+
+  //リンク情報収集
+  private function SetURL() {
+    self::$url_stack['room'] = '?room_no=' . DB::$ROOM->id;
+
+    $url = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
+    self::$url_stack['auto_reload'] = $url;
+
+    foreach (array('play_sound', 'icon', 'name', 'list_down') as $name) {
+      $url = RQ::$get->$name ? sprintf('&%s=on', $name) : '';
+      self::$url_stack[$name] = $url;
+    }
+
+    foreach (array('dead', 'heaven') as $name) {
+      $mode = $mode . '_mode';
+      $url = DB::$ROOM->$name ? sprintf('&%s=on', $name) : '';
+      self::$url_stack[$name] = $url;
+    }
+  }
+
+  //リンク情報取得 (差分型)
+  private function GetURL(array $list, $header = null) {
+    $url = is_null($header) ? '<a target="_top" href="game_frame.php' : $header;
+    foreach (array_diff(array_keys(self::$url_stack), $list) as $key) {
+      $url .= self::$url_stack[$key];
+    }
+    return $url;
+  }
+
+  //リンク情報取得 (抽出型)
+  private function SelectURL(array $list, $header = null) {
+    $url = (isset($header) ? $header : '') . self::$url_stack['room'];
+    foreach ($list as $key) $url .= self::$url_stack[$key];
+    return $url;
   }
 }

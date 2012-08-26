@@ -50,6 +50,11 @@ body { /* AA 用 */
   vertical-align: middle;
   font-size:11pt;
 }
+.option-on {
+}
+.option-off {
+  background-color: #CCCCCC;
+}
 .system-vote { /* 投票を促すメッセージ */
   padding: 7px;
   background-color: #CC3300;

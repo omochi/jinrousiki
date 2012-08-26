@@ -167,7 +167,17 @@ class RequestBaseGame extends RequestBase {
 class RequestBaseGamePlay extends RequestBaseGame {
   function __construct() {
     parent::__construct();
-    $this->Parse('IsOn', 'get.icon', 'get.list_down', 'get.play_sound');
+    $this->Parse('IsOn', 'get.play_sound', 'get.icon', 'get.name', 'get.list_down');
+  }
+
+  protected function GetURL($auto_reload = false) {
+    $url = '?room_no=' . $this->room_no;
+    if ($this->auto_reload > 0 || $auto_reload) $url .= '&auto_reload=' . $this->auto_reload;
+    if ($this->play_sound) $url .= '&play_sound=on';
+    if ($this->icon)       $url .= '&icon=on';
+    if ($this->name)       $url .= '&name=on';
+    if ($this->list_down)  $url .= '&list_down=on';
+    return $url;
   }
 }
 
@@ -226,12 +236,7 @@ class RequestGameFrame extends RequestBaseGamePlay {
   function __construct() {
     parent::__construct();
     $this->Parse('IsOn', 'get.dead_mode');
-
-    $url = '?room_no=' . $this->room_no . '&auto_reload=' . $this->auto_reload;
-    if ($this->play_sound) $url .= '&play_sound=on';
-    if ($this->icon)       $url .= '&icon=on';
-    if ($this->list_down)  $url .= '&list_down=on';
-    $this->url = $url;
+    $this->url = $this->GetURL(true);
   }
 }
 
@@ -241,10 +246,7 @@ class RequestGameUp extends RequestBaseGamePlay {
     parent::__construct();
     $this->Parse('IsOn', 'get.dead_mode', 'get.heaven_mode');
 
-    $url = '?room_no=' . $this->room_no . '&auto_reload=' . $this->auto_reload;
-    if ($this->play_sound)  $url .= '&play_sound=on';
-    if ($this->icon)        $url .= '&icon=on';
-    if ($this->list_down)   $url .= '&list_down=on';
+    $url = $this->GetURL(true);
     if ($this->dead_mode)   $url .= '&dead_mode=on';
     if ($this->heaven_mode) $url .= '&heaven_mode=on';
     $this->url = $url;
@@ -308,13 +310,9 @@ class RequestGameVote extends RequestBaseGamePlay {
     $this->Parse(null, 'post.target_no', 'post.situation');
     $this->AttachTestParameters(); //テスト用引数のロード
 
-    $url_option = 'room_no=' . $this->room_no;
-    if ($this->auto_reload > 0) $url_option .= '&auto_reload=' . $this->auto_reload;
-    if ($this->play_sound)      $url_option .= '&play_sound=on';
-    if ($this->icon)            $url_option .= '&icon=on';
-    if ($this->list_down)       $url_option .= '&list_down=on';
-    $this->post_url = 'game_vote.php?' . $url_option;
-    $this->back_url = '<a href="game_up.php?' . $url_option . '">←戻る &amp; reload</a>';
+    $url = $this->GetURL();
+    $this->post_url = 'game_vote.php?' . $url;
+    $this->back_url = '<a href="game_up.php?' . $url . '">←戻る &amp; reload</a>';
   }
 }
 

@@ -461,6 +461,9 @@ EOF;
 	(isset($real) ? $real : DB::$USER->ByReal($user->user_no));
       $name .= $real->GenerateShortRoleName();
     }
+    elseif (DB::$ROOM->IsFinished() && RQ::$get->name) { //ユーザ名表示モード
+      $name .= $user->GenerateShortRoleName();
+    }
     if (DB::$ROOM->IsNight() &&
 	(($talk->location == 'self_talk' && ! $user->IsRole('dummy_common')) ||
 	 $user->IsRole('leader_common', 'mind_read', 'mind_open'))) {
