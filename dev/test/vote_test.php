@@ -92,7 +92,7 @@ RQ::GetTest()->test_users[21]->live = 'live';
 RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'echo_brownie deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'revive_mad deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->role = 'barrier_wizard infected[20]';
@@ -192,7 +192,7 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    array('user_no' => 2, 	'target_no' => 10,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2, 	'target_no' => 23,	'type' => 'WOLF_EAT'),
     #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
@@ -282,8 +282,8 @@ DB::$ROOM->log_mode = true;
 DB::$ROOM->revote_count = 0;
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();

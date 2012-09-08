@@ -65,6 +65,11 @@ class PageLinkBuilder {
       $url_stack[] = $this->set_reverse ? '新↓古' : '古↓新';
       $name = ($this->set_reverse xor $this->reverse) ? '元に戻す' : '入れ替える';
       $url_stack[] =  $this->GenerateTag($this->page->set, $name, true);
+      if (RQ::$get->watch) {
+	$this->AddOption('reverse', $this->set_reverse ? 'on' : 'off');
+	$this->AddOption('watch', 'off');
+	$url_stack[] = $this->GenerateTag($this->page->set, '勝敗表示', true);
+      }
     }
     return $this->header . implode(' ', $url_stack) . $this->footer;
   }
@@ -195,11 +200,19 @@ EOF;
 	if (is_int(RQ::$get->db_no) && RQ::$get->db_no > 0) {
 	  $base_url .= '&db_no=' . RQ::$get->db_no;
 	}
+	if (RQ::$get->watch) $base_url .= '&watch=on';
 	$login = $current_time - strtotime($ROOM->finish_datetime) > RoomConfig::KEEP_SESSION ? '' :
 	  '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead . ">[再入村]</a>\n";
-	$base = HTML::GenerateLogLink($base_url, true, '(');
-	$add  = HTML::GenerateLogLink($base_url . '&add_role=on', false, "\n[役職表示] (", $dead);
-	$log_link = $base . ' )' . $add . ' )';
+
+	if (RQ::$get->watch) {
+	  $log_link = HTML::GenerateWatchLogLink($base_url, '(') . ' )';
+	}
+	else {
+	  $log_link = HTML::GenerateLogLink($base_url, true, '(') . ' )';
+
+	  $url = $base_url . '&add_role=on';
+	  $log_link .= HTML::GenerateLogLink($url, false, "\n[役職表示] (", $dead) . ' )';
+	}
       }
       $max_user    = Image::GenerateMaxUser($ROOM->max_user);
       $game_option = RoomOption::GenerateImage($ROOM->game_option, $ROOM->option_role);

@@ -2762,7 +2762,7 @@ Ver. 2.1.0
   <td><a href="wolf.php#mad_group">狂人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する特殊な狂人。</td>
+  <td class="ability">人狼に襲撃されて死亡した場合、一度だけ即座に蘇生し、襲撃してきた人狼と<a href="sub_role.php#mind_friend">共鳴者</a>になる特殊な狂人。</td>
   <td>Ver. 1.5.0 β13</td>
 </tr>
 <tr>

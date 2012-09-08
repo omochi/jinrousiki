@@ -311,8 +311,8 @@ class RequestGameVote extends RequestBaseGamePlay {
     $this->AttachTestParameters(); //テスト用引数のロード
 
     $url = $this->GetURL();
-    $this->post_url = 'game_vote.php?' . $url;
-    $this->back_url = '<a href="game_up.php?' . $url . '">←戻る &amp; reload</a>';
+    $this->post_url = 'game_vote.php' . $url;
+    $this->back_url = '<a href="game_up.php' . $url . '">←戻る &amp; reload</a>';
   }
 }
 

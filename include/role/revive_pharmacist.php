@@ -10,10 +10,10 @@ class Role_revive_pharmacist extends Role_pharmacist {
   //復活処理
   function Resurrect() {
     $user = $this->GetActor();
-    if ($this->IsResurrect($user) && $user->IsActive()) {
-      $user->Revive();
-      $user->LostAbility();
-    }
+    if (! $this->IsResurrect($user) || ! $user->IsActive()) return false;
+    $user->Revive();
+    $user->LostAbility();
+    return true;
   }
 
   //復活判定

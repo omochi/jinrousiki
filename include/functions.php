@@ -271,13 +271,22 @@ EOF;
 <a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
 EOF;
 
-    if ($watch){
+    if ($watch) {
       $str .= <<<EOF
 
 <a target="_top" href="{$url}&watch=on"{$footer}>観</a>
 <a target="_top" href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
 EOF;
     }
+    return $str;
+  }
+
+  //ログへのリンク生成 (観戦モード用)
+  static function GenerateWatchLogLink($url, $header = '', $footer = '') {
+    $str = <<<EOF
+{$header} <a target="_top" href="{$url}"{$footer}>正</a>
+<a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
+EOF;
     return $str;
   }
 

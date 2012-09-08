@@ -1130,7 +1130,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="mania.php#unknown_mania_group">鵺系</a>
+<a href="wolf.php#emerald_wolf">翠狼</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="lovers.php#mind_cupid">女神</a>・<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="mania.php#unknown_mania_group">鵺系</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

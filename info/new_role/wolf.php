@@ -297,6 +297,8 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <h4>[作成者からのコメント]</h4>
 <pre>
 ローゼンメイデンの雪華綺晶がモチーフです。
+最も見つけ難い敵対勢力を比較的低リスクで探す事ができます。
+<a href="human.php#jealousy_group">橋姫系</a>や<a href="human.php#brownie_group">座敷童子系</a>を騙ると得票を操作し易いのでお勧めです。
 </pre>
 
 <h3 id="ascetic_wolf">印狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.1.0 α6～]</h3>
@@ -1521,6 +1523,11 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 人狼に襲撃されて死亡した場合、一度だけ即座に蘇生する (自己蘇生) 特殊な狂人。
 自己蘇生能力の仕様は<a href="human.php#revive_pharmacist">仙人</a>と同じ。
+自己蘇生が発動すると、襲撃してきた人狼と<a href="sub_role.php#mind_friend">共鳴者</a>になる。
+</pre>
+<h5>Ver. 2.1.0 β2～</h5>
+<pre>
+共鳴能力追加。
 </pre>
 <h4>関連役職</h4>
 <pre>
