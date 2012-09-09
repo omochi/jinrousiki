@@ -830,11 +830,8 @@ class ChaosConfig {
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   static $boost_rate_list = array(
-    'a' => array('sacrifice_cat'     =>  9,
-		 'possessed_mad'     => 11,
-		 'possessed_fox'     =>  5,
-		 'poison_vampire'    => 11,
-		 'passion_vampire'   => 11),
+    'a' => array('revive_pharmacist' =>  5,
+		 'revive_mad'        => 11),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'eccentricer'       => 0,
