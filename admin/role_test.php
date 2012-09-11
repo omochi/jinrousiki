@@ -56,8 +56,9 @@ if (@$_POST['command'] == 'role_test') {
   }
 
   //普通村向けオプション
-  foreach (array('gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-		 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective') as $option) {
+  foreach (array('gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
+		 'possessed_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective') as
+	   $option) {
     if (@$_POST[$option] == 'on') $stack->option_role[] = $option;
   }
 
@@ -158,13 +159,15 @@ EOF;
 
   $stack = array(
      'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'wolf' => '人狼',
-     'boss_wolf' => '白狼', 'poison_wolf' => '毒狼', 'possessed_wolf' => '憑狼', 'fox' => '妖狐',
-     'child_fox' => '子狐', 'cupid' => 'QP', 'medium' => '巫女', 'mania' => 'マニア',
-     'detective' => '探偵', 'festival' => 'お祭り', 'limit_off' => 'リミッタオフ');
+     'boss_wolf' => '白狼', 'poison_wolf' => '毒狼', 'tongue_wolf' => '舌禍狼',
+     'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐', 'cupid' => 'QP',
+     'medium' => '巫女', 'mania' => 'マニア', 'detective' => '探偵', 'festival' => 'お祭り',
+     'limit_off' => 'リミッタオフ');
   foreach ($stack as $option => $name) {
-    $label = 'option_' . $option;
+    $id = 'option_' . $option;
+    $br = (++$i % 13 == 0) ? '<br>' : '';
     echo <<<EOF
-<input type="checkbox" id="{$label}" name="{$option}" value="on"><label for="{$label}">{$name}</label>
+<input type="checkbox" id="{$id}" name="{$option}" value="on"><label for="{$id}">{$name}</label>{$br}
 
 EOF;
   }

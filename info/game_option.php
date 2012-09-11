@@ -153,10 +153,11 @@ InfoHTML::OutputHeader('ゲームオプション');
 </ul>
 <p>
 <?php InfoHTML::OutputCategory(array('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
-'possessed_wolf', 'sirius_wolf', 'fox')); ?>
+'tongue_wolf', 'possessed_wolf', 'sirius_wolf')); ?>
 </p>
 <p>
-<?php InfoHTML::OutputCategory(array('child_fox', 'cupid', 'medium', 'mania', 'decide', 'authority')); ?>
+<?php InfoHTML::OutputCategory(array('fox', 'child_fox', 'cupid', 'medium', 'mania',
+'decide', 'authority')); ?>
 </p>
 
 <h3 id="poison"><?php OptionManager::OutputCaption('poison'); ?></h3>
@@ -187,6 +188,12 @@ InfoHTML::OutputHeader('ゲームオプション');
 <ul>
 <li><?php Info::OutputAddRole('poison_wolf'); ?></li>
 <li><?php OptionManager::OutputExplain('poison_wolf'); ?></li>
+</ul>
+
+<h3 id="tongue_wolf"><?php OptionManager::OutputCaption('tongue_wolf'); ?> [Ver. 2.1.0 β3～]</h3>
+<ul>
+<li><?php Info::OutputAddRole('tongue_wolf'); ?></li>
+<li><?php OptionManager::OutputExplain('tongue_wolf'); ?></li>
 </ul>
 
 <h3 id="possessed_wolf"><?php OptionManager::OutputCaption('possessed_wolf'); ?> [Ver. 1.4.0 β4～]</h3>

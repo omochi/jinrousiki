@@ -136,8 +136,9 @@ EOF;
 			     'sub_role_limit');
       }
       elseif (! RQ::$get->duel && ! RQ::$get->gray_random) { //通常村
-	RoomOption::LoadPost('poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf',
-			     'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'medium');
+	RoomOption::LoadPost(
+          'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf', 'possessed_wolf',
+	  'sirius_wolf', 'fox', 'child_fox', 'medium');
 	if (! RQ::$get->full_cupid)   RoomOption::LoadPost('cupid');
 	if (! RQ::$get->full_mania)   RoomOption::LoadPost('mania');
 	if (! RQ::$get->perverseness) RoomOption::LoadPost('decide', 'authority');

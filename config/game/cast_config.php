@@ -92,6 +92,7 @@ class CastConfig {
   static $wolf           = 20; //人狼追加 [村人1 → 人狼1]
   static $boss_wolf      = 18; //白狼 [人狼1 → 白狼]
   static $poison_wolf    = 20; //毒狼 (+ 薬師) [人狼1 → 毒狼1、村人1 → 薬師1]
+  static $tongue_wolf    =  8; //舌禍狼 [人狼1 → 舌禍狼1]
   static $possessed_wolf =  8; //憑狼 [人狼1 → 憑狼1]
   static $sirius_wolf    =  8; //天狼 [人狼1 → 天狼1]
   static $fox            =  8; //妖狐追加 [村人1 → 妖狐1]

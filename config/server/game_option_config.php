@@ -58,6 +58,9 @@ class GameOptionConfig {
   static $poison_wolf_enable  = true; //毒狼
   static $default_poison_wolf = false;
 
+  static $tongue_wolf_enable  = true; //舌禍狼
+  static $default_tongue_wolf = false;
+
   static $possessed_wolf_enable  = true; //憑狼
   static $default_possessed_wolf = false;
 

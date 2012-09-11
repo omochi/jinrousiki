@@ -13,6 +13,7 @@ Ver. 2.1.0
 <a href="#ver210a5">α5</a>
 <a href="#ver210a6">α6</a>
 <a href="#ver210b1">β1</a>
+<a href="#ver210b2">β2</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -20,6 +21,12 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210b2">Ver. 2.1.0 β2 (Rev. 635) : 2012/09/10 (Mon) 00:35</h2>
+<ul>
+<li>「尸解仙」仕様変更</li>
+<li>トップページのデザイン変更</li>
+</ul>
 
 <h2 id="ver210b1">Ver. 2.1.0 β1 (Rev. 629) : 2012/08/22 (Wed) 00:10</h2>
 <ul>

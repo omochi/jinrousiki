@@ -30,8 +30,8 @@ class OptionManager {
 
   //特殊普通村編成リスト
   private static $role_list = array(
-    'detective', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'possessed_wolf',
-    'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania');
+    'detective', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
+    'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania');
 
   //特殊サブ配役リスト
   private static $cast_list = array(
