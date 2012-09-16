@@ -9,7 +9,7 @@ class RoomOption {
   static $role_option = array();
   static $icon_order  = array(
     'wish_role', 'real_time', 'dummy_boy', 'gm_login', 'gerd', 'wait_morning', 'open_vote',
-    'seal_message', 'open_day', 'necessary_name', 'necessary_trip', 'not_open_cast',
+    'settle', 'seal_message', 'open_day', 'necessary_name', 'necessary_trip', 'not_open_cast',
     'auto_open_cast', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
     'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'decide',
     'authority', 'detective', 'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open',

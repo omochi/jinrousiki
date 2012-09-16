@@ -23,4 +23,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
   <li>「舌禍狼登場」オプション実装</li>
+  <li>「決着村」オプション実装</li>
 </ul>

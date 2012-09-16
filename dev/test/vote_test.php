@@ -294,21 +294,22 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(25);
+DB::$SELF = DB::$USER->ByID(10);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;
 }
 
 //-- データ出力 --//
-$vote_view_mode = false;
+$vote_view_mode = true; false;
 if ($vote_view_mode) { //投票表示モード
   Loader::LoadFile('vote_message');
   $stack = new RequestGameVote();
   RQ::$get->vote = $stack->vote;
   RQ::$get->target_no = $stack->target_no;
   RQ::$get->situation = $stack->situation;
-  RQ::$get->back_url  = '';
+  RQ::$get->back_url  = '<a href="vote_test.php">戻る</a>';
+
   if (RQ::$get->vote) { //投票処理
     HTML::OutputHeader('投票テスト', 'game', true); //HTMLヘッダ
     if (RQ::$get->target_no == 0) { //空投票検出

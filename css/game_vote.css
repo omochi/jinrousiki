@@ -25,3 +25,7 @@
   vertical-align: top;
   font-size: 14pt;
 }
+.add-action {
+  position: absolute;
+  left: 10px;
+}

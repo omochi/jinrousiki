@@ -41,7 +41,7 @@ class Icon {
 
   //ユーザアイコンタグ取得
   static function GetUserIcon(User $user) {
-    $format = '<img src="%s" style="border-color: %s;" alt="icon" align="middle" %s>';
+    $format = '<img src="%s" style="border-color: %s;" alt="" align="middle" %s>';
     return sprintf($format, self::GetFile($user->icon_filename), $user->color, self::GetTag());
   }
 }

@@ -9,6 +9,7 @@ InfoHTML::OutputHeader('開発履歴 / 2.0', 1, 'develop_history');
 Ver. 2.0.x<br>
 <a href="#ver201">1</a>
 <a href="#ver202">2</a>
+<a href="#ver203">3</a>
 </p>
 <p>
 Ver. 2.0.0<br>
@@ -24,6 +25,12 @@ Ver. 2.0.0<br>
 <a href="#ver200a6">α6</a>
 <a href="#ver200b1">β1</a>
 </p>
+
+<h2 id="ver203">Ver. 2.0.3 (Rev. 638) : 2012/09/16 (Sun) 21:08</h2>
+<ul>
+<li>ユーザ名表示機能実装</li>
+<li>投票ボタン位置を変更</li>
+</ul>
 
 <h2 id="ver202">Ver. 2.0.2 (Rev. 628) : 2012/08/21 (Tue) 02:24</h2>
 <ul>

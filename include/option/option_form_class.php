@@ -11,7 +11,7 @@ class OptionForm {
   private static $order = array(
     'room_name', 'room_comment', 'max_user',
     'base' => null,
-    'wish_role', 'real_time', 'wait_morning', 'open_vote', 'seal_message', 'open_day',
+    'wish_role', 'real_time', 'wait_morning', 'open_vote', 'settle', 'seal_message', 'open_day',
     'necessary_name', 'necessary_trip',
     'dummy_boy' => null,
     'dummy_boy_selector', 'gm_password', 'gerd',

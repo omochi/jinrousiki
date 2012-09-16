@@ -16,7 +16,7 @@ InfoHTML::OutputHeader('ゲームオプション');
 <h2 id="basic_option">基本設定</h2>
 <p>
 <?php InfoHTML::OutputCategory(array('wish_role', 'real_time', 'wait_morning', 'open_vote',
-'seal_message', 'open_day')); ?>
+'settle', 'seal_message', 'open_day')); ?>
 </p>
 <p>
 <?php InfoHTML::OutputCategory(array('necessary_name', 'necessary_trip')); ?>
@@ -45,6 +45,12 @@ InfoHTML::OutputHeader('ゲームオプション');
 <ul>
 <li>昼の処刑投票数が公開されます</li>
 <li><?php OptionManager::OutputExplain('open_vote'); ?></li>
+</ul>
+
+<h3 id="settle"><?php OptionManager::OutputCaption('settle'); ?> [Ver. 2.1.0 β3～]</h3>
+<ul>
+<li><?php OptionManager::OutputExplain('settle'); ?></li>
+<li><a href="spec.php#vote_day">処刑者決定</a>後でも引き分けだった場合に、最多得票者からランダムで処刑者が決定されます</li>
 </ul>
 
 <h3 id="seal_message"><?php OptionManager::OutputCaption('seal_message'); ?> [Ver. 1.5.0 β12～]</h3>

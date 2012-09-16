@@ -218,7 +218,8 @@ InfoHTML::OutputHeader('詳細な仕様');
 
 + 処刑者決定法則
   - 単独トップ ＞ <a href="new_role/sub_role.php#decide">決定者</a> ＞ <a href="new_role/sub_role.php#bad_luck">不運</a> ＞ <a href="new_role/sub_role.php#counter_decide">燕返し</a> ＞ <a href="new_role/sub_role.php#dropout">脱落者</a> ＞ <a href="new_role/sub_role.php#impatience">短気</a> ＞ <a href="new_role/sub_role.php#good_luck">幸運</a>が逃れる ＞
-    <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる ＞ <a href="new_role/quiz.php#quiz">出題者</a> ＞ <a href="new_role/human.php#executor">執行者</a> ＞ <a href="new_role/human.php#saint">聖女</a> ＞ <a href="new_role/wolf.php#agitate_mad">扇動者</a> (+ ショック死)
+    <a href="new_role/sub_role.php#plague">疫病神</a>の投票先が逃れる ＞ <a href="new_role/quiz.php#quiz">出題者</a> ＞ <a href="new_role/human.php#executor">執行者</a> ＞ <a href="new_role/human.php#saint">聖女</a> ＞ <a href="new_role/wolf.php#agitate_mad">扇動者</a> (+ ショック死) ＞
+    <a href="game_option.php#settle">決着村</a>判定
 
 + 処刑者カウンター
   - <a href="new_role/human.php#pharmacist_group">薬師系</a> ＞ 抗毒判定 ＞ 毒発動判定 → <a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/human.php#doom_doll">蓬莱人形</a>・<a href="new_role/fox.php#miasma_fox">蟲狐</a>

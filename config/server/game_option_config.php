@@ -14,6 +14,9 @@ class GameOptionConfig {
   static $open_vote_enable  = true; //投票した票数を公表する
   static $default_open_vote = false;
 
+  static $settle_enable  = true; //決着村
+  static $default_settle = false;
+
   static $seal_message_enable  = true; //天啓封印
   static $default_seal_message = false;
 

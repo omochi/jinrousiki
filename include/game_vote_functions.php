@@ -615,6 +615,9 @@ class Vote {
     else { //決定能力者判定
       RoleManager::$get->vote_possible = $stack;
       foreach (RoleManager::LoadFilter('vote_kill') as $filter) $filter->DecideVoteKill();
+      if (DB::$ROOM->IsOption('settle') && RoleManager::$get->vote_kill_uname == '') {
+	RoleManager::$get->vote_kill_uname = Lottery::Get(RoleManager::$get->vote_possible);
+      }
     }
     //Text::p(RoleManager::$get->vote_kill_uname, 'VoteTarget');
 
@@ -1438,7 +1441,7 @@ class VoteHTML {
 <div class="vote-page-link" align="right"><table><tr>
 <td>%s</td>
 <td><input type="submit" value="%s"></form></td>
-<td>
+<td class="add-action">
 <form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">
@@ -1558,7 +1561,7 @@ EOF;
 
     if (isset(RoleManager::$get->not_action)) {
       $str = <<<EOF
-<td>
+<td class="add-action">
 <form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="%s">
