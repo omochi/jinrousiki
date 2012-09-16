@@ -24,4 +24,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <ul>
   <li>「舌禍狼登場」オプション実装</li>
   <li>「決着村」オプション実装</li>
+  <li>固定配役追加モード：N(罠村)追加</li>
 </ul>

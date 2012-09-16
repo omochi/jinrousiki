@@ -617,7 +617,7 @@ InfoHTML::OutputHeader('闇鍋モード');
 <?php InfoHTML::OutputItemList('topping', range('a', 'g')); ?>
 </p>
 <p>
-<?php InfoHTML::OutputItemList('topping', range('h', 'm')); ?>
+<?php InfoHTML::OutputItemList('topping', range('h', 'n')); ?>
 </p>
 
 <?php InfoHTML::OutputItem('topping', 'a', 'Ver. 1.4.0 β19'); ?>
@@ -729,6 +729,11 @@ InfoHTML::OutputHeader('闇鍋モード');
 <?php InfoHTML::OutputItem('topping', 'm', 'Ver. 2.1.0 α6'); ?>
 <pre>
 <a href="new_role/human.php#sweep_assassin">掃除屋</a>2　<a href="new_role/wolf.php#trap_wolf">狡狼</a>1　<a href="new_role/fox.php#doom_fox">冥狐</a>1
+</pre>
+
+<?php InfoHTML::OutputItem('topping', 'n', 'Ver. 2.1.0 β3'); ?>
+<pre>
+<a href="new_role/human.php#guard">狩人</a>1　<a href="new_role/wolf.php#trap_wolf">狡狼</a>1　<a href="new_role/wolf.php#trap_mad">罠師</a>1
 </pre>
 
 

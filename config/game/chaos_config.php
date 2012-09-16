@@ -824,7 +824,8 @@ class ChaosConfig {
 		 'count' => array(1, 1, 1)),
     'l' => array('fix' => array('ghost_common' => 1, 'boss_wolf' => 1,
 				'silver_wolf' => 1, 'howl_fox' => 1)),
-    'm' => array('fix' => array('sweep_assassin' => 2, 'trap_wolf' => 1, 'doom_fox' => 1))
+    'm' => array('fix' => array('sweep_assassin' => 2, 'trap_wolf' => 1, 'doom_fox' => 1)),
+    'n' => array('fix' => array('guard' => 1, 'trap_wolf' => 1, 'trap_mad' => 1))
 			    );
 
   //-- 出現率変動モード --//
