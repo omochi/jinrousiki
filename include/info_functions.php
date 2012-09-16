@@ -3,17 +3,17 @@
 class Info {
   //村の最大人数設定出力
   static function OutputMaxUser() {
-    $list = sprintf('[ %s人 ]', implode('人・', RoomConfig::$max_user_list));
-    $min  = sprintf('[ %d人 ]', min(array_keys(CastConfig::$role_list)));
     $format = '%s のどれかを村に登録できる村人の最大人数として設定することができます。<br>' .
       "ただしゲームを開始するには最低 %s の村人が必要です。";
+    $list = sprintf('[ %s人 ]', implode('人・', RoomConfig::$max_user_list));
+    $min  = sprintf('[ %d人 ]', min(array_keys(CastConfig::$role_list)));
     printf($format, $list, $min);
   }
 
   //身代わり君がなれない役職のリスト出力
   static function OutputDisableDummyBoyRole() {
-    $stack = array('人狼', '妖狐');
-    foreach (CastConfig::$disable_dummy_boy_role_list as $role) {
+    $stack = array();
+    foreach (array_merge(array('wolf', 'fox'), CastConfig::$disable_dummy_boy_role_list) as $role) {
       $stack[] = RoleData::$main_role_list[$role];
     }
     echo implode($stack, '・');
@@ -28,15 +28,16 @@ class Info {
 
   //追加役職の人数と説明ページリンク出力
   static function OutputAddRole($role, $add = false) {
-    $str = RoleData::GenerateRoleLink($role);
     $format = '村の人口が%d人以上になったら%s%sします';
+    $str = RoleData::GenerateRoleLink($role);
     printf($format, CastConfig::$$role, $str, $add ? 'を追加' : 'が登場');
   }
 
   //村人置換系オプションのサーバ設定出力
   static function OutputReplaceRole($option) {
-    echo 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
-      RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]) . 'になります';
+    $format = 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
+      '%sになります';
+    printf($format, RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]));
   }
 }
 
@@ -145,9 +146,9 @@ EOF;
     $format = '%' . strlen(max(array_keys($stack))) . 's人：';
     $str    = '<pre>'."\n";
     ksort($stack); //人数順に並び替え
-    foreach($stack as $count => $list){
+    foreach ($stack as $count => $list) {
       $order_stack = array();
-      foreach(RoleData::SortRole(array_keys($list)) as $role){ //役職順に並び替え
+      foreach (RoleData::SortRole(array_keys($list)) as $role) { //役職順に並び替え
 	$order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
       }
       $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
@@ -197,7 +198,7 @@ EOF;
 
     $count = 0;
     foreach (SharedServerConfig::$server_list as $server => $array) {
-      if ($count++ == $id) break;
+      if (++$count == $id) break;
     }
     extract($array);
     if ($disable) return false;
@@ -213,6 +214,7 @@ EOF;
     if ($encode != '' && $encode != ServerConfig::ENCODE) {
       $data = mb_convert_encoding($data, ServerConfig::ENCODE, $encode);
     }
+
     if (ord($data{0}) == '0xef' && ord($data{1}) == '0xbb' && ord($data{2}) == '0xbf') { //BOM 消去
       $data = substr($data, 3);
     }

@@ -7,11 +7,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0 β2アップロード (2012/09/10 (Mon) 00:35) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56806/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0 β3アップロード (2012/09/17 (Mon) 01:32) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/56872/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「尸解仙」の仕様変更</li>
-  <li>トップページのデザイン変更</li>
+  <li>「舌禍狼登場」「決着村」オプション実装</li>
+  <li>固定配役追加モード：N(罠村)追加</li>
 </ul>
 
 <h1>開発状況</h1>
@@ -22,7 +22,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>「舌禍狼登場」オプション実装</li>
-  <li>「決着村」オプション実装</li>
-  <li>固定配役追加モード：N(罠村)追加</li>
+  <li>なし</li>
 </ul>

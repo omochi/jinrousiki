@@ -108,7 +108,7 @@ class SharedServerConfig {
 		      'encode' => 'UTF-8',
 		      'separator' => '',
 		      'footer' => '',
-		      'disable' => false),
+		      'disable' => true),
 
     'inaba' => array('name' => '因幡鯖',
 		     'url' => 'http://jinro.usamimi.info/',
