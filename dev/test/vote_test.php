@@ -301,7 +301,7 @@ foreach (DB::$USER->rows as $user) {
 }
 
 //-- データ出力 --//
-$vote_view_mode = true; false;
+$vote_view_mode = false;
 if ($vote_view_mode) { //投票表示モード
   Loader::LoadFile('vote_message');
   $stack = new RequestGameVote();
@@ -436,7 +436,7 @@ if ($talk_view_mode) { //発言表示モード
   HTML::OutputFooter(true);
 }
 HTML::OutputBodyHeader();
-$role_view_mode = false;
+$role_view_mode = true; false;
 if ($role_view_mode) { //画像表示モード
   foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output($role);
   #foreach (array_keys(RoleData::$sub_role_list)  as $role) Image::Role()->Output($role);

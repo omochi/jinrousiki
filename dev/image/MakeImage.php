@@ -994,7 +994,7 @@ class RoleMessageList {
     'type' => 'incubus_vampire');
 
   public $passion_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|牡丹灯籠|です。|吸血|先に一定確率で_恋色迷彩_を追加してしまいます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|牡丹灯籠|です。|吸血|先に一定確率で_恋色迷彩_を追加してしまいます。\n　恋に狂った亡霊のあなたは、欲望に身を委ね、人々を虜にしてしまいなさい。",
     'type' => 'vampire', 'delimiter' => array('_' => 'liar'));
 
   public $doom_vampire = array(

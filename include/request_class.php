@@ -57,7 +57,7 @@ class RequestBase {
   //仮想村判定
   public function IsVirtualRoom() {
     $data = $this->GetTest();
-    return isset($data) && $data->is_virtual_room;
+    return isset($data->is_virtual_room) && $data->is_virtual_room;
   }
 
   //データ展開

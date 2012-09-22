@@ -22,7 +22,7 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 		   'gm_login' => OptionManager::GetClass('gm_login'));
     foreach ($stack as $key => $item) {
       $item->form_name  = $this->form_name;
-      $item->form_value = $this->form_list[$item->name];
+      $item->form_value = $key;
     }
     if (isset($stack[$this->value])) $stack[$this->value]->value = true;
     return $stack;

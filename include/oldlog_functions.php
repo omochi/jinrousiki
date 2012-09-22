@@ -71,7 +71,7 @@ class PageLinkBuilder {
 	$url_stack[] = $this->GenerateTag($this->page->set, '勝敗表示', true);
       }
     }
-    return $this->header . implode(' ', $url_stack) . $this->footer;
+    return implode(' ', $url_stack);
   }
 
   //ページ送り用のリンクタグを作成する
@@ -385,14 +385,14 @@ EOF;
     foreach ($talk_list as $talk) {
       switch ($talk->scene) {
       case 'day':
-	if (DB::$ROOM->IsDay() || $talk->type == 'dummy_boy') break;
+	if (DB::$ROOM->IsDay() || $talk->location == 'dummy_boy') break;
 	$str .= $builder->Refresh() . self::GenerateSceneChange($set_date);
 	DB::$ROOM->scene = $talk->scene;
 	$builder->Begin('talk ' . $talk->scene);
 	break;
 
       case 'night':
-	if (DB::$ROOM->IsNight() || $talk->type == 'dummy_boy') break;
+	if (DB::$ROOM->IsNight() || $talk->location == 'dummy_boy') break;
 	$str .= $builder->Refresh() . self::GenerateSceneChange($set_date);
 	DB::$ROOM->scene = $talk->scene;
 	$builder->Begin('talk ' . $talk->scene);

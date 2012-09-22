@@ -490,7 +490,7 @@ class User {
 
     //メイン役職を取得
     $camp = $this->GetCamp();
-    $name = RoleData::$short_role_list[$this->main_role];
+    $name = @RoleData::$short_role_list[$this->main_role];
     $str  = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : sprintf('<span class="%s">%s</span>', $camp, $name);
     if ($main_only) {

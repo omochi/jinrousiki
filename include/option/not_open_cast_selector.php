@@ -19,9 +19,9 @@ class Option_not_open_cast_selector extends SelectorRoomOptionItem {
 		   'not_open_cast'  => OptionManager::GetClass('not_open_cast'),
 		   'auto_open_cast' => OptionManager::GetClass('auto_open_cast'));
     foreach ($stack as $key => $item) {
+      $item->value      = false;
       $item->form_name  = $this->form_name;
       $item->form_value = $key;
-      unset($item->value);
     }
     if (isset($stack[$this->value])) $stack[$this->value]->value = true;
     return $stack;

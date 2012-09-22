@@ -200,6 +200,7 @@ EOF;
     foreach (SharedServerConfig::$server_list as $server => $array) {
       if (++$count == $id) break;
     }
+    //Text::p($server, $id);
     extract($array);
     if ($disable) return false;
 

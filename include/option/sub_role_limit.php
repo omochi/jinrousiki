@@ -27,7 +27,7 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
 		   ''            => OptionManager::GetClass('sub_role_limit_none'));
     foreach ($stack as $key => $item) {
       $item->form_name  = $this->form_name;
-      $item->form_value = $this->form_list[$item->name];
+      $item->form_value = $key;
     }
     if (isset($stack[$this->value])) $stack[$this->value]->value = true;
     return $stack;

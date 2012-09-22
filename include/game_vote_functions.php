@@ -1440,8 +1440,8 @@ class VoteHTML {
 <span class="vote-message">* Kick するには %d 人の投票が必要です</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td>%s</td>
-<td><input type="submit" value="%s"></form></td>
-<td class="add-action">
+<td class="add-action"><input type="submit" value="%s"></form></td>
+<td>
 <form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="GAMESTART">

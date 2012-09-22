@@ -23,7 +23,7 @@ class Option_chaos_open_cast extends SelectorRoomOptionItem {
 		   'full' => OptionManager::GetClass('chaos_open_cast_full'));
     foreach ($stack as $key => $item) {
       $item->form_name  = $this->form_name;
-      $item->form_value = $this->form_list[$item->name];
+      $item->form_value = $key;
     }
     if (isset($stack[$this->value])) $stack[$this->value]->value = true;
     return $stack;
