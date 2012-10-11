@@ -15,10 +15,12 @@ if (RQ::$get->is_room) {
   DB::$ROOM->last_date        = DB::$ROOM->date;
 
   DB::$USER = new UserDataSet(RQ::$get);
-  DB::$SELF = DB::$ROOM->single_view_mode ? DB::$USER->ByID(RQ::$get->user_no) : new User();
+  DB::$USER->SetEvent(true);
   DB::$USER->player = DB::$ROOM->LoadPlayer();
-  if (DB::$ROOM->watch_mode) DB::$SELF->live = 'live';
   if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) DB::$USER->SaveRoleList();
+
+  DB::$SELF = DB::$ROOM->single_view_mode ? DB::$USER->ByID(RQ::$get->user_no) : new User();
+  if (DB::$ROOM->watch_mode) DB::$SELF->live = 'live';
   OldLogHTML::Output();
 }
 else {

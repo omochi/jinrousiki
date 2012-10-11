@@ -1149,7 +1149,7 @@ EOF;
       }
       $this->name[$user->uname] = $user->user_no;
     }
-    $this->SetEvent();
+    if (! DB::$ROOM->log_mode) $this->SetEvent();
     return count($this->name);
   }
 

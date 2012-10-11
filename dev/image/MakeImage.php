@@ -259,7 +259,7 @@ class RoleMessageList {
     'type' => 'hunter_guard');
 
   public $anti_voodoo = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#厄神#です。夜の間に村人一人の災厄を祓うことができます。_呪い_から^占い師^を護り、村を浄化するのです！",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#厄神#です。夜の間に村人一人の災厄を祓うことができます。周り回り、巡り巡る厄を廻すのです。",
     'type' => 'guard', 'delimiter' => array('_' => 'wolf', '^' => 'mage'));
 
   public $elder_guard = array(
@@ -608,7 +608,7 @@ class RoleMessageList {
     'type' => 'purple_wolf');
 
   public $ascetic_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|印狼|です。あなたの周囲の人が一定数死亡する毎に#処刑#投票数が増えます。",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|印狼|です。あなたの周囲の人が一定数死亡する毎に#処刑#投票数が増えます。血塗られし印をその身に刻み、魔の九字にて圧潰せよ！",
     'type' => 'wolf', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   public $poison_wolf = array(
@@ -2256,7 +2256,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-#$builder->Output('anti_voodoo');
-#$builder->Output('ascetic_wolf');
-#$builder->Output('poison_vampire', array(0.5,0,0.3,0,0,0,0,0,0,0,-1,0,-0.5,0.3));
-$builder->Output('passion_vampire', array(0.5,0,0.5,0,-1,-0.5));
+$builder->Output('poison_vampire', array(0.5,0,0.3,0,0,0,0,0,0,0,-1,0,-0.5,0.3));
