@@ -11,6 +11,17 @@ class Role_revive_mania extends Role_unknown_mania {
       return;
     }
     $target = DB::$USER->ByID($id);
-    if ($target->IsDead(true) && ! $target->IsReviveLimited()) $target->Revive();
+    if ($target->IsLive(true) || $target->IsReviveLimited()) return;
+
+    $real = DB::$USER->ByReal($target->user_no);
+    if ($target != $real) { //憑依対応
+      $target->ReturnPossessed('possessed');
+      $target->Revive(true);
+      DB::$ROOM->ResultDead($real->handle_name, 'REVIVE_SUCCESS');
+      $real->ReturnPossessed('possessed_target');
+    }
+    else {
+      $target->Revive();
+    }
   }
 }

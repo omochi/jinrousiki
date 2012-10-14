@@ -10,6 +10,7 @@ Ver. 2.0.x<br>
 <a href="#ver201">1</a>
 <a href="#ver202">2</a>
 <a href="#ver203">3</a>
+<a href="#ver204">4</a>
 </p>
 <p>
 Ver. 2.0.0<br>
@@ -25,6 +26,11 @@ Ver. 2.0.0<br>
 <a href="#ver200a6">α6</a>
 <a href="#ver200b1">β1</a>
 </p>
+
+<h2 id="ver204">Ver. 2.0.4 (Rev. 647) : 2012/10/14 (Sun) 22:15</h2>
+<ul>
+<li>Twitter API の仕様変更に対応</li>
+</ul>
 
 <h2 id="ver203">Ver. 2.0.3 (Rev. 638) : 2012/09/16 (Sun) 21:08</h2>
 <ul>

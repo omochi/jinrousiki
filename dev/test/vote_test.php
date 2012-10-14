@@ -41,7 +41,7 @@ RQ::GetTest()->test_users[4]->live = 'live';
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
 RQ::GetTest()->test_users[5]->live = 'live';
 
-RQ::GetTest()->test_users[6]->role = 'eclipse_medium possessed[4-15]';
+RQ::GetTest()->test_users[6]->role = 'eclipse_medium mind_friend[21] possessed[4-15]';
 RQ::GetTest()->test_users[6]->live = 'dead';
 
 RQ::GetTest()->test_users[7]->role = 'dummy_guard lovers[16]';
@@ -86,7 +86,7 @@ RQ::GetTest()->test_users[19]->live = 'live';
 RQ::GetTest()->test_users[20]->role = 'passion_vampire';
 RQ::GetTest()->test_users[20]->live = 'live';
 
-RQ::GetTest()->test_users[21]->role = 'resurrect_mania[8] panelist';
+RQ::GetTest()->test_users[21]->role = 'revive_mania[6] mind_friend[21]';
 RQ::GetTest()->test_users[21]->live = 'live';
 
 RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter';
@@ -192,7 +192,7 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    array('user_no' => 2, 	'target_no' => 18,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2, 	'target_no' => 21,	'type' => 'WOLF_EAT'),
     #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
