@@ -15,6 +15,7 @@ Ver. 2.1.0
 <a href="#ver210b1">β1</a>
 <a href="#ver210b2">β2</a>
 <a href="#ver210b3">β3</a>
+<a href="#ver210b4">β4</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -22,6 +23,11 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210b4">Ver. 2.1.0 β4 (Rev. 644) : 2012/10/14 (Sun) 23:07</h2>
+<ul>
+<li>Twitter API の仕様変更に対応</li>
+</ul>
 
 <h2 id="ver210b3">Ver. 2.1.0 β3 (Rev. 640) : 2012/09/17 (Mon) 01:32</h2>
 <ul>

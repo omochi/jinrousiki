@@ -147,7 +147,7 @@ class RoleMessageList {
     'type' => 'mage');
 
   public $voodoo_killer = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#陰陽師#です。夜の間に村人一人を占うことでその人の_呪い_を祓うことができます。\n　_呪い_や_憑依_の力で村を陥れようと目論む人外たちを#呪返し#で祓い去り、村を清めるのです！",
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#陰陽師#です。夜の間に村人一人を占うことでその人の_呪い_や_憑依_を祓うことができます。\n　恐れることはありません。今こそ陰陽五行の力を携え、悪しき呪いから人々を救い清めるのです！",
     'type' => 'mage');
 
   public $necromancer = array(
@@ -319,7 +319,7 @@ class RoleMessageList {
     'type' => 'poison');
 
   public $poison_cat = array(
-    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#猫又#、#毒#を持っています。また、死んだ人を誰か一人#蘇生#できます。飼ってくれた家の恩を村を救うことで返すのです！",
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#猫又#、#毒#を持っています。また、死んだ人を誰か一人#蘇生#できます。気まぐれで老獪な、村に与する魔性でありなさい。",
     'type' => 'human', 'delimiter' => array('#' => 'poison'));
 
   public $revive_cat = array(
@@ -584,7 +584,7 @@ class RoleMessageList {
     'type' => 'boss_wolf');
 
   public $cursed_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|呪狼|です。あなたを占った#占い師#を|呪返し|で殺すことができます。村を絶望の底に叩き落してやるのです！",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|呪狼|です。あなたを占った#占い師#を|呪返し|で殺すことができます。腹に燻る怨嗟は呪詛となり村を絶望へ誘う災厄となるでしょう。",
     'type' => 'boss_wolf');
 
   public $quiet_wolf = array(
@@ -612,7 +612,7 @@ class RoleMessageList {
     'type' => 'wolf', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
   public $poison_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|毒狼|です。たとえ_処刑_されても体内に流れる#毒#で村人一人を道連れにできます。強気に村をかく乱するのです！",
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|毒狼|です。たとえ_処刑_されても体内に流れる#毒#で村人一人を道連れにできます。身体に潜む対の牙。予期せぬ死が思索を狂わせる。",
     'type' => 'resist_wolf', 'delimiter' => array('_' => 'vote'));
 
   public $resist_wolf = array(
@@ -825,7 +825,7 @@ class RoleMessageList {
     'type' => 'blue_fox');
 
   public $voodoo_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|九尾|です。夜の間に誰か一人に#呪い#をかけることができます。|妖狐|の天敵、_占い師_を#呪返し#で葬るのです！",
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|九尾|です。夜の間に誰か一人に#呪い#をかけることができます。白面金毛の力を以て、取り入り、傾け、弄び、滅しなさい。",
     'type' => 'phantom_fox');
 
   public $revive_fox = array(
@@ -982,7 +982,7 @@ class RoleMessageList {
     'delimiter' => array('|' => 'vampire'));
 
   public $poison_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|百々爺|、#毒#を持ち、#毒#に中りません。あなたが_処刑_された場合はあなたの|感染者|と|洗脳者|にのみ中ります。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|百々爺|、#毒#を持ち、#毒#に中りません。あなたが_処刑_された場合はあなたの|感染者|と|洗脳者|にのみ中ります。\n　\"翁と化して出て遊ぶ 遭へば必ず病むといふ也\" 百の病を撒き散らし村をあなたという病魔の手中に収めるのです！",
     'type' => 'vampire', 'delimiter' => array('#' => 'poison', '_' => 'vote'));
 
   public $incubus_vampire = array(
@@ -2256,4 +2256,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-$builder->Output('poison_vampire', array(0.5,0,0.3,0,0,0,0,0,0,0,-1,0,-0.5,0.3));
+$builder->Output('pharmacist', array(0));
+#$builder->Output('poison_vampire', array(0.5,0,0.3,0,0,0,0,0,0,0,-1,0,-0.5,0.3));
