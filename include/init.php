@@ -130,6 +130,9 @@ class Loader {
     return RQ::Load($class);
   }
 
+  //ファイルロード済み判定
+  static function IsLoaded($file) { return in_array($file, self::$file); }
+
   //ファイルパス取得
   private function GetPath($name) {
     switch ($name) {
