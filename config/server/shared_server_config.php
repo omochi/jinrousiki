@@ -47,6 +47,13 @@ class SharedServerConfig {
 		      'footer' => '</div></small></a><br>',
 		      'disable' => false),
 
+    'momiji' => array('name' => '椛鯖',
+		     'url' => 'http://tm010.luna.ddns.vc/',
+		     'encode' => 'UTF-8',
+		     'separator' => '',
+		     'footer' => '',
+		     'disable' => false),
+
     'sasugasister' => array('name' => '流石妹者鯖',
 			    'url' => 'http://www21.atpages.jp/sasugasister/',
 			    'encode' => 'UTF-8',

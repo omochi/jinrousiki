@@ -20,6 +20,7 @@ class MenuConfig {
 
     '東方ウミガメ系' => array(
       '早苗鯖'		=> 'http://alicegame.dip.jp/sanae/',
+      '椛鯖'		=> 'http://tm010.luna.ddns.vc/',
       'Wiki'		=> 'http://www27.atwiki.jp/umigamejinnro/',
       '掲示板'		=> 'http://jbbs.livedoor.jp/netgame/2829/',
       'チャットルーム'	=> 'http://umigamejinrou.chatx2.whocares.jp/'),
