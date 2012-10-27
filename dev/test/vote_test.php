@@ -4,6 +4,12 @@ define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('image_class', 'test_class');
 
+//-- 特殊モード設定 --//
+$vote_view_mode = false; //投票表示モード
+$talk_view_mode = false; //発言表示モード
+$role_view_mode = false; //画像表示モード
+$cast_view_mode = false; //配役情報表示モード
+
 //-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
 RQ::$get->room_no = 94;
@@ -301,7 +307,6 @@ foreach (DB::$USER->rows as $user) {
 }
 
 //-- データ出力 --//
-$vote_view_mode = false;
 if ($vote_view_mode) { //投票表示モード
   Loader::LoadFile('vote_message');
   $stack = new RequestGameVote();
@@ -357,7 +362,6 @@ if ($vote_view_mode) { //投票表示モード
   HTML::OutputFooter(true);
 }
 HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
-$talk_view_mode = false;
 if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();
@@ -436,7 +440,6 @@ if ($talk_view_mode) { //発言表示モード
   HTML::OutputFooter(true);
 }
 HTML::OutputBodyHeader();
-$role_view_mode = true; false;
 if ($role_view_mode) { //画像表示モード
   foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output($role);
   #foreach (array_keys(RoleData::$sub_role_list)  as $role) Image::Role()->Output($role);
@@ -445,7 +448,6 @@ if ($role_view_mode) { //画像表示モード
   #foreach (RoleData::$weather_list as $stack) Image::Role()->Output($header.$stack['event']);
   HTML::OutputFooter(true);
 }
-$cast_view_mode = false;
 if ($cast_view_mode) { //配役情報表示モード
   Loader::LoadFile('chaos_config');
   #Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));

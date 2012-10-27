@@ -70,10 +70,16 @@ class Role_priest extends Role {
       }
       $data->count['total']++;
 
-      if ($user->IsWolf()) {
+      $dummy_user = new User();
+      if ($user->IsRole('therian_mad') || in_array('dowser_priest', $data->list) ||
+	  (DB::$ROOM->date == 3 && $user->IsRole('soul_mania', 'dummy_mania'))) {
+	$dummy_user->Parse($user->GetRole());
+      }
+
+      if ($user->IsWolf() || $dummy_user->IsWolf()) {
 	$data->count['wolf']++;
       }
-      elseif ($user->IsFox()) {
+      elseif ($user->IsFox() || $dummy_user->IsFox()) {
 	$data->count['fox']++;
       }
       else {
@@ -84,8 +90,6 @@ class Role_priest extends Role {
       if ($user->IsLovers()) $data->count['lovers']++;
 
       if (in_array('dowser_priest', $data->list)) {
-	$dummy_user = new User();
-	$dummy_user->Parse($user->GetRole());
 	$data->count['sub_role'] += count($dummy_user->role_list) - 1;
       }
 
