@@ -6,6 +6,9 @@ class Option_topping extends SelectorRoomOptionItem {
   function  __construct() {
     parent::__construct();
     $this->form_list = GameOptionConfig::${$this->source};
+    if (OptionManager::$change && DB::$ROOM->IsOption($this->name)) {
+      $this->value = DB::$ROOM->option_role->list[$this->name][0];
+    }
   }
 
   function GetCaption() { return '固定配役追加モード'; }

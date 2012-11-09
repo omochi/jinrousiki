@@ -1247,7 +1247,7 @@ PP ラインの計算を複雑にするために作成してみました。
 夜に投票(尾行)した人が人狼に襲撃された場合に、誰が襲撃したか分かる特殊な狩人。
 </pre>
 <ol>
-  <li><a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php">妖狐</a>を尾行したら死亡する (死亡メッセージは「無惨な～」、死因は「人外尾行」)。</li>
+  <li><a href="wolf.php#wolf_group">人狼系</a>・<a href="fox.php#fox_group">妖狐系</a>・<a href="fox.php#child_fox_group">子狐系</a>を尾行したら死亡する (死亡メッセージは「無惨な～」、死因は「人外尾行」)。</li>
   <li>尾行対象者が狩人に護衛されていた場合は何も出ない。</li>
   <li>人狼が人外(<a href="fox.php#fox">妖狐</a>・<a href="wolf.php#silver_wolf">銀狼</a>など)を襲撃して失敗した場合は尾行成功扱いとなる (死亡しない)。<br>
     (尾行成功メッセージ＆対象が死んでいない＝人狼が噛めない人外を噛んだ)</li>

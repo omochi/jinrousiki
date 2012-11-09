@@ -661,6 +661,16 @@ class RoomDB {
   static function Fetch($data, $lock = false) {
     return DB::FetchResult(self::SetID($data, $lock));
   }
+
+  //村データ UPDATE
+  static function Update($list) {
+    $query  = 'UPDATE room SET ';
+    $update = array();
+    foreach ($list as $key => $value) {
+      $update[] = sprintf("%s = '%s'", $key, $value);
+    }
+    return DB::Execute($query . implode(', ', $update) . sprintf(self::ID, DB::$ROOM->id));
+  }
 }
 
 class RoomDataSet {
@@ -689,6 +699,15 @@ EOF;
     $query = <<<EOF
 SELECT room_no AS id, name, comment, status, game_option, option_role
 FROM room WHERE room_no = {$room_no}
+EOF;
+    return DB::FetchObject($query, 'Room', true);
+  }
+
+  function LoadRoomManager($room_no, $lock = false) {
+    $update = $lock ? 'FOR UPDATE' : '';
+    $query = <<<EOF
+SELECT room_no AS id, name, comment, date, scene, status, game_option, option_role, max_user
+FROM room WHERE room_no = {$room_no} {$update}
 EOF;
     return DB::FetchObject($query, 'Room', true);
   }

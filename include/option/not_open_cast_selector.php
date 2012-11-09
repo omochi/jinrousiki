@@ -10,6 +10,14 @@ class Option_not_open_cast_selector extends SelectorRoomOptionItem {
   function __construct() {
     parent::__construct();
     $this->value = GameOptionConfig::$default_not_open_cast;
+    if (OptionManager::$change) {
+      foreach ($this->form_list as $key => $value) {
+	if (DB::$ROOM->IsOption($value)) {
+	  $this->value = $value;
+	  break;
+	}
+      }
+    }
   }
 
   function GetCaption() { return '霊界で配役を公開しない'; }

@@ -5,6 +5,11 @@
 class Option_gm_password extends TextRoomOptionItem {
   public $type = 'password';
 
+  function __construct() {
+    parent::__construct();
+    if (OptionManager::$change) $this->enable = false;
+  }
+
   function GetCaption() { return 'GM ログインパスワード'; }
 
   function GetExplain() {

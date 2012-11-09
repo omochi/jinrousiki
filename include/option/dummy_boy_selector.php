@@ -10,6 +10,7 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
   function __construct() {
     parent::__construct();
     $this->value = GameOptionConfig::$default_dummy_boy;
+    if (OptionManager::$change) $this->enable = false;
   }
 
   function GetCaption() { return '初日の夜は身代わり君'; }

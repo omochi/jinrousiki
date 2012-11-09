@@ -2,7 +2,7 @@
 //-- オプション入力画面表示クラス --//
 class OptionForm {
   const SEPARATOR = "  <tr><td colspan=\"2\"><hr></td></tr>\n";
-  const TEXTBOX = '<input type="%s" name="%s" id="%s" size="%d" value="">%s';
+  const TEXTBOX = '<input type="%s" name="%s" id="%s" size="%d" value="%s">%s';
   const TEXTBOX_EXPLAIN = ' <span class="explain">%s</span>';
   const CHECKBOX = '<input type="%s" id="%s" name="%s" value="%s"%s> <span class="explain">%s</span>';
   const REALTIME = '(%s　昼：<input type="text" name="%s_day" value="%d" size="2" maxlength="2">分 夜：<input type="text" name="%s_night" value="%d" size="2" maxlength="2">分)';
@@ -85,6 +85,7 @@ EOF;
   //境界線生成
   private function GenerateSeparator($group) {
     print(self::SEPARATOR);
+    if (OptionManager::$change) return;
     $format = <<<EOF
    <tr class="%s" id="%s_on">
     <td class="title"><label onClick="toggle_option_display('%s', true)">%s</label></td>
@@ -132,8 +133,9 @@ EOF;
   private function GenerateTextbox(TextRoomOptionItem $item) {
     $size = sprintf('%s_input', $item->name);
     $str  = $item->GetExplain();
+    if (OptionManager::$change) $value = DB::$ROOM->{array_pop(explode('_', $item->name))};
     return sprintf(self::TEXTBOX, $item->type, $item->name, $item->name, RoomConfig::$$size,
-		   isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '');
+		   $value, isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '');
   }
 
   //チェックボックス生成
@@ -145,9 +147,16 @@ EOF;
 
   //チェックボックス生成 (リアルタイム制専用)
   private function GenerateRealtime(Option_real_time $item) {
+    if (OptionManager::$change) {
+      $day   = DB::$ROOM->game_option->list[$item->name][0];
+      $night = DB::$ROOM->game_option->list[$item->name][1];
+    } else {
+      $day   = TimeConfig::DEFAULT_DAY;
+      $night = TimeConfig::DEFAULT_NIGHT;
+    }
+
     $footer = sprintf(self::REALTIME, Text::ConvertLine($item->GetExplain()),
-		      $item->name, TimeConfig::DEFAULT_DAY,
-		      $item->name, TimeConfig::DEFAULT_NIGHT);
+		      $item->name,  $day, $item->name, $night);
     return sprintf(self::CHECKBOX, 'checkbox', $item->name, $item->name, $item->form_value,
 		   $item->value ? ' checked' : '', $footer);
   }
@@ -168,7 +177,7 @@ EOF;
 </select>
 <span class="explain">(%s)</span>
 EOF;
-    if (isset($item->javascript)) self::$javascript[] = $item->javascript;
+    if (! OptionManager::$change && isset($item->javascript)) self::$javascript[] = $item->javascript;
     return sprintf($format, $item->name, $item->form_name, $item->on_change, $item->label,
 		   $str, $explain);
   }

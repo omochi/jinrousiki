@@ -25,6 +25,7 @@ class OptionParser {
 class OptionManager {
   const PATH = '%s/option/%s.php';
   public  static $stack;
+  public  static $change = false;
   private static $file  = array();
   private static $class = array();
 

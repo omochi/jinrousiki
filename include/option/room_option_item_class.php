@@ -15,7 +15,10 @@ abstract class RoomOptionItem {
     $enable  = sprintf('%s_enable',  $this->name);
     $default = sprintf('default_%s', $this->name);
     $this->enable = isset(GameOptionConfig::$$enable) ? GameOptionConfig::$$enable : true;
-    if (isset(GameOptionConfig::$$default)) {
+    if (OptionManager::$change && $this->type == 'checkbox') {
+      $this->value = DB::$ROOM->IsOption($this->name);
+    }
+    elseif (isset(GameOptionConfig::$$default)) {
       $this->value = GameOptionConfig::$$default;
     }
 

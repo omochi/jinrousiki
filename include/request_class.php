@@ -200,6 +200,15 @@ class RequestBaseIcon extends RequestBase {
   }
 }
 
+//-- room_manager.php --//
+class RequestRoomManager extends RequestBase {
+  function __construct() {
+    Text::Encode();
+    $this->Parse('intval', 'get.room_no');
+    $this->Parse('IsOn', 'post.create_room', 'post.change_room');
+  }
+}
+
 //-- login.php --//
 class RequestLogin extends RequestBase {
   function __construct() {

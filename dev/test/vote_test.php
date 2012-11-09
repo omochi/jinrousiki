@@ -86,7 +86,7 @@ RQ::GetTest()->test_users[17]->live = 'dead';
 RQ::GetTest()->test_users[18]->role = 'guide_poison no_last_words';
 RQ::GetTest()->test_users[18]->live = 'live';
 
-RQ::GetTest()->test_users[19]->role = 'enchant_mad psycho_infected';
+RQ::GetTest()->test_users[19]->role = 'shadow_fairy psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
 RQ::GetTest()->test_users[20]->role = 'passion_vampire';

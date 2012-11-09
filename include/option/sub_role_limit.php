@@ -15,6 +15,14 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
       $filter = OptionManager::GetClass($class);
       if (isset($filter) && $filter->enable) $this->form_list[$class] = $name;
     }
+    if (OptionManager::$change) {
+      foreach ($this->form_list as $key => $value) {
+	if (DB::$ROOM->IsOption($key)) {
+	  $this->value = $value;
+	  break;
+	}
+      }
+    }
   }
 
   function GetCaption() { return 'サブ役職制限'; }

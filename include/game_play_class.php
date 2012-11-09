@@ -395,6 +395,10 @@ EOF;
     elseif (DB::$ROOM->IsBeforegame()) {
       $format = '<a target="_blank" href="user_manager.php%s&user_no=%d">登録情報変更</a>'."\n";
       printf($format, self::SelectURL(array()), DB::$SELF->user_no);
+      if (DB::$SELF->IsDummyBoy()) {
+	$format = '<a target="_blank" href="room_manager.php?room_no=%d">村オプション変更</a>'."\n";
+	printf($format, DB::$ROOM->id);
+      }
     }
 
     //音でお知らせ処理
