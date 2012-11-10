@@ -56,6 +56,13 @@ class Room {
   //経過時間取得
   function LoadTime() { return RoomDB::Fetch('UNIX_TIMESTAMP() - last_update_time'); }
 
+  //会話経過時間取得
+  function LoadSpendTime() {
+    $query = 'SELECT SUM(spend_time) FROM talk' . $this->GetQuery() .
+      sprintf(" AND scene = '%s'", $this->scene);
+    return (int)DB::FetchResult($query);
+  }
+
   //最終シーンの夜の発言数を取得する
   function LoadLastNightTalk() {
     $format = 'SELECT uname FROM talk' . RoomDB::DATE . " AND scene = 'night'";
@@ -614,11 +621,11 @@ class Room {
   //仮想的にシーンをずらす
   function ShiftScene($unshift = false) {
     if ($unshift) {
-      DB::$ROOM->date--;
-      DB::$ROOM->scene = 'night';
+      $this->date--;
+      $this->scene = 'night';
     } else {
-      DB::$ROOM->date++;
-      DB::$ROOM->scene = 'day';
+      $this->date++;
+      $this->scene = 'day';
     }
   }
 
@@ -670,6 +677,15 @@ class RoomDB {
       $update[] = sprintf("%s = '%s'", $key, $value);
     }
     return DB::Execute($query . implode(', ', $update) . sprintf(self::ID, DB::$ROOM->id));
+  }
+
+  //村終了処理
+  static function Finish($winner) {
+    $query = <<<EOF
+UPDATE room SET status = 'finished', scene = 'aftergame',
+scene_start_time = UNIX_TIMESTAMP(), winner = '%s', finish_datetime = NOW()
+EOF;
+    return DB::FetchBool(sprintf($query, $winner) . sprintf(self::ID, DB::$ROOM->id));
   }
 }
 

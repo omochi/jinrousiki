@@ -61,6 +61,23 @@ class User {
     $this->Parse(DB::$USER->player->roles[$id]);
   }
 
+  //夜の投票取得
+  public function LoadVote($type, $not_type = '') {
+    $query = DB::$ROOM->GetQueryHeader('vote', 'type', 'target_no') .
+      sprintf(" AND date = %d AND vote_count = %d AND ", DB::$ROOM->date, DB::$ROOM->vote_count);
+    if ($type == 'WOLF_EAT') {
+      $query .= sprintf("type = '%s'", $type);
+    }
+    elseif ($not_type != '') {
+      $str = "user_no = %d AND type IN ('%s', '%s')";
+      $query .= sprintf($str, $this->user_no, $type, $not_type);
+    }
+    else {
+      $query .= sprintf("user_no = %d AND type = '%s'", $this->user_no, $type);
+    }
+    return DB::FetchAssoc($query, true);
+  }
+
   //遺言取得
   public function LoadLastWords() {
     $format = 'SELECT last_words FROM user_entry WHERE room_no = %d AND user_no = %d';

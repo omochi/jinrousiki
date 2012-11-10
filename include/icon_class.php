@@ -1,10 +1,10 @@
 <?php
 //-- アイコン基底クラス --//
 class Icon {
-  private static $path      = null;
-  private static $dead_path = null;
-  private static $wolf_path = null;
-  private static $tag       = null;
+  private static $path = null;
+  private static $dead = null;
+  private static $wolf = null;
+  private static $tag  = null;
 
   //パス取得
   static function GetPath() {
@@ -17,18 +17,14 @@ class Icon {
 
   //死亡アイコン取得
   static function GetDead() {
-    if (is_null(self::$dead_path)) {
-      self::$dead_path =  sprintf('%s/%s', JINRO_IMG, IconConfig::$dead);
-    }
-    return self::$dead_path;
+    if (is_null(self::$dead)) self::$dead = sprintf('%s/%s', JINRO_IMG, IconConfig::$dead);
+    return self::$dead;
   }
 
   //人狼アイコン取得
   static function GetWolf() {
-    if (is_null(self::$wolf_path)) {
-      self::$wolf_path = sprintf('%s/%s', JINRO_IMG, IconConfig::$wolf);
-    }
-    return self::$wolf_path;
+    if (is_null(self::$wolf)) self::$wolf = sprintf('%s/%s', JINRO_IMG, IconConfig::$wolf);
+    return self::$wolf;
   }
 
   //タグ取得

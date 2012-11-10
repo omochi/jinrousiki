@@ -953,7 +953,7 @@ class RoleHTML {
 
   //夜の未投票メッセージ出力
   static function OutputVote($class, $sentence, $type, $not_type = '') {
-    $stack = DB::$ROOM->test_mode ? array() : GetSelfVoteNight($type, $not_type);
+    $stack = DB::$ROOM->test_mode ? array() : DB::$SELF->LoadVote($type, $not_type);
     if (count($stack) < 1) {
       $str = Message::${'ability_' . $sentence};
     }

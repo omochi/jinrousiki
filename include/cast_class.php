@@ -29,7 +29,9 @@ class Cast {
       if (count($stack = DB::$ROOM->GetOptionList('topping')) > 0) { //固定配役追加モード
 	//Text::p($stack, 'topping');
 	if (is_array(@$stack['fix'])) { //定数
-	  foreach ($stack['fix'] as $role => $count) @$fix_role_list[$role] += $count;
+	  foreach ($stack['fix'] as $role => $count) {
+	    @$fix_role_list[$role] += $count;
+	  }
 	}
 	if (is_array(@$stack['random'])) { //ランダム
 	  foreach ($stack['random'] as $key => $list) {
@@ -227,7 +229,7 @@ class Cast {
   }
 
   //身代わり君の配役処理
-  static function SetDummyBoy(&$fix_role_list, &$role_list) {
+  static function SetDummyBoy(array &$fix_role_list, array &$role_list) {
     //役職固定オプション判定
     $fix_role = null;
     if (DB::$ROOM->IsOption('gerd') && in_array('human', $role_list)) {
@@ -260,7 +262,7 @@ class Cast {
     }
   }
 
-  static function SetSubRole(&$fix_role_list) {
+  static function SetSubRole(array &$fix_role_list) {
     $rand_keys = array_keys($fix_role_list); //人数分の ID リストを取得
     shuffle($rand_keys); //シャッフルしてランダムキーに変換
     //Text::p($rand_keys, 'rand_keys');
@@ -306,7 +308,9 @@ class Cast {
     $sub_role_keys = array_diff($sub_role_keys, OptionManager::$stack);
     //Text::p($sub_role_keys, 'SubRoleList');
     shuffle($sub_role_keys);
-    foreach ($rand_keys as $id) $fix_role_list[$id] .= ' ' . array_pop($sub_role_keys);
+    foreach ($rand_keys as $id) {
+      $fix_role_list[$id] .= ' ' . array_pop($sub_role_keys);
+    }
   }
 
   //決闘村の配役処理
@@ -315,7 +319,9 @@ class Cast {
 
     $stack = array();
     if (array_sum(CastConfig::$duel_fix_list) <= $user_count) {
-      foreach (CastConfig::$duel_fix_list as $role => $count) $stack[$role] = $count;
+      foreach (CastConfig::$duel_fix_list as $role => $count) {
+	$stack[$role] = $count;
+      }
     }
 
     asort(CastConfig::$duel_rate_list);
@@ -345,7 +351,7 @@ class Cast {
   }
 
   //村人置換村の処理
-  static function ReplaceRole(&$list) {
+  static function ReplaceRole(array &$list) {
     $stack = array();
     foreach (array_keys(DB::$ROOM->option_role->list) as $option) { //処理順にオプションを登録
       if ($option == 'replace_human' || strpos($option, 'full_') === 0) {

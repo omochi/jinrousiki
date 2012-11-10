@@ -16,10 +16,6 @@ class GameTime {
 
   //会話で時間経過制の経過時間
   static function GetTalkPass(&$left_time, $silence = false) {
-    $query = 'SELECT SUM(spend_time) FROM talk' . DB::$ROOM->GetQuery() .
-      sprintf(" AND scene = '%s'", DB::$ROOM->scene);
-    $spend_time = (int)DB::FetchResult($query);
-
     if (DB::$ROOM->IsDay()) { //昼は12時間
       $base_time = TimeConfig::DAY;
       $full_time = 12;
@@ -27,6 +23,7 @@ class GameTime {
       $base_time = TimeConfig::NIGHT;
       $full_time = 6;
     }
+    $spend_time     = DB::$ROOM->LoadSpendTime();
     $left_time      = max(0, $base_time - $spend_time); //残り時間
     $base_left_time = $silence ? TimeConfig::SILENCE_PASS : $left_time; //仮想時間の計算
     return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
@@ -127,10 +124,7 @@ class Winner {
 
     //ゲーム終了
     //OutputSiteSummary(); //RSS機能はテスト中
-    $query = "UPDATE room SET status = 'finished', scene = 'aftergame', " .
-      "scene_start_time = UNIX_TIMESTAMP(), winner = '%s', finish_datetime = NOW() " .
-      'WHERE room_no = %d';
-    return DB::FetchBool(sprintf($query, $winner, DB::$ROOM->id));
+    return RoomDB::Finish($winner);
   }
 
   //勝敗結果生成
@@ -634,14 +628,6 @@ EOF;
 	$target = 'は '.$target;
 	break;
 
-      case 'SPREAD_WIZARD_DO': //テストコード (現在は不使用)
-	$str_stack = array();
-	foreach (explode(' ', $target) as $id) {
-	  $str_stack[] = DB::$USER->ByID($id)->GenerateShortRoleName(false, true);
-	}
-	$target = 'は '.implode(' ', $str_stack);
-	break;
-	
       default:
 	$target = 'は '.DB::$USER->ByHandleName($target)->GenerateShortRoleName(false, true).' ';
 	break;
@@ -862,22 +848,4 @@ EOF;
     $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
     return sprintf($str, $weather['name'], $weather['caption']);
   }
-}
-
-//-- 投票関連 --//
-//夜の自分の投票先取得
-function GetSelfVoteNight($type, $not_type = '') {
-  $query = DB::$ROOM->GetQueryHeader('vote', 'type', 'target_no') .
-    sprintf(" AND date = %d AND vote_count = %d AND ", DB::$ROOM->date, DB::$ROOM->vote_count);
-  if ($type == 'WOLF_EAT') {
-    $query .= sprintf("type = '%s'", $type);
-  }
-  elseif ($not_type != '') {
-    $str = "user_no = %d AND type IN ('%s', '%s')";
-    $query .= sprintf($str, DB::$SELF->user_no, $type, $not_type);
-  }
-  else {
-    $query .= sprintf("user_no = %d AND type = '%s'", DB::$SELF->user_no, $type);
-  }
-  return DB::FetchAssoc($query, true);
 }

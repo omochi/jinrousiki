@@ -368,11 +368,11 @@ EOF;
   }
 
   //アイコン詳細画面 (IconView 用)
-  private function OutputDetailForIconView(array $icon_list, $cellwidth) {
+  private function OutputDetailForIconView(array $icon_list, $cell_width) {
     extract($icon_list);
     $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
-    $info_width    = $cellwidth - $icon_width;
+    $info_width    = $cell_width - $icon_width;
     $edit_url      = "icon_view.php?icon_no={$icon_no}";
     if ($disable > 0) $icon_name = sprintf('<s>%s</s>', $icon_name);
     echo <<<HTML
@@ -402,11 +402,11 @@ HTML;
   }
 
   //アイコン詳細画面 (UserEntry 用)
-  private function OutputDetailForUserEntry(array $icon_list, $cellwidth) {
+  private function OutputDetailForUserEntry(array $icon_list, $cell_width) {
     extract($icon_list);
     $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
-    $info_width    = $cellwidth - $wrapper_width;
+    $info_width    = $cell_width - $wrapper_width;
     echo <<<HTML
 <td class="icon_details"><label for="icon_{$icon_no}"><img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};"><br clear="all">
 <input type="radio" id="icon_{$icon_no}" name="icon_no" value="{$icon_no}"> No. {$icon_no}<br>

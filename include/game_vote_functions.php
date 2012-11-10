@@ -1361,7 +1361,7 @@ class Vote {
 
   //夜の自分の投票済みチェック
   private function CheckSelfVoteNight($situation, $not_situation = '') {
-    return count(GetSelfVoteNight($situation, $not_situation)) > 0;
+    return count(DB::$SELF->LoadVote($situation, $not_situation)) > 0;
   }
 
   //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
