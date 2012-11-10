@@ -5,7 +5,10 @@ Loader::LoadFile('info_functions');
 InfoHTML::OutputHeader('開発履歴', 1, 'develop_history');
 ?>
 <p>
-Ver. 2.1.0
+Ver. 2.1.0<br>
+<a href="#ver210rc1">RC1</a>
+</p>
+<p>
 <a href="#ver210a1">α1</a>
 <a href="#ver210a2">α2</a>
 <a href="#ver210a3">α3</a>
@@ -23,6 +26,11 @@ Ver. 2.1.0
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210rc1">Ver. 2.1.0 RC1 (Rev. 662) : 2012/11/10 (Sat) 00:12</h2>
+<ul>
+<li>村オプション変更機能 (GM 専用) 実装</li>
+</ul>
 
 <h2 id="ver210b4">Ver. 2.1.0 β4 (Rev. 644) : 2012/10/14 (Sun) 23:07</h2>
 <ul>

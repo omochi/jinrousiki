@@ -131,6 +131,15 @@ EOF;
       'open_vote', 'settle', 'seal_message', 'open_day', 'dummy_boy_selector',
       'not_open_cast_selector', 'perverseness', 'replace_human_selector', 'special_role');
     if (GameConfig::TRIP) RoomOption::LoadPost('necessary_name', 'necessary_trip');
+    if (RQ::$get->change_room) { //変更できないオプションを自動セット
+      foreach (array('gm_login', 'dummy_boy') as $option) {
+	if (DB::$ROOM->IsOption($option)) {
+	  RQ::$get->$option = true;
+	  RoomOption::SetOption(RoomOption::GAME_OPTION, $option);
+	  break;
+	}
+      }
+    }
 
     if (RQ::$get->quiz) { //クイズ村
       if (! RQ::$get->change_room) {
