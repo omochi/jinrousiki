@@ -43,7 +43,7 @@ class GameLog {
     }
 
     //-- ログ出力 --//
-    GameHTML::OutputHeader();
+    GameHTML::OutputHeader('game_log');
     $format = '<h1>ログ閲覧 %s</h1>'."\n";
     switch (RQ::$get->scene) {
     case 'beforegame':

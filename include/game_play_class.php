@@ -83,7 +83,7 @@ class GamePlay {
     }
 
     //-- データ出力 --//
-    GameHTML::OutputHeader();
+    GameHTML::OutputHeader('game_play');
     self::OutputHeader();
     if ($say_limit === false) printf(self::SAY_LIMIT, Message::$say_limit);
     if (! DB::$ROOM->heaven_mode) {

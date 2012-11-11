@@ -361,7 +361,7 @@ if ($vote_view_mode) { //投票表示モード
   GameHTML::OutputPlayer();
   HTML::OutputFooter(true);
 }
-HTML::OutputHeader('投票テスト', 'game'); //HTMLヘッダ
+HTML::OutputHeader('投票テスト', 'game_play'); //HTMLヘッダ
 if ($talk_view_mode) { //発言表示モード
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();

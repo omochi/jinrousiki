@@ -77,7 +77,7 @@ DB::$USER = new UserDataSet(RQ::$get);
 DB::$SELF = DB::$USER->ByID(1);
 
 //-- データ出力 --//
-HTML::OutputHeader('配役テスト', 'game', true);
+HTML::OutputHeader('配役テスト', 'game_play', true);
 GameHTML::OutputPlayer();
 Vote::AggregateGameStart();
 DB::$ROOM->date++;

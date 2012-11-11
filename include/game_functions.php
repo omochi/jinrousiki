@@ -453,7 +453,7 @@ EOF;
   }
 
   //ヘッダ出力
-  static function OutputHeader() {
+  static function OutputHeader($css = 'game') {
     //引数を格納
     $url_header = sprintf('game_frame.php?room_no=%d', DB::$ROOM->id);
     if (RQ::$get->auto_reload > 0) $url_header .= sprintf('&auto_reload=%d', RQ::$get->auto_reload);
@@ -501,7 +501,7 @@ EOF;
       HTML::OutputResult($title, $sentence, $jump_url);
     }
 
-    HTML::OutputHeader($title, 'game');
+    HTML::OutputHeader($title, $css);
     HTML::OutputCSS(sprintf('css/game_%s', DB::$ROOM->scene));
     if (! DB::$ROOM->log_mode) { //過去ログ閲覧時は不要
       HTML::OutputJavaScript('change_css');

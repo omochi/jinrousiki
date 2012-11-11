@@ -325,7 +325,7 @@ EOF;
       }
       DB::$ROOM->ParseOption(true);
 
-      HTML::OutputHeader('オプション変更', 'index');
+      HTML::OutputHeader('オプション変更', 'room_manager');
       echo "<h1>オプション変更</h1>\n";
     }
 
