@@ -64,8 +64,8 @@ class Role_poison_cat extends Role {
     }
     if (DB::$ROOM->IsOption('seal_message')) return; //蘇生結果を登録 (天啓封印ならスキップ)
 
-    $handle_name = DB::$USER->GetHandleName($target->uname, true);
-    DB::$ROOM->ResultAbility('POISON_CAT_RESULT', $result, $handle_name, $this->GetID());
+    //蘇生結果は憑依を追跡しない
+    DB::$ROOM->ResultAbility('POISON_CAT_RESULT', $result, $target->handle_name, $this->GetID());
   }
 
   //蘇生対象者取得
