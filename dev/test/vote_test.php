@@ -205,7 +205,7 @@ if ($set_date == 1) { //初日用
     array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
     #array('user_no' => 8, 	'target_no' => 15,	'type' => 'GUARD_DO'),
     #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
-    array('user_no' => 9, 	'target_no' => 15,	'type' => 'POISON_CAT_DO'),
+    array('user_no' => 9, 	'target_no' => 3,	'type' => 'POISON_CAT_DO'),
     #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
     array('user_no' => 10, 	'target_no' => 11,	'type' => 'ASSASSIN_DO'),
     #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
@@ -255,8 +255,8 @@ if ($set_date == 1) { //初日用
     array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13'),
     #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
     #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-    array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 9),
-    #array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
+    #array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 9),
+    array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
   );
 }
 
@@ -300,7 +300,7 @@ if (DB::$ROOM->date == 1) {
 DB::$USER->ByID(9)->live = 'live';
 #DB::$SELF = new User();
 DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(10);
+#DB::$SELF = DB::$USER->ByID(9);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;
@@ -316,7 +316,7 @@ if ($vote_view_mode) { //投票表示モード
   RQ::$get->back_url  = '<a href="vote_test.php">戻る</a>';
 
   if (RQ::$get->vote) { //投票処理
-    HTML::OutputHeader('投票テスト', 'game', true); //HTMLヘッダ
+    HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
     if (RQ::$get->target_no == 0) { //空投票検出
       HTML::OutputResult('空投票', '投票先を指定してください');
     }
