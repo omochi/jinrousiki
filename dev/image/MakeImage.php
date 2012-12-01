@@ -333,8 +333,9 @@ class RoleMessageList {
   public $missfire_cat = array(
     'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#常世神#です。あなたの#蘇生#は必ず誤爆してしまいます。根の国から招かれ葉を食らう。あなたは甘い夢を売り付けるだろう。",
     'type' => 'poison_cat');
+
   public $pharmacist = array(
-    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#薬師#です。_処刑_投票した人を#解毒#するか、#毒#能力を知ることができます。|村人|への二次被害を未然に防ぐのです！",
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#薬師#です。_処刑_投票した人を#解毒#するか、#毒#能力を知ることができます。古き知恵と秤と匙で、村に勝利の処方箋を示すのです！",
     'type' => 'poison', 'delimiter' => array('_' => 'vote'));
 
   public $cure_pharmacist = array(

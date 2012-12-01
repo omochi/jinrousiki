@@ -614,10 +614,10 @@ InfoHTML::OutputHeader('闇鍋モード');
 <li>内容は設定ファイルで変更できます。</li>
 </ol>
 <p>
-<?php InfoHTML::OutputItemList('topping', range('a', 'g')); ?>
+<?php InfoHTML::OutputItemList('topping', range('a', 'h')); ?>
 </p>
 <p>
-<?php InfoHTML::OutputItemList('topping', range('h', 'n')); ?>
+<?php InfoHTML::OutputItemList('topping', range('i', 'o')); ?>
 </p>
 
 <?php InfoHTML::OutputItem('topping', 'a', 'Ver. 1.4.0 β19'); ?>
@@ -736,6 +736,10 @@ InfoHTML::OutputHeader('闇鍋モード');
 <a href="new_role/human.php#guard">狩人</a>1　<a href="new_role/wolf.php#trap_wolf">狡狼</a>1　<a href="new_role/wolf.php#trap_mad">罠師</a>1
 </pre>
 
+<?php InfoHTML::OutputItem('topping', 'o', 'Ver. 2.1.0 RC2'); ?>
+<pre>
+<a href="new_role/human.php#voodoo_killer">陰陽師</a>1　<a href="new_role/human.php#wizard_group">魔法使い系</a>1　<a href="new_role/ogre.php#cursed_yaksa">滝夜叉姫</a>1　<a href="new_role/duelist.php#cursed_avenger">がしゃどくろ</a>1
+</pre>
 
 <h2 id="boost_rate"><?php OptionManager::OutputCaption('boost_rate'); ?> [Ver. 1.5.0 β7～]</h2>
 <ol>

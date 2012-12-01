@@ -247,7 +247,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 </pre>
 <ol>
 <li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、判定時に自分か投票先が死亡していたら無効。</li>
-<li><a href="../spec.php#vote_day">役職判定</a> (<a href="human.php#necromancer_group">霊能</a>・<a href="human.php#pharmacist_group">薬師</a>なども含む) は変化前の役職 (朔狼) に対して行われる。</li>
+<li>変化した処刑時の<a href="../spec.php#vote_day">役職判定</a> (<a href="human.php#necromancer_group">霊能</a>・<a href="human.php#pharmacist_group">薬師</a>など) は変化前の役職 (朔狼) に対して行われる。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>

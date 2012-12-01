@@ -825,7 +825,19 @@ class ChaosConfig {
     'l' => array('fix' => array('ghost_common' => 1, 'boss_wolf' => 1,
 				'silver_wolf' => 1, 'howl_fox' => 1)),
     'm' => array('fix' => array('sweep_assassin' => 2, 'trap_wolf' => 1, 'doom_fox' => 1)),
-    'n' => array('fix' => array('guard' => 1, 'trap_wolf' => 1, 'trap_mad' => 1))
+    'n' => array('fix' => array('guard' => 1, 'trap_wolf' => 1, 'trap_mad' => 1)),
+    'o' => array('fix' => array('voodoo_killer' => 1, 'cursed_yaksa' => 1, 'cursed_avenger' => 1),
+		 'random' => array(
+                    array('wizard'            => 20,
+			  'soul_wizard'       =>  5,
+			  'awake_wizard'      => 12,
+			  'mimic_wizard'      => 12,
+			  'spiritism_wizard'  => 10,
+			  'philosophy_wizard' => 15,
+			  'barrier_wizard'    =>  8,
+			  'astray_wizard'     => 10,
+			  'pierrot_wizard'    =>  8)),
+		 'count'  => array(1)),
 			    );
 
   //-- 出現率変動モード --//
