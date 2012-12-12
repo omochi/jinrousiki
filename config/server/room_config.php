@@ -17,6 +17,13 @@ class RoomConfig {
   static $black_list_host = null; //ホスト名 (ブラックリスト)
   //static $black_list_host = '/localhost.localdomain/'; //入力例
 
+  /* 村立てのみ制限 */
+  //記法は村立て・入村制限と同じ
+  static $establish_white_list_ip = array(); //IP アドレス (ホワイトリスト)
+  static $establish_black_list_ip = array(); //IP アドレス (ブラックリスト)
+  static $establish_white_list_host = null; //ホスト名 (ホワイトリスト)
+  static $establish_black_list_host = null; //ホスト名 (ブラックリスト)
+
   /* 村作成設定 */
   //最大人数のリスト
   static $max_user_list = array(8, 11, 16, 22, 32, 50);

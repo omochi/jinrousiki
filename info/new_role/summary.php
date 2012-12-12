@@ -365,7 +365,7 @@ Ver. 2.1.0
   <td><a href="human.php#poison_group">埋毒者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">時が経つと (5 日目以降) <a href="human.php#strong_poison">強毒者</a>相当の毒を持つ特殊な埋毒者。</td>
+  <td class="ability">一定期間後 (5 日目以降) <a href="human.php#strong_poison">強毒者</a>相当の毒を持つ特殊な埋毒者。</td>
   <td>Ver. 1.4.0 α17</td>
 </tr>
 <tr>
@@ -1999,7 +1999,7 @@ Ver. 2.1.0
   <td><a href="human.php#human_group">村人系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">時が経つと (5 日目以降) <a href="human.php#elder">長老</a>相当の能力を得る村人。</td>
+  <td class="ability">一定期間後 (5 日目以降) <a href="human.php#elder">長老</a>相当の能力を得る村人。</td>
   <td>Ver. 1.4.0 β22</td>
 </tr>
 <tr id="ver150a1">

@@ -141,6 +141,20 @@ class Security {
     return false;
   }
 
+  //ブラックリストチェック (村立て限定)
+  static function CheckEstablishBlackList() {
+    $addr = $_SERVER['REMOTE_ADDR'];
+    $host = gethostbyaddr($addr);
+    foreach (array('white' => false, 'black' => true) as $type => $flag) {
+      foreach (RoomConfig::${'establish_' . $type . '_list_ip'} as $ip) {
+	if (strpos($addr, $ip) === 0) return $flag;
+      }
+      $list = RoomConfig::${'establish_' . $type . '_list_host'};
+      if (isset($list) && preg_match($list, $host)) return $flag;
+    }
+    return false;
+  }
+
   /**
    * 実行環境にダメージを与える可能性がある値が含まれているかどうか検査します。
    * @param  : mixed   : $value 検査対象の変数

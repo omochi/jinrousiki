@@ -7,6 +7,7 @@ InfoHTML::OutputHeader('開発履歴', 1, 'develop_history');
 <p>
 Ver. 2.1.0<br>
 <a href="#ver210rc1">RC1</a>
+<a href="#ver210rc2">RC2</a>
 </p>
 <p>
 <a href="#ver210a1">α1</a>
@@ -26,6 +27,11 @@ Ver. 2.1.0<br>
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210rc2">Ver. 2.1.0 RC2 (Rev. 673) : 2012/12/01 (Sat) 16:52</h2>
+<ul>
+<li>固定配役追加モード：O(陰陽村)追加</li>
+</ul>
 
 <h2 id="ver210rc1">Ver. 2.1.0 RC1 (Rev. 662) : 2012/11/10 (Sat) 00:12</h2>
 <ul>

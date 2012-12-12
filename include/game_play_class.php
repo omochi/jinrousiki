@@ -128,7 +128,7 @@ class GamePlay {
     else { //仮想時間制
       if (! DB::Transaction()) return false; //判定条件が全て DB なので即ロック
 
-      //現在のシーンを再取得して切り替わっていたらスキップ
+      //シーン再判定 (ロック付き)
       if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
       $silence_pass_time = GameTime::GetTalkPass($left_time, true);
 
@@ -148,7 +148,7 @@ class GamePlay {
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
 	if (! DB::Transaction()) return false;
 
-	//現在のシーンを再取得して切り替わっていたらスキップ
+	//シーン再判定 (ロック付き)
 	if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
       }
       DB::$ROOM->ChangeNight(); //夜に切り替え
@@ -160,14 +160,14 @@ class GamePlay {
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
 	if (! DB::Transaction()) return false;
 
-	//現在のシーンを再取得して切り替わっていたらスキップ
+	//シーン再判定 (ロック付き)
 	if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
       }
 
       //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
       $str = 'あと' . Time::Convert(TimeConfig::SUDDEN_DEATH) . 'で' .
 	Message::$sudden_death_announce;
-      if (DB::$ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセットしてコミット
+      if (DB::$ROOM->OvertimeAlert($str)) { //出力したら突然死タイマーをリセット
 	DB::$ROOM->sudden_death = TimeConfig::SUDDEN_DEATH;
 	return DB::Commit(); //ロック解除
       }
@@ -185,7 +185,7 @@ class GamePlay {
     if (DB::$ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
       if (! DB::Transaction()) return false;
 
-      //現在のシーンを再取得して切り替わっていたらスキップ
+      //シーン再判定 (ロック付き)
       if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
 
       DB::$ROOM->SetSuddenDeath(); //制限時間を再計算
@@ -284,7 +284,7 @@ class GamePlay {
   //遺言登録
   private function SaveLastWords($say) {
     //スキップ判定
-    if ((GameConfig::LIMIT_LAST_WORDS && DB::$ROOM->IsPlaying()) || DB::$ROOM->IsFinished()) {
+    if (DB::$ROOM->IsFinished() || (GameConfig::LIMIT_LAST_WORDS && DB::$ROOM->IsPlaying())) {
       return false;
     }
 
@@ -422,8 +422,8 @@ EOF;
       //「異議」あり
       $cookie = explode(',', JinroCookie::$objection); //クッキーの値を配列に格納する
       if (count($cookie) > 0) {
-	$stack  = JinroCookie::$objection_list;
-	$count  = count($stack);
+	$stack = JinroCookie::$objection_list;
+	$count = count($stack);
 	for ($i = 0; $i < $count; $i++) { //差分を計算 (index は 0 から)
 	  //差分があれば性別を確認して音を鳴らす
 	  if (isset($cookie[$i]) && $stack[$i] > $cookie[$i]) {

@@ -96,7 +96,8 @@ EOF;
 	}
       }
 
-      if (Security::CheckBlackList()) { //ブラックリストチェック
+      //ブラックリストチェック
+      if (Security::CheckBlackList() || Security::CheckEstablishBlackList()) {
 	HTML::OutputResult('村作成 [制限事項]', '村立て制限ホストです。');
       }
 
