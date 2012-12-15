@@ -104,7 +104,7 @@ class Cast {
 	}
 
 	foreach (ChaosConfig::$role_group_rate_list as $name => $rate) {
-	  $target = $random_stack[$name];
+	  $target = @$random_stack[$name];
 	  if (! (is_array(@$total_stack[$name]) && is_array($target))) continue;
 	  $count = array_sum($total_stack[$name]) - round($user_count / $rate);
 	  //if ($count > 0) Text::p($count, $name); //テスト用

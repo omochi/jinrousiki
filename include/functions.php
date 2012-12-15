@@ -1,18 +1,26 @@
 <?php
 //-- テキスト処理クラス --//
 class Text {
+  //テキスト出力
+  static function Output($str = '', $line = false) {
+    echo $str . ($line ? '<br>' : '') . "\n";
+  }
+
+  //改行タグ付きテキスト出力 (デバッグ用)
+  static function d($str = '') { self::Output($str, true); }
+
   //変数表示関数 (デバッグ用)
   static function p($data, $name = null) {
     $str = is_null($name) ? '' : $name . ': ';
     $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
-    echo $str . '<br>';
+    self::d($str);
   }
 
   //変数ダンプ (デバッグ用)
   static function v($data, $name = null) {
     if (! is_null($name)) echo $name . ': ';
     var_dump($data);
-    echo '<br>';
+    self::d();
   }
 
   //暗号化
@@ -341,7 +349,7 @@ EOF;
   static function OutputResult($title, $body, $url = '') {
     DB::Disconnect();
     self::OutputResultHeader($title, $url);
-    echo $body . "<br>\n";
+    Text::Output($body, true);
     self::OutputFooter(true);
   }
 

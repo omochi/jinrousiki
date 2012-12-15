@@ -85,6 +85,7 @@ class Vote {
       break;
 
     default:
+      $sub_type = '';
       $sub_role_list = $role_count_list;
       break;
     }
@@ -461,7 +462,7 @@ class Vote {
       $user = DB::$USER->ByUname($fix_uname_list[$i]);
       $user->ChangeRole($role);
       $stack = explode(' ', $role);
-      foreach ($stack as $role) $role_count_list[$role]++;
+      foreach ($stack as $role) @$role_count_list[$role]++;
       if ($is_detective && in_array('detective_common', $stack)) $detective_list[] = $user;
     }
 

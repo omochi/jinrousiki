@@ -1194,7 +1194,7 @@ class RoleData {
     if (is_null($css)) $css = self::DistinguishRoleClass($role);
     if ($sub_role) $str .= '<br>';
     $str .= '<span class="' . $css . '">[' .
-      ($sub_role ? self::$sub_role_list[$role] : self::$main_role_list[$role]) . ']</span>';
+      ($sub_role ? @self::$sub_role_list[$role] : @self::$main_role_list[$role]) . ']</span>';
     return $str;
   }
 

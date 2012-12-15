@@ -1,28 +1,19 @@
 <?php
+//error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
 
-$disable = false; true; //使用時には false に変更する
+$disable = true; //使用時には false に変更する
 if ($disable) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
-Loader::LoadFile('cast_config', 'test_class');
+Loader::LoadFile('test_class', 'cast_config');
 
 //-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
-RQ::$get->room_no = 1;
-RQ::$get->reverse_log = null;
-RQ::$get->TestItems = new StdClass();
-RQ::GetTest()->test_room = array(
-  'id' => RQ::$get->room_no, 'name' => '表示テスト村', 'comment' => '',
-  'date' => 0, 'scene' => 'day', 'status' => 'waiting',
-  'game_option' => 'dummy_boy real_time:6:4',
-  'option_role' => '',
-);
-RQ::GetTest()->is_virtual_room = true;
-RQ::$get->vote_times = 1;
 
-Dev::InitializeUser(11,
+DevRoom::Initialize(array('name' => '表示テスト村', 'scene' => 'day'));
+DevUser::Initialize(11,
   array( 1 => 'mage',
 	 2 => 'human',
 	 3 => 'human',
@@ -34,37 +25,29 @@ Dev::InitializeUser(11,
 	 9 => 'wolf',
 	10 => 'wolf',
 	11 => 'mad'));
-Dev::ComplementUser();
+DevUser::Complement();
 //Text::p(RQ::GetTest()->test_users[10]);
-
-RQ::GetTest()->event          = array();
-RQ::GetTest()->result_ability = array();
-RQ::GetTest()->result_dead    = array();
-RQ::GetTest()->system_message = array();
 
 //-- 設定調整 --//
 #CastConfig::$decide = 11;
 #RQ::GetTest()->test_users[3]->live = 'kick';
 
 //-- データ収集 --//
-//DB::Connect(); // DB 接続
-DB::$ROOM = new Room(RQ::$get); //村情報を取得
-DB::$ROOM->test_mode = true;
-DB::$ROOM->log_mode  = true;
+//DB::Connect(); //DB接続 (必要なときだけ設定する)
+DevRoom::Load();
 DB::$ROOM->date = 1;
 DB::$ROOM->scene = 'beforegame';
 #DB::$ROOM->scene = 'day';
 #DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
-switch ($_GET['scene']) {
+switch (@$_GET['scene']) {
 case 'beforegame':
 case 'day':
 case 'night':
   DB::$ROOM->scene = $_GET['scene'];
   break;
 }
-DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
-DB::$SELF = DB::$USER->ByID(1);
+DevUser::Load();
 
 //テストデータ設定
 DB::$USER->rows[3]->live = 'dead';
@@ -126,7 +109,7 @@ if (false) {
 }
 
 //-- データ出力 --//
-HTML::OutputHeader('表示テスト', 'game');
+HTML::OutputHeader('表示テスト', 'game_play');
 HTML::OutputBodyHeader(sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene));
 //Text::p(DB::$ROOM->scene, $_GET['scene']);
 GameHTML::OutputPlayer();

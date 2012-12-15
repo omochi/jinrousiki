@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 define('JINRO_ROOT', '../..');
 require_once(JINRO_ROOT . '/include/init.php');
-Loader::LoadFile('image_class', 'test_class');
+Loader::LoadFile('test_class', 'image_class');
 
 //-- 特殊モード設定 --//
 $vote_view_mode = false; //投票表示モード
@@ -12,25 +12,19 @@ $cast_view_mode = false; //配役情報表示モード
 
 //-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
-RQ::$get->room_no = 94;
-RQ::$get->reverse_log = null;
-RQ::$get->TestItems = new StdClass();
-RQ::GetTest()->test_room = array(
-  'id' => RQ::$get->room_no, 'name' => '投票テスト村', 'comment' => '',
-  //'game_option' => 'dummy_boy full_mania chaosfull chaos_open_cast no_sub_role real_time:6:4 joker',
-  'game_option' => 'dummy_boy chaosfull chaos_open_cast no_sub_role real_time:6:4 joker weather',
-  'date' => 9,
-  'scene' => 'night',
-  //'scene' => 'aftergame',
-  'status' => 'playing'
-  //'status' => 'finished'
-);
+
+DevRoom::Initialize(array('name' => '投票テスト村', 'status' => 'playing'));
 RQ::AddTestRoom('game_option', 'not_open_cast');
 RQ::AddTestRoom('game_option', 'open_vote death_note');
+RQ::AddTestRoom('game_option', 'chaosfull');
+RQ::AddTestRoom('game_option', 'chaos_open_cast');
+RQ::AddTestRoom('game_option', 'no_sub_role');
+RQ::AddTestRoom('game_option', 'joker');
+RQ::AddTestRoom('game_option', 'weather');
 #RQ::AddTestRoom('game_option', 'seal_message');
 #RQ::AddTestRoom('game_option', 'quiz');
-RQ::GetTest()->is_virtual_room = true;
-Dev::InitializeUser(25);
+
+DevUser::Initialize(25);
 
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
@@ -109,7 +103,7 @@ RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
 //RQ::GetTest()->test_users = 25;
-Dev::ComplementUser();
+DevUser::Complement();
 
 //-- 仮想投票データをセット --//
 $set_date = 6;
@@ -262,9 +256,6 @@ if ($set_date == 1) { //初日用
 
 //-- 仮想システムメッセージをセット --//
 RQ::GetTest()->winner = 'wolf';
-RQ::GetTest()->event          = array();
-RQ::GetTest()->result_ability = array();
-RQ::GetTest()->result_dead    = array();
 RQ::GetTest()->system_message = array(
   //-- 仮想イベントをセット --//
   4 => array(#'EVENT'   => array('blinder'),
@@ -282,90 +273,43 @@ RQ::$get->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
 //DB::Connect(); //DB接続 (必要なときだけ設定する)
-DB::$ROOM = new Room(RQ::$get); //村情報を取得
-DB::$ROOM->test_mode = true;
-DB::$ROOM->log_mode = true;
-DB::$ROOM->revote_count = 0;
+DevRoom::Load();
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
 #DB::$ROOM->scene = 'day';
 DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
-if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();
-DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+
+DevUser::Load();
 if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
-DB::$USER->ByID(9)->live = 'live';
-#DB::$SELF = new User();
-DB::$SELF = DB::$USER->ByID(1);
-#DB::$SELF = DB::$USER->ByID(9);
+#DB::$USER->ByID(9)->live = 'live';
+DB::$SELF = DB::$USER->ByID(9);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;
 }
 
 //-- データ出力 --//
-if ($vote_view_mode) { //投票表示モード
-  Loader::LoadFile('vote_message');
-  $stack = new RequestGameVote();
-  RQ::$get->vote = $stack->vote;
-  RQ::$get->target_no = $stack->target_no;
-  RQ::$get->situation = $stack->situation;
-  RQ::$get->back_url  = '<a href="vote_test.php">戻る</a>';
-
-  if (RQ::$get->vote) { //投票処理
-    HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
-    if (RQ::$get->target_no == 0) { //空投票検出
-      HTML::OutputResult('空投票', '投票先を指定してください');
-    }
-    elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
-      //Vote::VoteDay();
-    }
-    elseif (DB::$ROOM->IsNight()) { //夜の投票処理
-      Vote::VoteNight();
-    }
-    else { //ここに来たらロジックエラー
-      VoteHTML::OutputError('投票コマンドエラー', '投票先を指定してください');
-    }
-  }
-  else {
-    RQ::$get->post_url = 'vote_test.php';
-    DB::$SELF->last_load_scene = DB::$ROOM->scene;
-
-    if (DB::$SELF->IsDead()) {
-      DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
-    }
-    else {
-      switch(DB::$ROOM->scene) {
-      case 'beforegame':
-	VoteHTML::OutputBeforeGame();
-	break;
-
-      case 'day':
-	VoteHTML::OutputDay();
-	break;
-
-      case 'night':
-	VoteHTML::OutputNight();
-	break;
-
-      default: //ここに来たらロジックエラー
-	VoteHTML::OutputError('投票シーンエラー');
-	break;
-      }
-    }
-  }
-  DB::$SELF = DB::$USER->ByID(1);
-  GameHTML::OutputPlayer();
+if ($vote_view_mode) VoteTest::OutputVote(); //投票表示モード
+if ($role_view_mode) { //画像表示モード
+  HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
+  #foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output($role);
+  #foreach (array_keys(RoleData::$sub_role_list)  as $role) Image::Role()->Output($role);
+  #foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output('result_'.$role);
+  $header = 'prediction_weather_';
+  #foreach (RoleData::$weather_list as $stack) Image::Role()->Output($header.$stack['event']);
   HTML::OutputFooter(true);
 }
-HTML::OutputHeader('投票テスト', 'game_play'); //HTMLヘッダ
+if ($cast_view_mode) VoteTest::OutputCast(); //配役情報表示モード
 if ($talk_view_mode) { //発言表示モード
+  Loader::LoadFile('talk_class');
+
+  HTML::OutputHeader('投票テスト', 'game_play');
   echo DB::$ROOM->GenerateCSS();
   HTML::OutputBodyHeader();
-  Loader::LoadFile('talk_class');
   RQ::$get->add_role = false;
   RQ::GetTest()->talk_data = new StdClass();
   //昼の発言
@@ -439,37 +383,8 @@ if ($talk_view_mode) { //発言表示モード
   Talk::Output();
   HTML::OutputFooter(true);
 }
-HTML::OutputBodyHeader();
-if ($role_view_mode) { //画像表示モード
-  foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output($role);
-  #foreach (array_keys(RoleData::$sub_role_list)  as $role) Image::Role()->Output($role);
-  #foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output('result_'.$role);
-  $header = 'prediction_weather_';
-  #foreach (RoleData::$weather_list as $stack) Image::Role()->Output($header.$stack['event']);
-  HTML::OutputFooter(true);
-}
-if ($cast_view_mode) { //配役情報表示モード
-  Loader::LoadFile('chaos_config');
-  #Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));
-  #Text::p(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
-  //Text::p(ChaosConfig::$role_group_rate_list);
-  echo '<table border="1" cellspacing="0">'."\n".'<tr><th>人口</th>';
-  foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
-    $role  = RoleData::DistinguishRoleGroup($group);
-    $class = RoleData::DistinguishRoleClass($role);
-    echo '<th class="' . $class . '">' . RoleData::$short_role_list[$role] . '</th>';
-  }
-  echo '</tr>'."\n";
-  for ($i = 8; $i <= 40; $i++) {
-    echo '<tr align="right"><td><strong>' . $i . '</strong></td>';
-    foreach (ChaosConfig::$role_group_rate_list as $rate) {
-      echo '<td>' . round($i / $rate) . '</td>';
-    }
-    echo '</tr>'."\n";
-  }
-  echo '</table>';
-  HTML::OutputFooter(true);
-}
+
+HTML::OutputHeader('投票テスト', 'game_play', true);
 GameHTML::OutputPlayer();
 RoleHTML::OutputAbility();
 if (RQ::$get->say != '') { //発言変換テスト

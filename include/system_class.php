@@ -46,7 +46,9 @@ EOF;
 //-- 「福引」クラス --//
 class Lottery {
   //配列からランダムに一つ取り出す
-  static function Get(array $array) { return $array[array_rand($array)]; }
+  static function Get(array $array) {
+    return count($array) > 0 ? $array[array_rand($array)] : null;
+  }
 
   //闇鍋モードの配役リスト取得
   static function GetChaos(array $list, array $filter) {
