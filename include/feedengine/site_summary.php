@@ -1,6 +1,4 @@
 <?php
-Loader::LoadFile('image_class', 'room_option_class');
-
 class SiteSummary extends FeedEngine {
   public $room_info = array();
 

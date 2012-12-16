@@ -48,6 +48,8 @@ class Loader {
     'sound_class'            => 'sound_config',
     'cookie_class'           => 'sound_class',
     'twitter_class'          => array('twitter_config', 'twitter'),
+    'rss_class'              => array('feedengine', 'site_summary', 'image_class',
+				      'room_option_class'),
     'test_class'             => array('room_config', 'icon_class', 'user_class', 'role_class',
 				      'game_vote_functions', 'test_functions'),
     'room_manager_class'     => array('image_class', 'room_option_class'),
@@ -175,7 +177,6 @@ class Loader {
     case 'role_class':
     case 'role_data_class':
     case 'chatengine':
-    case 'feedengine':
     case 'paparazzi':
     case 'paparazzi_class':
     case 'test_class':
@@ -188,6 +189,12 @@ class Loader {
     case 'room_option_class':
     case 'room_option_item_class':
       $path = JINRO_INC . '/option';
+      break;
+
+    case 'rss_class':
+    case 'feedengine':
+    case 'site_summary':
+      $path = JINRO_INC . '/feedengine';
       break;
 
     default:

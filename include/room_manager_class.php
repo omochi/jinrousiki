@@ -11,7 +11,7 @@ class RoomManager {
       RoomConfig::DIE_ROOM;
     /*
     //RSS更新 (廃村が 0 の時も必要な処理なので false に限定していない)
-    OutputSiteSummary();
+    //JinroRSS::Update(); //テスト中
     */
     DB::Execute($query);
 
@@ -246,7 +246,7 @@ EOF;
 	}
 
 	JinroTwitter::Send($room_no, RQ::$get->room_name, RQ::$get->room_comment); //Twitter 投稿
-	//OutputSiteSummary(); //RSS更新 //テスト中
+	//JinroRSS::Update(); //RSS更新 //テスト中
 
 	DB::Commit();
 	return self::OutputResult('success', RQ::$get->room_name, false);
@@ -260,23 +260,7 @@ EOF;
   static function OutputList() {
     if (ServerConfig::SECRET_ROOM) return; //シークレットテストモード
 
-    /* RSS (テスト中)
-    if (! ServerConfig::DEBUG_MODE){
-      $filename = JINRO_ROOT.'/rss/rooms.rss';
-      if (file_exists($filename)){
-	$rss = FeedEngine::Initialize('site_summary.php');
-	$rss->Import($filename);
-      }
-      else {
-	$rss = OutputSiteSummary();
-      }
-      foreach ($rss->items as $item){
-	extract($item, EXTR_PREFIX_ALL, 'room');
-	echo $room_description;
-      }
-    }
-    */
-
+    //JinroRSS::Output(); // RSS (テスト中)
     //部屋情報を取得
     $delete_header = '<a href="admin/room_delete.php?room_no=';
     $delete_footer = '">[削除 (緊急用)]</a>'."\n";

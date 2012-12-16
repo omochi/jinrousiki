@@ -123,7 +123,7 @@ class Winner {
     if ($winner == '') return false;
 
     //ゲーム終了
-    //OutputSiteSummary(); //RSS機能はテスト中
+    //JinroRSS::Update(); //RSS機能はテスト中
     return RoomDB::Finish($winner);
   }
 

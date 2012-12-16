@@ -5,17 +5,6 @@ class FeedEngine {
   public $description;
   public $items = array();
 
-  function Initialize($filename) {
-    if (include(JINRO_INC . "/feedengine/$filename")) {
-      $segments = explode('_', substr($filename, 0, -4));
-      foreach ($segments as $segment) {
-        $class .= ucfirst($segment);
-      }
-      return new $class();
-    }
-    return false;
-  }
-
   function SetChannel($title, $url, $description='') {
     $this->title = $title;
     $this->url = $url;
@@ -24,30 +13,26 @@ class FeedEngine {
 
   function AddItem($title, $url, $description) {
     return $this->items[] = array(
-      'title'=>$title,
-      'url'=>$url,
-      'description'=>$description
+      'title' => $title,
+      'url' => $url,
+      'description' => $description
     );
-  }
-
-  function decode($value) {
-    return mb_convert_encoding($value, ServerConfig::ENCODE, 'auto');
   }
 
   function Import($url) {
     $RDF = simplexml_load_string(file_get_contents($url));
-    $this->title = self::decode((string)$RDF->title);
+    $this->title = self::Decode((string)$RDF->title);
     $this->url = (string)$RDF->link;
-    $this->description = self::decode((string)$RDF->description);
+    $this->description = self::Decode((string)$RDF->description);
     foreach ($RDF->item as $item) {
       $this->ImportItem($item);
     }
   }
 
   function ImportItem($item) {
-    $title = self::decode((string)$item->title);
+    $title = self::Decode((string)$item->title);
     $link = (string)$item->link;
-    $description = self::decode($item->description->asXML());
+    $description = self::Decode($item->description->asXML());
     return $this->AddItem($title, $link, $description);
   }
 
@@ -83,5 +68,9 @@ XML_RDF;
 </rdf:RDF>
 XML_RDF;
     return mb_convert_encoding($document, 'UTF-8', ServerConfig::ENCODE);
+  }
+
+  private static function Decode($value) {
+    return mb_convert_encoding($value, ServerConfig::ENCODE, 'auto');
   }
 }

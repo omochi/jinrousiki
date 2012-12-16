@@ -497,7 +497,7 @@ class Vote {
       $query = sprintf($str, DB::$ROOM->date, DB::$ROOM->scene, DB::$ROOM->id);
 
       DB::Execute($query);
-      //OutputSiteSummary(); //RSS機能はテスト中
+      //JinroRSS::Update(); //RSS機能はテスト中
     }
     DB::$ROOM->Talk($sentence);
     if ($is_detective && count($detective_list) > 0) { //探偵村の指名

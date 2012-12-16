@@ -386,20 +386,3 @@ EOF;
 EOF;
   }
 }
-
-//-- 出力関連 --//
-//村情報のRSSファイルを更新する
-function OutputSiteSummary() {
-  Loader::LoadFile('feedengine');
-
-  $filename = 'rss/rooms.rss';
-  $rss = FeedEngine::Initialize('site_summary.php');
-  $rss->Build();
-
-  $fp = fopen(dirname(__FILE__)."/{$filename}", 'w');
-  fwrite($fp, $rss->Export($filename));
-  fflush($fp);
-  fclose($fp);
-
-  return $rss;
-}
