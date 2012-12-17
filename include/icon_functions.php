@@ -44,6 +44,12 @@ class IconDB {
     return DB::FetchAssoc(sprintf($format, $icon_no));
   }
 
+  //ファイル名取得
+  static function GetFile($icon_no) {
+    $format = 'SELECT icon_filename FROM user_icon WHERE icon_no = %d';
+    return DB::FetchResult(sprintf($format, $icon_no));
+  }
+
   //セッション情報取得
   static function GetSession($icon_no) {
     $format = 'SELECT icon_filename, session_id FROM user_icon WHERE icon_no = %d';

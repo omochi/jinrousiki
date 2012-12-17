@@ -6,6 +6,9 @@ class DB {
   public  static $SELF = null;
   private static $instance    = null;
   private static $transaction = false;
+  private static $table_list = array(
+    'room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame', 'system_message',
+    'result_ability', 'result_dead', 'result_lastwords', 'result_vote_kill', 'vote');
 
   //データベース接続クラス生成
   /*
@@ -199,20 +202,15 @@ class DB {
   //村削除
   static function DeleteRoom($room_no) {
     $query = 'DELETE FROM %s WHERE room_no = %d';
-    $stack  = array('room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame',
-		    'system_message', 'result_ability', 'result_dead', 'result_lastwords',
-		    'result_vote_kill', 'vote');
-    foreach ($stack as $name) {
-      if (! self::FetchBool(sprintf($query, $name, $room_no))) return false;
+    foreach (self::$table_list as $table) {
+      if (! self::FetchBool(sprintf($query, $table, $room_no))) return false;
     }
     return true;
   }
 
   //最適化
   static function Optimize($name = null) {
-    $tables = 'room, user_entry, talk, talk_beforegame, talk_aftergame, system_message' .
-      'result_lastwords, vote';
-    $query = is_null($name) ? $tables : $name;
+    $query = is_null($name) ? implode(',', self::$table_list) : $name;
     return self::ExecuteCommit('OPTIMIZE TABLE ' . $query);
   }
 
