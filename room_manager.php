@@ -8,7 +8,6 @@ if (Loader::IsLoaded('index_functions')) RoomManager::Maintenance();
 Loader::LoadRequest('RequestRoomManager');
 if (RQ::$get->create_room) {
   Loader::LoadFile('message', 'user_icon_class', 'twitter_class');
-  //Loader::LoadFile('feedengine');
   RoomManager::Create();
 }
 elseif (RQ::$get->change_room) {

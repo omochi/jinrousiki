@@ -15,7 +15,7 @@ class Cast {
 
     if (DB::$ROOM->IsOptionGroup('chaos')) { //闇鍋モード
       $random_role_list = array(); //ランダム配役結果
-      foreach (array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso') as $option) { //グレード検出
+      foreach (array('chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso') as $option) { //種別検出
 	if (DB::$ROOM->IsOption($option)) {
 	  $base_name   = $option;
 	  $chaos_verso = $option == 'chaos_verso';
@@ -24,7 +24,7 @@ class Cast {
       }
 
       //-- 固定枠設定 --//
-      $fix_role_list = ChaosConfig::${$base_name . '_fix_role_list'}; //グレード個別設定
+      $fix_role_list = ChaosConfig::${$base_name . '_fix_role_list'}; //個別設定
 
       if (count($stack = DB::$ROOM->GetOptionList('topping')) > 0) { //固定配役追加モード
 	//Text::p($stack, 'topping');
@@ -212,7 +212,7 @@ class Cast {
     //役職名を格納した配列を生成
     $now_role_list = array();
     foreach ($role_list as $key => $value) {
-      for ($i = 0; $i < $value; $i++) array_push($now_role_list, $key);
+      for ($i = 0; $i < $value; $i++) $now_role_list[] = $key;
     }
     $role_count = count($now_role_list);
 
@@ -221,7 +221,7 @@ class Cast {
 	Text::p($role_count, 'エラー：配役数');
 	return $now_role_list;
       }
-      $str = '村人 (' . $user_count . ') と配役の数 (' . $role_count . ') が一致していません';
+      $str = sprintf('村人 (%d) と配役の数 (%d) が一致していません', $user_count, $role_count);
       VoteHTML::OutputResult($error_header . $str . $error_footer, true);
     }
 
