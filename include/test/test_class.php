@@ -1,7 +1,6 @@
 <?php
 //-- 村配役テスト --//
 class CastTest {
-  //出力
   static function Output() {
     HTML::OutputHeader('配役テスト', 'game_play', true);
     GameHTML::OutputPlayer();
@@ -16,8 +15,10 @@ class CastTest {
 
 //-- オプション配役テスト --//
 class RoleTest {
-  //出力
-  static function Output() {
+  const LABEL = '<input type="radio" id="%s" name="%s" value="%s"%s><label for="%s">%s</label>';
+  const BOX   = '<input type="checkbox" id="%s" name="%s" value="on"><label for="%s">%s</label>';
+
+  function Output() {
     HTML::OutputHeader('配役テストツール', 'test/role', true);
     foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
       $$key = isset($_POST[$key]) && $_POST[$key] > 0 ? $_POST[$key] : $value;
@@ -33,18 +34,17 @@ class RoleTest {
 
 EOF;
 
-    $format = '<input type="radio" id="%s" name="%s" value="%s"%s><label for="%s">%s</label>';
-    $id     = 'game_option';
-    $stack  = array(
+    $id    = 'game_option';
+    $stack = array(
       '' => '普通', 'chaos' => '闇鍋', 'chaosfull' => '真・闇鍋', 'chaos_hyper' => '超・闇鍋',
       'chaos_verso' => '裏・闇鍋', 'duel' => '決闘', 'duel_auto_open_cast' => '自動公開決闘',
       'duel_not_open_cast' => '非公開決闘', 'gray_random' => 'グレラン', 'quiz' => 'クイズ');
     $checked_key = isset($_POST[$id]) && array_key_exists($_POST[$id], $stack) ?
       $_POST[$id] : 'chaos_hyper';
     foreach ($stack as $key => $value) {
-      $label = $id . '_' . $key;
+      $label   = $id . '_' . $key;
       $checked = $checked_key == $key ? ' checked' : '';
-      Text::Output(sprintf($format, $label, $id, $key, $checked, $label, $value));
+      Text::Output(sprintf(self::LABEL, $label, $id, $key, $checked, $label, $value));
     }
     Text::d();
 
@@ -53,17 +53,17 @@ EOF;
       foreach (GameOptionConfig::${$option.'_selector_list'} as $key => $mode) {
 	if (++$count % 10 == 0) Text::d();
 	if (is_int($key)) {
+	  $value   = $mode;
 	  $checked = '';
 	  $name    = OptionManager::GenerateCaption($mode);
-	  $value   = $mode;
 	}
 	else {
+	  $value   = '';
 	  $checked = ' checked';
 	  $name    = $mode;
-	  $value   = '';
 	}
 	$label = $option . '_' . $key;
-	Text::Output(sprintf($format, $label, $option, $value, $checked, $label, $name));
+	Text::Output(sprintf(self::LABEL, $label, $option, $value, $checked, $label, $name));
       }
       Text::d();
     }
@@ -72,24 +72,23 @@ EOF;
       $count = 0;
       foreach (GameOptionConfig::${$option.'_list'} as $key => $mode) {
 	if (++$count % 10 == 0) Text::d();
+	$label   = $option . '_' . $key;
 	$checked = $key == '' ? ' checked' : '';
-	$label = $option . '_' . $key;
-	Text::Output(sprintf($format, $label, $option, $key, $checked, $label, $mode));
+	Text::Output(sprintf(self::LABEL, $label, $option, $key, $checked, $label, $mode));
       }
       Text::d();
     }
 
-    $format = '<input type="checkbox" id="%s" name="%s" value="on"><label for="%s">%s</label>';
-    $stack  = array(
-       'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'wolf' => '人狼',
-       'boss_wolf' => '白狼', 'poison_wolf' => '毒狼', 'tongue_wolf' => '舌禍狼',
-       'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐', 'cupid' => 'QP',
-       'medium' => '巫女', 'mania' => 'マニア', 'detective' => '探偵', 'festival' => 'お祭り',
-       'limit_off' => 'リミッタオフ');
+    $stack = array(
+      'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'wolf' => '人狼',
+      'boss_wolf' => '白狼', 'poison_wolf' => '毒狼', 'tongue_wolf' => '舌禍狼',
+      'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐', 'cupid' => 'QP',
+      'medium' => '巫女', 'mania' => 'マニア', 'detective' => '探偵', 'festival' => 'お祭り',
+      'limit_off' => 'リミッタオフ');
     foreach ($stack as $option => $name) {
       if (++$i % 14 == 0) Text::d();
       $id = 'option_' . $option;
-      Text::Output(sprintf($format, $id, $option, $id, $name));
+      Text::Output(sprintf(self::BOX, $id, $option, $id, $name));
     }
     Text::Output('</form>');
 
@@ -128,7 +127,7 @@ EOF;
       foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
 	if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
 	$list = $option . '_selector_list';
-	if (array_search(@$_POST[$option], GameOptionConfig::$list) !== false) {
+	if (array_search(@$_POST[$option], GameOptionConfig::$$list) !== false) {
 	  $stack->option_role[] = $_POST[$option];
 	}
       }
@@ -178,7 +177,6 @@ EOF;
 
 //-- 裏・闇鍋モードテスト --//
 class ChaosVersoTest {
-  //出力
   static function Output() {
     HTML::OutputHeader('裏・闇鍋モード配役テスト', 'test/role', true);
 
