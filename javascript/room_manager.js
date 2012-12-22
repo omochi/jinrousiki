@@ -1,7 +1,4 @@
-﻿/*
-  ◆村作成画面制御関数
-*/
-
+﻿/* ◆村作成画面制御関数 */
 /* getElementsByClass() 代替関数 */
 function get_option_elements(target) {
   if (document.all) {

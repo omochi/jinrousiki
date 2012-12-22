@@ -4,7 +4,6 @@ require_once(JINRO_ROOT . '/include/init.php');
 Loader::LoadFile('message', 'user_icon_class', 'room_option_class');
 Loader::LoadClass('InfoTime');
 InfoHTML::OutputHeader('仕様', 0, 'script_info');
-HTML::OutputJavaScript('output_diff_time');
 ?>
 <img src="../img/script_info_title.jpg" title="スクリプトの仕様" alt="スクリプトの仕様">
 <ul>

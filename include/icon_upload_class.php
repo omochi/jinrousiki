@@ -10,7 +10,7 @@ class IconUpload {
       HTML::OutputResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
     }
     Loader::LoadRequest('RequestIconUpload');
-    isset(RQ::$get->command) ? self::Execute() : self::Output();
+    isset(RQ::$get->command) ? self::Upload() : self::Output();
   }
 
   //投稿処理
