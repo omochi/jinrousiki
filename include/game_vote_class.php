@@ -1,29 +1,28 @@
 <?php
-//-- GameVote o—ÍƒNƒ‰ƒX --//
+//-- GameVote å‡ºåŠ›ã‚¯ãƒ©ã‚¹ --//
 class GameVote {
-  //o—Í
   static function Output() {
-    //-- ƒf[ƒ^ûW --//
+    //-- ãƒ‡ãƒ¼ã‚¿åé›† --//
     DB::Connect();
-    Session::Certify(); //ƒZƒbƒVƒ‡ƒ“”FØ
+    Session::Certify(); //ã‚»ãƒƒã‚·ãƒ§ãƒ³èªè¨¼
 
-    if (! DB::Transaction()) { //ƒƒbƒNˆ—
-      VoteHTML::OutputResult('ƒT[ƒo‚ª¬G‚µ‚Ä‚¢‚Ü‚·BÄ“x“Š•[‚ğ‚¨Šè‚¢‚µ‚Ü‚·B');
+    if (! DB::Transaction()) { //ãƒ­ãƒƒã‚¯å‡¦ç†
+      VoteHTML::OutputResult('ã‚µãƒ¼ãƒãŒæ··é›‘ã—ã¦ã„ã¾ã™ã€‚å†åº¦æŠ•ç¥¨ã‚’ãŠé¡˜ã„ã—ã¾ã™ã€‚');
     }
 
-    DB::$ROOM = new Room(RQ::$get, true); //‘ºî•ñ‚ğƒ[ƒh
-    if (DB::$ROOM->IsFinished()) VoteHTML::OutputError('ƒQ[ƒ€I—¹', 'ƒQ[ƒ€‚ÍI—¹‚µ‚Ü‚µ‚½');
-    DB::$ROOM->system_time = Time::Get(); //Œ»İ‚ğæ“¾
+    DB::$ROOM = new Room(RQ::$get, true); //æ‘æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+    if (DB::$ROOM->IsFinished()) VoteHTML::OutputError('ã‚²ãƒ¼ãƒ çµ‚äº†', 'ã‚²ãƒ¼ãƒ ã¯çµ‚äº†ã—ã¾ã—ãŸ');
+    DB::$ROOM->system_time = Time::Get(); //ç¾åœ¨æ™‚åˆ»ã‚’å–å¾—
 
-    DB::$USER = new UserDataSet(RQ::$get, true); //ƒ†[ƒUî•ñ‚ğƒ[ƒh
-    DB::$SELF = DB::$USER->BySession(); //©•ª‚Ìî•ñ‚ğƒ[ƒh
+    DB::$USER = new UserDataSet(RQ::$get, true); //ãƒ¦ãƒ¼ã‚¶æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
+    DB::$SELF = DB::$USER->BySession(); //è‡ªåˆ†ã®æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 
-    //-- ƒƒCƒ“ƒ‹[ƒ`ƒ“ --//
-    if (RQ::$get->vote) { //“Š•[ˆ—
-      if (DB::$ROOM->IsBeforeGame()) { //ƒQ[ƒ€ŠJn or Kick “Š•[ˆ—
+    //-- ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒãƒ³ --//
+    if (RQ::$get->vote) { //æŠ•ç¥¨å‡¦ç†
+      if (DB::$ROOM->IsBeforeGame()) { //ã‚²ãƒ¼ãƒ é–‹å§‹ or Kick æŠ•ç¥¨å‡¦ç†
 	switch (RQ::$get->situation) {
 	case 'GAMESTART':
-	  Loader::LoadFile('chaos_config', 'cast_class'); //”z–ğî•ñ‚ğƒ[ƒh
+	  Loader::LoadFile('chaos_config', 'cast_class'); //é…å½¹æƒ…å ±ã‚’ãƒ­ãƒ¼ãƒ‰
 	  Vote::VoteGameStart();
 	  break;
 
@@ -31,33 +30,32 @@ class GameVote {
 	  Vote::VoteKick();
 	  break;
 
-	default: //‚±‚±‚É—ˆ‚½‚çƒƒWƒbƒNƒGƒ‰[
-	  VoteHML::OutputError('ƒQ[ƒ€ŠJn‘O“Š•[');
+	default: //ã“ã“ã«æ¥ãŸã‚‰ãƒ­ã‚¸ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
+	  VoteHML::OutputError('ã‚²ãƒ¼ãƒ é–‹å§‹å‰æŠ•ç¥¨');
 	  break;
 	}
       }
-      elseif (DB::$SELF->IsDead()) { //€Ò‚Ì—ìŠE“Š•[ˆ—
+      elseif (DB::$SELF->IsDead()) { //æ­»è€…ã®éœŠç•ŒæŠ•ç¥¨å‡¦ç†
 	if (DB::$SELF->IsDummyBoy() && RQ::$get->situation == 'RESET_TIME') {
 	  Vote::VoteResetTime();
-	}
-	else {
+	} else {
 	  Vote::VoteHeaven();
 	}
       }
-      elseif (RQ::$get->target_no == 0) { //‹ó“Š•[ŒŸo
-	VoteHTML::OutputError('‹ó“Š•[', '“Š•[æ‚ğw’è‚µ‚Ä‚­‚¾‚³‚¢');
+      elseif (RQ::$get->target_no == 0) { //ç©ºæŠ•ç¥¨æ¤œå‡º
+	VoteHTML::OutputError('ç©ºæŠ•ç¥¨', 'æŠ•ç¥¨å…ˆã‚’æŒ‡å®šã—ã¦ãã ã•ã„');
       }
-      elseif (DB::$ROOM->IsDay()) { //’‹‚ÌˆŒY“Š•[ˆ—
+      elseif (DB::$ROOM->IsDay()) { //æ˜¼ã®å‡¦åˆ‘æŠ•ç¥¨å‡¦ç†
 	Vote::VoteDay();
       }
-      elseif (DB::$ROOM->IsNight()) { //–é‚Ì“Š•[ˆ—
+      elseif (DB::$ROOM->IsNight()) { //å¤œã®æŠ•ç¥¨å‡¦ç†
 	Vote::VoteNight();
       }
-      else { //‚±‚±‚É—ˆ‚½‚çƒƒWƒbƒNƒGƒ‰[
-	VoteHTML::OutputError('“Š•[ƒRƒ}ƒ“ƒhƒGƒ‰[', '“Š•[æ‚ğw’è‚µ‚Ä‚­‚¾‚³‚¢');
+      else { //ã“ã“ã«æ¥ãŸã‚‰ãƒ­ã‚¸ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
+	VoteHTML::OutputError('æŠ•ç¥¨ã‚³ãƒãƒ³ãƒ‰ã‚¨ãƒ©ãƒ¼', 'æŠ•ç¥¨å…ˆã‚’æŒ‡å®šã—ã¦ãã ã•ã„');
       }
     }
-    else { //ƒV[ƒ“‚É‡‚í‚¹‚½“Š•[ƒy[ƒW‚ğo—Í
+    else { //ã‚·ãƒ¼ãƒ³ã«åˆã‚ã›ãŸæŠ•ç¥¨ãƒšãƒ¼ã‚¸ã‚’å‡ºåŠ›
       Loader::LoadFile('vote_message');
       if (DB::$SELF->IsDead()) {
 	DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
@@ -76,8 +74,8 @@ class GameVote {
 	  VoteHTML::OutputNight();
 	  break;
 
-	default: //‚±‚±‚É—ˆ‚½‚çƒƒWƒbƒNƒGƒ‰[
-	  VoteHTML::OutputError('“Š•[ƒV[ƒ“ƒGƒ‰[');
+	default: //ã“ã“ã«æ¥ãŸã‚‰ãƒ­ã‚¸ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼
+	  VoteHTML::OutputError('æŠ•ç¥¨ã‚·ãƒ¼ãƒ³ã‚¨ãƒ©ãƒ¼');
 	  break;
 	}
       }

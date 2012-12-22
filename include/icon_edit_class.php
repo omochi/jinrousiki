@@ -22,7 +22,7 @@ class IconEdit {
     }
     $query_stack = array();
     foreach (UserIcon::CheckText(self::TITLE, $back_url) as $key => $value) {
-      $query_stack[] = sprintf("%s = %s", $key, is_null($value) ? 'NULL' : "'{$value}'");
+      $query_stack[] = sprintf('%s = %s', $key, is_null($value) ? 'NULL' : "'{$value}'");
     }
 
     if (strlen($color) > 0) { //色指定のチェック
@@ -61,8 +61,7 @@ class IconEdit {
 
     if (IconDB::Update($icon_no, $query)) {
       HTML::OutputResult(self::TITLE, '編集完了', sprintf('icon_view.php?icon_no=%d', $icon_no));
-    }
-    else {
+    } else {
       HTML::OutputResult(self::TITLE, $lock);
     }
   }

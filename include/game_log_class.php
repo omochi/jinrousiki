@@ -33,7 +33,7 @@ class GameLog {
       if (DB::$ROOM->date < RQ::$get->date ||
 	  (DB::$ROOM->date == RQ::$get->date &&
 	   (DB::$ROOM->IsDay() || DB::$ROOM->scene == RQ::$get->scene))) { //「未来」判定
-	HTML::OutputResult($title, $title . '：無効な日時です');
+	HTML::OutputResult($title, $title . '：無効なシーンです');
       }
       DB::$ROOM->last_date = DB::$ROOM->date;
       DB::$ROOM->date      = RQ::$get->date;

@@ -39,7 +39,7 @@ print("--></style>\r\n");
 
 print("</head><body>\r\n");
 
-OldLogListOutput();
+Old_LogListOutput();
 
 print("</body></html> \r\n");
 
@@ -56,18 +56,18 @@ $keep_num = 15;
 $base_url = "http://www12.atpages.jp/yaruo/jinro/";
 
 //現在のDB中にある部屋総数をカウントする
-$res_oldlog_list = mysql_query("select room_no from room where status = 'finished'");
-$finished_room_count = mysql_num_rows($res_oldlog_list);
+$res_old_log_list = mysql_query("select room_no from room where status = 'finished'");
+$finished_room_count = mysql_num_rows($res_old_log_list);
 print("現在の村数：".$finished_room_count."<br>");
 
 //最も古い部屋のナンバーを取得する
-$res_oldlog_list = mysql_query("select room_no from user_entry WHERE room_no > 0 ORDER BY room_no");
-$oldest_room_no = mysql_result($res_oldlog_list,0,0);
+$res_old_log_list = mysql_query("select room_no from user_entry WHERE room_no > 0 ORDER BY room_no");
+$oldest_room_no = mysql_result($res_old_log_list,0,0);
 print("現在のHTML化された村数(実数は-1する)：".$oldest_room_no."<br>");
 
 //最も新しい部屋のナンバーを取得する
-$res_oldlog_list = mysql_query("select room_no from room where status = 'finished' ORDER BY room_no DESC");
-$latest_room_no = mysql_result($res_oldlog_list,0,0);
+$res_old_log_list = mysql_query("select room_no from room where status = 'finished' ORDER BY room_no DESC");
+$latest_room_no = mysql_result($res_old_log_list,0,0);
 $latest_room_no = $latest_room_no - $keep_num;
 $now_room_count = $finished_room_count - $oldest_room_no;
 

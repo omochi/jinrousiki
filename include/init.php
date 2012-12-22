@@ -60,6 +60,7 @@ class Loader {
     'game_vote_class'      => array('session_class', 'room_option_class', 'user_class',
 				    'icon_class', 'role_class', 'game_vote_functions'),
     'game_log_class'       => array('session_class', 'talk_class'),
+    'old_log_class'        => 'old_log_functions',
     'user_manager_class'   => array('room_config', 'game_config', 'message', 'session_class',
 				    'room_class', 'user_class', 'icon_functions'),
     'icon_view_class'      => array('session_class', 'icon_functions'),
@@ -69,7 +70,7 @@ class Loader {
     'index_functions'      => array('menu_config', 'bbs_config', 'version', 'option_form_class'),
     'game_vote_functions'  => array('game_config', 'message', 'game_functions'),
     'icon_functions'       => array('icon_class', 'user_icon_class'),
-    'oldlog_functions'     => array('oldlog_config', 'cast_config', 'image_class',
+    'old_log_functions'    => array('old_log_config', 'cast_config', 'image_class',
 				    'room_option_class'),
   );
 
@@ -160,7 +161,7 @@ class Loader {
     case 'user_icon_config':
     case 'menu_config':
     case 'bbs_config':
-    case 'oldlog_config':
+    case 'old_log_config':
     case 'shared_server_config':
     case 'src_upload_config':
     case 'twitter_config':

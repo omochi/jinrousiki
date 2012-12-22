@@ -2,6 +2,9 @@
 //-- アイコン表示出力クラス --//
 class IconView {
   static function Output() {
+    DB::Connect();
+    Session::Start();
+
     HTML::OutputHeader('ユーザアイコン一覧', 'icon_view');
     HTML::OutputJavaScript('submit_icon_search');
     HTML::OutputBodyHeader();

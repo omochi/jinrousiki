@@ -1,8 +1,7 @@
 <?php
 //-- GameUp 出力クラス --//
 class GameUp {
-  //出力
-  static function Output(){
+  static function Output() {
     HTML::OutputHeader(ServerConfig::TITLE . '[発言]', 'game_up');
     HTML::OutputJavaScript('game_up');
     $format = <<<EOF

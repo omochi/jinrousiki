@@ -7,7 +7,7 @@ if ($disable) {
   HTML::OutputResult('認証エラー', 'このスクリプトは使用できない設定になっています。');
 }
 
-Loader::LoadFile('room_config', 'admin_class', 'oldlog_functions');
+Loader::LoadFile('room_config', 'admin_class', 'old_log_functions');
 Loader::LoadRequest('RequestOldLog'); //引数を取得
 
 RQ::$get->prefix = ''; //各ページの先頭につける文字列 (テスト / 上書き回避用)

@@ -4,8 +4,17 @@ class IconUpload {
   const TITLE = 'アイコン登録エラー';
   const URL   = "<br>\n<a href=\"icon_upload.php\">戻る</a>";
 
+  //実行処理
+  static function Execute() {
+    if (UserIconConfig::DISABLE) {
+      HTML::OutputResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
+    }
+    Loader::LoadRequest('RequestIconUpload');
+    isset(RQ::$get->command) ? self::Execute() : self::Output();
+  }
+
   //投稿処理
-  static function Execute(){
+  private static function Upload() {
     if (Security::CheckReferer('icon_upload.php')) { //リファラチェック
       HTML::OutputResult('ユーザアイコンアップロード', '無効なアクセスです');
     }
@@ -194,7 +203,7 @@ EOF;
   }
 
   //アップロードフォーム出力
-  static function Output() {
+  private static function Output() {
     HTML::OutputHeader('ユーザアイコンアップロード', 'icon_upload', true);
     $file      = UserIcon::GetFileLimit();
     $length    = UserIcon::GetMaxLength(true);

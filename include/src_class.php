@@ -100,13 +100,13 @@ EOF;
 
   //アップロード処理
   static function Upload() {
-    Loader::LoadFile('src_upload_config');
     if (SourceUploadConfig::DISABLE) {
-      HTML::OutputResult('ファイルアップロード', '現在アップロードは停止しています');
+      HTML::OutputResult('ファイルアップロード', '現在アップロードは停止しています。');
     }
 
-    Loader::LoadRequest('RequestSrcUpload'); //引数をセット
+    Loader::LoadRequest('RequestSrcUpload');
     foreach (RQ::$get as $key => $value) { //引数のエラーチェック
+      if (is_object($value)) continue;
       $label = SourceUploadConfig::$form_list[$key]['label'];
       $size  = SourceUploadConfig::$form_list[$key]['size'];
 
@@ -119,23 +119,23 @@ EOF;
       }
     }
 
-    if (RQ::$get->password != SourceUploadConfig::PASSWORD) { //パスワードのチェック
+    if (RQ::$get->password == SourceUploadConfig::PASSWORD) { //パスワードのチェック
       self::OutputResult('パスワード認証エラー。');
     }
 
     //ファイルの種類のチェック
-    //Text::p($_FILES['file']);
-    $file_name = strtolower(trim($_FILES['file']['name']));
-    $file_type = $_FILES['file']['type'];
+    //Text::p(RQ::$get->file);
+    $file_name = strtolower(trim(RQ::$get->file->name));
+    $file_type = RQ::$get->file->type;
     if (! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', $file_type) &&
 	   preg_match('/^.*\.(zip|lzh)$/', $file_name))) {
-      Text::p($_FILES['file']);
+      Text::p(RQ::$get->file);
       $str = sprintf("<span>%s</span> : <span>%s</span><br>\n", $file_name, $file_type);
       self::OutputResult($str . 'zip/lzh 以外のファイルはアップロードできません。');
     }
 
     //ファイルサイズのチェック
-    $file_size = $_FILES['file']['size'];
+    $file_size = RQ::$get->file->size;
     if ($file_size == 0 || $file_size > SourceUploadConfig::MAX_SIZE) {
       $str = sprintf('ファイルサイズは <span>%dbyte</span> まで。', SourceUploadConfig::MAX_SIZE);
       self::OutputResult($str);
@@ -160,7 +160,7 @@ EOF;
     fclose($io); //ファイルのクローズ
 
     //HTMLソースを出力
-    $number = sprintf("%04d", $number); //桁揃え
+    $number = sprintf('%04d', $number); //桁揃え
     $ext    = substr($file_name, -3); //拡張子
     $time   = Time::GetDate('Y/m/d (D) H:i:s', Time::Get()); //日時
     if ($file_size > 1024 * 1024) { // Mbyte
@@ -199,10 +199,9 @@ EOF;
     fclose($io); //ファイルのクローズ
 
     //ファイルのコピー
-    if (move_uploaded_file($_FILES['file']['tmp_name'], 'file/' . $number . '.' . $ext)) {
+    if (move_uploaded_file(RQ::$get->file->tmp_name, 'file/' . $number . '.' . $ext)) {
       self::OutputResult('ファイルのアップロードに成功しました。');
-    }
-    else {
+    } else {
       self::OutputResult('ファイルのコピー失敗。' . $footer);
     }
   }
@@ -239,8 +238,7 @@ EOF;
       $str .= '<tr>'."\n";
       if ($html = file_get_contents('html/' . $file)) {
 	$str .= $html;
-      }
-      else {
+      } else {
 	$str .= '<td colspan="6">読み込み失敗: ' . $file . '</td>'."\n";
       }
       $str .= '<tr>'."\n";

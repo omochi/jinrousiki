@@ -1,9 +1,8 @@
 <?php
 //-- GameView 出力クラス --//
 class GameView {
-  //出力
   static function Output() {
-    //データ収集
+    //-- データ収集 --//
     DB::Connect();
     DB::$ROOM = new Room(RQ::$get); //村情報を取得
     DB::$ROOM->view_mode   = true;
@@ -12,8 +11,7 @@ class GameView {
     //シーンに応じた追加クラスをロード
     if (DB::$ROOM->IsFinished()) {
       Loader::LoadFile('winner_message');
-    }
-    else {
+    } else {
       Loader::LoadFile('cast_config', 'image_class', 'room_option_class');
     }
 
@@ -22,6 +20,7 @@ class GameView {
     DB::$USER = new UserDataSet(RQ::$get);
     DB::$SELF = new User();
 
+    //-- 出力 --//
     HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
     if (GameConfig::AUTO_RELOAD && RQ::$get->auto_reload > 0) { //自動更新
       printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);

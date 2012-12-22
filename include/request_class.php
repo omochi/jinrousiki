@@ -381,5 +381,10 @@ class RequestSrcUpload extends RequestBase {
   function __construct() {
     Text::Encode();
     $this->Parse('Escape', 'post.name', 'post.caption', 'post.user', 'post.password');
+    $file = new StdClass();
+    foreach ($this->GetSource('file') as $key => $value) {
+      $file->$key = $value;
+    }
+    $this->file = $file;
   }
 }
