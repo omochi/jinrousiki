@@ -23,6 +23,7 @@ Ver. 1.4.x<br>
 <a href="#ver1414">14</a>
 <a href="#ver1415">15</a>
 <a href="#ver1416">16</a>
+<a href="#ver1417">17</a>
 </p>
 <p>
 Ver. 1.4.0<br>
@@ -77,6 +78,12 @@ Ver. 1.4.0<br>
 <a href="#ver140a23">α23</a>
 <a href="#ver140a24">α24</a>
 </p>
+
+<h2 id="ver1417">Ver. 1.4.17 (Rev. 686) : 2012/12/23 (Sun) 15:43</h2>
+<ul>
+<li>村メンテナンス処理の最適化</li>
+<li>共通 CSS を追加</li>
+</ul>
 
 <h2 id="ver1416">Ver. 1.4.16 (Rev. 574) : 2012/05/06 (Sun) 02:02</h2>
 <ul>

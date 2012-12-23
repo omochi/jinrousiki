@@ -11,6 +11,7 @@ Ver. 1.5.x<br>
 <a href="#ver152">2</a>
 <a href="#ver153">3</a>
 <a href="#ver154">4</a>
+<a href="#ver155">5</a>
 </p>
 <p>
 Ver. 1.5.0<br>
@@ -46,6 +47,12 @@ Ver. 1.5.0<br>
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
 </p>
+
+<h2 id="ver155">Ver. 1.5.5 (Rev. 688) : 2012/12/23 (Sun) 17:00</h2>
+<ul>
+<li>村メンテナンス処理の最適化</li>
+<li>共通 CSS を追加</li>
+</ul>
 
 <h2 id="ver154">Ver. 1.5.4 (Rev. 646) : 2012/10/14 (Sun) 21:28</h2>
 <ul>

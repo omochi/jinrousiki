@@ -11,6 +11,7 @@ Ver. 2.0.x<br>
 <a href="#ver202">2</a>
 <a href="#ver203">3</a>
 <a href="#ver204">4</a>
+<a href="#ver205">5</a>
 </p>
 <p>
 Ver. 2.0.0<br>
@@ -26,6 +27,12 @@ Ver. 2.0.0<br>
 <a href="#ver200a6">α6</a>
 <a href="#ver200b1">β1</a>
 </p>
+
+<h2 id="ver205">Ver. 2.0.5 (Rev. 689) : 2012/12/23 (Sun) 18:25</h2>
+<ul>
+<li>村メンテナンス処理の最適化</li>
+<li>共通 CSS を追加</li>
+</ul>
 
 <h2 id="ver204">Ver. 2.0.4 (Rev. 647) : 2012/10/14 (Sun) 22:15</h2>
 <ul>
