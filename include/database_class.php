@@ -1,10 +1,14 @@
 <?php
 //-- データベース基底クラス --//
 class DB {
+  const DSN = 'mysql:dbname=%s;host=%s';
+
   public  static $ROOM = null;
   public  static $USER = null;
   public  static $SELF = null;
   private static $instance    = null;
+  private static $statement   = null;
+  private static $parameter   = null;
   private static $transaction = false;
   private static $table_list = array(
     'room', 'user_entry', 'player', 'talk', 'talk_beforegame', 'talk_aftergame', 'system_message',
@@ -18,23 +22,25 @@ class DB {
   */
   private function __construct($id = null, $header = false, $exit = true) {
     //error_reporting(E_ALL);
-    //データベースサーバにアクセス
-    $host = DatabaseConfig::HOST;
-    if (! ($db_handle = mysql_connect($host, DatabaseConfig::USER, DatabaseConfig::PASSWORD))) {
-      return self::Output($header, $exit, 'MySQL サーバ', $host);
-    }
-
     //データベース名設定
     $name = isset($id) ? @DatabaseConfig::$name_list[is_int($id) ? $id - 1 : $id] : null;
     if (is_null($name)) $name = DatabaseConfig::NAME;
-    if (! mysql_select_db($name, $db_handle)) { //データベース接続
-      return self::Output($header, $exit, 'データベース', $name);
+
+    //コンストラクタ用パラメータセット
+    $host = DatabaseConfig::HOST;
+    $dsn  = sprintf(self::DSN, $name, $host);
+
+    try {
+      $pdo = new PDO($dsn, DatabaseConfig::USER, DatabaseConfig::PASSWORD);
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+      self::$instance = $pdo;
+      self::Execute(sprintf('SET NAMES %s', DatabaseConfig::ENCODE));
+      return self::$instance;
     }
-
-    mysql_set_charset(DatabaseConfig::ENCODE); //文字コード設定
-    if (DatabaseConfig::ENCODE == 'utf8') self::Execute('SET NAMES utf8');
-
-    return self::$instance = $db_handle;
+    catch (PDOException $e) {
+      return self::Output($header, $exit, 'MySQL サーバ' . $e->getMessage(), $host);
+    }
   }
 
   //データベース接続
@@ -59,7 +65,7 @@ class DB {
   static function Disconnect() {
     if (empty(self::$instance)) return;
     if (self::$transaction) self::Rollback();
-    mysql_close(self::$instance);
+    //mysql_close(self::$instance);
     self::$instance = null;
   }
 
@@ -87,12 +93,30 @@ class DB {
     return self::FetchBool('COMMIT', true);
   }
 
-  //SQL 実行
-  static function Execute($query, $quiet = false) {
-    if (($sql = mysql_query($query)) !== false) return $sql;
-    if ($quiet) return false;
+  //Prepare 処理
+  static function Prepare($query, $list = array()) {
+    self::$statement = self::$instance->prepare($query);
+    self::$parameter = $list;
+  }
 
-    $error = sprintf('MYSQL_ERROR(%d):%s', mysql_errno(), mysql_error());
+  //SQL 実行
+  static function Execute($query = null, $quiet = false) {
+    try {
+      if (isset($query)) {
+	return self::$instance->query($query);
+      }
+      elseif (isset(self::$statement)) {
+	self::$statement->execute(self::$parameter);
+	return self::$statement;
+      } else {
+	return false;
+      }
+    }
+    catch (PDOException $e) {
+      self::Reset();
+      if ($quiet) return false;
+      $error = sprintf('%d: %s', $e->getCode(), $e->getMessage());
+    }
     $backtrace = debug_backtrace(); //バックトレースを取得
 
     //Execute() を call した関数と位置を取得して「SQLエラー」として返す
@@ -100,11 +124,11 @@ class DB {
     $stack       = array($trace_stack['line'], $error, $query);
     $trace_stack = array_shift($backtrace);
     array_unshift($stack, $trace_stack['function'] . '()');
-    $str = 'SQLエラー: ' . implode(': ', $stack) . "<br>\n";
+    $str = sprintf("SQLエラー: %s<br>\n", implode(': ', $stack));
 
     foreach ($backtrace as $trace_stack) { //呼び出し元があるなら追加で出力
       $stack = array($trace_stack['function'] . '()', $trace_stack['line']);
-      $str .= 'Caller: ' . implode(': ', $stack) . "<br>\n";
+      $str .= sprintf("Caller: %s<br>\n", implode(': ', $stack));
     }
     HTML::OutputResult(ServerConfig::TITLE . ' [エラー]', $str);
   }
@@ -120,51 +144,47 @@ class DB {
   }
 
   //単体の値を取得
-  static function FetchResult($query) {
-    $sql  = self::Execute($query);
-    $data = mysql_num_rows($sql) > 0 ? mysql_result($sql, 0, 0) : false;
-    mysql_free_result($sql);
-
-    return $data;
+  static function FetchResult($query = null) {
+    $stmt = self::Execute($query);
+    self::Reset();
+    return $stmt instanceOf PDOStatement && $stmt->rowCount() > 0 ? $stmt->fetchColumn() : false;
   }
 
   //該当するデータの行数を取得
-  static function Count($query) {
-    $sql  = self::Execute($query);
-    $data = mysql_num_rows($sql);
-    mysql_free_result($sql);
-
-    return $data;
+  static function Count($query = null) {
+    $stmt = self::Execute($query);
+    self::Reset();
+    return $stmt instanceOf PDOStatement ? $stmt->rowCount() : 0;
   }
 
   //一次元の配列を取得
-  static function FetchArray($query) {
-    $sql   = self::Execute($query);
-    $stack = array();
-    $count = mysql_num_rows($sql);
-    for ($i = 0; $i < $count; $i++) $stack[] = mysql_result($sql, $i, 0);
-    mysql_free_result($sql);
-
-    return $stack;
+  static function FetchArray($query = null) {
+    $stmt = self::Execute($query);
+    self::Reset();
+    return $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_COLUMN) : array();
   }
 
   //連想配列を取得
-  static function FetchAssoc($query, $shift = false) {
-    $sql   = self::Execute($query);
-    $stack = array();
-    while (($array = mysql_fetch_assoc($sql)) !== false) $stack[] = $array;
-    mysql_free_result($sql);
-
+  static function FetchAssoc($query = null, $shift = false) {
+    $stmt = self::Execute($query);
+    self::Reset();
+    $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_ASSOC) : array();
     return $shift ? array_shift($stack) : $stack;
   }
 
   //オブジェクト形式の配列を取得
   static function FetchObject($query, $class, $shift = false) {
-    $sql   = self::Execute($query);
-    $stack = array();
-    while (($object = mysql_fetch_object($sql, $class)) !== false) $stack[] = $object;
-    mysql_free_result($sql);
+    $stmt = self::Execute($query);
+    self::Reset();
+    $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_CLASS, $class) : array();
+    return $shift ? array_shift($stack) : $stack;
+  }
 
+  //オブジェクト形式の配列を取得 (Prepare 経由用)
+  static function FetchClass($class, $shift = false) {
+    $stmt = self::Execute();
+    self::Reset();
+    $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_CLASS, $class) : array();
     return $shift ? array_shift($stack) : $stack;
   }
 
@@ -212,6 +232,12 @@ class DB {
   static function Optimize($name = null) {
     $query = is_null($name) ? implode(',', self::$table_list) : $name;
     return self::ExecuteCommit('OPTIMIZE TABLE ' . $query);
+  }
+
+  //SQL リセット
+  private static function Reset() {
+    self::$statement = null;
+    self::$parameter = null;
   }
 
   //データベース接続エラー出力 ($header, $exit は Connect() 参照)

@@ -7,10 +7,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0 RC2アップロード (2012/12/01 (Sat) 16:52) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57557/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.1.0アップロード (2012/12/24 (Mon) 00:00) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57688/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>固定配役追加モード：O(陰陽村)追加</li>
+  <li>ライブラリの整備</li>
 </ul>
 
 <h1>開発状況</h1>

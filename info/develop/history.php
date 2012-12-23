@@ -8,6 +8,7 @@ InfoHTML::OutputHeader('開発履歴', 1, 'develop_history');
 Ver. 2.1.0<br>
 <a href="#ver210rc1">RC1</a>
 <a href="#ver210rc2">RC2</a>
+<a href="#ver210">Release</a>
 </p>
 <p>
 <a href="#ver210a1">α1</a>
@@ -27,6 +28,11 @@ Ver. 2.1.0<br>
 <a href="history_1.5.php">1.5</a>
 <a href="history_2.0.php">2.0</a>
 </p>
+
+<h2 id="ver210">Ver. 2.1.0 (Rev. 690) : 2012/12/24 (Mon) 00:00</h2>
+<ul>
+<li>ライブラリの整備</li>
+</ul>
 
 <h2 id="ver210rc2">Ver. 2.1.0 RC2 (Rev. 673) : 2012/12/01 (Sat) 16:52</h2>
 <ul>
