@@ -124,11 +124,15 @@ class Text {
 
 //-- セキュリティ関連クラス --//
 class Security {
+  //IPアドレス取得
+  static function GetIP() { return @$_SERVER['REMOTE_ADDR']; }
+
   //リファラチェック
   static function CheckReferer($page, $white_list = null) {
     if (is_array($white_list)) { //ホワイトリストチェック
+      $addr = self::GetIP();
       foreach ($white_list as $host) {
-	if (strpos($_SERVER['REMOTE_ADDR'], $host) === 0) return false;
+	if (strpos($addr, $host) === 0) return false;
       }
     }
     $url = ServerConfig::SITE_ROOT . $page;
@@ -137,7 +141,7 @@ class Security {
 
   //ブラックリストチェック
   static function CheckBlackList() {
-    $addr = $_SERVER['REMOTE_ADDR'];
+    $addr = self::GetIP();
     $host = gethostbyaddr($addr);
     foreach (array('white' => false, 'black' => true) as $type => $flag) {
       foreach (RoomConfig::${$type . '_list_ip'} as $ip) {
@@ -151,7 +155,7 @@ class Security {
 
   //ブラックリストチェック (村立て限定)
   static function CheckEstablishBlackList() {
-    $addr = $_SERVER['REMOTE_ADDR'];
+    $addr = self::GetIP();
     $host = gethostbyaddr($addr);
     foreach (array('white' => false, 'black' => true) as $type => $flag) {
       foreach (RoomConfig::${'establish_' . $type . '_list_ip'} as $ip) {

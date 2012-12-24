@@ -46,7 +46,7 @@ class Session {
 
   //認証
   static function Certify($exit = true) {
-    //$ip_address = $_SERVER['REMOTE_ADDR']; //IPアドレス認証は現在は行っていない
+    //$ip_address = Security::GetIP(); //IPアドレス認証は現在は行っていない
     //セッション ID による認証
     $query = "SELECT user_no FROM user_entry WHERE room_no = %d AND session_id = '%s'" .
       " AND live <> 'kick'";

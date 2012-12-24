@@ -31,7 +31,7 @@ class Login {
     extract(RQ::ToArray()); //引数を展開
     if ($uname == '' || $password == '') return false;
 
-    //$ip = $_SERVER['REMOTE_ADDR']; //IPアドレス取得 //現在は IP アドレス認証は行っていない
+    //$ip = Security::GetIP(); //IPアドレス取得 //現在は IP アドレス認証は行っていない
     $crypt = Text::Crypt($password);
     //$crypt = $password; //デバッグ用
 

@@ -1,5 +1,5 @@
 <?php
-//-- データベース基底クラス --//
+//-- データベースアクセス --//
 class DB {
   const DSN = 'mysql:dbname=%s;host=%s';
 
@@ -65,7 +65,6 @@ class DB {
   static function Disconnect() {
     if (empty(self::$instance)) return;
     if (self::$transaction) self::Rollback();
-    //mysql_close(self::$instance);
     self::$instance = null;
   }
 
@@ -107,6 +106,8 @@ class DB {
       }
       elseif (isset(self::$statement)) {
 	self::$statement->execute(self::$parameter);
+	#Text::p(self::$statement);
+	#Text::p(self::$parameter);
 	return self::$statement;
       } else {
 	return false;
@@ -206,7 +207,7 @@ class DB {
       $last_words = Message::$dummy_boy_last_words;
     }
     else {
-      $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザのIPアドレスを取得
+      $ip_address = Security::GetIP(); //ユーザのIPアドレスを取得
       $items  .= ', ip_address, last_load_scene';
       $values .= ", '{$ip_address}', 'beforegame'";
     }

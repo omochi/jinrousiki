@@ -164,7 +164,7 @@ EOF;
     //HTML::OutputResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
 
     //IP アドレスチェック
-    $ip_address = $_SERVER['REMOTE_ADDR']; //ユーザの IP アドレスを取得
+    $ip_address = Security::GetIP(); //ユーザの IP アドレスを取得
     if (! ServerConfig::DEBUG_MODE) {
       $query = sprintf("%s ip_address = '%s'", $query_count, $ip_address);
       if (GameConfig::LIMIT_IP && DB::Count($query) > 0) {
