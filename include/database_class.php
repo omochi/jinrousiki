@@ -6,6 +6,7 @@ class DB {
   public  static $ROOM = null;
   public  static $USER = null;
   public  static $SELF = null;
+  public  static $display     = false;
   private static $instance    = null;
   private static $statement   = null;
   private static $parameter   = null;
@@ -106,8 +107,10 @@ class DB {
       }
       elseif (isset(self::$statement)) {
 	self::$statement->execute(self::$parameter);
-	#Text::p(self::$statement);
-	#Text::p(self::$parameter);
+	if (self::$display) { //statement 表示 (デバッグ用)
+	  Text::p(self::$statement);
+	  Text::p(self::$parameter);
+	}
 	return self::$statement;
       } else {
 	return false;
@@ -140,7 +143,7 @@ class DB {
   }
 
   //実行結果を bool で受け取る
-  static function FetchBool($query, $quiet = false) {
+  static function FetchBool($query = null, $quiet = false) {
     return self::Execute($query, $quiet) !== false;
   }
 

@@ -47,8 +47,8 @@ class UserManager {
     if ($sex != 'male' && $sex != 'female') {
       HTML::OutputResult($title, '無効な性別です。' . $back_url);
     }
-    $format = 'SELECT icon_no FROM user_icon WHERE disable IS NOT TRUE AND icon_no = %d';
-    if ($icon_no < ($user_no > 0 ? 0 : 1) || DB::Count(sprintf($format, $icon_no)) < 1) {
+    if ($icon_no < ($user_no > 0 ? 0 : 1) || ! IconDB::IsEnable($icon_no)) {
+      /* ロック前なのでスキマが存在するが、実用性を考慮してここで判定する */
       HTML::OutputResult($title, '無効なアイコン番号です' . $back_url);
     }
 
@@ -65,7 +65,7 @@ class UserManager {
 
     //DB から現在のユーザ情報を取得 (ロック付き)
     RQ::Load('RequestBase', true);
-    RQ::$get->room_no = $room_no;
+    RQ::$get->room_no      = $room_no;
     RQ::$get->retrive_type = 'entry_user';
     DB::$USER = new UserDataSet(RQ::$get);
 
@@ -75,31 +75,22 @@ class UserManager {
     }
 
     //重複チェック (比較演算子は大文字・小文字を区別しないのでクエリで直に判定する)
-    $query_count = sprintf('SELECT uname FROM user_entry WHERE room_no = %d AND', $room_no);
     $footer = '<br>別の名前にしてください。' . $back_url;
 
-    //キックされた人と同じユーザ名
-    if (DB::Count(sprintf("%s uname = '%s' AND live = 'kick'", $query_count, $uname)) > 0) {
-      $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
-      HTML::OutputResult('村人登録 [キックされたユーザ]', $str . $footer);
-    }
-
     if ($user_no > 0) { //登録情報変更モード
-      $query = 'SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, ' .
-	'color, icon_name FROM user_entry AS u INNER JOIN user_icon USING (icon_no) ' .
-	'WHERE room_no = %d AND user_no = %d';
-      $target = DB::FetchObject(sprintf($query, $room_no, $user_no), 'User', true);
+      $target = UserDB::GetUser($user_no);
       if ($target->session_id != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
       }
+      $target->user_no = $user_no;
+      $target->room_no = RQ::$get->room_no;
 
       if (! $target->IsDummyBoy() && ($handle_name == '身代わり君' || $handle_name == 'システム')) {
 	$format = '村人名「%s」は使用できません%s';
 	HTML::OutputResult($title, sprintf($format, $handle_name, $back_url));
       }
 
-      $query = "%s user_no <> '%d' AND handle_name = '%s' AND live = 'live'";
-      if (DB::Count(sprintf($query, $query_count, $user_no, $handle_name)) > 0) {
+      if (UserDB::IsDuplicateName($user_no, $handle_name)) {
 	$str = '村人名が既に登録されています。';
 	HTML::OutputResult('村人登録 [重複登録エラー]', $str . $footer);
       }
@@ -107,33 +98,30 @@ class UserManager {
       $str   = sprintf('%s さんが登録情報を変更しました。', $target->handle_name);
       $stack = array();
       if ($target->handle_name != $handle_name) {
-	$stack[] = sprintf("handle_name = '%s'", $handle_name);
-	$str    .= sprintf("\n村人の名前：%s → %s", $target->handle_name, $handle_name);
+	$stack['handle_name'] = $handle_name;
+	$str .= sprintf("\n村人の名前：%s → %s", $target->handle_name, $handle_name);
       }
       if ($target->icon_no != $icon_no) {
 	if (! $target->IsDummyBoy() && $icon_no == 0) {
 	  HTML::OutputResult($title, '無効なアイコン番号です' . $back_url);
 	}
-	$query     = 'SELECT icon_name FROM user_icon WHERE icon_no = %d';
-	$icon_name = DB::FetchResult(sprintf($query, $icon_no));
-	$stack[]   = sprintf("icon_no = '%d'", $icon_no);
+	$stack['icon_no'] = $icon_no;
 	$format    = "\nアイコン：No. %d (%s) → No. %d (%s)";
-	$str      .= sprintf($format, $target->icon_no, $target->icon_name, $icon_no, $icon_name);
+	$icon_name = IconDB::GetName($icon_no);
+	$str .= sprintf($format, $target->icon_no, $target->icon_name, $icon_no, $icon_name);
       }
-
       foreach (array('sex', 'profile', 'role') as $value) {
-	if ($target->$value != $$value) $stack[] = sprintf("%s = '%s'", $value, $$value);
+	if ($target->$value != $$value) $stack[$value] = $$value;
       }
       //Text::p($stack);
+
       if (count($stack) < 1) {
 	$str = '変更点はありません。' . $back_url;
 	HTML::OutputResult('村人登録 [登録情報変更]', $str);
       }
       DB::$ROOM->TalkBeforeGame($str, $target->uname, $target->handle_name, $target->color);
 
-      $format = 'UPDATE user_entry SET %s WHERE room_no = %d AND user_no = %d';
-      $query  = sprintf($format, implode(', ', $stack), $room_no, $user_no);
-      if (DB::ExecuteCommit($query)) {
+      if ($target->UpdateList($stack) && DB::Commit()) {
 	$str = <<<EOF
 登録データを変更しました。<br>
 <form action="#" method="post">
@@ -155,6 +143,13 @@ EOF;
     if (DB::$ROOM->IsOption('necessary_trip') && strpos($uname, '◆') === false) {
       HTML::OutputResult($title, 'トリップがありません');
     }
+
+    if (UserDB::IsKick($uname)) { //キックされた人と同じユーザ名
+      $str = 'キックされた人と同じユーザ名は使用できません (村人名は可)。';
+      HTML::OutputResult('村人登録 [キックされたユーザ]', $str . $footer);
+    }
+
+    $query_count = sprintf('SELECT uname FROM user_entry WHERE room_no = %d AND', $room_no);
     $query_count .= " live = 'live' AND";
     $query = sprintf("%s (uname = '%s' OR handle_name = '%s')", $query_count, $uname, $handle_name);
     if (DB::Count($query) > 0) {
@@ -204,7 +199,7 @@ EOF;
   //ユーザ登録画面表示
   static function Output() {
     if (RQ::$get->user_no > 0) { //登録情報変更モード
-      $stack = UserManagerDB::GetUser();
+      $stack = UserDB::Get();
       if ($stack['session_id'] != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
       }
@@ -232,12 +227,6 @@ EOF;
 
 //-- データベースアクセス (UserManager 拡張) --//
 class UserManagerDB {
-  //ユーザ情報取得
-  static function GetUser() {
-    $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
-    DB::Prepare($query, array(RQ::$get->room_no, RQ::$get->user_no));
-    return DB::FetchAssoc(null, true);
-  }
 }
 
 //-- HTML 生成クラス (UserManager 拡張) --//

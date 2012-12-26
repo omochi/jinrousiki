@@ -576,6 +576,21 @@ EOF;
     return DB::FetchBool(sprintf($format, $item, $value, $this->room_no, $this->user_no));
   }
 
+  //更新処理
+  public function UpdateList(array $list) {
+    $query = 'UPDATE user_entry SET ';
+    $stack = array();
+    $set_stack = array();
+    foreach ($list as $key => $value) {
+      $set_stack[] = sprintf('%s = ?', $key);
+      $stack[] = $value;
+    }
+    $query .= implode(',', $set_stack) . ' WHERE room_no = ? AND user_no = ?';
+    array_push($stack, $this->room_no, $this->user_no);
+    DB::Prepare($query, $stack);
+    return DB::FetchBool();
+  }
+
   //ID 更新処理 (KICK 後処理用)
   public function UpdateID($id) {
     if (DB::$ROOM->test_mode) {
@@ -1191,5 +1206,44 @@ EOF;
 
     $id = $user->GetPossessedTarget($type, DB::$ROOM->date);
     return $id === false ? $user : $this->ByID($id);
+  }
+}
+
+//-- データベースアクセス (User 拡張) --//
+class UserDB {
+  //キック判定
+  static function IsKick($uname) {
+    $query = <<<EOF
+SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND uname = ?
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, 'kick', $uname));
+    return DB::Count() > 0;
+  }
+
+  //HN 重複判定
+  static function IsDuplicateName($user_no, $handle_name) {
+    $query = <<<EOF
+SELECT user_no FROM user_entry WHERE room_no = ? AND user_no != ? AND live = ? AND handle_name = ?
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, $user_no, 'live', $handle_name));
+    return DB::Count() > 0;
+  }
+
+  //ユーザ情報取得
+  static function Get() {
+    $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
+    DB::Prepare($query, array(RQ::$get->room_no, RQ::$get->user_no));
+    return DB::FetchAssoc(null, true);
+  }
+
+  //ユーザクラス取得
+  static function GetUser($user_no) {
+    $query = <<<EOF
+SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, color, icon_name
+FROM user_entry AS u INNER JOIN user_icon USING (icon_no)
+WHERE room_no = ? AND user_no = ?
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, $user_no));
+    return DB::FetchClass('User', true);
   }
 }

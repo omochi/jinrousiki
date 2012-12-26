@@ -19,6 +19,13 @@ class IconDB {
     return DB::Count(sprintf($format, $icon_no, $icon_name)) > 0;
   }
 
+  //有効判定
+  static function IsEnable($icon_no) {
+    $query = 'SELECT icon_no FROM user_icon WHERE icon_no = ? AND disable IS NOT TRUE';
+    DB::Prepare($query, array($icon_no));
+    return DB::Count() > 0;
+  }
+
   //非表示フラグチェック
   static function IsDisable($icon_no) {
     $format = 'SELECT icon_no FROM user_icon WHERE icon_no = %d AND disable = TRUE';
@@ -42,6 +49,13 @@ class IconDB {
   static function Get($icon_no) {
     $format = 'SELECT * FROM user_icon WHERE icon_no = %d';
     return DB::FetchAssoc(sprintf($format, $icon_no));
+  }
+
+  //アイコン名取得
+  static function GetName($icon_no) {
+    $query = 'SELECT icon_name FROM user_icon WHERE icon_no = ?';
+    DB::Prepare($query, array($icon_no));
+    return DB::FetchResult();
   }
 
   //ファイル名取得
