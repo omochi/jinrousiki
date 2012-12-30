@@ -770,4 +770,11 @@ EOF;
     DB::Prepare($query, array(RQ::$get->room_no));
     return DB::FetchClass('Room', true);
   }
+
+  //村存在判定
+  static function Exists() {
+    $query = 'SELECT room_no FROM room WHERE room_no = ?';
+    DB::Prepare($query, array(RQ::$get->room_no));
+    return DB::Count() > 0;
+  }
 }

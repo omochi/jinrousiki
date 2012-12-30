@@ -485,7 +485,7 @@ class RoleMessageList {
     'type' => 'wizard', 'delimiter' => array('_' => 'mage', '^' => 'necromancer'));
 
   public $spiritism_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ、知ることができます。\n　生ける者の為、死せる者を呼びて正体を暴くのです。魂を騙る事などできないのだから。",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#交霊術師#です。_処刑_者の^霊能^情報を#魔法#でランダムに一つ知ることができます。\n　揺らぐ死霊が抱える揺るぎなき真実。それはほんの一欠片でも、きっと村の助けになる。",
     'type' => 'wizard', 'delimiter' => array('_' => 'vote', '^' => 'necromancer'));
 
   public $philosophy_wizard = array(
@@ -2257,4 +2257,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-$builder->Output('pharmacist', array(0));
+$builder->Output('spiritism_wizard', array(0));

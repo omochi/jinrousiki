@@ -25,7 +25,8 @@ class GameUp {
 <a class="top-link" href="./" target="_top">TOP</a>
 </td>
 </tr></table>
-</form>%s
+</form>
+
 EOF;
 
     //送信用フォーム
@@ -37,7 +38,7 @@ EOF;
     $submit = $header . 'class="input-say" name="send" onSubmit="';
     if (RQ::$get->heaven_mode) $submit .= 'reload_middle_frame();';
     $submit .= 'set_focus();">';
-    printf($format, $reload, $submit, RQ::$get->url, "\n");
+    printf($format, $reload, $submit, RQ::$get->url);
     HTML::OutputFooter();
   }
 }

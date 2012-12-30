@@ -285,7 +285,6 @@ class ObjectionTest {
   const URL   = 'objection_test.php';
   const RESET = '<p><a href="%s">リセット</a></p>%s<table>%s';
 
-  //出力
   static function Output() {
     HTML::OutputHeader('異議ありテスト', null, true);
     printf(self::RESET, self::URL, "\n", "\n");
@@ -318,7 +317,6 @@ EOF;
 
 //-- トリップテスト --//
 class TripTest {
-  //出力
   static function Output() {
     HTML::OutputHeader('トリップテスト', null, true);
     echo <<<EOF
@@ -335,7 +333,6 @@ EOF;
 
 //-- Twitter 投稿テスト --//
 class TwitterTest {
-  //出力
   static function Output() {
     HTML::OutputHeader('Twitter 投稿テスト', null, true);
     echo <<<EOF
@@ -443,6 +440,52 @@ class VoteTest {
       Text::Output('</tr>');
     }
     Text::Output('</table>');
+    HTML::OutputFooter(true);
+  }
+
+  //発言出力
+  static function OutputTalk() {
+    Loader::LoadFile('talk_class');
+
+    RQ::$get->add_role  = false;
+    RQ::GetTest()->talk = array();
+    foreach (RQ::GetTest()->talk_data->{DB::$ROOM->scene} as $stack) {
+      RQ::GetTest()->talk[] = new TalkParser($stack);
+    }
+
+    HTML::OutputHeader('投票テスト', 'game_play');
+    echo DB::$ROOM->GenerateCSS();
+    HTML::OutputBodyHeader();
+    //Text::p(RQ::GetTest()->talk);
+    GameHTML::OutputPlayer();
+    if (DB::$SELF->user_no > 0) RoleHTML::OutputAbility();
+    Talk::Output();
+    HTML::OutputFooter(true);
+  }
+
+  //役職画像出力
+  static function OutputImage(array $list) {
+    HTML::OutputHeader('投票テスト', 'game_play', true);
+    if ($list['main']) {
+      foreach (array_keys(RoleData::$main_role_list) as $role) {
+	if (Image::Role()->Exists($role)) Image::Role()->Output($role);
+      }
+    }
+    if ($list['sub']) {
+      foreach (array_keys(RoleData::$sub_role_list) as $role) {
+	if (Image::Role()->Exists($role)) Image::Role()->Output($role);
+      }
+    }
+    if ($list['result']) {
+      foreach (array_keys(RoleData::$main_role_list) as $role) {
+	Image::Role()->Output('result_'.$role);
+      }
+    }
+    if ($list['weather']) {
+      foreach (RoleData::$weather_list as $stack) {
+	Image::Role()->Output('prediction_weather_'.$stack['event']);
+      }
+    }
     HTML::OutputFooter(true);
   }
 }

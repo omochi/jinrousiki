@@ -6,9 +6,15 @@ Loader::LoadFile('test_class', 'image_class');
 
 //-- 特殊モード設定 --//
 $vote_view_mode = false; //投票表示モード
-$talk_view_mode = false; //発言表示モード
-$role_view_mode = false; //画像表示モード
 $cast_view_mode = false; //配役情報表示モード
+$talk_view_mode = false; //発言表示モード
+$role_view_mode = true; false; //画像表示モード
+$role_view_list = array(
+  'main'    => true, #false,
+  'sub'     => false,
+  'result'  => false,
+  'weather' => false
+);
 
 //-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
@@ -292,25 +298,7 @@ foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;
 }
 
-//-- データ出力 --//
-if ($vote_view_mode) VoteTest::OutputVote(); //投票表示モード
-if ($role_view_mode) { //画像表示モード
-  HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
-  #foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output($role);
-  #foreach (array_keys(RoleData::$sub_role_list)  as $role) Image::Role()->Output($role);
-  #foreach (array_keys(RoleData::$main_role_list) as $role) Image::Role()->Output('result_'.$role);
-  $header = 'prediction_weather_';
-  #foreach (RoleData::$weather_list as $stack) Image::Role()->Output($header.$stack['event']);
-  HTML::OutputFooter(true);
-}
-if ($cast_view_mode) VoteTest::OutputCast(); //配役情報表示モード
 if ($talk_view_mode) { //発言表示モード
-  Loader::LoadFile('talk_class');
-
-  HTML::OutputHeader('投票テスト', 'game_play');
-  echo DB::$ROOM->GenerateCSS();
-  HTML::OutputBodyHeader();
-  RQ::$get->add_role = false;
   RQ::GetTest()->talk_data = new StdClass();
   //昼の発言
   $stack = array(
@@ -372,17 +360,13 @@ if ($talk_view_mode) { //発言表示モード
     }
   }
   RQ::GetTest()->talk_data->night = $stack;
-
-  RQ::GetTest()->talk = array();
-  foreach (RQ::GetTest()->talk_data->{DB::$ROOM->scene} as $stack) {
-    RQ::GetTest()->talk[] = new TalkParser($stack);
-  }
-  //Text::p(RQ::GetTest()->talk);
-  GameHTML::OutputPlayer();
-  if (DB::$SELF->user_no > 0) RoleHTML::OutputAbility();
-  Talk::Output();
-  HTML::OutputFooter(true);
 }
+
+//-- データ出力 --//
+if ($vote_view_mode) VoteTest::OutputVote(); //投票表示モード
+if ($cast_view_mode) VoteTest::OutputCast(); //配役情報表示モード
+if ($talk_view_mode) VoteTest::OutputTalk(); //発言表示モード
+if ($role_view_mode) VoteTest::OutputImage($role_view_list); //画像表示モード
 
 HTML::OutputHeader('投票テスト', 'game_play', true);
 GameHTML::OutputPlayer();
@@ -496,4 +480,7 @@ do {
 //Text::p(array_keys(RoleManager::$class));
 //Text::p(DB::$USER->role);
 //Text::p(Loader::$file);
-HTML::OutputFooter();
+
+//DB::Connect(); DB::d();
+//Text::p($stack);
+HTML::OutputFooter(true);

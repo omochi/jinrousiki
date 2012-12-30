@@ -46,11 +46,8 @@ class Session {
 
   //認証
   static function Certify($exit = true) {
-    //$ip_address = Security::GetIP(); //IPアドレス認証は現在は行っていない
     //セッション ID による認証
-    $query = "SELECT user_no FROM user_entry WHERE room_no = %d AND session_id = '%s'" .
-      " AND live <> 'kick'";
-    $stack = DB::FetchArray(sprintf($query, RQ::$get->room_no, self::GetID()));
+    $stack = self::GetUserList();
     if (count($stack) == 1) {
       self::$user_no = array_shift($stack);
       return true;
@@ -65,8 +62,7 @@ class Session {
     if (self::Certify(false)) return true;
 
     //村が存在するなら観戦ページにジャンプする
-    $query = 'SELECT room_no FROM room WHERE room_no = %d';
-    if (DB::Count(sprintf($query, RQ::$get->room_no)) > 0) {
+    if (RoomDataDB::Exists()) {
       $url   = sprintf('game_view.php?room_no=%d', RQ::$get->room_no);
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .
@@ -85,11 +81,24 @@ class Session {
 
   //DB に登録されているセッション ID と被らないようにする
   private function GetUniq() {
-    $query = "SELECT room_no FROM user_entry WHERE session_id = '%s'";
     do {
       self::Reset();
-    } while (DB::Count(sprintf($query, self::GetID())) > 0);
+    } while (self::Exists());
     return self::GetID();
+  }
+
+  //セッション ID 認証
+  private function GetUserList() {
+    $query = 'SELECT user_no FROM user_entry WHERE session_id = ? AND room_no = ? AND live <> ?';
+    DB::Prepare($query, array(self::GetID(), RQ::$get->room_no, 'kick'));
+    return DB::FetchArray();
+  }
+
+  //ユニークセッション ID 判定
+  private function Exists() {
+    $query = 'SELECT room_no FROM user_entry WHERE session_id = ?';
+    DB::Prepare($query, array(self::GetID()));
+    return DB::Count() > 0;
   }
 
   //エラー出力
