@@ -16,7 +16,7 @@ class Role_enchant_mad extends Role {
 
   function SetVoteNight() { $this->filter->SetVoteNight(); }
 
-  function BadStatus(UserDataSet $USERS) {
+  function BadStatus(UserData $USERS) {
     if (! isset(DB::$ROOM->event->{$this->bad_status})) return;
     $target = $USERS->ById(DB::$ROOM->event->{$this->bad_status});
     if (! isset($target->icon_filename)) return;

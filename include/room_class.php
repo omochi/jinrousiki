@@ -1,5 +1,5 @@
 <?php
-//-- 個別の村情報の基底クラス --//
+//-- 個別村クラス --//
 class Room {
   public $id;
   public $name;
@@ -31,10 +31,7 @@ class Room {
 
   //指定した部屋番号の DB 情報を取得する
   function LoadRoom($room_no, $lock = false) {
-    $query = 'SELECT room_no AS id, name, comment, game_option, status, date, scene, ' .
-      'vote_count, revote_count, scene_start_time FROM room WHERE room_no = ' . $room_no;
-    if ($lock) $query .= ' FOR UPDATE';
-    $stack = DB::FetchAssoc($query, true);
+    $stack = RoomDataDB::Get($room_no, $lock);
     if (count($stack) < 1) HTML::OutputResult('村番号エラー', '無効な村番号です: ' . $room_no);
     return $stack;
   }
@@ -376,6 +373,9 @@ class Room {
   //ゲーム終了後判定
   function IsAfterGame() { return $this->scene == 'aftergame'; }
 
+  //ゲーム開始前判定
+  function IsWaiting() { return $this->status == 'waiting'; }
+
   //ゲーム中判定 (仮想処理をする為、status では判定しない)
   function IsPlaying() { return $this->IsDay() || $this->IsNight(); }
 
@@ -689,80 +689,85 @@ EOF;
   }
 }
 
-class RoomDataSet {
-  public $rows = array();
+//-- DB アクセス (RoomData 拡張) --//
+class RoomDataDB {
+  //村データ取得
+  static function Get($room_no, $lock = false) {
+    $query = <<<EOF
+SELECT room_no AS id, name, comment, game_option, status, date, scene,
+vote_count, revote_count, scene_start_time FROM room WHERE room_no = ?
+EOF;
+    if ($lock) $query .= ' FOR UPDATE';
+    DB::Prepare($query, array($room_no));
+    return DB::FetchAssoc(null, true);
+  }
 
-  function LoadFinishedRoom($room_no) {
+  //終了した村番地を取得
+  static function GetFinished($reverse) {
+    $order = $reverse ? 'DESC' : 'ASC';
+    $query = 'SELECT room_no FROM room WHERE status = ? ORDER BY room_no ' . $order;
+    if (RQ::$get->page != 'all') {
+      $view = OldLogConfig::VIEW;
+      $query .= sprintf(' LIMIT %d, %d', $view * (RQ::$get->page - 1), $view);
+    }
+    DB::Prepare($query, array('finished'));
+    return DB::FetchArray();
+  }
+
+  //終了した村数を取得
+  static function GetFinishedCount() {
+    DB::Prepare('SELECT room_no FROM room WHERE status = ?', array('finished'));
+    return DB::Count();
+  }
+
+  //村クラス取得 (進行中)
+  static function LoadOpening() {
+    $query = <<<EOF
+SELECT room_no AS id, name, comment, game_option, option_role, max_user, status
+FROM room WHERE status != ? ORDER BY room_no DESC
+EOF;
+    DB::Prepare($query, array('finished'));
+    $stack = DB::FetchClass('room');
+    if (count($stack) < 1) die('村一覧の取得に失敗しました');
+
+    $result = array();
+    foreach ($stack as $room) {
+      $room->ParseOption();
+      $result[] = $room;
+    }
+    return $result;
+  }
+
+  //村クラス取得 (終了)
+  static function LoadFinished($room_no) {
     $query = <<<EOF
 SELECT room_no AS id, name, comment, date, game_option, option_role, max_user, winner,
   establish_datetime, start_datetime, finish_datetime,
   (SELECT COUNT(user_no) FROM user_entry WHERE user_entry.room_no = room.room_no
    AND user_entry.user_no > 0) AS user_count
-FROM room WHERE room_no = {$room_no} AND status = 'finished'
+FROM room WHERE room_no = ? AND status = ?
 EOF;
-    return DB::FetchObject($query, 'Room', true);
+    DB::Prepare($query, array($room_no, 'finished'));
+    return DB::FetchClass('Room', true);
   }
 
-  function LoadEntryUser($room_no) {
+  //村クラス取得 (ユーザ登録用)
+  static function LoadEntryUser($room_no) {
     $query = <<<EOF
-SELECT room_no AS id, date, scene, status, game_option, max_user FROM room
-WHERE room_no = {$room_no} FOR UPDATE
+SELECT room_no AS id, date, scene, status, game_option, max_user
+FROM room WHERE room_no = ? FOR UPDATE
 EOF;
-    return DB::FetchObject($query, 'Room', true);
+    DB::Prepare($query, array($room_no));
+    return DB::FetchClass('Room', true);
   }
 
-  function LoadEntryUserPage($room_no) {
+  //村クラス取得 (ユーザ登録画面用)
+  static function LoadEntryUserPage() {
     $query = <<<EOF
 SELECT room_no AS id, name, comment, status, game_option, option_role
-FROM room WHERE room_no = {$room_no}
+FROM room WHERE room_no = ?
 EOF;
-    return DB::FetchObject($query, 'Room', true);
-  }
-
-  function LoadRoomManager($room_no, $lock = false) {
-    $update = $lock ? 'FOR UPDATE' : '';
-    $query = <<<EOF
-SELECT room_no AS id, name, comment, date, scene, status, game_option, option_role, max_user
-FROM room WHERE room_no = {$room_no} {$update}
-EOF;
-    return DB::FetchObject($query, 'Room', true);
-  }
-
-  function LoadClosedRooms($room_order, $limit_statement) {
-    $sql = <<<SQL
-SELECT room.room_no AS id, room.name AS name, room.comment AS comment,
-    room.date AS room_date AS date, room.game_option AS room_game_option,
-    room.option_role AS room_option_role, room.max_user AS room_max_user, users.room_num_user,
-    room.winner AS room_winner, room.establish_datetime, room.start_datetime, room.finish_datetime
-FROM room
-    LEFT JOIN (SELECT room_no, COUNT(user_no) AS room_num_user FROM user_entry GROUP BY room_no) users
-	USING (room_no)
-WHERE status = 'finished'
-ORDER BY room_no {$room_order}
-{$limit_statement}
-SQL;
-    return self::__load($sql);
-  }
-
-  function LoadOpeningRooms($class = 'RoomDataSet') {
-    $sql = <<<SQL
-SELECT room_no AS id, name, comment, game_option, option_role, max_user, status
-FROM room WHERE status <> 'finished' ORDER BY room_no DESC
-SQL;
-    return self::__load($sql);
-  }
-
-  function __load($sql, $class = 'Room') {
-    $result = new RoomDataSet();
-    if (($q_rooms = mysql_query($sql)) !== false) {
-      while (($object = mysql_fetch_object($q_rooms, $class)) !== false) {
-        $object->ParseOption();
-        $result->rows[] = $object;
-      }
-    }
-    else {
-      die('村一覧の取得に失敗しました');
-    }
-    return $result;
+    DB::Prepare($query, array(RQ::$get->room_no));
+    return DB::FetchClass('Room', true);
   }
 }

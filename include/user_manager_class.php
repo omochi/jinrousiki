@@ -3,6 +3,10 @@
 class UserManager {
   //ユーザ登録
   static function Entry() {
+    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList()) { //ブラックリストチェック
+      HTML::OutputResult('村人登録 [入村制限]', '入村制限ホストです。');
+    }
+
     extract(RQ::ToArray()); //引数を展開
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
     if ($user_no > 0) $back_url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
@@ -57,8 +61,8 @@ class UserManager {
       HTML::OutputResult('村人登録 [サーバエラー]', $str);
     }
 
-    DB::$ROOM = RoomDataSet::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
-    if (! DB::$ROOM->IsBeforeGame() || DB::$ROOM->status != 'waiting') { //ゲーム開始判定
+    DB::$ROOM = RoomDataDB::LoadEntryUser($room_no); //現在の村情報を取得 (ロック付き)
+    if (! DB::$ROOM->IsWaiting()) { //ゲーム開始判定
       HTML::OutputResult('村人登録 [入村不可]', 'すでにゲームが開始されています。');
     }
     DB::$ROOM->ParseOption(); //名前・トリップ必須オプション用
@@ -67,7 +71,7 @@ class UserManager {
     RQ::Load('RequestBase', true);
     RQ::$get->room_no      = $room_no;
     RQ::$get->retrive_type = 'entry_user';
-    DB::$USER = new UserDataSet(RQ::$get);
+    DB::$USER = new UserData(RQ::$get);
 
     $user_count = DB::$USER->GetUserCount(); //現在の KICK されていない住人の数を取得
     if ($user_no < 1 && $user_count >= DB::$ROOM->max_user) { //定員オーバー判定
@@ -78,7 +82,7 @@ class UserManager {
     $footer = '<br>別の名前にしてください。' . $back_url;
 
     if ($user_no > 0) { //登録情報変更モード
-      $target = UserDB::GetUser($user_no);
+      $target = UserDB::LoadUser($user_no);
       if ($target->session_id != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
       }
@@ -122,13 +126,7 @@ class UserManager {
       DB::$ROOM->TalkBeforeGame($str, $target->uname, $target->handle_name, $target->color);
 
       if ($target->UpdateList($stack) && DB::Commit()) {
-	$str = <<<EOF
-登録データを変更しました。<br>
-<form action="#" method="post">
-<input type="button" value="ウィンドウを閉じる" onClick="window.close()">
-</form>
-EOF;
-	HTML::OutputResult('村人登録 [登録情報変更]', $str);
+	UserManagerHTML::OutputChange();
       }
       else {
 	$str = 'サーバが混雑しています。<br>再度登録してください。' . $back_url;
@@ -149,25 +147,15 @@ EOF;
       HTML::OutputResult('村人登録 [キックされたユーザ]', $str . $footer);
     }
 
-    $query_count = sprintf('SELECT uname FROM user_entry WHERE room_no = %d AND', $room_no);
-    $query_count .= " live = 'live' AND";
-    $query = sprintf("%s (uname = '%s' OR handle_name = '%s')", $query_count, $uname, $handle_name);
-    if (DB::Count($query) > 0) {
+    if (UserDB::IsDuplicate($uname, $handle_name)) {
       $str = 'ユーザ名、または村人名が既に登録してあります。';
       HTML::OutputResult('村人登録 [重複登録エラー]', $str . $footer);
     }
     //HTML::OutputResult('トリップテスト', $uname.'<br>'.$handle_name.$back_url); //テスト用
 
     //IP アドレスチェック
-    $ip_address = Security::GetIP(); //ユーザの IP アドレスを取得
-    if (! ServerConfig::DEBUG_MODE) {
-      $query = sprintf("%s ip_address = '%s'", $query_count, $ip_address);
-      if (GameConfig::LIMIT_IP && DB::Count($query) > 0) {
-	HTML::OutputResult('村人登録 [多重登録エラー]', '多重登録はできません。');
-      }
-      elseif (Security::CheckBlackList()) {
-	HTML::OutputResult('村人登録 [入村制限]', '入村制限ホストです。');
-      }
+    if (! ServerConfig::DEBUG_MODE && GameConfig::LIMIT_IP && UserDB::IsDuplicateIP()) {
+      HTML::OutputResult('村人登録 [多重登録エラー]', '多重登録はできません。');
     }
 
     //DB にユーザデータを登録
@@ -199,7 +187,7 @@ EOF;
   //ユーザ登録画面表示
   static function Output() {
     if (RQ::$get->user_no > 0) { //登録情報変更モード
-      $stack = UserDB::Get();
+      $stack = UserDB::GetUser();
       if ($stack['session_id'] != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
       }
@@ -208,7 +196,7 @@ EOF;
       }
     }
 
-    DB::$ROOM = RoomDataSet::LoadEntryUserPage(RQ::$get->room_no);
+    DB::$ROOM = RoomDataDB::LoadEntryUserPage();
     $str = sprintf('%d 番地の村は', RQ::$get->room_no);
     if (is_null(DB::$ROOM->id)) {
       HTML::OutputResult('村人登録 [村番号エラー]', $str . '存在しません');
@@ -216,7 +204,7 @@ EOF;
     if (DB::$ROOM->IsFinished()) {
       HTML::OutputResult('村人登録 [入村不可]', $str . '終了しました');
     }
-    if (DB::$ROOM->status != 'waiting') {
+    if (! DB::$ROOM->IsWaiting()) {
       HTML::OutputResult('村人登録 [入村不可]', $str . 'すでにゲームが開始されています。');
     }
     DB::$ROOM->ParseOption(true);
@@ -250,6 +238,17 @@ class UserManagerHTML {
     self::OutputIcon();
     Text::Output('</table></div></form>');
     HTML::OutputFooter();
+  }
+
+  //出力 (登録情報変更)
+  static function OutputChange() {
+    $str = <<<EOF
+登録データを変更しました。<br>
+<form action="#" method="post">
+<input type="button" value="ウィンドウを閉じる" onClick="window.close()">
+</form>
+EOF;
+    HTML::OutputResult('村人登録 [登録情報変更]', $str);
   }
 
   //ヘッダ出力

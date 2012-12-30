@@ -128,7 +128,7 @@ class DevUser {
 
   //ユーザ情報をロード
   static function Load() {
-    DB::$USER = new UserDataSet(RQ::$get);
+    DB::$USER = new UserData(RQ::$get);
     DB::$SELF = DB::$USER->ByID(1);
     if (DB::$ROOM->IsBeforeGame()) {
       foreach (DB::$USER->rows as $user) {

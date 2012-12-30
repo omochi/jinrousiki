@@ -10,7 +10,7 @@ class GameLog {
     DB::$ROOM->log_mode = true;
     DB::$ROOM->single_log_mode = true;
 
-    DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報を取得
+    DB::$USER = new UserData(RQ::$get); //ユーザ情報を取得
     DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
     //エラーチェック

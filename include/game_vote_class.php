@@ -14,7 +14,7 @@ class GameVote {
     if (DB::$ROOM->IsFinished()) VoteHTML::OutputError('ゲーム終了', 'ゲームは終了しました');
     DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 
-    DB::$USER = new UserDataSet(RQ::$get, true); //ユーザ情報をロード
+    DB::$USER = new UserData(RQ::$get, true); //ユーザ情報をロード
     DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
     //-- メインルーチン --//

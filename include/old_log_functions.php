@@ -134,8 +134,7 @@ EOF;
   static function GenerateList($page) {
     //村数の確認
     $title = ServerConfig::TITLE . ' [過去ログ]';
-    $query = "SELECT room_no FROM room WHERE status = 'finished'";
-    $room_count = DB::Count($query);
+    $room_count = RoomDataDB::GetFinishedCount();
     if ($room_count < 1) {
       HTML::OutputResult($title, 'ログはありません。' . sprintf(self::BACK_URL, './'));
     }
@@ -178,14 +177,8 @@ EOF;
 
     //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
     $current_time = Time::Get(); // 現在時刻の取得
-    $query .= ' ORDER BY room_no ' . ($is_reverse ? 'DESC' : 'ASC');
-    if (RQ::$get->page != 'all') {
-      $view = OldLogConfig::VIEW;
-      $query .= sprintf(' LIMIT %d, %d', $view * (RQ::$get->page - 1), $view);
-    }
-
-    foreach (DB::FetchArray($query) as $room_no) {
-      $ROOM = RoomDataSet::LoadFinishedRoom($room_no);
+    foreach (RoomDataDB::GetFinished($is_reverse) as $room_no) {
+      $ROOM = RoomDataDB::LoadFinished($room_no);
 
       $dead      = $ROOM->date == 0 ? ' vanish' : ''; //廃村の場合、色を灰色にする
       $establish = $ROOM->establish_datetime == '' ? '' :
@@ -430,4 +423,3 @@ EOF;
     return $str;
   }
 }
-

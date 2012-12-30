@@ -217,6 +217,7 @@ class RequestLogin extends RequestBase {
     $this->Parse('IsOn', 'post.login_manually');
     $this->Parse('Escape', 'post.password');
     $this->Parse('ConvertTrip', 'post.uname');
+    $this->Parse(null, 'post.trip');
   }
 }
 

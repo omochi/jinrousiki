@@ -45,7 +45,7 @@ class RoomManager {
       Session::Certify();
       $title = 'オプション変更';
 
-      DB::$ROOM = RoomDataSet::LoadRoomManager(RQ::$get->room_no, true); //村情報をロード
+      DB::$ROOM = RoomManagerDB::Load(true); //村情報をロード
       if (DB::$ROOM->IsFinished()) {
 	$body = sprintf('%d番地はすでに終了しています', DB::$ROOM->id);
 	HTML::OutputResult($title . ' [エラー]', $body);
@@ -55,7 +55,7 @@ class RoomManager {
 	HTML::OutputResult($title . ' [エラー]', $body);
       }
 
-      DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+      DB::$USER = new UserData(RQ::$get); //ユーザ情報をロード
       if (RQ::$get->max_user < DB::$USER->GetUserCount()) {
 	HTML::OutputResult($title . ' [入力エラー]', '現在の参加人数より少なくできません。');
       }
@@ -220,7 +220,7 @@ EOF;
     }
 
     //登録処理
-    $room_no = RoomManagerDB::GetNextNumber(); //村番号を取得
+    $room_no = RoomManagerDB::GetNext(); //村番号を取得
     if (! ServerConfig::DRY_RUN) {
       if (! RoomManagerDB::Insert($room_no, $game_option, $option_role)) { //村作成
 	RoomManagerHTML::OutputResult('busy');
@@ -266,7 +266,7 @@ EOF;
       Session::Certify();
       $title = 'オプション変更';
 
-      DB::$ROOM = RoomDataSet::LoadRoomManager(RQ::$get->room_no); //村情報をロード
+      DB::$ROOM = RoomManagerDB::Load(); //村情報をロード
       if (DB::$ROOM->IsFinished()) {
 	$body = sprintf('%d番地はすでに終了しています', DB::$ROOM->id);
 	HTML::OutputResult($title . ' [エラー]', $body);
@@ -276,7 +276,7 @@ EOF;
 	HTML::OutputResult($title . ' [エラー]', $body);
       }
 
-      DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+      DB::$USER = new UserData(RQ::$get); //ユーザ情報をロード
       DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
       if (! DB::$SELF->IsDummyBoy()) {
 	HTML::OutputResult($title . ' [エラー]', '身代わり君・GM 以外は変更できません');
@@ -327,7 +327,7 @@ EOF;
   }
 
   //次の村番号を取得
-  static function GetNextNumber() {
+  static function GetNext() {
     return DB::FetchResult('SELECT MAX(room_no) + 1 FROM room');
   }
 
@@ -335,6 +335,17 @@ EOF;
   static function GetUserCount($room_no) {
     DB::Prepare('SELECT user_no FROM user_entry WHERE room_no = ?', array($room_no));
     return DB::Count();
+  }
+
+  //村情報取得
+  static function Load($lock = false) {
+    $query = <<<EOF
+SELECT room_no AS id, name, comment, date, scene, status, game_option, option_role, max_user
+FROM room WHERE room_no = ?
+EOF;
+    if ($lock) $query .= ' FOR UPDATE';
+    DB::Prepare($query, array(RQ::$get->room_no));
+    return DB::FetchClass('Room', true);
   }
 
   //村作成
@@ -378,8 +389,7 @@ SET u.session_id = NULL
 WHERE u.session_id IS NOT NULL AND r.status = ? AND
   (r.finish_datetime IS NULL OR r.finish_datetime < DATE_SUB(NOW(), INTERVAL ? SECOND))
 EOF;
-    $list = array('finished', RoomConfig::KEEP_SESSION);
-    DB::Prepare($query, $list);
+    DB::Prepare($query, array('finished', RoomConfig::KEEP_SESSION));
     return DB::Execute();
   }
 }

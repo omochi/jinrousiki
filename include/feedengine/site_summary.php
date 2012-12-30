@@ -4,8 +4,7 @@ class SiteSummary extends FeedEngine {
 
   function Build() {
     $this->SetChannel(ServerConfig::TITLE, ServerConfig::SITE_ROOT, ServerConfig::COMMENT);
-    $rooms = RoomDataSet::LoadOpeningRooms();
-    foreach ($rooms->rows as $room) {
+    foreach (RoomDataDB::LoadOpening() as $room) {
       $title = "{$room->name}村";
       $url = "{$this->uri}game_view.php?room_no={$room->id}";
       $options = RoomOption::GenerateImage($room->game_option->row, $room->option_role->row);

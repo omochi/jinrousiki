@@ -31,7 +31,7 @@ class GamePlay {
       RQ::$get->retrive_type = DB::$ROOM->scene;
     }
 
-    DB::$USER = new UserDataSet(RQ::$get); //ユーザ情報をロード
+    DB::$USER = new UserData(RQ::$get); //ユーザ情報をロード
     DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
     //「異議」ありセット判定

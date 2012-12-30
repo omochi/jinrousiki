@@ -238,6 +238,11 @@ class DB {
     return self::ExecuteCommit('OPTIMIZE TABLE ' . $query);
   }
 
+  //statement 表示設定 (デバッグ用)
+  static function d($flag = true) {
+    self::$display = $flag;
+  }
+
   //SQL リセット
   private static function Reset() {
     self::$statement = null;

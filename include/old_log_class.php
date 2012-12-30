@@ -14,7 +14,7 @@ class OldLog {
       DB::$ROOM->personal_mode    = RQ::$get->personal_result;
       DB::$ROOM->last_date        = DB::$ROOM->date;
 
-      DB::$USER = new UserDataSet(RQ::$get);
+      DB::$USER = new UserData(RQ::$get);
       DB::$USER->SetEvent(true);
       DB::$USER->player = DB::$ROOM->LoadPlayer();
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) DB::$USER->SaveRoleList();

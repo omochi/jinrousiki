@@ -1,6 +1,10 @@
 <?php
-//-- GameView 出力クラス --//
+//-- 観戦画面出力クラス --//
 class GameView {
+  const AUTO_RELOAD = "<meta http-equiv=\"Refresh\" content=\"%d\">\n";
+  const BODY = '<body onLoad="output_realtime();">';
+  const URL_HEADER  = '<a href="game_view.php?room_no=%d';
+
   static function Output() {
     //-- データ収集 --//
     DB::Connect();
@@ -17,13 +21,13 @@ class GameView {
 
     //ユーザ情報を取得
     if (DB::$ROOM->IsBeforeGame()) RQ::$get->retrive_type = DB::$ROOM->scene;
-    DB::$USER = new UserDataSet(RQ::$get);
+    DB::$USER = new UserData(RQ::$get);
     DB::$SELF = new User();
 
     //-- 出力 --//
     HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
     if (GameConfig::AUTO_RELOAD && RQ::$get->auto_reload > 0) { //自動更新
-      printf('<meta http-equiv="Refresh" content="%d">'."\n", RQ::$get->auto_reload);
+      printf(self::AUTO_RELOAD, RQ::$get->auto_reload);
     }
     echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
 
@@ -32,14 +36,14 @@ class GameView {
 </head>
 %s
 <table id="game_top" class="login"><tr>
-%s<td class="login-link">%s
+%s<td class="login-link">
+
 EOF;
-    $body = DB::$ROOM->IsPlaying() && DB::$ROOM->IsRealTime() ?
-      '<body onLoad="output_realtime();">' : '<body>';
-    printf($header, $body, DB::$ROOM->GenerateTitleTag(), "\n");
+    $body = DB::$ROOM->IsPlaying() && DB::$ROOM->IsRealTime() ? self::BODY : '<body>';
+    printf($header, $body, DB::$ROOM->GenerateTitleTag());
 
     //更新
-    $url = sprintf('<a href="game_view.php?room_no=%d', RQ::$get->room_no);
+    $url = sprintf(self::URL_HEADER, RQ::$get->room_no);
     $auto_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
     printf('%s%s">[更新]</a>'."\n", $url, $auto_reload);
     if (GameConfig::AUTO_RELOAD) GameHTML::OutputAutoReloadLink($url); //自動更新設定
@@ -52,23 +56,33 @@ EOF;
 </td></tr></table>
 <table class="login"><tr>
 <td><form method="POST" action="login.php?room_no=%d">
-<label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">
+<label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">%s
 <label for="login_password">パスワード</label><input type="password" class="login-password" id="login_password" name="password" size="20" value="">
 <input type="hidden" name="login_manually" value="on">
 <input type="submit" value="ログイン">
-</form></td>%s
+</form></td>
+
 EOF;
-    printf($login_form, DB::$ROOM->id, "\n");
+    if (GameConfig::TRIP) { //トリップ対応
+      $trip = <<<EOF
+
+<label for="trip">＃</label><input type="text" id="trip" name="trip" size="15" maxlength="15" value="">
+EOF;
+    } else {
+      $trip = '';
+    }
+    printf($login_form, DB::$ROOM->id, $trip);
 
     if (DB::$ROOM->IsBeforeGame()) { //登録画面リンク
       $user_entry = <<<EOF
 <td class="login-link">
 <a href="user_manager.php?room_no=%d"><span>[住民登録]</span></a>
-</td>%s
+</td>
+
 EOF;
-      printf($user_entry, DB::$ROOM->id, "\n");
+      printf($user_entry, DB::$ROOM->id);
     }
-    echo '</tr></table>'."\n";
+    Text::Output('</tr></table>');
     if (! DB::$ROOM->IsFinished()) RoomOption::Output(); //ゲームオプション
     GameHTML::OutputTimeTable(); //経過日数と生存人数
 
@@ -94,7 +108,7 @@ EOF;
 	if ($left_talk_time) printf('<td>%s%s</td>'."\n", $time_message, $left_talk_time);
       }
     }
-    echo '</tr></table>'."\n";
+    Text::Output('</tr></table>');
 
     if (DB::$ROOM->IsPlaying()) {
       $format = '<div class="system-vote">%s</div>'."\n";

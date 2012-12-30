@@ -28,21 +28,16 @@ class Login {
     ログイン成功/失敗を true/false で返す
   */
   private function LoginManually() {
+    //ブラックリストチェック
+    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList()) return false;
+
     extract(RQ::ToArray()); //引数を展開
+    if (GameConfig::TRIP && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
     if ($uname == '' || $password == '') return false;
 
-    //$ip = Security::GetIP(); //IPアドレス取得 //現在は IP アドレス認証は行っていない
     $crypt = Text::Crypt($password);
     //$crypt = $password; //デバッグ用
-
-    //該当するユーザ名とパスワードがあるか確認
-    $where = sprintf("WHERE room_no = %d AND uname = '%s' AND live <> 'kick'", $room_no, $uname);
-    $query = sprintf("SELECT uname FROM user_entry %s AND password = '%s'", $where, $crypt);
-    if (DB::Count($query) != 1) return false;
-
-    //DB のセッション ID を再登録
-    $query = sprintf("UPDATE user_entry SET session_id = '%s' %s", Session::GetID(true), $where);
-    return DB::FetchBool($query);
+    return self::Certify($uname, $crypt) && self::Update($uname, $crypt); //認証＆再登録処理
   }
 
   //結果出力関数
@@ -57,5 +52,25 @@ class Login {
       $body .= sprintf($str, $url);
     }
     HTML::OutputResult($title, $body, $url);
+  }
+
+  //ユーザ認証
+  private function Certify($uname, $password) {
+    $query = <<<EOF
+SELECT user_no FROM user_entry
+WHERE room_no = ? AND uname = ? AND password = ? AND live <> ?
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, $uname, $password, 'kick'));
+    return DB::Count() == 1;
+  }
+
+  //セッション ID 再登録
+  private function Update($uname, $password) {
+    $query = <<<EOF
+UPDATE user_entry SET session_id = ?
+WHERE room_no = ? AND uname = ? AND password = ? AND live <> ?
+EOF;
+    DB::Prepare($query, array(Session::GetID(true), RQ::$get->room_no, $uname, $password, 'kick'));
+    return DB::Execute();
   }
 }

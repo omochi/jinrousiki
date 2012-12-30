@@ -741,7 +741,7 @@ EOF;
 }
 
 //-- ユーザ情報ローダー --//
-class UserDataSet {
+class UserData {
   public $room_no;
   public $rows = array();
   public $kick = array();
@@ -1068,16 +1068,16 @@ class UserDataSet {
   private function Load(RequestBase $request, $lock = false) {
     if ($request->IsVirtualRoom()) { //仮想モード
       $user_list = $request->GetTest()->test_users;
-      if (is_int($user_list)) $user_list = $this->LoadRandom($user_list);
+      if (is_int($user_list)) $user_list = UserDataDB::LoadRandom($user_list);
     }
     elseif (isset($request->retrive_type)) { //特殊モード
       switch ($request->retrive_type) {
       case 'entry_user': //入村処理
-	$user_list = $this->LoadEntryUser($request->room_no);
+	$user_list = UserDataDB::LoadEntryUser($request->room_no);
 	break;
 
       case 'beforegame': //ゲーム開始前
-	$user_list = $this->LoadBeforegame($request->room_no);
+	$user_list = UserDataDB::LoadBeforegame($request->room_no);
 	break;
 
       case 'day': //昼 + 下界
@@ -1104,31 +1104,6 @@ EOF;
     return DB::FetchObject($query, 'User');
   }
 
-  //入村処理用のユーザデータ取得
-  private function LoadEntryUser($room_no) {
-    $query = <<<EOF
-SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry
-WHERE room_no = {$room_no} ORDER BY user_no ASC FOR UPDATE
-EOF;
-    return DB::FetchObject($query, 'User');
-  }
-
-  //ゲーム開始前のユーザデータ取得
-  private function LoadBeforegame($room_no) {
-    if ($room_no != DB::$ROOM->id) return null;
-    $vote_count = DB::$ROOM->vote_count;
-    $room_no    = DB::$ROOM->id;
-    $query = <<<EOF
-SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
-  last_load_scene, icon_filename, color, v.type AS vote_type
-FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
-  u.room_no = v.room_no AND v.vote_count = {$vote_count} AND
-  u.user_no = v.user_no AND v.type = 'GAMESTART'
-WHERE u.room_no = {$room_no} ORDER BY user_no ASC
-EOF;
-    return DB::FetchObject($query, 'User');
-  }
-
   //昼 + 下界用のユーザデータを取得する
   private function LoadDay($room_no) {
     if ($room_no != DB::$ROOM->id) return null;
@@ -1142,19 +1117,6 @@ FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
   u.room_no = v.room_no AND v.date = {$date} AND v.vote_count = {$vote_count} AND
   u.user_no = v.user_no AND v.type = 'VOTE_KILL'
 WHERE u.room_no = {$room_no} ORDER BY user_no ASC
-EOF;
-    return DB::FetchObject($query, 'User');
-  }
-
-  //指定した人数分のユーザ情報を全村からランダムに取得する (テスト用)
-  private function LoadRandom($count) {
-    mysql_query('SET @new_user_no := 0');
-    $query = <<<EOF
-SELECT room_no, (@new_user_no := @new_user_no + 1) AS user_no, uname, handle_name, profile,
-  sex, role, role_id, objection, live, last_load_scene, icon_filename, color
-FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) AS finder
-  LEFT JOIN user_entry USING (room_no, uname) LEFT JOIN user_icon USING (icon_no)
-ORDER BY RAND() LIMIT {$count}
 EOF;
     return DB::FetchObject($query, 'User');
   }
@@ -1211,6 +1173,24 @@ EOF;
 
 //-- データベースアクセス (User 拡張) --//
 class UserDB {
+  //ユーザ情報取得
+  static function GetUser() {
+    $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
+    DB::Prepare($query, array(RQ::$get->room_no, RQ::$get->user_no));
+    return DB::FetchAssoc(null, true);
+  }
+
+  //ユーザクラス取得
+  static function LoadUser($user_no) {
+    $query = <<<EOF
+SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, color, icon_name
+FROM user_entry AS u INNER JOIN user_icon USING (icon_no)
+WHERE room_no = ? AND user_no = ?
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, $user_no));
+    return DB::FetchClass('User', true);
+  }
+
   //キック判定
   static function IsKick($uname) {
     $query = <<<EOF
@@ -1220,7 +1200,16 @@ EOF;
     return DB::Count() > 0;
   }
 
-  //HN 重複判定
+  //重複ユーザ判定
+  static function IsDuplicate($uname, $handle_name) {
+    $query = <<<EOF
+SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND (uname = ? OR handle_name = ?)
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, 'live', $uname, $handle_name));
+    return DB::Count() > 0;
+  }
+
+  //重複 HN 判定
   static function IsDuplicateName($user_no, $handle_name) {
     $query = <<<EOF
 SELECT user_no FROM user_entry WHERE room_no = ? AND user_no != ? AND live = ? AND handle_name = ?
@@ -1229,21 +1218,54 @@ EOF;
     return DB::Count() > 0;
   }
 
-  //ユーザ情報取得
-  static function Get() {
-    $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
-    DB::Prepare($query, array(RQ::$get->room_no, RQ::$get->user_no));
-    return DB::FetchAssoc(null, true);
+  //重複 IP 判定
+  static function IsDuplicateIP() {
+    DB::$display = true;
+    $query = <<<EOF
+SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?
+EOF;
+    DB::Prepare($query, array(RQ::$get->room_no, 'live', Security::GetIP()));
+    return DB::Count() > 0;
+  }
+}
+
+//-- データベースアクセス (UserData 拡張) --//
+class UserDataDB {
+  //ユーザデータ取得 (入村処理用)
+  static function LoadEntryUser($room_no) {
+    $query = <<<EOF
+SELECT room_no, user_no, uname, handle_name, live, ip_address FROM user_entry
+WHERE room_no = ? ORDER BY user_no ASC FOR UPDATE
+EOF;
+    DB::Prepare($query, array($room_no));
+    return DB::FetchClass('User');
   }
 
-  //ユーザクラス取得
-  static function GetUser($user_no) {
+  //ユーザデータ取得 (ゲーム開始前)
+  static function LoadBeforegame($room_no) {
+    if ($room_no != DB::$ROOM->id) return null;
     $query = <<<EOF
-SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, color, icon_name
-FROM user_entry AS u INNER JOIN user_icon USING (icon_no)
-WHERE room_no = ? AND user_no = ?
+SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
+  last_load_scene, icon_filename, color, v.type AS vote_type
+FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
+  u.room_no = v.room_no AND v.vote_count = ? AND u.user_no = v.user_no AND v.type = ?
+WHERE u.room_no = ? ORDER BY user_no ASC
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, $user_no));
-    return DB::FetchClass('User', true);
+    DB::Prepare($query, array(DB::$ROOM->vote_count, 'GAMESTART', DB::$ROOM->id));
+    return DB::FetchClass('User');
+  }
+
+  //指定した人数分のユーザ情報を全村からランダムに取得する (テスト用)
+  static function LoadRandom($count) {
+    $query = <<<EOF
+SELECT room_no, (@new_user_no := @new_user_no + 1) AS user_no, uname, handle_name, profile,
+  sex, role, role_id, objection, live, last_load_scene, icon_filename, color
+FROM (SELECT room_no, uname FROM user_entry WHERE room_no > 0 GROUP BY uname) AS finder
+  LEFT JOIN user_entry USING (room_no, uname) LEFT JOIN user_icon USING (icon_no)
+ORDER BY RAND() LIMIT {$count}
+EOF;
+    DB::Execute('SET @new_user_no := 0');
+    DB::Prepare($query);
+    return DB::FetchClass('User');
   }
 }

@@ -67,7 +67,7 @@ class JinroAdmin {
 	DB::$ROOM->log_mode  = true;
 	DB::$ROOM->last_date = DB::$ROOM->date;
 
-	DB::$USER = new UserDataSet(RQ::$get);
+	DB::$USER = new UserData(RQ::$get);
 	DB::$SELF = new User();
 
 	$file = sprintf($format, $i, $flag ? 'r' : '');
