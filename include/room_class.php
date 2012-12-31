@@ -122,7 +122,8 @@ class Room {
 	return null;
       }
       $query = sprintf($format, $data, $this->id, $this->date, $this->scene, $this->vote_count);
-      $vote_list = DB::FetchAssoc($query);
+      DB::Prepare($query);
+      $vote_list = DB::FetchAssoc();
     }
 
     //Text::p($vote_list);
@@ -193,7 +194,8 @@ class Room {
 
     $format = 'SELECT type, message FROM system_message' . RoomDB::DATE . ' AND type IN (%s)';
     $query  = sprintf($format, $this->id, $this->date, implode(',', $type_list));
-    $this->event->rows = DB::FetchAssoc($query);
+    DB::Prepare($query);
+    $this->event->rows = DB::FetchAssoc();
   }
 
   //天候判定用の情報を DB から取得する
@@ -216,9 +218,10 @@ class Room {
 
   //player 情報を DB から取得する
   function LoadPlayer() {
-    $format = 'SELECT id AS role_id, date, scene, user_no, role FROM player WHERE room_no = %d';
+    $query = 'SELECT id AS role_id, date, scene, user_no, role FROM player WHERE room_no = ?';
+    DB::Prepare($query, array($this->id));
     $result = new StdClass();
-    foreach (DB::FetchAssoc(sprintf($format, $this->id)) as $stack) {
+    foreach (DB::FetchAssoc() as $stack) {
       extract($stack);
       $result->roles[$role_id] = $role;
       $result->users[$user_no][] = $role_id;
@@ -699,7 +702,7 @@ vote_count, revote_count, scene_start_time FROM room WHERE room_no = ?
 EOF;
     if ($lock) $query .= ' FOR UPDATE';
     DB::Prepare($query, array($room_no));
-    return DB::FetchAssoc(null, true);
+    return DB::FetchAssoc(true);
   }
 
   //終了した村番地を取得
@@ -711,7 +714,7 @@ EOF;
       $query .= sprintf(' LIMIT %d, %d', $view * (RQ::$get->page - 1), $view);
     }
     DB::Prepare($query, array('finished'));
-    return DB::FetchArray();
+    return DB::FetchColumn();
   }
 
   //終了した村数を取得

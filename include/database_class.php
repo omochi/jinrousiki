@@ -112,7 +112,8 @@ class DB {
 	  Text::p(self::$parameter);
 	}
 	return self::$statement;
-      } else {
+      }
+      else {
 	return false;
       }
     }
@@ -162,14 +163,22 @@ class DB {
   }
 
   //一次元の配列を取得
-  static function FetchArray($query = null) {
+  static function FetchColumn($query = null) {
     $stmt = self::Execute($query);
     self::Reset();
     return $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_COLUMN) : array();
   }
 
   //連想配列を取得
-  static function FetchAssoc($query = null, $shift = false) {
+  static function FetchAssoc($shift = false) {
+    $stmt = self::Execute();
+    self::Reset();
+    $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_ASSOC) : array();
+    return $shift ? array_shift($stack) : $stack;
+  }
+
+  //連想配列を取得 (互換用)
+  static function FetchArray($query, $shift = false) {
     $stmt = self::Execute($query);
     self::Reset();
     $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_ASSOC) : array();
@@ -177,16 +186,16 @@ class DB {
   }
 
   //オブジェクト形式の配列を取得
-  static function FetchObject($query, $class, $shift = false) {
-    $stmt = self::Execute($query);
+  static function FetchClass($class, $shift = false) {
+    $stmt = self::Execute();
     self::Reset();
     $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_CLASS, $class) : array();
     return $shift ? array_shift($stack) : $stack;
   }
 
-  //オブジェクト形式の配列を取得 (Prepare 経由用)
-  static function FetchClass($class, $shift = false) {
-    $stmt = self::Execute();
+  //オブジェクト形式の配列を取得 (互換用)
+  static function FetchObject($query, $class, $shift = false) {
+    $stmt = self::Execute($query);
     self::Reset();
     $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_CLASS, $class) : array();
     return $shift ? array_shift($stack) : $stack;

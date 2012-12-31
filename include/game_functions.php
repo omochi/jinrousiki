@@ -386,7 +386,8 @@ class GameHTML {
       else {
 	$query = sprintf("date = %d AND scene = '%s'", DB::$ROOM->date, 'day');
       }
-      $stack_list = DB::FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()");
+      DB::Prepare("{$query_header} AND {$query} ORDER BY RAND()");
+      $stack_list = DB::FetchAssoc();
     }
 
     $str = self::GenerateWeather();
@@ -401,7 +402,8 @@ class GameHTML {
     }
     $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
     $query = sprintf("date = %d AND scene = '%s'", $yesterday, DB::$ROOM->scene);
-    foreach (DB::FetchAssoc("{$query_header} AND {$query} ORDER BY RAND()") as $stack) {
+    DB::Prepare("{$query_header} AND {$query} ORDER BY RAND()");
+    foreach (DB::FetchAssoc() as $stack) {
       $str .= self::ParseDead($stack['handle_name'], $stack['type'], $stack['result']);
     }
     return $str;
@@ -415,7 +417,8 @@ class GameHTML {
     $query = DB::$ROOM->GetQueryHeader('result_lastwords', 'handle_name', 'message') .
       ' AND date = ';
     $date  = DB::$ROOM->date - ($shift ? 0 : 1); //基本は前日
-    $stack = DB::FetchAssoc($query . $date);
+    DB::Prepare($query . $date);
+    $stack = DB::FetchAssoc();
     if (count($stack) < 1) return null;
     shuffle($stack); //表示順はランダム
 
@@ -614,7 +617,8 @@ EOF;
       }
       $query = DB::$ROOM->GetQueryHeader('system_message', 'message', 'type') .
 	sprintf(' AND date = %d AND (%s)', $yesterday, $action);
-      $stack_list = DB::FetchAssoc($query);
+      DB::Prepare($query);
+      $stack_list = DB::FetchAssoc();
     }
 
     foreach ($stack_list as $stack) {
@@ -758,7 +762,8 @@ EOF;
     //指定された日付の投票結果を取得
     $query = DB::$ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
 				       'vote', 'poll') . " AND date = {$date} ORDER BY count, id";
-    return self::ParseVote(DB::FetchAssoc($query), $date);
+    DB::Prepare($query);
+    return self::ParseVote(DB::FetchAssoc(), $date);
   }
 
   //死亡メッセージパース

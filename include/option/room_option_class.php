@@ -83,7 +83,8 @@ class RoomOption {
   //ゲームオプション画像出力
   static function Output() {
     $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
-    extract(DB::FetchAssoc($query, true));
+    DB::Prepare($query);
+    extract(DB::FetchAssoc(true));
     $format = "<div class=\"game-option\">ゲームオプション：%s</div>\n";
     printf($format, self::Generate($game_option, $option_role, $max_user));
   }

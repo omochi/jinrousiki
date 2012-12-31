@@ -56,26 +56,15 @@ class User {
 
   //player 入れ替え処理
   public function ChangePlayer($id) {
-    if (! isset($this->role_id) || $this->role_id == $id) return;
+    if (! isset($this->role_id) || $this->role_id == $id) return false;
     $this->role_id = $id;
     $this->Parse(DB::$USER->player->roles[$id]);
+    return true;
   }
 
   //夜の投票取得
   public function LoadVote($type, $not_type = '') {
-    $query = DB::$ROOM->GetQueryHeader('vote', 'type', 'target_no') .
-      sprintf(" AND date = %d AND vote_count = %d AND ", DB::$ROOM->date, DB::$ROOM->vote_count);
-    if ($type == 'WOLF_EAT') {
-      $query .= sprintf("type = '%s'", $type);
-    }
-    elseif ($not_type != '') {
-      $str = "user_no = %d AND type IN ('%s', '%s')";
-      $query .= sprintf($str, $this->user_no, $type, $not_type);
-    }
-    else {
-      $query .= sprintf("user_no = %d AND type = '%s'", $this->user_no, $type);
-    }
-    return DB::FetchAssoc($query, true);
+    return UserDB::GetVote($this->user_no, $type, $not_type);
   }
 
   //遺言取得
@@ -1177,7 +1166,29 @@ class UserDB {
   static function GetUser() {
     $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
     DB::Prepare($query, array(RQ::$get->room_no, RQ::$get->user_no));
-    return DB::FetchAssoc(null, true);
+    return DB::FetchAssoc(true);
+  }
+
+  //投票取得
+  static function GetVote($user_no, $type, $not_type) {
+    $query = <<<EOF
+SELECT type, target_no FROM vote WHERE room_no = ? AND date = ? AND vote_count = ? AND 
+EOF;
+    $list = array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->vote_count);
+    if ($type == 'WOLF_EAT') {
+      $query .= 'type = ?';
+      $list[] = $type;
+    }
+    elseif ($not_type != '') {
+      $query .= 'user_no = ? AND type IN (?, ?)';
+      array_push($list, $user_no, $type, $not_type);
+    }
+    else {
+      $query .= 'user_no = ? AND type = ?';
+      array_push($list, $user_no, $type);
+    }
+    DB::Prepare($query, $list);
+    return DB::FetchAssoc(true);
   }
 
   //ユーザクラス取得
@@ -1190,6 +1201,7 @@ EOF;
     DB::Prepare($query, array(RQ::$get->room_no, $user_no));
     return DB::FetchClass('User', true);
   }
+
 
   //キック判定
   static function IsKick($uname) {

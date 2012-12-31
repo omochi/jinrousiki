@@ -8,7 +8,7 @@ class DevRoom {
      'id' => RQ::$get->room_no, 'comment' => '',
      'date' => 0, 'scene' => 'beforegame', 'status' => 'waiting',
      'game_option' => 'dummy_boy real_time:6:4 wish_role',
-     'option_role' => '',
+     'option_role' => '', 'vote_count' => 1
     );
 
     RQ::$get->room_no     = 1;

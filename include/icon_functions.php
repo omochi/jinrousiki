@@ -1,73 +1,29 @@
 <?php
 //-- DB アクセス (アイコン拡張) --//
 class IconDB {
-  //アイコン存在チェック
-  static function Exists($icon_no) {
-    $format = 'SELECT icon_no FROM user_icon WHERE icon_no = %d';
-    return DB::Count(sprintf($format, $icon_no)) > 0;
-  }
-
-  //アイコン名存在チェック
-  static function ExistsName($icon_name) {
-    $format = "SELECT icon_no FROM user_icon WHERE icon_name = '%s'";
-    return DB::Count(sprintf($format, $icon_name)) > 0;
-  }
-
-  //アイコン名重複チェック
-  static function IsDuplicate($icon_no, $icon_name) {
-    $format = "SELECT icon_no FROM user_icon WHERE icon_no <> %d AND icon_name = '%s'";
-    return DB::Count(sprintf($format, $icon_no, $icon_name)) > 0;
-  }
-
-  //有効判定
-  static function IsEnable($icon_no) {
-    $query = 'SELECT icon_no FROM user_icon WHERE icon_no = ? AND disable IS NOT TRUE';
-    DB::Prepare($query, array($icon_no));
-    return DB::Count() > 0;
-  }
-
-  //非表示フラグチェック
-  static function IsDisable($icon_no) {
-    $format = 'SELECT icon_no FROM user_icon WHERE icon_no = %d AND disable = TRUE';
-    return DB::Count(sprintf($format, $icon_no)) > 0;
-  }
-
-  //村で使用中のアイコンチェック
-  static function IsUsing($icon_no) {
-    $format = 'SELECT icon_no FROM user_icon ' .
-      'INNER JOIN user_entry USING (icon_no) INNER JOIN room USING (room_no) ' .
-      "WHERE icon_no = %d AND status IN ('waiting', 'playing')";
-    return DB::Count(sprintf($format, $icon_no)) > 0;
-  }
-
-  //登録数上限チェック
-  static function IsOver() {
-    return DB::Count('SELECT icon_no FROM user_icon') >= UserIconConfig::NUMBER;
-  }
-
   //アイコン情報取得
   static function Get($icon_no) {
-    $format = 'SELECT * FROM user_icon WHERE icon_no = %d';
-    return DB::FetchAssoc(sprintf($format, $icon_no));
+    DB::Prepare('SELECT * FROM user_icon WHERE icon_no = ?', array($icon_no));
+    return DB::FetchAssoc();
   }
 
   //アイコン名取得
   static function GetName($icon_no) {
-    $query = 'SELECT icon_name FROM user_icon WHERE icon_no = ?';
-    DB::Prepare($query, array($icon_no));
+    DB::Prepare('SELECT icon_name FROM user_icon WHERE icon_no = ?', array($icon_no));
     return DB::FetchResult();
   }
 
   //ファイル名取得
   static function GetFile($icon_no) {
-    $format = 'SELECT icon_filename FROM user_icon WHERE icon_no = %d';
-    return DB::FetchResult(sprintf($format, $icon_no));
+    DB::Prepare('SELECT icon_filename FROM user_icon WHERE icon_no = ?', array($icon_no));
+    return DB::FetchResult();
   }
 
   //セッション情報取得
   static function GetSession($icon_no) {
-    $format = 'SELECT icon_filename, session_id FROM user_icon WHERE icon_no = %d';
-    return DB::FetchAssoc(sprintf($format, $icon_no), true);
+    $query = 'SELECT icon_filename, session_id FROM user_icon WHERE icon_no = ?';
+    DB::Prepare($query, array($icon_no));
+    return DB::FetchAssoc(true);
   }
 
   //アイコン数取得
@@ -92,13 +48,14 @@ class IconDB {
       $limit = max(0, IconConfig::VIEW * (RQ::$get->page - 1));
       $query .= sprintf(' LIMIT %d, %d', $limit, IconConfig::VIEW);
     }
-    return DB::FetchAssoc($query);
+    DB::Prepare($query, array());
+    return DB::FetchAssoc();
   }
 
   //カテゴリ取得
   static function GetCategoryList($type) {
     $stack = array('SELECT', 'FROM user_icon WHERE', 'IS NOT NULL GROUP BY', 'ORDER BY icon_no');
-    return DB::FetchArray(implode(" {$type} ", $stack));
+    return DB::FetchColumn(implode(" {$type} ", $stack));
   }
 
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
@@ -110,7 +67,7 @@ class IconDB {
     if ($type == 'keyword') return $target;
 
     $format = 'SELECT DISTINCT %s FROM user_icon WHERE %s IS NOT NULL';
-    return DB::FetchArray(sprintf($format, $type, $type));
+    return DB::FetchColumn(sprintf($format, $type, $type));
   }
 
   //検索項目と検索値のセットから抽出条件を生成する
@@ -121,6 +78,55 @@ class IconDB {
     return $type . sprintf(' IN (%s)', implode(',', $stack));
   }
 
+  //アイコン存在チェック
+  static function Exists($icon_no) {
+    DB::Prepare('SELECT icon_no FROM user_icon WHERE icon_no = ?', array($icon_no));
+    return DB::Count() > 0;
+  }
+
+  //アイコン名存在チェック
+  static function ExistsName($icon_name) {
+    DB::Prepare('SELECT icon_no FROM user_icon WHERE icon_name = ?', array($icon_name));
+    return DB::Count() > 0;
+  }
+
+  //アイコン名重複チェック
+  static function IsDuplicate($icon_no, $icon_name) {
+    $query = 'SELECT icon_no FROM user_icon WHERE icon_no <> ? AND icon_name = ?';
+    DB::Prepare($query, array($icon_no, $icon_name));
+    return DB::Count() > 0;
+  }
+
+  //有効判定
+  static function IsEnable($icon_no) {
+    $query = 'SELECT icon_no FROM user_icon WHERE icon_no = ? AND disable IS NOT TRUE';
+    DB::Prepare($query, array($icon_no));
+    return DB::Count() > 0;
+  }
+
+  //非表示フラグチェック
+  static function IsDisable($icon_no) {
+    $query = 'SELECT icon_no FROM user_icon WHERE icon_no = ? AND disable = TRUE';
+    DB::Prepare($query, array($icon_no));
+    return DB::Count() > 0;
+  }
+
+  //村で使用中のアイコンチェック
+  static function IsUsing($icon_no) {
+    $query = <<<EOF
+SELECT icon_no FROM user_icon
+INNER JOIN user_entry USING (icon_no) INNER JOIN room USING (room_no)
+WHERE icon_no = ? AND status IN (?, ?)
+EOF;
+    DB::Prepare($query, array($icon_no, 'waiting', 'playing'));
+    return DB::Count() > 0;
+  }
+
+  //登録数上限チェック
+  static function IsOver() {
+    return DB::Count('SELECT icon_no FROM user_icon') >= UserIconConfig::NUMBER;
+  }
+
   //アイコン情報更新
   static function Update($icon_no, $data) {
     $format = 'UPDATE user_icon SET %s WHERE icon_no = %d';
@@ -129,8 +135,8 @@ class IconDB {
 
   //アイコン削除
   static function Delete($icon_no, $file) {
-    $query = sprintf('DELETE FROM user_icon WHERE icon_no = %d', $icon_no);
-    if (! DB::FetchBool($query)) return false; //削除処理
+    DB::Prepare('DELETE FROM user_icon WHERE icon_no = ?', array($icon_no));
+    if (! DB::FetchBool()) return false; //削除処理
     unlink(Icon::GetFile($file)); //ファイル削除
     DB::Optimize('user_icon'); //テーブル最適化 + コミット
     return true;
@@ -138,8 +144,8 @@ class IconDB {
 
   //セッション削除
   static function ClearSession($icon_no) {
-    $format = 'UPDATE user_icon SET session_id = NULL WHERE icon_no = %d';
-    return DB::FetchBool(sprintf($format, $icon_no));
+    DB::Prepare('UPDATE user_icon SET session_id = NULL WHERE icon_no = ?', array($icon_no));
+    return DB::FetchBool();
   }
 }
 

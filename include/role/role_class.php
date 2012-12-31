@@ -618,7 +618,8 @@ abstract class Role {
 	"AND date = %d AND type = '%s'";
       $query = sprintf($str, DB::$ROOM->id, $target_date, $action);
       if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->user_no);
-      $result_list = DB::FetchAssoc($query);
+      DB::Prepare($query);
+      $result_list = DB::FetchAssoc();
     }
     //Text::p($result_list);
 

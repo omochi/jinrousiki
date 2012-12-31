@@ -201,7 +201,14 @@ class TalkBuilder {
     */
     $actor = DB::$USER->ByUname($talk->uname);
     $real  = $actor;
-    if (DB::$ROOM->log_mode && isset($talk->role_id)) $actor->ChangePlayer($talk->role_id);
+    if (DB::$ROOM->log_mode && isset($talk->role_id)) { //役職スイッチ処理
+      //閲覧者のスイッチに伴う可視性のリロード処理
+      if ($actor->ChangePlayer($talk->role_id) && $actor->IsSame($this->actor->uname)) {
+	//Text::p($talk->role_id, 'Switch');
+	$this->LoadFilter();
+	$this->SetFlag();
+      }
+    }
     switch ($talk->scene) {
     case 'day':
     case 'night':
@@ -340,7 +347,9 @@ class TalkBuilder {
 	switch ($talk->location) {
 	case 'common': //共有者
 	  if ($this->flag->common || $mind_read) return $this->Add($actor, $talk, $real);
-	  if (RoleManager::LoadMain($actor)->Whisper($this, $talk->font_type)) return;
+	  $filter = RoleManager::LoadMain($actor);
+	  if (! method_exists($filter, 'Whisper')) return; //player スイッチによる不整合対策
+	  if ($filter->Whisper($this, $talk->font_type)) return;
 	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
@@ -348,7 +357,9 @@ class TalkBuilder {
 
 	case 'wolf': //人狼
 	  if ($this->flag->wolf || $mind_read) return $this->Add($actor, $talk, $real);
-	  if (RoleManager::LoadMain($actor)->Howl($this, $talk->font_type)) return;
+	  $filter = RoleManager::LoadMain($actor);
+	  if (! method_exists($filter, 'Howl')) return; //player スイッチによる不整合対策
+	  if ($filter->Howl($this, $talk->font_type)) return;
 	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }

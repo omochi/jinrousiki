@@ -91,7 +91,7 @@ class Session {
   private function GetUserList() {
     $query = 'SELECT user_no FROM user_entry WHERE session_id = ? AND room_no = ? AND live <> ?';
     DB::Prepare($query, array(self::GetID(), RQ::$get->room_no, 'kick'));
-    return DB::FetchArray();
+    return DB::FetchColumn();
   }
 
   //ユニークセッション ID 判定

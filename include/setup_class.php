@@ -37,7 +37,7 @@ class SetupDB {
       echo '初期設定はすでに完了しています';
       return;
     }
-    $table_list = DB::FetchArray('SHOW TABLES'); //テーブルのリストを取得
+    $table_list = DB::FetchColumn('SHOW TABLES'); //テーブルのリストを取得
 
     //チェックしてテーブルが存在しなければ作成する
     $footer  = "<br>\n";
