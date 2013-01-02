@@ -23,7 +23,7 @@ class GameTime {
       $base_time = TimeConfig::NIGHT;
       $full_time = 6;
     }
-    $spend_time     = DB::$ROOM->LoadSpendTime();
+    $spend_time     = TalkDB::GetSpendTime();
     $left_time      = max(0, $base_time - $spend_time); //残り時間
     $base_left_time = $silence ? TimeConfig::SILENCE_PASS : $left_time; //仮想時間の計算
     return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
@@ -371,40 +371,27 @@ class GameHTML {
     //ゲーム中以外は出力しない
     if (! DB::$ROOM->IsPlaying()) return null;
 
-    $yesterday = DB::$ROOM->date - 1;
-
-    if (DB::$ROOM->test_mode) {
-      $stack_list = RQ::GetTest()->result_dead;
-    }
-    else {
-      //共通クエリ
-      $query_header = DB::$ROOM->GetQueryHeader('result_dead', 'date', 'type', 'handle_name',
-						'result');
-      if (DB::$ROOM->IsDay()) {
-	$query = sprintf("date = %d AND scene = '%s'", $yesterday, 'night');
-      }
-      else {
-	$query = sprintf("date = %d AND scene = '%s'", DB::$ROOM->date, 'day');
-      }
-      DB::Prepare("{$query_header} AND {$query} ORDER BY RAND()");
-      $stack_list = DB::FetchAssoc();
-    }
-
     $str = self::GenerateWeather();
-    foreach ($stack_list as $stack) {
-      $str .= self::ParseDead($stack['handle_name'], $stack['type'], $stack['result']);
+    $stack_list = DB::$ROOM->test_mode ? RQ::GetTest()->result_dead : RoomDB::GetDead();
+    if (count($stack_list) > 0) {
+      shuffle($stack_list);
+      foreach ($stack_list as $stack) {
+	$str .= self::ParseDead($stack['handle_name'], $stack['type'], $stack['result']);
+      }
     }
 
     //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
-    if ($yesterday < 1 || DB::$ROOM->log_mode || DB::$ROOM->test_mode ||
+    if (DB::$ROOM->date < 2 || DB::$ROOM->log_mode || DB::$ROOM->test_mode ||
 	(DB::$ROOM->date == 2 && DB::$ROOM->Isday())) {
       return $str;
     }
     $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
-    $query = sprintf("date = %d AND scene = '%s'", $yesterday, DB::$ROOM->scene);
-    DB::Prepare("{$query_header} AND {$query} ORDER BY RAND()");
-    foreach (DB::FetchAssoc() as $stack) {
-      $str .= self::ParseDead($stack['handle_name'], $stack['type'], $stack['result']);
+    $stack_list = RoomDB::GetDead(true);
+    if (count($stack_list) > 0) {
+      shuffle($stack_list);
+      foreach ($stack_list as $stack) {
+	$str .= self::ParseDead($stack['handle_name'], $stack['type'], $stack['result']);
+      }
     }
     return $str;
   }
@@ -413,12 +400,7 @@ class GameHTML {
   static function GenerateLastWords($shift = false) {
     //スキップ判定
     if (! (DB::$ROOM->IsPlaying() || DB::$ROOM->log_mode) || DB::$ROOM->personal_mode) return null;
-
-    $query = DB::$ROOM->GetQueryHeader('result_lastwords', 'handle_name', 'message') .
-      ' AND date = ';
-    $date  = DB::$ROOM->date - ($shift ? 0 : 1); //基本は前日
-    DB::Prepare($query . $date);
-    $stack = DB::FetchAssoc();
+    $stack = RoomDB::GetLastWords($shift);
     if (count($stack) < 1) return null;
     shuffle($stack); //表示順はランダム
 
@@ -594,31 +576,8 @@ EOF;
     $footer = '</b><br>'."\n";
     if (DB::$ROOM->test_mode) {
       $stack_list = RQ::GetTest()->ability_action_list;
-    }
-    else {
-      $yesterday = DB::$ROOM->date - 1;
-      $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
-			   'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO',
-			   'FAIRY_DO');
-      if ($yesterday == 1) {
-	array_push($action_list, 'CUPID_DO', 'DUELIST_DO', 'MANIA_DO');
-      }
-      else {
-	array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
-		   'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
-		   'POISON_CAT_DO', 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
-		   'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO',
-		   'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
-      }
-      $action = '';
-      foreach ($action_list as $this_action) {
-	if ($action != '') $action .= ' OR ';
-	$action .= sprintf("type = '%s'", $this_action);
-      }
-      $query = DB::$ROOM->GetQueryHeader('system_message', 'message', 'type') .
-	sprintf(' AND date = %d AND (%s)', $yesterday, $action);
-      DB::Prepare($query);
-      $stack_list = DB::FetchAssoc();
+    } else {
+      $stack_list = RoomDB::GetAbility();
     }
 
     foreach ($stack_list as $stack) {

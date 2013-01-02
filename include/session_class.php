@@ -46,8 +46,7 @@ class Session {
 
   //認証
   static function Certify($exit = true) {
-    //セッション ID による認証
-    $stack = self::GetUserList();
+    $stack = SessionDB::Certify();
     if (count($stack) == 1) {
       self::$user_no = array_shift($stack);
       return true;
@@ -61,8 +60,7 @@ class Session {
   static function CertifyGamePlay() {
     if (self::Certify(false)) return true;
 
-    //村が存在するなら観戦ページにジャンプする
-    if (RoomDataDB::Exists()) {
+    if (RoomDataDB::Exists()) { //村が存在するなら観戦ページにジャンプする
       $url   = sprintf('game_view.php?room_no=%d', RQ::$get->room_no);
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .
@@ -83,22 +81,8 @@ class Session {
   private function GetUniq() {
     do {
       self::Reset();
-    } while (self::Exists());
+    } while (SessionDB::Exists());
     return self::GetID();
-  }
-
-  //セッション ID 認証
-  private function GetUserList() {
-    $query = 'SELECT user_no FROM user_entry WHERE session_id = ? AND room_no = ? AND live <> ?';
-    DB::Prepare($query, array(self::GetID(), RQ::$get->room_no, 'kick'));
-    return DB::FetchColumn();
-  }
-
-  //ユニークセッション ID 判定
-  private function Exists() {
-    $query = 'SELECT room_no FROM user_entry WHERE session_id = ?';
-    DB::Prepare($query, array(self::GetID()));
-    return DB::Count() > 0;
   }
 
   //エラー出力
@@ -106,5 +90,22 @@ class Session {
     $title = 'セッション認証エラー';
     $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
     HTML::OutputResult($title, $body);
+  }
+}
+
+//-- データベースアクセス (Session 拡張) --//
+class SessionDB {
+  //ユニーク判定
+  static function Exists() {
+    $query = 'SELECT room_no FROM user_entry WHERE session_id = ?';
+    DB::Prepare($query, array(Session::GetID()));
+    return DB::Count() > 0;
+  }
+
+  //認証
+  static function Certify() {
+    $query = 'SELECT user_no FROM user_entry WHERE session_id = ? AND room_no = ? AND live <> ?';
+    DB::Prepare($query, array(Session::GetID(), RQ::$get->room_no, 'kick'));
+    return DB::FetchColumn();
   }
 }

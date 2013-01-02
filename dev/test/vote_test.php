@@ -8,7 +8,7 @@ Loader::LoadFile('test_class', 'image_class');
 $vote_view_mode = false; //投票表示モード
 $cast_view_mode = false; //配役情報表示モード
 $talk_view_mode = false; //発言表示モード
-$role_view_mode = true; false; //画像表示モード
+$role_view_mode = false; //画像表示モード
 $role_view_list = array(
   'main'    => true, #false,
   'sub'     => false,
@@ -59,7 +59,7 @@ RQ::GetTest()->test_users[8]->live = 'dead';
 RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'ascetic_assassin death_note[5]';
+RQ::GetTest()->test_users[10]->role = 'ascetic_assassin death_note[5] speaker';
 RQ::GetTest()->test_users[10]->live = 'live';
 
 RQ::GetTest()->test_users[11]->role = 'fox downer_luck changed_vindictive';
@@ -278,7 +278,7 @@ RQ::$get->say = '';
 RQ::$get->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
-//DB::Connect(); //DB接続 (必要なときだけ設定する)
+DB::Connect(); //DB接続 (必要なときだけ設定する)
 DevRoom::Load();
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
@@ -292,7 +292,7 @@ if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 #DB::$USER->ByID(9)->live = 'live';
-#DB::$SELF = DB::$USER->ByID(9);
+DB::$SELF = DB::$USER->ByID(10);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;

@@ -72,26 +72,29 @@ class DB {
   //トランザクション開始
   static function Transaction() {
     if (self::$transaction) return true; //トランザクション中ならスキップ
-    return self::$transaction = self::FetchBool('START TRANSACTION', true);
+    return self::$transaction = self::$instance->beginTransaction();
   }
 
   //カウンタロック処理
   static function Lock($type) {
-    $query = sprintf("SELECT count FROM count_limit WHERE type = '%s' FOR UPDATE", $type);
-    return self::Transaction() && self::FetchBool($query);
+    DB::Prepare('SELECT count FROM count_limit WHERE type = ? FOR UPDATE', array($type));
+    return self::Transaction() && self::FetchBool();
   }
 
   //ロールバック処理
   static function Rollback() {
     self::$transaction = false; //必要なら事前にフラグ判定を行う
-    return self::FetchBool('ROLLBACK', true);
+    return self::$instance->rollBack();
   }
 
   //コミット処理
   static function Commit() {
     self::$transaction = false;
-    return self::FetchBool('COMMIT', true);
+    return self::$instance->commit();
   }
+
+  //最終 INSERT ID 取得
+  static function GetInsertID() { return self::$instance->lastInsertId(); }
 
   //Prepare 処理
   static function Prepare($query, $list = array()) {
@@ -139,7 +142,7 @@ class DB {
   }
 
   //コミット付き実行
-  static function ExecuteCommit($query) {
+  static function ExecuteCommit($query = null) {
     return self::FetchBool($query) && self::Commit();
   }
 

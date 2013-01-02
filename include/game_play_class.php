@@ -304,7 +304,7 @@ class GamePlay {
   //ヘッダ出力
   private function OutputHeader() {
     self::SetURL();
-    echo '<table class="game-header"><tr>'."\n";
+    Text::Output('<table class="game-header"><tr>');
 
     //ゲーム終了後・霊界
     if (DB::$ROOM->IsFinished() || (DB::$ROOM->heaven_mode && DB::$SELF->IsDead())) {
@@ -327,7 +327,7 @@ class GamePlay {
 
 	if (DB::$ROOM->heaven_mode) {
 	  if (DB::$ROOM->IsNight()) printf($format, $i, 'day',  $i, '昼');
-	  echo "</td>\n</tr></table>\n";
+	  Text::Output("</td>\n</tr></table>");
 	  return;
 	}
       }
@@ -336,7 +336,7 @@ class GamePlay {
 	if (DB::$ROOM->date > 0) {
 	  printf($format, DB::$ROOM->date, 'day', DB::$ROOM->date, '昼');
 	}
-	if (DB::$ROOM->LoadLastNightTalk() > 0) {
+	if (TalkDB::ExistsLastNight()) {
 	  printf($format, DB::$ROOM->date, 'night', DB::$ROOM->date, '夜');
 	}
 
@@ -351,10 +351,11 @@ class GamePlay {
 	$format = <<<EOF
 <form method="POST" action="%s" name="reload_middle_frame" target="middle">
 <input type="submit" value="更新">
-</form>%s
+</form>
+
 EOF;
 	$url = self::GetURL(array('dead_mode', 'heaven_mode'), 'game_play.php') . '&dead_mode=on';
-	printf($format, $url, "\n");
+	printf($format, $url);
       }
     }
 
@@ -432,7 +433,7 @@ EOF;
 	}
       }
     }
-    echo "</td></tr>\n</table>\n";
+    Text::Output("</td></tr>\n</table>");
 
     switch (DB::$ROOM->scene) {
     case 'beforegame': //開始前の注意を出力
@@ -486,15 +487,16 @@ EOF;
 <td class="objection"><form method="POST" action="%s">
 <input type="hidden" name="set_objection" value="on">
 <input type="image" name="objimage" src="%s">
-(%d)</form></td>%s
+(%d)</form></td>
+
 EOF;
       $list  = array('auto_reload', 'play_sound', 'icon', 'list_down');
       $url   = self::SelectURL($list, 'game_play.php');
       $image = GameConfig::OBJECTION_IMAGE;
       $count = GameConfig::OBJECTION - DB::$SELF->objection;
-      printf($format, $url, $image, $count, "\n");
+      printf($format, $url, $image, $count);
     }
-    echo "</tr></table>\n";
+    Text::Output('</tr></table>');
 
     if (! DB::$ROOM->IsPlaying()) return;
 

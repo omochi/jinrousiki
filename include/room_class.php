@@ -53,54 +53,6 @@ class Room {
   //経過時間取得
   function LoadTime() { return RoomDB::Fetch('UNIX_TIMESTAMP() - last_update_time'); }
 
-  //会話経過時間取得
-  function LoadSpendTime() {
-    $query = 'SELECT SUM(spend_time) FROM talk' . $this->GetQuery() .
-      sprintf(" AND scene = '%s'", $this->scene);
-    return (int)DB::FetchResult($query);
-  }
-
-  //最終シーンの夜の発言数を取得する
-  function LoadLastNightTalk() {
-    $format = 'SELECT uname FROM talk' . RoomDB::DATE . " AND scene = 'night'";
-    return DB::Count(sprintf($format, $this->id, $this->date));
-  }
-
-  //発言を取得する
-  function LoadTalk($heaven = false) {
-    if (RQ::$get->IsVirtualRoom()) return RQ::GetTest()->talk;
-
-    $select = 'scene, location, uname, action, sentence, font_type';
-    switch ($this->scene) {
-    case 'beforegame':
-      $table = 'talk_' . $this->scene;
-      $select .= ', handle_name, color';
-      break;
-
-    case 'aftergame':
-      $table = 'talk_' . $this->scene;
-      break;
-
-    default:
-      $table = 'talk';
-      if ($this->log_mode) $select .= ', role_id';
-      break;
-    }
-
-    if ($heaven) {
-      $table = 'talk';
-      $scene = 'heaven';
-    }
-    else {
-      $scene = $this->scene;
-    }
-
-    $query = "SELECT {$select} FROM {$table}" . $this->GetQuery(! $heaven) .
-      " AND scene = '{$scene}' ORDER BY id DESC";
-    if (! $this->IsPlaying()) $query .= ' LIMIT 0, ' . GameConfig::LIMIT_TALK;
-    return DB::FetchObject($query, 'TalkParser');
-  }
-
   //シーンに合わせた投票情報を取得する
   function LoadVote($kick = false) {
     if (RQ::$get->IsVirtualRoom()) {
@@ -658,6 +610,56 @@ class RoomDB {
 
   //日付入り条件取得
   static function GetDate() { return self::SELECT . self::Date; }
+
+  //前日の能力発動結果取得
+  static function GetAbility() {
+    $query = <<<EOF
+SELECT message, type FROM system_message WHERE room_no = ? AND date = ? AND type IN 
+EOF;
+    $date = DB::$ROOM->date - 1;
+    $list = array(DB::$ROOM->id, $date);
+    $action_list = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
+			 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO',
+			 'FAIRY_DO');
+    If ($date == 1) {
+      array_push($action_list, 'CUPID_DO', 'DUELIST_DO', 'MANIA_DO');
+    }
+    else {
+      array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
+		 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
+		 'POISON_CAT_DO', 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
+		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO',
+		 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
+    }
+    $query .= sprintf('(%s)', implode(',', array_fill(0, count($action_list), '?')));
+    DB::Prepare($query, array_merge($list, $action_list));
+    return DB::FetchAssoc();
+  }
+
+  //死者情報取得
+  static function GetDead($yesterday = false) {
+    $query = <<<EOF
+SELECT date, type, handle_name, result FROM result_dead
+WHERE room_no = ? AND date = ? AND scene = ?
+EOF;
+    $list = array(DB::$ROOM->id);
+    if ($yesterday) {
+      array_push($list, DB::$ROOM->date - 1, DB::$ROOM->scene);
+    } elseif (DB::$ROOM->IsDay()) {
+      array_push($list, DB::$ROOM->date - 1, 'night');
+    } else {
+      array_push($list, DB::$ROOM->date, 'day');
+    }
+    DB::Prepare($query, $list);
+    return DB::FetchAssoc();
+  }
+
+  //遺言取得
+  static function GetLastWords($shift = false) {
+    $query = 'SELECT handle_name, message FROM result_lastwords WHERE room_no = ? AND date = ?';
+    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date - ($shift ? 0 : 1)));
+    return DB::FetchAssoc();
+  }
 
   //基礎 SQL セット
   static function SetID($data, $lock = false) {

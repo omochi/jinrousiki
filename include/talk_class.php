@@ -4,7 +4,7 @@ class Talk {
   //会話出力
   static function Output() {
     $builder = new TalkBuilder('talk');
-    foreach (DB::$ROOM->LoadTalk() as $talk) $builder->Generate($talk); //会話出力
+    foreach (TalkDB::Get() as $talk) $builder->Generate($talk);
     $builder->GenerateTimeStamp();
     $builder->Output();
   }
@@ -16,7 +16,7 @@ class Talk {
 
     $is_open = DB::$ROOM->IsOpenCast(); //霊界公開判定
     $builder = new TalkBuilder('talk');
-    foreach (DB::$ROOM->LoadTalk(true) as $talk) {
+    foreach (TalkDB::Get(true) as $talk) {
       $user = DB::$USER->ByUname($talk->uname); //ユーザを取得
 
       $symbol = sprintf('<font color="%s">◆</font>', $user->color);
@@ -561,5 +561,124 @@ EOF;
     foreach (array('common', 'wolf', 'fox') as $type) { //身代わり君の上書き判定
       $this->flag->$type |= $this->flag->dummy_boy;
     }
+  }
+}
+
+//-- DB アクセス (Talk 拡張) --//
+class TalkDB {
+  //発言取得
+  function Get($heaven = false) {
+    if (RQ::$get->IsVirtualRoom()) return RQ::GetTest()->talk;
+
+    $format = 'SELECT %s FROM %s WHERE room_no = ?';
+    $select = 'scene, location, uname, action, sentence, font_type';
+    switch (DB::$ROOM->scene) {
+    case 'beforegame':
+      $table = sprintf('talk_%s', DB::$ROOM->scene);
+      $select .= ', handle_name, color';
+      break;
+
+    case 'aftergame':
+      $table = sprintf('talk_%s', DB::$ROOM->scene);
+      break;
+
+    default:
+      $table = 'talk';
+      if (DB::$ROOM->log_mode) $select .= ', role_id';
+      break;
+    }
+
+    if ($heaven) {
+      $table = 'talk';
+      $scene = 'heaven';
+    } else {
+      $scene = DB::$ROOM->scene;
+    }
+
+    $query = sprintf($format, $select, $table);
+    $list  = array(DB::$ROOM->id);
+    if (! $heaven) {
+      $query .= ' AND date = ?';
+      $list[] = DB::$ROOM->date;
+    }
+    $query .= ' AND scene = ? ORDER BY id DESC';
+    $list[] = $scene;
+
+    if (! DB::$ROOM->IsPlaying()) $query .= sprintf(' LIMIT 0, %d', GameConfig::LIMIT_TALK);
+    DB::Prepare($query, $list);
+    return DB::FetchClass('TalkParser');
+  }
+
+  //発言取得 (ログ用)
+  static function GetLog($set_date, $set_scene) {
+    $format = 'SELECT %s FROM %s WHERE room_no = ? AND ';
+    $list   = array(DB::$ROOM->id);
+    $select = 'scene, location, uname, action, sentence, font_type';
+    $table  = 'talk';
+    if (RQ::$get->time) $select .= ', time';
+
+    switch ($set_scene) {
+    case 'beforegame':
+      $table  .= '_' . $set_scene;
+      $select .= ', handle_name, color';
+      $format .= 'scene = ?';
+      $list[] = $set_scene;
+      break;
+
+    case 'aftergame':
+      $table .= '_' . $set_scene;
+      $format .= 'scene = ?';
+      $list[] = $set_scene;
+      break;
+
+    case 'heaven_only':
+      $format .= 'date = ? AND (scene = ? OR uname = ?)';
+      array_push($list, $set_date, 'heaven', 'system');
+      break;
+
+    default:
+      $select .= ', role_id';
+      $format .= 'date = ? AND scene IN ';
+      $list[] = $set_date;
+
+      $stack = array('day', 'night');
+      if (RQ::$get->heaven_talk) $stack[] = 'heaven';
+      $format .= sprintf('(%s)', implode(',', array_fill(0, count($stack), '?')));
+      $list = array_merge($list, $stack);
+      break;
+    }
+    if (DB::$ROOM->personal_mode) { //個人結果表示モード
+      $format .= ' AND uname = ?';
+      $list[] = 'system';
+    }
+    $query = sprintf($format, $select, $table);
+    $query .= ' ORDER BY id ' . (RQ::$get->reverse_log ? 'ASC' : 'DESC'); //ログの表示順
+
+    DB::Prepare($query, $list);
+    return DB::FetchClass('TalkParser');
+  }
+
+  //発言取得 (直近限定)
+  static function GetRecent() {
+    $query = <<<EOF
+SELECT uname, sentence FROM talk WHERE room_no = ? AND date = ? AND scene = ?
+ORDER BY id DESC LIMIT 5
+EOF;
+    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene));
+    return DB::FetchAssoc();
+  }
+
+  //会話経過時間取得
+  static function GetSpendTime() {
+    $query = 'SELECT SUM(spend_time) FROM talk WHERE room_no = ? AND date = ? AND scene = ?';
+    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene));
+    return (int)DB::FetchResult();
+  }
+
+  //最終シーンの夜の発言の有無を検出
+  function ExistsLastNight() {
+    $query = 'SELECT id FROM talk WHERE room_no = ? AND date = ? AND scene = ?';
+    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, 'night'));
+    return DB::Count() > 0;
   }
 }

@@ -9,7 +9,7 @@ class UserManager {
 
     extract(RQ::ToArray()); //引数を展開
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
-    if ($user_no > 0) $back_url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
+    if ($user_no > 0) $url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
     $back_url = sprintf('<br><a href="%s">戻る</a>', $url); //バックリンク
     if (GameConfig::TRIP && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
 

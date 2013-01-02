@@ -602,7 +602,7 @@ EOF;
     $values = sprintf("%d, %d, '%s', %d, '%s'",
 		      DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, $this->user_no, $role);
     if (! DB::Insert('player', $items, $values)) return false;
-    return $this->Update('role_id', mysql_insert_id());
+    return $this->Update('role_id', DB::GetInsertID());
   }
 
   //基幹死亡処理
@@ -1070,44 +1070,15 @@ class UserData {
 	break;
 
       case 'day': //昼 + 下界
-	$user_list = $this->LoadDay($request->room_no);
+	$user_list = UserDataDB::LoadDay($request->room_no);
 	break;
       }
     }
     else {
-      $user_list = $this->LoadRoom($request->room_no, $lock);
+      $user_list = UserDataDB::Load($request->room_no, $lock);
     }
     if (class_exists('RoleManager')) RoleManager::$get = new StdClass;
     $this->Parse($user_list);
-  }
-
-  //特定の村のユーザ情報取得
-  private function LoadRoom($room_no, $lock = false) {
-    $query = <<<EOF
-SELECT room_no, user_no, uname, handle_name, profile, sex, role, role_id, objection, live,
-  last_load_scene, icon_filename, color
-FROM user_entry LEFT JOIN user_icon USING (icon_no)
-WHERE room_no = {$room_no} ORDER BY user_no ASC
-EOF;
-    if ($lock) $query .= ' FOR UPDATE';
-    return DB::FetchObject($query, 'User');
-  }
-
-  //昼 + 下界用のユーザデータを取得する
-  private function LoadDay($room_no) {
-    if ($room_no != DB::$ROOM->id) return null;
-    $date       = DB::$ROOM->date;
-    $vote_count = DB::$ROOM->vote_count;
-    $room_no    = DB::$ROOM->id;
-    $query = <<<EOF
-SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
-  last_load_scene, icon_filename, color, v.target_no AS target_no
-FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
-  u.room_no = v.room_no AND v.date = {$date} AND v.vote_count = {$vote_count} AND
-  u.user_no = v.user_no AND v.type = 'VOTE_KILL'
-WHERE u.room_no = {$room_no} ORDER BY user_no ASC
-EOF;
-    return DB::FetchObject($query, 'User');
   }
 
   //ユーザ情報を User クラスでパースして登録
@@ -1243,6 +1214,19 @@ EOF;
 
 //-- データベースアクセス (UserData 拡張) --//
 class UserDataDB {
+  //ユーザデータ取得
+  static function Load($room_no, $lock = false) {
+    $query = <<<EOF
+SELECT room_no, user_no, uname, handle_name, profile, sex, role, role_id, objection, live,
+  last_load_scene, icon_filename, color
+FROM user_entry LEFT JOIN user_icon USING (icon_no)
+WHERE room_no = ? ORDER BY user_no ASC
+EOF;
+    if ($lock) $query .= ' FOR UPDATE';
+    DB::Prepare($query, array($room_no));
+    return DB::FetchClass('User');
+  }
+
   //ユーザデータ取得 (入村処理用)
   static function LoadEntryUser($room_no) {
     $query = <<<EOF
@@ -1264,6 +1248,22 @@ FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
 WHERE u.room_no = ? ORDER BY user_no ASC
 EOF;
     DB::Prepare($query, array(DB::$ROOM->vote_count, 'GAMESTART', DB::$ROOM->id));
+    return DB::FetchClass('User');
+  }
+
+  //ユーザデータ取得 (昼 + 下界)
+  static function LoadDay($room_no) {
+    if ($room_no != DB::$ROOM->id) return null;
+    $query = <<<EOF
+SELECT u.room_no, u.user_no, u.uname, handle_name, profile, sex, role, role_id, objection, live,
+  last_load_scene, icon_filename, color, v.target_no AS target_no
+FROM user_entry AS u LEFT JOIN user_icon USING (icon_no) LEFT JOIN vote AS v ON
+  u.room_no = v.room_no AND v.date = ? AND v.vote_count = ? AND
+  u.user_no = v.user_no AND v.type = ?
+WHERE u.room_no = ? ORDER BY user_no ASC
+EOF;
+    $list = array(DB::$ROOM->date, DB::$ROOM->vote_count, 'VOTE_KILL', DB::$ROOM->id);
+    DB::Prepare($query, $list);
     return DB::FetchClass('User');
   }
 

@@ -37,7 +37,7 @@ class Login {
 
     $crypt = Text::Crypt($password);
     //$crypt = $password; //デバッグ用
-    return self::Certify($uname, $crypt) && self::Update($uname, $crypt); //認証＆再登録処理
+    return LoginDB::Certify($uname, $crypt) && LoginDB::Update($uname, $crypt); //認証＆再登録処理
   }
 
   //結果出力関数
@@ -53,9 +53,12 @@ class Login {
     }
     HTML::OutputResult($title, $body, $url);
   }
+}
 
+//-- データベースアクセス (Login 拡張) --//
+class LoginDB {
   //ユーザ認証
-  private function Certify($uname, $password) {
+  static function Certify($uname, $password) {
     $query = <<<EOF
 SELECT user_no FROM user_entry
 WHERE room_no = ? AND uname = ? AND password = ? AND live <> ?
@@ -65,7 +68,7 @@ EOF;
   }
 
   //セッション ID 再登録
-  private function Update($uname, $password) {
+  static function Update($uname, $password) {
     $query = <<<EOF
 UPDATE user_entry SET session_id = ?
 WHERE room_no = ? AND uname = ? AND password = ? AND live <> ?

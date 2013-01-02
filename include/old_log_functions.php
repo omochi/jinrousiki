@@ -212,7 +212,7 @@ EOF;
       $winner      = RQ::$get->watch ? '-' : Image::Winner()->Generate($ROOM->winner);
       $str .= <<<EOF
 <tr>
-<td class="number" rowspan="3">{$ROOM->id}</td>
+<td class="number" rowspan="3"><a href="game_view.php?room_no={$ROOM->id}">{$ROOM->id}</a></td>
 <td class="title{$dead}"><a href="{$base_url}">{$ROOM->name} 村</a></td>
 <td class="upper">{$ROOM->user_count} {$max_user}</td>
 <td class="upper">{$ROOM->date}</td>
@@ -297,19 +297,10 @@ EOF;
 
   //指定の日付の会話ログを生成
   private function GenerateTalk($set_date, $set_scene) {
-    //シーンに合わせた会話ログを取得するためのクエリを生成
     $flag_border_game = false;
-    $query_select = 'scene, location, uname, action, sentence, font_type';
-    $query_table  = 'talk';
-    $query_where  = sprintf('room_no = %d AND ', DB::$ROOM->id);
-    if (RQ::$get->time) $query_select .= ', time';
-
-    switch ($set_scene) {
+    switch ($set_scene) { //シーンに合わせたデータをセット
     case 'beforegame':
       $table_class = $set_scene;
-      $query_table  .= '_' . $set_scene;
-      $query_select .= ', handle_name, color';
-      $query_where  .= "scene = '{$set_scene}'";
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
 	DB::$USER->ResetRoleList();
 	unset(DB::$ROOM->event);
@@ -319,8 +310,6 @@ EOF;
 
     case 'aftergame':
       $table_class = $set_scene;
-      $query_table .= '_' . $set_scene;
-      $query_where .= "scene = '{$set_scene}'";
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
 	DB::$USER->ResetRoleList();
 	unset(DB::$ROOM->event);
@@ -330,27 +319,17 @@ EOF;
 
     case 'heaven_only':
       $table_class = RQ::$get->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
-      $query_where .= "date = {$set_date} AND (scene = 'heaven' OR uname = 'system')";
       break;
 
     default:
       $flag_border_game = true;
       $table_class = RQ::$get->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
-      $query_select .= ', role_id';
-      $scene_list = array("'day'", "'night'");
-      if (RQ::$get->heaven_talk) $scene_list[] = "'heaven'";
-      $query_where .= "date = {$set_date} AND scene IN (" . implode(',', $scene_list) . ')';
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
 	DB::$USER->ResetRoleList();
 	DB::$USER->SetEvent(true);
       }
       break;
     }
-    if (DB::$ROOM->personal_mode) $query_where .= " AND uname = 'system'"; //個人結果表示モード
-    $query = "SELECT {$query_select} FROM {$query_table} WHERE {$query_where}";
-    $query .= ' ORDER BY id' . (RQ::$get->reverse_log ? '' : ' DESC'); //ログの表示順
-
-    $talk_list = DB::FetchObject($query, 'TalkParser');
 
     //-- 仮想稼動モードテスト用 --//
     //DB::$SELF = DB::$USER->rows[3];
@@ -362,11 +341,11 @@ EOF;
     //出力
     $str = '';
     if ($flag_border_game && ! RQ::$get->reverse_log) {
-      DB::$ROOM->date = $set_date + 1;
+      DB::$ROOM->date  = $set_date + 1;
       DB::$ROOM->scene = 'day';
       $str .= GameHTML::GenerateLastWords() . GameHTML::GenerateDead(); //死亡者を出力
     }
-    DB::$ROOM->date = $set_date;
+    DB::$ROOM->date  = $set_date;
     DB::$ROOM->scene = $table_class;
     if ($set_scene != 'heaven_only') DB::$ROOM->SetWeather();
 
@@ -375,7 +354,7 @@ EOF;
     if (RQ::$get->reverse_log) $builder->GenerateTimeStamp();
     //if (DB::$ROOM->watch_mode) $builder->AddSystem(DB::$ROOM->date . print_r(DB::$ROOM->event, true));
 
-    foreach ($talk_list as $talk) {
+    foreach (TalkDB::GetLog($set_date, $set_scene) as $talk) {
       switch ($talk->scene) {
       case 'day':
 	if (DB::$ROOM->IsDay() || $talk->location == 'dummy_boy') break;
@@ -401,7 +380,7 @@ EOF;
       //突然死で勝敗が決定したケース
       if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= GameHTML::GenerateVote();
 
-      DB::$ROOM->date = $set_date + 1;
+      DB::$ROOM->date  = $set_date + 1;
       DB::$ROOM->scene = 'day';
       $str .= GameHTML::GenerateDead() . GameHTML::GenerateLastWords(); //遺言を出力
     }
@@ -416,8 +395,7 @@ EOF;
     if (RQ::$get->reverse_log) {
       DB::$ROOM->scene = 'night';
       $str .= GameHTML::GenerateVote() . GameHTML::GenerateDead();
-    }
-    else {
+    } else {
       $str .= GameHTML::GenerateDead() . GameHTML::GenerateVote();
     }
     return $str;
