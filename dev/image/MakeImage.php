@@ -130,6 +130,10 @@ class RoleMessageList {
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#傀儡師#、^人形^から^人形遣い^に見えている#占い師#です。#占い#の力と^人形^の協力で、一気に人外を炙り出すのです！",
     'type' => 'mage', 'delimiter' => array('^' => 'doll'));
 
+  public $step_mage = array(
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#審神者#です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
+    'type' => 'mage', 'delimiter' => array('^' => 'doll'));
+
   public $soul_mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#魂の占い師#、役職を知ることができる#占い師#です。自らの運命をも、その魂で切り開くことができるはずです。",
     'type' => 'mage');
@@ -1757,6 +1761,7 @@ class RoleMessageList {
   public $result_unconscious = array('message' => "さんは|無意識|でした", 'type' => 'result_human');
   public $result_mage = array('message' => "さんは|占い師|でした", 'delimiter' => array('|' => 'mage'));
   public $result_puppet_mage = array('message' => "さんは|傀儡師|でした", 'type' => 'result_mage');
+  public $result_step_mage = array('message' => "さんは|審神者|でした", 'type' => 'result_mage');
   public $result_soul_mage = array('message' => "さんは|魂の占い師|でした", 'type' => 'result_mage');
   public $result_psycho_mage = array('message' => "さんは|精神鑑定士|でした", 'type' => 'result_mage');
   public $result_sex_mage = array('message' => "さんは|ひよこ鑑定士|でした", 'type' => 'result_mage');
@@ -2257,4 +2262,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('prediction_weather_aurora');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-$builder->Output('spiritism_wizard', array(0));
+$builder->Output('step_mage', array(0));

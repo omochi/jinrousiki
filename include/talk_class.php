@@ -81,6 +81,11 @@ class TalkParser {
       case 'GAMESTART_DO':
 	return;
 
+      case 'STEP_MAGE_DO':
+	$action = 'mage_do';
+	$this->class = 'mage-do';
+	break;
+
       case 'VOODOO_KILLER_DO':
 	$this->class = 'mage-do';
 	break;

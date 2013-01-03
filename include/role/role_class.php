@@ -961,7 +961,7 @@ class RoleHTML {
     elseif ($type == 'WOLF_EAT' || $type == 'CUPID_DO' || $type == 'DUELIST_DO') {
       $str = '投票済み';
     }
-    elseif ($type == 'SPREAD_WIZARD_DO') {
+    elseif ($type == 'SPREAD_WIZARD_DO' || $type == 'STEP_MAGE_DO') {
       $str_stack = array();
       foreach (explode(' ', $stack['target_no']) as $id) {
 	$user = DB::$USER->ByVirtual($id);

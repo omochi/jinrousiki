@@ -855,8 +855,8 @@ class Vote {
     }
 
     //処理対象コマンドチェック
-    $stack = array('WOLF_EAT', 'MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO', 'JAMMER_MAD_DO',
-		   'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
+    $stack = array('WOLF_EAT', 'MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
+		   'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
     if (DB::$ROOM->date == 1) {
       $stack[] = 'MANIA_DO';
     }
@@ -894,8 +894,8 @@ class Vote {
     }
     elseif (DB::$ROOM->IsEvent('new_moon')) { //新月
       $skip = true; //影響範囲に注意
-      array_push($stack, 'MAGE_DO', 'VOODOO_KILLER_DO', 'WIZARD_DO', 'SPREAD_WIZARD_DO',
-		 'CHILD_FOX_DO', 'VAMPIRE_DO', 'FAIRY_DO');
+      array_push($stack, 'MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'WIZARD_DO',
+		 'SPREAD_WIZARD_DO', 'CHILD_FOX_DO', 'VAMPIRE_DO', 'FAIRY_DO');
     }
     elseif (DB::$ROOM->IsEvent('no_contact')) { //花曇 (さとり系に注意)
       $skip = true; //影響範囲に注意
@@ -1175,11 +1175,18 @@ class Vote {
     //Text::p(RoleManager::$get->jammer, 'Target [jammer]');
     //Text::p(RoleManager::$get->anti_voodoo_success, 'Success [anti_voodoo/jammer]');
 
+    RoleManager::$get->step    = array(); //審神者の対象者リスト
     RoleManager::$get->phantom = array(); //幻系の発動者リスト
-    foreach (array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action) { //占い系の処理
+    //占い系の処理
+    foreach (array('MAGE_DO', 'STEP_MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action) {
       foreach ($vote_data[$action] as $id => $target_id) {
 	$user = DB::$USER->ByID($id);
 	if ($user->IsDead(true)) continue; //直前に死んでいたら無効
+	if ($action == 'STEP_MAGE_DO') {
+	  $stack = explode(' ', $target_id);
+	  $target_id = array_pop($stack);
+	  RoleManager::$get->step[$id] = $stack;
+	}
 	RoleManager::LoadMain($user)->Mage(DB::$USER->ByID($target_id));
       }
     }

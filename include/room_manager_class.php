@@ -328,7 +328,7 @@ EOF;
 
   //次の村番号を取得
   static function GetNext() {
-    return DB::FetchResult('SELECT MAX(room_no) + 1 FROM room');
+    return (int)DB::FetchResult('SELECT MAX(room_no) FROM room') + 1;
   }
 
   //ユーザ数取得

@@ -588,6 +588,7 @@ EOF;
       case 'FAIRY_DO':
       case 'DUELIST_DO':
       case 'SPREAD_WIZARD_DO':
+      case 'STEP_MAGE_DO':
 	$target = 'は '.$target;
 	break;
 
@@ -641,6 +642,7 @@ EOF;
 	break;
 
       case 'MAGE_DO':
+      case 'STEMP_MAGE_DO':
       case 'CHILD_FOX_DO':
 	echo $target.'を占いました';
 	break;
@@ -791,6 +793,16 @@ EOF;
       if (! $open_reason) return;
       $base  = false;
       $class = 'fairy';
+      break;
+
+    case 'STEP':
+      $base  = false;
+      $class = 'fairy';
+      $stack = array();
+      foreach (explode(' ', trim($name)) as $id) {
+	$stack[] = DB::$USER->ByID($id)->handle_name;
+      }
+      $name = implode(' ', $stack) . ' ';
       break;
 
     default:

@@ -127,6 +127,7 @@ class Message {
   static public $challenge          = 'は難題を解けなかったようです'; //難題
   static public $joker_moved        = 'にジョーカーが移動したようです'; //ジョーカーの移動
   static public $death_note_moved   = 'にデスノートが移動したようです'; //デスノートの移動
+  static public $step               = 'で足音が聞こえた…'; //足音
 
   //花妖精のリスト (A-Z)
   static public $flowered_a = 'の頭の上に松の花が咲きました';

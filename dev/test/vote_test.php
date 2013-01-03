@@ -31,7 +31,6 @@ RQ::AddTestRoom('game_option', 'weather');
 #RQ::AddTestRoom('game_option', 'quiz');
 
 DevUser::Initialize(25);
-
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
@@ -41,7 +40,7 @@ RQ::GetTest()->test_users[2]->live = 'live';
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
 RQ::GetTest()->test_users[3]->live = 'live';
 
-RQ::GetTest()->test_users[4]->role = 'stargazer_mage lovers[16] challenge_lovers rebel';
+RQ::GetTest()->test_users[4]->role = 'step_mage lovers[16] challenge_lovers rebel';
 RQ::GetTest()->test_users[4]->live = 'live';
 
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
@@ -200,7 +199,8 @@ if ($set_date == 1) { //初日用
   RQ::GetTest()->vote->night = array(
     array('user_no' => 2, 	'target_no' => 21,	'type' => 'WOLF_EAT'),
     #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
-    array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
+    #array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
+    array('user_no' => 4, 	'target_no' => '9 14 19 20',	'type' => 'STEP_MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
     array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
     #array('user_no' => 8, 	'target_no' => 15,	'type' => 'GUARD_DO'),
@@ -292,7 +292,7 @@ if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 #DB::$USER->ByID(9)->live = 'live';
-DB::$SELF = DB::$USER->ByID(10);
+DB::$SELF = DB::$USER->ByID(1);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;
@@ -436,6 +436,7 @@ do {
       $target_uname = implode(' ', $target_stack);
       break;
 
+    case 'STEP_MAGE_DO':
     case 'SPREAD_WIZARD_DO':
       $target_stack = array();
       foreach (explode(' ', $stack['target_no']) as $id) {
@@ -469,8 +470,8 @@ do {
   GameHTML::OutputPlayer();
   RoleHTML::OutputAbility();
   //foreach (array(5, 18, 2, 9, 13, 14, 23) as $id) {
-  foreach (range(1, 25) as $id) {
-    DB::$SELF = DB::$USER->ByID($id); RoleHTML::OutputAbility();
+  foreach (DB::$USER->rows as $user) {
+    DB::$SELF = $user; RoleHTML::OutputAbility();
   }
   //var_dump(DB::$USER->IsOpenCast());
 } while(false);
@@ -483,4 +484,5 @@ do {
 
 //DB::Connect(); DB::d();
 //Text::p($stack);
+
 HTML::OutputFooter(true);

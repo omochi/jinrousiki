@@ -13,9 +13,7 @@ class Role_mage extends Role {
     if (DB::$ROOM->date > 1) $this->OutputAbilityResult($this->result);
   }
 
-  function OutputAction() {
-    RoleHTML::OutputVote('mage-do', 'mage_do', $this->action);
-  }
+  function OutputAction() { RoleHTML::OutputVote('mage-do', 'mage_do', $this->action); }
 
   //占い
   function Mage(User $user) {
@@ -23,7 +21,7 @@ class Role_mage extends Role {
       return $this->SaveMageResult($user, $this->mage_failed, $this->result);
     }
     if ($this->IsCursed($user)) return false;
-    $this->SaveMageResult($user, $this->GetMageResult($user), $this->result);
+    return $this->SaveMageResult($user, $this->GetMageResult($user), $this->result);
   }
 
   //占い失敗判定
@@ -108,6 +106,6 @@ class Role_mage extends Role {
   //占い結果登録
   function SaveMageResult(User $user, $result, $action) {
     $target = DB::$USER->GetHandleName($user->uname, true);
-    DB::$ROOM->ResultAbility($action, $result, $target, $this->GetID());
+    return DB::$ROOM->ResultAbility($action, $result, $target, $this->GetID());
   }
 }

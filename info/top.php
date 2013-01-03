@@ -7,10 +7,11 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.1.0アップロード (2012/12/24 (Mon) 00:00) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57688/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.0α2アップロード (2013/01/03 (Thu) 03:16) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57777/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>ライブラリの整備</li>
+  <li>ログイン画面にトリップ入力欄を追加</li>
+  <li>基幹ライブラリの再構成</li>
 </ul>
 
 <h1>開発状況</h1>
