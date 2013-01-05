@@ -316,7 +316,7 @@ class RequestGameVote extends RequestBaseGamePlay {
   function __construct() {
     parent::__construct();
     $this->Parse('intval', 'post.revote_count');
-    $this->Parse('IsOn', 'post.vote');
+    $this->Parse('IsOn', 'post.vote', 'post.add_action');
     $this->Parse(null, 'post.target_no', 'post.situation');
     $this->AttachTestParameters(); //テスト用引数のロード
 

@@ -1,52 +1,50 @@
 <?php
 /*
-  ◆審神者 (step_mage)
+  ◆響狐 (step_fox)
   ○仕様
 */
-RoleManager::LoadFile('mage');
-class Role_step_mage extends Role_mage {
-  public $action = 'STEP_MAGE_DO';
-  public $submit = 'mage_do';
+RoleManager::LoadFile('fox');
+class Role_step_fox extends Role_fox {
+  public $action     = 'STEP_DO';
+  public $not_action = 'STEP_NOT_DO';
   public $checkbox = '<input type="checkbox" name="target_no[]"';
 
-  function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }
+  function OutputAction() {
+    RoleHTML::OutputVote('step-do', 'step_do', $this->action, $this->not_action);
+  }
+
+  function IsVoteCheckbox(User $user, $live) { return true; }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //Text::p($stack);
+    sort($stack);
 
-    $actor = $this->GetActor();
-    $id  = $actor->user_no;
+    $id  = array_shift($stack);
     $max = count(DB::$USER->rows);
 
     $last_vector = null;
     $count       = 0;
-    $root_list   = array();
-    do {
+    $root_list   = array($id);
+    while (count($stack) > 0) {
       $chain = $this->GetChain($id, $max);
       $point = array_intersect($chain, $stack);
       if (count($point) != 1) return '通り道が一本に繋がっていません';
 
       $vector = array_shift(array_keys($point));
       if ($vector != $last_vector) {
-	if ($count++ > 1) return '方向転換は一回まで';
+	if ($count++ > 0) return '通り道は直線にしてください';
 	$last_vector = $vector;
       }
 
       $id = array_shift($point);
       $root_list[] = $id;
       unset($stack[array_search($id, $stack)]);
-    } while (count($stack) > 0);
-    if (count($root_list) < 1) return '通り道が自分と繋がっていません';
-
-    $target = DB::$USER->ByID($id);
-    if ($this->IsActor($target->uname) || ! DB::$USER->IsVirtualLive($id)) { //例外判定
-      return '自分・死者には投票できません';
     }
 
     $target_stack = array();
     $handle_stack = array();
-    foreach ($root_list as $id) { //投票順に意味があるので sort しない
+    foreach ($root_list as $id) {
       $user = DB::$USER->ByID($id);
       $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
       $handle_stack[$id] = $user->handle_name;
@@ -59,7 +57,6 @@ class Role_step_mage extends Role_mage {
 
   //足音処理
   function Step(array $list) {
-    array_pop($list); //最後尾は対象者なので除く
     sort($list);
     $result = array();
     foreach ($list as $id) {

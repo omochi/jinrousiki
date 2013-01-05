@@ -310,9 +310,12 @@ abstract class Role {
   public $role;
   public $action;
   public $not_action;
+  public $add_action;
   public $submit;
   public $not_submit;
+  public $add_submit;
   public $ignore_message;
+  public $checkbox = '<input type="radio" name="target_no"';
 
   function __construct() {
     $this->role = array_pop(explode('Role_', get_class($this)));
@@ -736,7 +739,7 @@ abstract class Role {
     }
     else {
       if (! is_null($str = $this->IgnoreVote())) VoteHTML::OutputResult('夜：' . $str);
-      foreach (array('', 'not_') as $header) {
+      foreach (array('', 'not_', 'add_') as $header) {
 	foreach (array('action', 'submit') as $data) {
 	  $this->SetStack($this->{$header . $data}, $header . $data);
 	}
@@ -758,17 +761,20 @@ abstract class Role {
 
   //投票のチェックボックス取得
   function GetVoteCheckbox(User $user, $id, $live) {
-    return $this->IsVoteCheckbox($user, $live) ?
-      $this->GetVoteCheckboxHeader() . ' id="' . $id . '" value="' . $id . '">'."\n" : '';
+    if (! $this->IsVoteCheckbox($user, $live)) return '';
+    $checked = $this->IsVoteCheckboxChecked($user) ? ' checked' : '';
+    $str     = sprintf(' id="%d" value="%d"%s>', $id, $id, $checked);
+    return $this->GetVoteCheckboxHeader() . $str . "\n";
   }
 
   //投票対象判定
-  protected function IsVoteCheckbox(User $user, $live) {
-    return $live && ! $this->IsActor($user->uname);
-  }
+  function IsVoteCheckbox(User $user, $live) { return $live && ! $this->IsActor($user->uname); }
+
+  //投票対象自動チェック判定
+  function IsVoteCheckboxChecked(User $user) { return false; }
 
   //投票のチェックボックスヘッダ取得
-  function GetVoteCheckboxHeader() { return '<input type="radio" name="target_no"'; }
+  function GetVoteCheckboxHeader() { return $this->checkbox; }
 
   //-- 投票処理 (夜) --//
   //未投票チェック
@@ -803,6 +809,16 @@ abstract class Role {
   //投票スキップ判定 (夜)
   function IgnoreVoteNight(User $user, $live) {
     return ! $live || $this->IsActor($user->uname) ? '自分・死者には投票できません' : null;
+  }
+
+  //隣り合っている ID を取得
+  protected function GetChain($id, $max) {
+    $stack = array();
+    if ($id - 5 > 1)     $stack['U'] = $id - 5;
+    if ($id + 5 <= $max) $stack['D'] = $id + 5;
+    if ((($id - 1) % 5) != 0 && $id > 1)    $stack ['L'] = $id - 1;
+    if ((($id + 1) % 5) != 1 && $id < $max) $stack ['R'] = $id + 1;
+    return $stack;
   }
 
   //-- 投票集計処理 (夜) --//
@@ -958,26 +974,41 @@ class RoleHTML {
     if (count($stack) < 1) {
       $str = Message::${'ability_' . $sentence};
     }
-    elseif ($type == 'WOLF_EAT' || $type == 'CUPID_DO' || $type == 'DUELIST_DO') {
-      $str = '投票済み';
-    }
-    elseif ($type == 'SPREAD_WIZARD_DO' || $type == 'STEP_MAGE_DO') {
-      $str_stack = array();
-      foreach (explode(' ', $stack['target_no']) as $id) {
-	$user = DB::$USER->ByVirtual($id);
-	$str_stack[$user->user_no] = $user->handle_name;
-      }
-      ksort($str_stack);
-      $str = implode('さん ', $str_stack) . 'さんに投票済み';
-    }
-    elseif ($not_type != '' && $stack['type'] == $not_type) {
-      $str = 'キャンセル投票済み';
-    }
-    elseif ($type == 'POISON_CAT_DO' || $type == 'POSSESSED_DO') {
-      $str = DB::$USER->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
-    }
     else {
-      $str = DB::$USER->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
+      switch ($type) {
+      case 'WOLF_EAT':
+      case 'STEP_WOLF_EAT':
+      case 'SILENT_WOLF_EAT':
+      case 'CUPID_DO':
+      case 'DUELIST_DO':
+	$str = '投票済み';
+	break;
+
+      case 'STEP_MAGE_DO':
+      case 'STEP_GUARD_DO':
+      case 'SPREAD_WIZARD_DO':
+      case 'STEP_DO':
+	$str_stack = array();
+	foreach (explode(' ', $stack['target_no']) as $id) {
+	  $user = DB::$USER->ByVirtual($id);
+	  $str_stack[$user->user_no] = $user->handle_name;
+	}
+	ksort($str_stack);
+	$str = implode('さん ', $str_stack) . 'さんに投票済み';
+	break;
+
+      default:
+	if ($not_type != '' && $stack['type'] == $not_type) {
+	  $str = 'キャンセル投票済み';
+	}
+	elseif ($type == 'POISON_CAT_DO' || $type == 'POSSESSED_DO') {
+	  $str = DB::$USER->ByID($stack['target_no'])->handle_name . 'さんに投票済み';
+	}
+	else {
+	  $str = DB::$USER->ByVirtual($stack['target_no'])->handle_name . 'さんに投票済み';
+	}
+	break;
+      }
     }
     echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
   }

@@ -5,6 +5,7 @@
 */
 class Role_wolf extends Role {
   public $action = 'WOLF_EAT';
+  public $wolf_action_list = array('WOLF_EAT', 'STEP_WOLF_EAT', 'SILENT_WOLF_EAT');
 
   protected function OutputPartner() {
     $wolf_list        = array();
@@ -38,7 +39,16 @@ class Role_wolf extends Role {
     RoleHTML::OutputVote('wolf-eat', 'wolf_eat', $this->action);
   }
 
-  function IsFinishVote(array $list) { return isset($list[$this->action]); }
+  //身代わり君襲撃固定判定
+  function IsDummyBoy() {
+    return DB::$ROOM->IsQuiz() || (DB::$ROOM->IsDummyBoy() && DB::$ROOM->date == 1);
+  }
+
+  function IsVoteCheckboxChecked(User $user) { return $this->IsDummyBoy() && $user->IsDummyBoy(); }
+
+  function IsFinishVote(array $list) {
+    return count(array_intersect($this->wolf_action_list, array_keys($list))) > 0;
+  }
 
   //遠吠え
   function Howl(TalkBuilder $builder, $voice) {
@@ -53,9 +63,7 @@ class Role_wolf extends Role {
   function GetVoteTargetUser() {
     $stack = parent::GetVoteTargetUser();
     //身代わり君適用判定
-    if ((DB::$ROOM->IsDummyBoy() && DB::$ROOM->date == 1) || DB::$ROOM->IsQuiz()) {
-      $stack = array(1 => $stack[1]); //dummy_boy = 1番は保証されている？
-    }
+    if ($this->IsDummyBoy()) $stack = array(1 => $stack[1]); //dummy_boy = 1番は保証されている？
     return $stack;
   }
 
@@ -77,12 +85,12 @@ class Role_wolf extends Role {
 
   function IgnoreVoteNight(User $user, $live) {
     if (! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
-    if (! $this->IsWolfEatTarget($user->user_no)) return '狼同士には投票できません'; //仲間狼判定
     //クイズ村は GM 以外無効
     if (DB::$ROOM->IsQuiz() && ! $user->IsDummyBoy()) return 'クイズ村では GM 以外に投票できません';
     if (DB::$ROOM->IsDummyBoy() && DB::$ROOM->date == 1 && ! $user->IsDummyBoy()) { //身代わり君判定
       return '身代わり君使用の場合は、身代わり君以外に投票できません';
     }
+    if (! $this->IsWolfEatTarget($user->user_no)) return '狼同士には投票できません'; //仲間狼判定
     return null;
   }
 

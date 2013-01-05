@@ -12,7 +12,7 @@ class Role_ascetic_assassin extends Role_assassin {
 
   function WolfEatResist() {
     $rate = floor($this->GetAsceticCount() / 3) * 10;
-    Text::p($rate, 'resist_rate');
+    //Text::p($rate, 'resist_rate');
     return mt_rand(1, 100) <= $rate;
   }
 

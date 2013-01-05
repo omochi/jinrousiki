@@ -36,7 +36,7 @@ class Role_guard extends Role {
   function Guard(User $user, $flag = false) {
     $stack = array(); //護衛者検出
     foreach (RoleManager::LoadFilter('guard') as $filter) $filter->GetGuard($user->uname, $stack);
-    //Text::p($stack, 'List [gurad/' . $this->GetVoter()->uname . ']');
+    //Text::p($stack, sprintf('List [gurad/%s]',$this->GetVoter()->uname));
 
     $result  = false;
     $half    = DB::$ROOM->IsEvent('half_guard'); //曇天

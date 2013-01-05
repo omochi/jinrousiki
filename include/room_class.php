@@ -618,15 +618,16 @@ SELECT message, type FROM system_message WHERE room_no = ? AND date = ? AND type
 EOF;
     $date = DB::$ROOM->date - 1;
     $list = array(DB::$ROOM->id, $date);
-    $action_list = array('WOLF_EAT', 'MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO',
-			 'MIND_SCANNER_DO', 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO',
-			 'CHILD_FOX_DO', 'FAIRY_DO');
+    $action_list = array('MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
+			 'WOLF_EAT', 'STEP_WOLF_EAT', 'SILENT_WOLF_EAT', 'JAMMER_MAD_DO',
+			 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
     If ($date == 1) {
       array_push($action_list, 'CUPID_DO', 'DUELIST_DO', 'MANIA_DO');
     }
     else {
-      array_push($action_list, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'WIZARD_DO',
-		 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO', 'ASSASSIN_NOT_DO',
+      array_push($action_list, 'GUARD_DO', 'STEP_GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
+		 'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO',
+		 'ASSASSIN_NOT_DO',
 		 'POISON_CAT_DO', 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO', 'TRAP_MAD_NOT_DO',
 		 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO', 'OGRE_NOT_DO',
 		 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');

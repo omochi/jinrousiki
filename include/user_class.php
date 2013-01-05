@@ -1146,9 +1146,9 @@ class UserDB {
 SELECT type, target_no FROM vote WHERE room_no = ? AND date = ? AND vote_count = ? AND 
 EOF;
     $list = array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->vote_count);
-    if ($type == 'WOLF_EAT') {
-      $query .= 'type = ?';
-      $list[] = $type;
+    if ($type == 'WOLF_EAT' || $type == 'STEP_WOLF_EAT') {
+      $query .= 'type IN (?, ?, ?)';
+      array_push($list, 'WOLF_EAT', 'STEP_WOLF_EAT', 'SILENT_WOLF_EAT');
     }
     elseif ($not_type != '') {
       $query .= 'user_no = ? AND type IN (?, ?)';

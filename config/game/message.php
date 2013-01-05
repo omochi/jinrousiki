@@ -31,6 +31,7 @@ class Message {
   static public $kick_do           = 'に KICK 投票しました'; //KICK 投票
   static public $vote_do           = 'に処刑投票しました'; //処刑投票
   static public $wolf_eat          = 'に狙いをつけました'; //人狼の投票
+  static public $silent_wolf_eat   = 'に静かに狙いをつけました'; //響狼のステルス投票
   static public $escape_do         = 'の周辺に逃亡しました'; //逃亡者の投票
   static public $mage_do           = 'を占います'; //占い師の投票
   static public $voodoo_killer_do  = 'の呪いを祓います'; //陰陽師の投票
@@ -41,6 +42,8 @@ class Message {
   static public $possessed_not_do  = 'は憑依を行いませんでした'; //犬神のキャンセル投票
   static public $voodoo_do         = 'に呪いをかけます'; //呪術師の投票
   static public $dream_eat         = 'に狙いをつけました'; //獏の投票
+  static public $step_do           = 'の周辺を徘徊します'; //家鳴の投票
+  static public $step_not_do       = 'は徘徊を行いませんでした'; //家鳴のキャンセル投票
   static public $guard_do          = 'の護衛に付きました'; //狩人の投票
   static public $anti_voodoo_do    = 'の厄を祓います'; //厄神の投票
   static public $reporter_do       = 'を尾行しました'; //ブン屋の投票
@@ -230,6 +233,7 @@ class Message {
   static public $ability_trap_do          = '罠を設置する先を選択してください'; //罠師
   static public $ability_possessed_do     = '憑依する人を選択してください'; //犬神
   static public $ability_dream_eat        = '夢を食べる人を選択してください'; //獏
+  static public $ability_step_do          = '徘徊する人を選択してください'; //犬神
   static public $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   static public $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   static public $ability_fairy_do         = '悪戯する人を選択してください'; //妖精

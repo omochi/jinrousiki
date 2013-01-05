@@ -7,12 +7,11 @@
 */
 RoleManager::LoadFile('wizard');
 class Role_barrier_wizard extends Role_wizard {
-  public $action = 'SPREAD_WIZARD_DO';
-  public $submit = 'wizard_do';
+  public $action   = 'SPREAD_WIZARD_DO';
+  public $submit   = 'wizard_do';
+  public $checkbox = '<input type="checkbox" name="target_no[]"';
   public $wizard_list = array('barrier_wizard' => 'SPREAD_WIZARD_DO');
   public $result_list = array('GUARD_SUCCESS');
-
-  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();

@@ -584,11 +584,15 @@ EOF;
       list($actor, $target) = explode("\t", $stack['message']);
       echo $header.DB::$USER->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
       switch ($stack['type']) {
-      case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
+      case 'STEP_MAGE_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
+      case 'STEP_GUARD_DO':
+      case 'SPREAD_WIZARD_DO':
+      case 'STEP_WOLF_EAT':
+      case 'SILENT_WOLF_EAT':
+      case 'STEP_DO':
+      case 'CUPID_DO':
       case 'FAIRY_DO':
       case 'DUELIST_DO':
-      case 'SPREAD_WIZARD_DO':
-      case 'STEP_MAGE_DO':
 	$target = 'は '.$target;
 	break;
 

@@ -1,12 +1,15 @@
 <?php
 /*
-  ◆審神者 (step_mage)
+  ◆山立 (step_guard)
   ○仕様
+  ・護衛失敗：通常
+  ・護衛処理：なし
+  ・狩り：通常
 */
-RoleManager::LoadFile('mage');
-class Role_step_mage extends Role_mage {
-  public $action = 'STEP_MAGE_DO';
-  public $submit = 'mage_do';
+RoleManager::LoadFile('guard');
+class Role_step_guard extends Role_guard {
+  public $action = 'STEP_GUARD_DO';
+  public $submit = 'guard_do';
   public $checkbox = '<input type="checkbox" name="target_no[]"';
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }

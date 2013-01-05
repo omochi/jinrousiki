@@ -246,6 +246,9 @@ class Vote {
       VoteHTML::OutputResult('夜：投票イベントが一致しません');
     }
     else {
+      if (isset(RoleManager::$get->add_action) && RQ::$get->add_action) {
+	RQ::$get->situation = RoleManager::$get->add_action;
+      }
       $not_action = false;
     }
     //Text::p($filter);
@@ -855,15 +858,17 @@ class Vote {
     }
 
     //処理対象コマンドチェック
-    $stack = array('WOLF_EAT', 'MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
-		   'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
+    $stack = array('MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO', 'WOLF_EAT',
+		   'STEP_WOLF_EAT', 'SILENT_WOLF_EAT', 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'STEP_DO',
+		   'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
     if (DB::$ROOM->date == 1) {
       $stack[] = 'MANIA_DO';
     }
     else {
-      array_push($stack, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'POISON_CAT_DO',
-		 'ASSASSIN_DO', 'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT',
-		 'TRAP_MAD_DO', 'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO', 'DEATH_NOTE_DO');
+      array_push($stack, 'GUARD_DO', 'STEP_GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
+		 'POISON_CAT_DO', 'ASSASSIN_DO', 'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO',
+		 'DREAM_EAT', 'TRAP_MAD_DO', 'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO',
+		 'DEATH_NOTE_DO');
     }
     foreach ($stack as $action) {
       if (! isset($vote_data[$action])) $vote_data[$action] = array();
@@ -889,8 +894,8 @@ class Vote {
     //-- 天候の処理 --//
     $stack = array();
     if (DB::$ROOM->IsEvent('full_moon')) { //満月
-      array_push($stack, 'GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO', 'JAMMER_MAD_DO',
-		 'VOODOO_MAD_DO', 'VOODOO_FOX_DO');
+      array_push($stack, 'GUARD_DO', 'STEP_GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
+		 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO');
     }
     elseif (DB::$ROOM->IsEvent('new_moon')) { //新月
       $skip = true; //影響範囲に注意
@@ -899,8 +904,8 @@ class Vote {
     }
     elseif (DB::$ROOM->IsEvent('no_contact')) { //花曇 (さとり系に注意)
       $skip = true; //影響範囲に注意
-      array_push($stack, 'REPORTER_DO', 'ASSASSIN_DO', 'MIND_SCANNER_DO', 'ESCAPE_DO',
-		 'TRAP_MAD_DO', 'VAMPIRE_DO', 'OGRE_DO');
+      array_push($stack, 'STEP_GUARD_DO', 'REPORTER_DO', 'ASSASSIN_DO', 'MIND_SCANNER_DO',
+		 'ESCAPE_DO', 'TRAP_MAD_DO', 'VAMPIRE_DO', 'OGRE_DO');
     }
     elseif (DB::$ROOM->IsEvent('no_trap')) { //雪明り
       $stack[] = 'TRAP_MAD_DO';
@@ -920,12 +925,32 @@ class Vote {
     }
     RoleManager::$get->vote_data = $vote_data;
 
+    //-- 足音処理 --//
+    $step_list = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
+    if (DB::$ROOM->date > 1) $step_list[] = 'STEP_GUARD_DO';
+    foreach ($step_list as $action) {
+      foreach ($vote_data[$action] as $id => $target_id) {
+	RoleManager::LoadMain(DB::$USER->ByID($id))->Step(explode(' ', $target_id));
+      }
+    }
+
+    foreach ($vote_data['SILENT_WOLF_EAT'] as $id => $target_id) {
+      RoleManager::LoadMain(DB::$USER->ByID($id))->UpdateStep();
+    }
+
     //-- 接触系レイヤー --//
     $voted_wolf  = new User();
     $wolf_target = new User();
     foreach ($vote_data['WOLF_EAT'] as $id => $target_id) { //人狼の襲撃情報取得
       $voted_wolf  = DB::$USER->ByID($id);
       $wolf_target = DB::$USER->ByID($target_id);
+    }
+    foreach (array('STEP_WOLF_EAT', 'SILENT_WOLF_EAT') as $action) { //響狼の襲撃情報取得
+      foreach ($vote_data[$action] as $id => $target_id) {
+	$stack     = explode(' ', $target_id);
+	$voted_wolf  = DB::$USER->ByID($id);
+	$wolf_target = DB::$USER->ByID(array_pop($stack));
+      }
     }
     RoleManager::$get->voted_wolf  = $voted_wolf;
     RoleManager::$get->wolf_target = $wolf_target;
@@ -952,6 +977,11 @@ class Vote {
 
       foreach ($vote_data['GUARD_DO'] as $id => $target_id) { //狩人系の護衛先をセット
 	$target_uname = DB::$USER->ByID($target_id)->uname;
+	RoleManager::LoadMain(DB::$USER->ByID($id))->SetGuard($target_uname);
+      }
+
+      foreach ($vote_data['STEP_GUARD_DO'] as $id => $target_id) { //山立の護衛先をセット
+	$target_uname = DB::$USER->ByID(array_pop(explode(' ', $target_id)))->uname;
 	RoleManager::LoadMain(DB::$USER->ByID($id))->SetGuard($target_uname);
       }
       if (count(RoleManager::$get->guard) > 0) RoleManager::SetClass('guard');
@@ -1175,21 +1205,21 @@ class Vote {
     //Text::p(RoleManager::$get->jammer, 'Target [jammer]');
     //Text::p(RoleManager::$get->anti_voodoo_success, 'Success [anti_voodoo/jammer]');
 
-    RoleManager::$get->step    = array(); //審神者の対象者リスト
     RoleManager::$get->phantom = array(); //幻系の発動者リスト
     //占い系の処理
-    foreach (array('MAGE_DO', 'STEP_MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action) {
+    foreach (array('MAGE_DO', 'CHILD_FOX_DO', 'FAIRY_DO') as $action) {
       foreach ($vote_data[$action] as $id => $target_id) {
 	$user = DB::$USER->ByID($id);
 	if ($user->IsDead(true)) continue; //直前に死んでいたら無効
-	if ($action == 'STEP_MAGE_DO') {
-	  $stack = explode(' ', $target_id);
-	  $target_id = array_pop($stack);
-	  RoleManager::$get->step[$id] = $stack;
-	}
 	RoleManager::LoadMain($user)->Mage(DB::$USER->ByID($target_id));
       }
     }
+    foreach ($vote_data['STEP_MAGE_DO'] as $id => $target_id) { //審神者の処理
+      $user = DB::$USER->ByID($id);
+      if ($user->IsDead(true)) continue; //直前に死んでいたら無効
+      RoleManager::LoadMain($user)->Mage(DB::$USER->ByID(array_pop(explode(' ', $target_id))));
+    }
+
     $role = 'phantom'; //幻系の能力失効処理
     //Text::p(RoleManager::$get->$role, "Target [{$role}]");
     foreach (RoleManager::$get->$role as $id => $flag) DB::$USER->ByID($id)->LostAbility();
@@ -1537,10 +1567,10 @@ EOF;
     self::OutputHeader();
     //Text::p($filter);
     //Text::p(RoleManager::$get);
-    echo '<table class="vote-page"><tr>'."\n";
+    Text::Output('<table class="vote-page"><tr>');
     $count = 0;
     foreach ($filter->GetVoteTargetUser() as $id => $user) {
-      if ($count > 0 && ($count % 5) == 0) echo "</tr>\n<tr>\n"; //5個ごとに改行
+      if ($count > 0 && ($count % 5) == 0) Text::Output("</tr>\n<tr>"); //5個ごとに改行
       $count++;
       $live = DB::$USER->IsVirtualLive($id);
       /*
@@ -1552,40 +1582,59 @@ EOF;
       echo $user->GenerateVoteTag($path, $checkbox);
     }
 
-    $str = <<<EOF
+    $format = <<<EOF
 </tr></table>
 <span class="vote-message">%s</span>
 <div class="vote-page-link" align="right"><table><tr>
 <td>%s</td>
 <input type="hidden" name="situation" value="%s">
-<td><input type="submit" value="%s"></td></form>%s
+<td><input type="submit" value="%s"></td>
+
 EOF;
     if (is_null(RoleManager::$get->submit)) {
       RoleManager::$get->submit = RoleManager::$get->action;
     }
     $submit = strtoupper(RoleManager::$get->submit);
-    printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, RoleManager::$get->action,
-	   VoteMessage::$$submit, "\n");
+    printf($format, VoteMessage::$CAUTION, RQ::$get->back_url, RoleManager::$get->action,
+	   VoteMessage::$$submit);
+
+    if (isset(RoleManager::$get->add_action)) {
+      $format = <<<EOF
+<td class="add-action">
+<input type="checkbox" name="add_action" id="add_action" value="on">
+<label for="add_action">%s</label>
+</td>
+</form>
+EOF;
+      if (is_null(RoleManager::$get->add_submit)) {
+	RoleManager::$get->add_submit = RoleManager::$get->add_action;
+      }
+      $add_submit = strtoupper(RoleManager::$get->add_submit);
+      printf($format, VoteMessage::$$add_submit);
+    } else {
+      Text::Output('</form>');
+    }
 
     if (isset(RoleManager::$get->not_action)) {
-      $str = <<<EOF
+      $format = <<<EOF
 <td class="add-action">
 <form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">
 <input type="hidden" name="situation" value="%s">
 <input type="hidden" name="target_no" value="%d">
 <input type="submit" value="%s"></form>
-</td>%s
+</td>
+
 EOF;
       if (is_null(RoleManager::$get->not_submit)) {
 	RoleManager::$get->not_submit = RoleManager::$get->not_action;
       }
       $not_submit = strtoupper(RoleManager::$get->not_submit);
-      printf($str, RQ::$get->post_url, RoleManager::$get->not_action, DB::$SELF->user_no,
-	     VoteMessage::$$not_submit, "\n");
+      printf($format, RQ::$get->post_url, RoleManager::$get->not_action, DB::$SELF->user_no,
+	     VoteMessage::$$not_submit);
     }
 
-    echo "</tr></table></div>\n";
+    Text::Output('</tr></table></div>');
     if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
   }
 

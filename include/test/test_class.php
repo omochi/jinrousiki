@@ -364,10 +364,11 @@ class VoteTest {
     Loader::LoadFile('vote_message');
 
     $stack = new RequestGameVote();
-    RQ::$get->vote      = $stack->vote;
-    RQ::$get->target_no = $stack->target_no;
-    RQ::$get->situation = $stack->situation;
-    RQ::$get->back_url  = '<a href="vote_test.php">戻る</a>';
+    RQ::$get->vote       = $stack->vote;
+    RQ::$get->target_no  = $stack->target_no;
+    RQ::$get->situation  = $stack->situation;
+    RQ::$get->add_action = $stack->add_action;
+    RQ::$get->back_url   = '<a href="vote_test.php">戻る</a>';
 
     if (RQ::$get->vote) { //投票処理
       HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ

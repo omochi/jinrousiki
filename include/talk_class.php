@@ -82,12 +82,18 @@ class TalkParser {
 	return;
 
       case 'STEP_MAGE_DO':
+      case 'CHILD_FOX_DO':
 	$action = 'mage_do';
 	$this->class = 'mage-do';
 	break;
 
       case 'VOODOO_KILLER_DO':
 	$this->class = 'mage-do';
+	break;
+
+      case 'STEP_GUARD_DO':
+	$action = 'guard_do';
+	$this->class = 'guard-do';
 	break;
 
       case 'REPORTER_DO':
@@ -105,6 +111,11 @@ class TalkParser {
 	$this->class = 'wizard-do';
 	break;
 
+      case 'STEP_WOLF_EAT':
+	$action = 'wolf_eat';
+	$this->class = 'wolf-eat';
+	break;
+
       case 'JAMMER_MAD_DO':
       case 'VOODOO_MAD_DO':
       case 'VOODOO_FOX_DO':
@@ -114,13 +125,9 @@ class TalkParser {
 	$this->class = 'wolf-eat';
 	break;
 
+      case 'SILENT_WOLF_EAT':
       case 'DREAM_EAT':
 	$this->class = 'wolf-eat';
-	break;
-
-      case 'CHILD_FOX_DO':
-	$action = 'mage_do';
-	$this->class = 'mage-do';
 	break;
 
       case 'POISON_CAT_NOT_DO':

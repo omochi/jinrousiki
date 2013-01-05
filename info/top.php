@@ -22,5 +22,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>審神者：投票者と投票先の間で「足音」が鳴る占い師</li>
+  <li>山立：投票者と投票先の間で「足音」が鳴る狩人</li>
+  <li>響狼：投票者と投票先の間で「足音」が鳴る人狼</li>
 </ul>

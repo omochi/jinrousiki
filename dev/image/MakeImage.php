@@ -53,7 +53,7 @@ class MessageImageBuilder {
 
   function __construct($list) {
     $font = $this->font_path . $this->font;
-    $size = ($trans = $list == 'WishRoleList') ? 12 : 10;
+    $size = ($trans = $list == 'WishRoleList') ? 12 : 11;
     $this->generator = new MessageImageGenerator($font, $size, 3, 3, $trans);
     $this->list = new $list();
   }
@@ -245,6 +245,10 @@ class RoleMessageList {
   public $gatekeeper_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。\n　あなたの仕事は_狼_を倒す事ではありません。護るべき人を護る仕事を全うしましょう。",
     'type' => 'guard', 'delimiter' => array('^' => 'assassin'));
+
+  public $step_guard = array(
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#山立#です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
+    'type' => 'guard');
 
   public $reflect_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#侍#です。^暗殺^を跳ね返すことができます。また、#護衛#先が:鬼:なら#狩る#ことができます。\n　かかる火の粉は振り払い、浮き世の:鬼:を斬り捨てて、悪しき_狼_の凶刃から村人を守るのです！",
@@ -636,6 +640,10 @@ class RoleMessageList {
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|火狼|です。襲撃が#護衛#に阻まれたら#護衛#した人に_天火_を灯すことができます。\n　炎の牙にて業火を齎し、敵対者を炭の衣で粧しましょう。反撃の狼煙をあげるのです！",
     'type' => 'wolf', 'delimiter' => array('#' => 'guard', '_' => 'wisp'));
 
+  public $step_wolf = array(
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|響狼|です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。一定回数まで音を鳴らさず襲撃することもできます。",
+    'type' => 'wolf');
+
   public $blue_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
     'type' => 'wise_wolf', 'delimiter' => array('_' => 'mind'));
@@ -724,6 +732,10 @@ class RoleMessageList {
   public $enchant_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|狢|です。夜に村人一人に#悪戯#して、その人が|人狼|に襲撃されたら次の日、全員のアイコンを変更してしまいます。\n　できるだけ早起きして、みんなに「バカな…お前は死んだはず！」って言ってやりましょう。あなたも同じ顔ですけどね。",
     'type' => 'mad', 'delimiter' => array('#' => 'chiroptera'));
+
+  public $step_mad = array(
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|家鳴|です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
+    'type' => 'mad');
 
   public $dream_eater_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵たる_夢守人_に注意しながら、夢の世界にいる住人や#妖精#たちを食らい尽くすのです！",
@@ -832,6 +844,10 @@ class RoleMessageList {
   public $voodoo_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|九尾|です。夜の間に誰か一人に#呪い#をかけることができます。白面金毛の力を以て、取り入り、傾け、弄び、滅しなさい。",
     'type' => 'phantom_fox');
+
+  public $step_fox = array(
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|響狐|です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
+    'type' => 'fox');
 
   public $revive_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|仙狐|です。一度だけ、死んだ人を誰か一人ほぼ確実に_蘇生_することができます。\n　繁栄を司るその神通力で、今まで散々不敬を働いた村人たちに恐怖の鉄槌を下すのです！",
@@ -1657,6 +1673,10 @@ class RoleMessageList {
     'message' => "　|罠|の設置が完了しました。",
     'type' => 'wolf');
 
+  public $ability_step_wolf = array(
+    'message' => "残りステルス|襲撃|回数：",
+    'type' => 'wolf');
+
   public $ability_sirius_wolf = array(
     'message' => "　残りの|狼|が二人になりました。人の繰り出す業 (#暗殺#・|罠|) は、もはやあなたを貫けません。",
     'type' => 'sirius_wolf');
@@ -1797,6 +1817,7 @@ class RoleMessageList {
   public $result_hunter_guard = array('message' => "さんは|猟師|でした", 'type' => 'result_guard');
   public $result_blind_guard = array('message' => "さんは|夜雀|でした", 'type' => 'result_guard');
   public $result_gatekeeper_guard = array('message' => "さんは|門番|でした", 'type' => 'result_guard');
+  public $result_step_guard = array('message' => "さんは|山立|でした", 'type' => 'result_guard');
   public $result_reflect_guard = array('message' => "さんは|侍|でした", 'type' => 'result_guard');
   public $result_poison_guard = array('message' => "さんは|騎士|でした", 'type' => 'result_guard');
   public $result_fend_guard = array('message' => "さんは|忍者|でした", 'type' => 'result_guard');
@@ -1904,6 +1925,7 @@ class RoleMessageList {
   public $result_revive_wolf = array('message' => "さんは|仙狼|でした", 'type' => 'result_wolf');
   public $result_trap_wolf = array('message' => "さんは|狡狼|でした", 'type' => 'result_wolf');
   public $result_fire_wolf = array('message' => "さんは|火狼|でした", 'type' => 'result_wolf');
+  public $result_step_wolf = array('message' => "さんは|響狼|でした", 'type' => 'result_wolf');
   public $result_blue_wolf = array('message' => "さんは|蒼狼|でした", 'type' => 'result_wolf');
   public $result_emerald_wolf = array('message' => "さんは|翠狼|でした", 'type' => 'result_wolf');
   public $result_decieve_wolf = array('message' => "さんは|欺狼|でした", 'type' => 'result_wolf');
@@ -1926,6 +1948,7 @@ class RoleMessageList {
   public $result_jammer_mad = array('message' => "さんは|月兎|でした", 'type' => 'result_mad');
   public $result_voodoo_mad = array('message' => "さんは|呪術師|でした", 'type' => 'result_mad');
   public $result_enchant_mad = array('message' => "さんは|狢|でした", 'type' => 'result_mad');
+  public $result_step_mad = array('message' => "さんは|家鳴|でした", 'type' => 'result_mad');
   public $result_dream_eater_mad = array('message' => "さんは|獏|でした", 'type' => 'result_mad');
   public $result_possessed_mad = array('message' => "さんは|犬神|でした", 'type' => 'result_mad');
   public $result_trap_mad = array('message' => "さんは|罠師|でした", 'type' => 'result_mad');
@@ -1953,6 +1976,7 @@ class RoleMessageList {
   public $result_sacrifice_fox = array('message' => "さんは|白蔵主|でした", 'type' => 'result_fox');
   public $result_emerald_fox = array('message' => "さんは|翠狐|でした", 'type' => 'result_fox');
   public $result_voodoo_fox = array('message' => "さんは|九尾|でした", 'type' => 'result_fox');
+  public $result_step_fox = array('message' => "さんは|響狐|でした", 'type' => 'result_fox');
   public $result_revive_fox = array('message' => "さんは|仙狐|でした", 'type' => 'result_fox');
   public $result_possessed_fox = array('message' => "さんは|憑狐|でした", 'type' => 'result_fox');
   public $result_doom_fox = array('message' => "さんは|冥狐|でした", 'type' => 'result_fox');
@@ -2260,6 +2284,10 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Save('mirror_fairy');
 #$builder->Test('poison_ogre');
 #$builder->Output('prediction_weather_aurora');
-#$builder->Output('poison'); //128
+$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-$builder->Output('step_mage', array(0));
+#$builder->Output('step_mage', array(0));
+#$builder->Output('step_guard', array(0));
+#$builder->Output('step_wolf', array(0));
+#$builder->Output('step_mad', array(0));
+#$builder->Output('step_fox', array(0));
