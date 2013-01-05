@@ -6,10 +6,10 @@
 class Role_step_mad extends Role {
   public $action     = 'STEP_DO';
   public $not_action = 'STEP_NOT_DO';
-  public $checkbox = '<input type="checkbox" name="target_no[]"';
+  public $checkbox   = '<input type="checkbox" name="target_no[]"';
 
   function OutputAction() {
-    RoleHTML::OutputVote('fairy-do', 'step_do', $this->action, $this->not_action);
+    RoleHTML::OutputVote('step-do', 'step_do', $this->action, $this->not_action);
   }
 
   function IsVoteCheckbox(User $user, $live) { return true; }
@@ -57,11 +57,11 @@ class Role_step_mad extends Role {
   //足音処理
   function Step(array $list) {
     sort($list);
-    $result = array();
+    $stack = array();
     foreach ($list as $id) {
-      if (DB::$USER->IsVirtualLive($id)) $result[] = $id;
+      if (DB::$USER->IsVirtualLive($id)) $stack[] = $id;
     }
-    if (count($result) < 1) return true;
-    return DB::$ROOM->ResultDead(implode(' ', $result), 'STEP');
+    if (count($stack) < 1) return true;
+    return DB::$ROOM->ResultDead(implode(' ', $stack), 'STEP');
   }
 }

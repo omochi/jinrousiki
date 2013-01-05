@@ -233,7 +233,7 @@ class Message {
   static public $ability_trap_do          = '罠を設置する先を選択してください'; //罠師
   static public $ability_possessed_do     = '憑依する人を選択してください'; //犬神
   static public $ability_dream_eat        = '夢を食べる人を選択してください'; //獏
-  static public $ability_step_do          = '徘徊する人を選択してください'; //犬神
+  static public $ability_step_do          = '徘徊する人を選択してください'; //家鳴
   static public $ability_cupid_do         = '結びつける人を選択してください'; //キューピッド
   static public $ability_vampire_do       = '吸血する人を選択してください'; //吸血鬼
   static public $ability_fairy_do         = '悪戯する人を選択してください'; //妖精

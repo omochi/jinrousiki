@@ -5,8 +5,8 @@
 */
 RoleManager::LoadFile('mage');
 class Role_step_mage extends Role_mage {
-  public $action = 'STEP_MAGE_DO';
-  public $submit = 'mage_do';
+  public $action   = 'STEP_MAGE_DO';
+  public $submit   = 'mage_do';
   public $checkbox = '<input type="checkbox" name="target_no[]"';
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }
@@ -15,12 +15,10 @@ class Role_step_mage extends Role_mage {
     $stack = $this->GetVoteNightTarget();
     //Text::p($stack);
 
-    $actor = $this->GetActor();
-    $id  = $actor->user_no;
-    $max = count(DB::$USER->rows);
-
+    $id    = $this->GetActor()->user_no;
+    $max   = count(DB::$USER->rows);
+    $count = 0;
     $last_vector = null;
-    $count       = 0;
     $root_list   = array();
     do {
       $chain = $this->GetChain($id, $max);
@@ -61,11 +59,11 @@ class Role_step_mage extends Role_mage {
   function Step(array $list) {
     array_pop($list); //最後尾は対象者なので除く
     sort($list);
-    $result = array();
+    $stack = array();
     foreach ($list as $id) {
-      if (DB::$USER->IsVirtualLive($id)) $result[] = $id;
+      if (DB::$USER->IsVirtualLive($id)) $stack[] = $id;
     }
-    if (count($result) < 1) return true;
-    return DB::$ROOM->ResultDead(implode(' ', $result), 'STEP');
+    if (count($stack) < 1) return true;
+    return DB::$ROOM->ResultDead(implode(' ', $stack), 'STEP');
   }
 }

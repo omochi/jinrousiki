@@ -67,7 +67,7 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'anti_voodoo death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'step_fox';
+RQ::GetTest()->test_users[13]->role = 'step_mad';
 RQ::GetTest()->test_users[13]->live = 'live';
 
 RQ::GetTest()->test_users[14]->role = 'purple_fox death_warrant[6]';
@@ -224,7 +224,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 12, 	'type' => 'MAGE_DO', 'target_no' => 16),
     #array('user_no' => 12, 	'type' => 'WOLF_EAT', 'target_no' => 2),
     #array('user_no' => 12, 	'type' => 'VOODOO_FOX_DO',	'target_no' => 21),
-    array('user_no' => 13, 	'type' => 'POSSESSED_DO',	'target_no' => 8),
+    #array('user_no' => 13, 	'type' => 'POSSESSED_DO',	'target_no' => 8),
     #array('user_no' => 13, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
     #array('user_no' => 13, 	'type' => 'POISON_CAT_DO',	'target_no' => 6),
     #array('user_no' => 13, 	'type' => 'POISON_CAT_NOT_DO',	'target_no' => null),
@@ -296,7 +296,7 @@ if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 #DB::$USER->ByID(9)->live = 'live';
-DB::$SELF = DB::$USER->ByID(13);
+DB::$SELF = DB::$USER->ByID(1);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;

@@ -574,26 +574,25 @@ EOF;
 
     $header = '<b>前日の夜、';
     $footer = '</b><br>'."\n";
-    if (DB::$ROOM->test_mode) {
-      $stack_list = RQ::GetTest()->ability_action_list;
-    } else {
-      $stack_list = RoomDB::GetAbility();
-    }
+    $stack_list = DB::$ROOM->test_mode ? RQ::GetTest()->ability_action_list : RoomDB::GetAbility();
 
     foreach ($stack_list as $stack) {
       list($actor, $target) = explode("\t", $stack['message']);
       echo $header.DB::$USER->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
       switch ($stack['type']) {
-      case 'STEP_MAGE_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
-      case 'STEP_GUARD_DO':
+      case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
+      case 'FAIRY_DO':
+      case 'DUELIST_DO':
       case 'SPREAD_WIZARD_DO':
+	$target = 'は '.$target;
+	break;
+
+      case 'STEP_MAGE_DO':
+      case 'STEP_GUARD_DO':
       case 'STEP_WOLF_EAT':
       case 'SILENT_WOLF_EAT':
       case 'STEP_DO':
-      case 'CUPID_DO':
-      case 'FAIRY_DO':
-      case 'DUELIST_DO':
-	$target = 'は '.$target;
+	$target = 'は '.$stack['message'];
 	break;
 
       default:
@@ -609,6 +608,7 @@ EOF;
       case 'ESCAPE_DO':
       case 'WOLF_EAT':
       case 'DREAM_EAT':
+      case 'STEP_DO':
       case 'CUPID_DO':
       case 'VAMPIRE_DO':
       case 'FAIRY_DO':
@@ -646,13 +646,17 @@ EOF;
 	break;
 
       case 'MAGE_DO':
-      case 'STEMP_MAGE_DO':
+      case 'STEP_MAGE_DO':
       case 'CHILD_FOX_DO':
 	echo $target.'を占いました';
 	break;
 
       case 'VOODOO_KILLER_DO':
 	echo $target.'の呪いを祓いました';
+	break;
+
+      case 'STEP_GUARD_DO':
+	echo $target.Message::$guard_do;
 	break;
 
       case 'ANTI_VOODOO_DO':
@@ -672,6 +676,8 @@ EOF;
 	echo $target.'に呪いをかけました';
 	break;
 
+      case 'STEP_WOLF_EAT':
+      case 'SILENT_WOLF_EAT':
       case 'POSSESSED_DO':
 	echo $target.'を狙いました';
 	break;
@@ -801,7 +807,7 @@ EOF;
 
     case 'STEP':
       $base  = false;
-      $class = 'fairy';
+      $class = 'step';
       $stack = array();
       foreach (explode(' ', trim($name)) as $id) {
 	$stack[] = DB::$USER->ByID($id)->handle_name;
