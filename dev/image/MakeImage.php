@@ -48,7 +48,8 @@ class MessageImageBuilder {
     'voice'		=> array('R' => 255, 'G' => 153, 'B' =>   0),
     'no_last_words'	=> array('R' => 221, 'G' =>  34, 'B' =>  34),
     'sex_male'		=> array('R' =>   0, 'G' =>   0, 'B' => 255),
-    'wisp'		=> array('R' => 170, 'G' => 102, 'B' => 255)
+    'wisp'		=> array('R' => 170, 'G' => 102, 'B' => 255),
+    'step'		=> array('R' => 102, 'G' => 153, 'B' =>  51)
 			  );
 
   function __construct($list) {
@@ -131,8 +132,8 @@ class RoleMessageList {
     'type' => 'mage', 'delimiter' => array('^' => 'doll'));
 
   public $step_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#審神者#です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
-    'type' => 'mage', 'delimiter' => array('^' => 'doll'));
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#審神者#です。夜の投票時にあなたと投票先の通り道で^足音^が鳴ります。",
+    'type' => 'mage', 'delimiter' => array('^' => 'step'));
 
   public $soul_mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#魂の占い師#、役職を知ることができる#占い師#です。自らの運命をも、その魂で切り開くことができるはずです。",
@@ -215,7 +216,7 @@ class RoleMessageList {
     'type' => 'priest');
 
   public $high_priest = array(
-    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人陣営|、または死亡した_村人陣営以外_の総数を知ることができます。\n　神に最も近いあなたなら、幾夜の祈りののち、毎夜お告げを得ることができるでしょう。神の御心を村人へ伝え、導くのです！",
+    'message' => "[役割] [|村人|陣営] [#司祭#系]\n　あなたは#大司祭#です。一定日数後から現在生きている|村人陣営|、または死亡した_村人陣営以外_の総数を知ることができます。\n　神に最も近いあなたなら、幾夜の祈りの後、毎夜お告げを得ることができるでしょう。神の御心を村人へ伝え、導くのです！",
     'type' => 'bishop_priest');
 
   public $holy_priest = array(
@@ -235,7 +236,7 @@ class RoleMessageList {
     'type' => 'human', 'delimiter' => array('#' => 'guard', '_' => 'wolf'));
 
   public $hunter_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#猟師#です。#護衛#先が^妖狐^なら#狩る#ことができますが、_人狼_に襲撃された場合は殺されてしまいます。\n　あなたには二つの道が与えられました。身代わりの盾と、^妖狐^を討つ剣。あなたの選択が村を救うのです！",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#猟師#です。#護衛#先が^妖狐^なら#狩る#ことができますが、_人狼_に襲撃された場合は死んでしまいます。\n　あなたには二つの道が与えられました。身代わりの盾と、^妖狐^を討つ剣。あなたの選択が村を救うのです！",
     'type' => 'guard', 'delimiter' => array('^' => 'fox'));
 
   public $blind_guard = array(
@@ -243,12 +244,12 @@ class RoleMessageList {
     'type' => 'guard', 'delimiter' => array('^' => 'no_last_words', ':' => 'vampire'));
 
   public $gatekeeper_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。\n　あなたの仕事は_狼_を倒す事ではありません。護るべき人を護る仕事を全うしましょう。",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#門番#です。#狩り#能力はありませんが、#護衛#先を^暗殺^からも護ることができます。\n　あなたの仕事は_狼_を倒すことではありません。護るべき人を護る仕事を全うしましょう。",
     'type' => 'guard', 'delimiter' => array('^' => 'assassin'));
 
   public $step_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#山立#です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
-    'type' => 'guard');
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#山立#です。夜の投票時にあなたと投票先の通り道で^足音^が鳴ります。",
+    'type' => 'guard', 'delimiter' => array('^' => 'step'));
 
   public $reflect_guard = array(
     'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#侍#です。^暗殺^を跳ね返すことができます。また、#護衛#先が:鬼:なら#狩る#ことができます。\n　かかる火の粉は振り払い、浮き世の:鬼:を斬り捨てて、悪しき_狼_の凶刃から村人を守るのです！",
@@ -331,7 +332,7 @@ class RoleMessageList {
     'type' => 'human', 'delimiter' => array('#' => 'poison'));
 
   public $revive_cat = array(
-    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#仙狸#です。高い#蘇生#能力を持っていますが、成功するたびに成功率が下がります。\n　人の精気を頂戴しつつ、仙山の秘奥で身に付けたその神秘の力で人々に恩を返すのです！",
+    'message' => "[役割] [|村人|陣営] [#猫又#系]\n　あなたは#仙狸#です。高い#蘇生#能力を持っていますが、成功する度に成功率が下がります。\n　人の精気を頂戴しつつ、仙山の秘奥で身に付けたその神秘の力で人々に恩を返すのです！",
     'type' => 'poison_cat');
 
   public $sacrifice_cat = array(
@@ -347,7 +348,7 @@ class RoleMessageList {
     'type' => 'poison', 'delimiter' => array('_' => 'vote'));
 
   public $cure_pharmacist = array(
-    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#河童#です。_処刑_投票した人を#解毒#しつつ、^ショック死^を抑制することができます。\n　一族に伝わる膏薬は人の命を救う霊薬。苦しむ村人を救い、村に笑顔を取り戻すのです！",
+    'message' => "[役割] [|村人|陣営] [#薬師#系]\n　あなたは#河童#です。_処刑_投票した人を#解毒#しつつ、^ショック死^を抑制することができます。\n　一族に伝わる膏薬は人の命を救う霊薬。苦しむ村人達を救い、村に笑顔を取り戻すのです！",
     'type' => 'pharmacist', 'delimiter' => array('^' => 'chicken'));
 
   public $revive_pharmacist = array(
@@ -485,7 +486,7 @@ class RoleMessageList {
    'type' => 'wizard');
 
   public $awake_wizard = array(
-    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を以って、跳梁跋扈する物の怪より同胞を助け給え！",
+    'message' => "[役割] [|村人|陣営] [#魔法使い#系]\n　あなたは#比丘尼#です。初めは弱い#魔法#しか使えませんが、一度だけ_人狼_の襲撃に耐えることができ、それ以降は#魔法#が強化されます。\n　白比丘尼！人魚の生き肝を食せし罪人よ！輪廻の輪さえも超越せしめたその力を以って、跳梁跋扈する物の怪より同胞を助けたまえ！",
     'type' => 'wizard', 'delimiter' => array('_' => 'wolf'));
 
   public $mimic_wizard = array(
@@ -517,7 +518,7 @@ class RoleMessageList {
     'type' => 'human', 'delimiter' => array('#' => 'doll'));
 
   public $friend_doll = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#仏蘭西人形#です。同志の#人形#が誰か分かります。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　仲間と協力して自由を勝ち取るのです。勝利は非常に厳しいですが、みんなで頑張れば決して不可能ではありません！",
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#仏蘭西人形#です。同志の#人形#が誰か分かります。あなたは#人形遣い#を倒し、|村人|を勝利に導く必要があります。\n　仲間と協力して自由を勝ち取るのです。勝利への道は非常に厳しいですが、皆で頑張れば決して不可能ではありません！",
    'type' => 'doll');
 
   public $phantom_doll = array(
@@ -545,7 +546,7 @@ class RoleMessageList {
    'type' => 'doll');
 
   public $doll_master = array(
-    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#人形遣い#です。_人狼_に襲撃されても他の#人形#を犠牲にして生き延びることができます。\n　#人形#を盾にする力で長生きしやすい立場を活かし、あなたの手腕で村を勝利に導きましょう！",
+    'message' => "[役割] [|村人|陣営] [#上海人形#系]\n　あなたは#人形遣い#です。_人狼_に襲撃されても#人形#を犠牲にして生き延びることができます。\n　#人形#を盾にする力で長生きし易い立場を活かし、あなたの手腕で村を勝利に導きましょう！",
     'type' => 'doll', 'delimiter' => array('_' => 'wolf'));
 
   public $escaper = array(
@@ -557,7 +558,7 @@ class RoleMessageList {
     'type' => 'escaper');
 
   public $incubus_escaper = array(
-    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて乙女の純潔を守るのだ！",
+    'message' => "[役割] [|村人|陣営] [#逃亡者#系]\n　あなたは#一角獣#です。夜の#逃亡#先が^女性^以外か、_人狼_に襲撃されたら死んでしまいます。\n　美麗で誇り高く、恐ろしくも優しき#一角獣#よ！その身を賭けて、乙女の純潔を守るのだ！",
     'type' => 'escaper', 'delimiter' => array('^' => 'lovers'));
 
   public $succubus_escaper = array(
@@ -999,7 +1000,7 @@ class RoleMessageList {
     'delimiter' => array('|' => 'quiz'));
 
   public $vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。\n　夜の闇にまぎれ、誰にも知られぬまま血をすすり、眷属を増やすのです。真の支配者はあなただと言う事を村に知らしめましょう！",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|吸血鬼|です。夜に誰か一人を|感染者|にすることができます。生きている人全てをあなたの|感染者|にすると勝利できます。\n　夜の闇に紛れ、誰にも知られぬまま血をすすり、眷属を増やすのです。真の支配者はあなただと言う事を村に知らしめましょう！",
     'delimiter' => array('|' => 'vampire'));
 
   public $poison_vampire = array(
@@ -1047,7 +1048,7 @@ class RoleMessageList {
     'type' => 'chiroptera', 'delimiter' => array('#' => 'wolf'));
 
   public $boss_chiroptera = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|大蝙蝠|です。#人狼#に襲撃されても他の|蝙蝠|を犠牲にして生き延びることができます。\n　誇りを捨て情を捨て、同族の命すらも糧にして、ただただ生き残る事だけを考えるのです！",
+    'message' => "[役割] [|蝙蝠|陣営] [|蝙蝠|系]\n　あなたは|大蝙蝠|です。#人狼#に襲撃されても他の|蝙蝠|を犠牲にして生き延びることができます。\n　誇りを捨て情を捨て、同族の命すらも糧にして、ただただ生き残ることだけを考えるのです！",
     'type' => 'cursed_chiroptera');
 
   public $elder_chiroptera = array(
@@ -1095,7 +1096,7 @@ class RoleMessageList {
     'type' => 'greater_fairy', 'delimiter' => array('_' => 'no_last_words'));
 
   public $grass_fairy = array(
-    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|草妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_草原迷彩_にしてしまいます。\n　どw うw しw てw だw ろw うw 、w 草w がw 生w えw るw だw けw でw みw んw なw 笑w 顔w にw なw れw るw んw だw",
+    'message' => "[役割] [|蝙蝠|陣営] [|妖精|系]\n　あなたは|草妖精|です。夜に村人一人に|悪戯|して、その人が#人狼#に襲撃されたら次の日を全員_草原迷彩_にしてしまいます。\n　どw うw しw てw だw ろw うw 、w 草w がw 生w えw るw だw けw でw みw んw なw 笑w 顔w にw なw れw るw んw だw 。w",
     'type' => 'greater_fairy');
 
   public $sun_fairy = array(
@@ -1152,15 +1153,15 @@ class RoleMessageList {
 
   public $east_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|風鬼|です。あなた自身の生存、あなたより右にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　風にも負けず、決して怒らずに村の為に生き続け、東に病気の人がいれば、行ってその感染源を絶ちましょう！",
-    'type' => 'weat_ogre');
+    'type' => 'west_ogre');
 
   public $north_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|水鬼|です。あなた自身の生存、あなたより上にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　水の冷たさにも負けず、欲も無く村の為に生き続け、北に喧嘩や訴訟があれば、行って成敗してやりましょう！",
-    'type' => 'weat_ogre');
+    'type' => 'west_ogre');
 
   public $south_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|隠行鬼|です。あなた自身の生存、あなたより下にいる人の全滅、_村人陣営_の勝利が勝利条件になります。\n　夏の暑さにも負けず、元気に村の為に生き続け、南に死にそうな人いれば、行ってその背を押してやりましょう！",
-    'type' => 'weat_ogre');
+    'type' => 'west_ogre');
 
   public $incubus_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|般若|です。あなた自身の生存と_女性_の全滅が勝利条件になります。嫉妬の念を力に変えて村から_女性_を追い出すのです！",
@@ -1175,7 +1176,7 @@ class RoleMessageList {
     'type' => 'ogre');
 
   public $revive_ogre = array(
-    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|茨木童子|です。あなた自身の生存と#嘘つき#の全滅が勝利条件になります。また、#人狼#に襲撃されても一定確率で_蘇生_できます。\n　あなたは#嘘つき#に我慢がならなくなったので、全滅させることにしました。|鬼|の流儀で正直者だけが生きる村をその手で作るのです！",
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|茨木童子|です。あなた自身の生存と#嘘つき#の全滅が勝利条件になります。また、#人狼#に襲撃されても一定確率で_蘇生_できます。\n　あなたは#嘘つき#に我慢がならなくなったので、全滅させることにしました。|鬼|の流儀で、正直者だけが生きる村をその手で作るのです！",
     'type' => 'ogre', 'delimiter' => array('_' => 'revive'));
 
   public $sacrifice_ogre = array(
@@ -1239,7 +1240,7 @@ class RoleMessageList {
     'type' => 'critical_duelist');
 
   public $avenger = array(
-    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|復讐者|です。初日の夜に村の人口の四分の一の|仇敵|を選び、全て倒すことが勝利条件になります。\n　復讐するは我にあり。そのため、そのためだけに生き続ける。たとえ待ち受けるものが地獄だとしても…",
+    'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|復讐者|です。初日の夜に村の人口の四分の一の|仇敵|を選び、全て倒すことが勝利条件になります。\n　復讐するは我にあり。そのため、そのためだけに生き続ける。たとえ待ち受けるものが地獄だとしても……",
     'type' => 'duelist');
 
   public $poison_avenger = array(
@@ -1275,7 +1276,7 @@ class RoleMessageList {
     'type' => 'patron', 'delimiter' => array('#' => 'wolf', '_' => 'guard'));
 
   public $shepherd_patron = array(
-    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|羊飼い|です。初日の夜に村の人口の六分の一を|受援者|にできますが、さらに^羊^を与えてしまいます。\n　慈愛を食み生きる愛しい^羊^達、^羊^達を命に代えても恐ろしい#狼#の牙から守り切り、生の道へと導くのです。",
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|羊飼い|です。初日の夜に村の人口の六分の一を|受援者|にできますが、さらに^羊^を与えてしまいます。\n　慈愛を食み生きる愛しい^羊^達、^羊^達を命に代えても恐ろしい#人狼#の牙から守り切り、生の道へと導くのです。",
     'type' => 'sacrifice_patron', 'delimiter' => array('^' => 'mind'));
 
   public $critical_patron = array(
@@ -1641,7 +1642,8 @@ class RoleMessageList {
 
   public $lost_ability = array('message' => "　あなたは能力を失いました。");
 
-  public $muster_ability = array('message' => "　あなたの能力が発現しました。");
+  public $muster_ability = array('message' => "　あなたの能力が|発現|しました。",
+    'delimiter' => array('|' => 'wolf'));
 
   public $ability_scripter = array(
     'message' => "　あなたは有名になったので、|処刑|_投票数_が +1 されます。",
@@ -2173,6 +2175,7 @@ class RoleMessageList {
   public $clairvoyance_result_footer = array(
     'message' => "さんに能力を行使したようです",
     'type' => 'result_mind_scanner');
+
   public $prediction_weather_grassy = array('message' => "|スコール|です", 'type' => 'liar');
   public $prediction_weather_mower = array('message' => "|酸性雨|です", 'type' => 'no_last_words');
   public $prediction_weather_blind_vote = array('message' => "|晴嵐|です", 'delimiter' => array('|' => 'vote'));
@@ -2277,17 +2280,20 @@ class WishRoleList {
 }
 
 //imagegif($image, "c:\\temp\\result.gif"); // ファイルに出力する場合
-#$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
+//$builder = new MessageImageBuilder('WishRoleList'); $builder->Output('role_patron');
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 //$builder->Output('mirror_fairy', array(1, 1, 1, 0, 0.5, 0, 1, -0.5)); //位置調整
+#$builder->Output('prediction_weather_aurora');
 #$builder->Save('mirror_fairy');
 #$builder->Test('poison_ogre');
-#$builder->Output('prediction_weather_aurora');
-$builder->Output('poison'); //128
+#$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-#$builder->Output('step_mage', array(0));
+#$builder->Output('step_mage', array(0,0,0.7,0,0));
 #$builder->Output('step_guard', array(0));
 #$builder->Output('step_wolf', array(0));
 #$builder->Output('step_mad', array(0));
 #$builder->Output('step_fox', array(0));
+
+#$builder->Output('brownie', array(0,0));
+$builder->Output('shepherd_patron', array(0,0));
