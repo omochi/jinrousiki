@@ -27,4 +27,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
   <li>響狼：投票者と投票先の間で「足音」が鳴る人狼</li>
   <li>家鳴：投票先の間で「足音」が鳴る狂人</li>
   <li>響狐：投票先の間で「足音」が鳴る妖狐</li>
+  <li>「足音村」オプション：配役が足音能力者ベースになります</li>
 </ul>

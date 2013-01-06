@@ -488,7 +488,7 @@ InfoHTML::OutputHeader('ゲームオプション');
 
 <h2 id="special_role_option">特殊配役設定</h2>
 <p>
-<?php InfoHTML::OutputCategory(array('special_role', 'chaos', 'duel', 'gray_random', 'quiz')); ?>
+<?php InfoHTML::OutputCategory(array('special_role', 'chaos', 'duel', 'gray_random', 'step', 'quiz')); ?>
 </p>
 
 <h3 id="special_role"><?php OptionManager::OutputCaption('special_role'); ?> [Ver. 1.4.0 β17～]</h3>
@@ -519,6 +519,20 @@ InfoHTML::OutputHeader('ゲームオプション');
     <li>人狼系 → 人狼</li>
     <li>狂人系 → 狂人</li>
     <li>妖狐陣営 → 妖狐</li>
+    <li>上記以外 → 村人</li>
+  </ol>
+</ul>
+
+<h4 id="step"><?php OptionManager::OutputCaption('step'); ?> [Ver. 2.2.0 α3～]</h4>
+<ul>
+  <li>配役が<a href="new_role/ability.php#step">足音能力者</a>ベースになります。初期設定は以下です。</li>
+  <ol>
+    <li>占い師系 → <a href="new_role/human.php#step_mage">審神者</a></li>
+    <li>霊能者系 → 霊能者</li>
+    <li>狩人系 → <a href="new_role/human.php#step_guard">山立</a></li>
+    <li>人狼系 → <a href="new_role/wolf.php#step_wolf">響狼</a></li>
+    <li>狂人系 → <a href="new_role/wolf.php#step_mad">家鳴</a></li>
+    <li>妖狐陣営 → <a href="new_role/fox.php#step_fox">響狐</a></li>
     <li>上記以外 → 村人</li>
   </ol>
 </ul>

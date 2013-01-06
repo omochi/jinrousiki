@@ -172,10 +172,11 @@ class GameOptionConfig {
   static $chaos_verso_enable = true; //裏・闇鍋モード
   static $duel               = true; //決闘村
   static $gray_random_enable = true; //グレラン村
+  static $step_enable        = true; //足音村
   static $quiz_enable        = true; //クイズ村
   //特殊配役モードの内訳
   static $special_role_list = array('' => 'なし', 'chaos', 'chaosfull', 'chaos_hyper',
-    'chaos_verso', 'duel', 'gray_random', 'quiz');
+    'chaos_verso', 'duel', 'gray_random', 'step', 'quiz');
 
   //-- 闇鍋モード専用設定 --//
   static $topping_enable = true; //固定配役追加モード

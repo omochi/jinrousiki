@@ -17,10 +17,10 @@ class RoomOption {
     'replace_human', 'full_mad', 'full_cupid', 'full_quiz', 'full_vampire', 'full_chiroptera',
     'full_mania', 'full_unknown_mania', 'change_common', 'change_hermit_common', 'change_mad',
     'change_fanatic_mad', 'change_whisper_mad', 'change_immolate_mad', 'change_cupid',
-    'change_mind_cupid', 'change_triangle_cupid', 'change_angel', 'duel', 'gray_random', 'quiz',
-    'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate', 'chaos_open_cast',
-    'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role', 'no_sub_role',
-    'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
+    'change_mind_cupid', 'change_triangle_cupid', 'change_angel', 'duel', 'gray_random', 'step',
+    'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate',
+    'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
+    'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
 
   //登録されたオプションを取得
   static function GetOption($type) { return implode(' ', self::$$type); }

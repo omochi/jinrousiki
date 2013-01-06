@@ -18,22 +18,20 @@ class Role_step_guard extends Role_guard {
     $stack = $this->GetVoteNightTarget();
     //Text::p($stack);
 
-    $actor = $this->GetActor();
-    $id  = $actor->user_no;
+    $id  = $this->GetActor()->user_no;
     $max = count(DB::$USER->rows);
-
-    $last_vector = null;
-    $count       = 0;
-    $root_list   = array();
+    $vector = null;
+    $count  = 0;
+    $root_list = array();
     do {
       $chain = $this->GetChain($id, $max);
       $point = array_intersect($chain, $stack);
       if (count($point) != 1) return '通り道が一本に繋がっていません';
 
-      $vector = array_shift(array_keys($point));
-      if ($vector != $last_vector) {
+      $new_vector = array_shift(array_keys($point));
+      if ($new_vector != $vector) {
 	if ($count++ > 1) return '方向転換は一回まで';
-	$last_vector = $vector;
+	$vector = $new_vector;
       }
 
       $id = array_shift($point);
@@ -50,9 +48,9 @@ class Role_step_guard extends Role_guard {
     $target_stack = array();
     $handle_stack = array();
     foreach ($root_list as $id) { //投票順に意味があるので sort しない
-      $user = DB::$USER->ByID($id);
-      $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
-      $handle_stack[$id] = $user->handle_name;
+      //対象者のみ憑依追跡する
+      $target_stack[] = $id == $target->user_no ? DB::$USER->ByReal($id)->user_no : $id;
+      $handle_stack[] = DB::$USER->ByID($id)->handle_name;
     }
 
     $this->SetStack(implode(' ', $target_stack), 'target_no');
@@ -63,12 +61,12 @@ class Role_step_guard extends Role_guard {
   //足音処理
   function Step(array $list) {
     array_pop($list); //最後尾は対象者なので除く
-    sort($list);
-    $result = array();
+    $stack = array();
     foreach ($list as $id) {
-      if (DB::$USER->IsVirtualLive($id)) $result[] = $id;
+      if (DB::$USER->IsVirtualLive($id)) $stack[] = $id;
     }
-    if (count($result) < 1) return true;
-    return DB::$ROOM->ResultDead(implode(' ', $result), 'STEP');
+    if (count($stack) < 1) return true;
+    sort($stack);
+    return DB::$ROOM->ResultDead(implode(' ', $stack), 'STEP');
   }
 }

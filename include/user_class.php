@@ -1203,7 +1203,6 @@ EOF;
 
   //重複 IP 判定
   static function IsDuplicateIP() {
-    DB::$display = true;
     $query = <<<EOF
 SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?
 EOF;

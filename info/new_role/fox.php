@@ -337,8 +337,8 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <h3 id="step_fox">響狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
 <h4>[耐性] 人狼襲撃：無効</h4>
 <pre>
-夜の投票先の間で足音が鳴る妖狐。
-投票はキャンセル可能。
+夜の投票先 (徘徊) の間で足音が鳴る妖狐。
+徘徊能力は<a href="wolf.php#step_mad">家鳴</a>参照。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -346,6 +346,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
+<a href="wolf.php#step_mad">家鳴</a>の妖狐バージョンです。
 </pre>
 
 <h3 id="revive_fox">仙狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>

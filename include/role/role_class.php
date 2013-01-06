@@ -814,10 +814,10 @@ abstract class Role {
   //隣り合っている ID を取得
   protected function GetChain($id, $max) {
     $stack = array();
-    if ($id - 5 > 1)     $stack['U'] = $id - 5;
-    if ($id + 5 <= $max) $stack['D'] = $id + 5;
-    if ((($id - 1) % 5) != 0 && $id > 1)    $stack ['L'] = $id - 1;
-    if ((($id + 1) % 5) != 1 && $id < $max) $stack ['R'] = $id + 1;
+    if ($id - 5 >= 1)    $stack['N'] = $id - 5;
+    if ($id + 5 <= $max) $stack['S'] = $id + 5;
+    if ((($id - 1) % 5) != 0 && $id > 1)    $stack ['W'] = $id - 1;
+    if ((($id + 1) % 5) != 1 && $id < $max) $stack ['E'] = $id + 1;
     return $stack;
   }
 

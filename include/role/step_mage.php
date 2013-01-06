@@ -15,20 +15,20 @@ class Role_step_mage extends Role_mage {
     $stack = $this->GetVoteNightTarget();
     //Text::p($stack);
 
-    $id    = $this->GetActor()->user_no;
-    $max   = count(DB::$USER->rows);
-    $count = 0;
-    $last_vector = null;
-    $root_list   = array();
+    $id  = $this->GetActor()->user_no;
+    $max = count(DB::$USER->rows);
+    $vector = null;
+    $count  = 0;
+    $root_list = array();
     do {
       $chain = $this->GetChain($id, $max);
       $point = array_intersect($chain, $stack);
       if (count($point) != 1) return '通り道が一本に繋がっていません';
 
-      $vector = array_shift(array_keys($point));
-      if ($vector != $last_vector) {
+      $new_vector = array_shift(array_keys($point));
+      if ($new_vector != $vector) {
 	if ($count++ > 1) return '方向転換は一回まで';
-	$last_vector = $vector;
+	$vector = $new_vector;
       }
 
       $id = array_shift($point);
@@ -45,9 +45,9 @@ class Role_step_mage extends Role_mage {
     $target_stack = array();
     $handle_stack = array();
     foreach ($root_list as $id) { //投票順に意味があるので sort しない
-      $user = DB::$USER->ByID($id);
-      $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
-      $handle_stack[$id] = $user->handle_name;
+      //対象者のみ憑依追跡する
+      $target_stack[] = $id == $target->user_no ? DB::$USER->ByReal($id)->user_no : $id;
+      $handle_stack[] = DB::$USER->ByID($id)->handle_name;
     }
 
     $this->SetStack(implode(' ', $target_stack), 'target_no');
@@ -58,12 +58,12 @@ class Role_step_mage extends Role_mage {
   //足音処理
   function Step(array $list) {
     array_pop($list); //最後尾は対象者なので除く
-    sort($list);
     $stack = array();
     foreach ($list as $id) {
       if (DB::$USER->IsVirtualLive($id)) $stack[] = $id;
     }
     if (count($stack) < 1) return true;
+    sort($stack);
     return DB::$ROOM->ResultDead(implode(' ', $stack), 'STEP');
   }
 }

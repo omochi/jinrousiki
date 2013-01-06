@@ -132,7 +132,7 @@ class RoleMessageList {
     'type' => 'mage', 'delimiter' => array('^' => 'doll'));
 
   public $step_mage = array(
-    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#審神者#です。夜の投票時にあなたと投票先の通り道で^足音^が鳴ります。",
+    'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#審神者#です。夜の投票時にあなたと投票先の通り道で^足音^が鳴ります。黙破りし^足音^は真実の調べ。神意を解し偽神を暴くのです！",
     'type' => 'mage', 'delimiter' => array('^' => 'step'));
 
   public $soul_mage = array(
@@ -248,7 +248,7 @@ class RoleMessageList {
     'type' => 'guard', 'delimiter' => array('^' => 'assassin'));
 
   public $step_guard = array(
-    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#山立#です。夜の投票時にあなたと投票先の通り道で^足音^が鳴ります。",
+    'message' => "[役割] [|村人|陣営] [#狩人#系]\n　あなたは#山立#です。夜の投票時にあなたと投票先の通り道で^足音^が鳴ります。自らが鳴らす鈴の音に紛れ、獣たちを追い込むのです！",
     'type' => 'guard', 'delimiter' => array('^' => 'step'));
 
   public $reflect_guard = array(
@@ -441,7 +441,7 @@ class RoleMessageList {
     'type' => 'jealousy', 'delimiter' => array('=' => 'luck'));
 
   public $brownie = array(
-    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_^投票数^を +1 することができますが、あなたが_処刑_されたら誰か一人を:熱病:にしてしまいます。\n　その力で村を裕福にしてあげましょう。但しあなたが_処刑_されてしまうとたちまち村に不幸が訪れ、病に伏せる者がでてしまいます。",
+    'message' => "[役割] [|村人|陣営] [#座敷童子#系]\n　あなたは#座敷童子#です。|村人|の_処刑_^投票数^を +1 することができますが、あなたが_処刑_されたら誰か一人を:熱病:にしてしまいます。\n　大道めぐりで一人増えた、月夜に現れる無邪気で小さな童子。発見し、遊んでくれた家人には幸運を。追い出した家人には悪戯を。",
     'type' => 'human',
     'delimiter' => array('#' => 'brownie', '_' => 'vote', '^' => 'authority', ':' => 'chicken'));
 
@@ -642,8 +642,8 @@ class RoleMessageList {
     'type' => 'wolf', 'delimiter' => array('#' => 'guard', '_' => 'wisp'));
 
   public $step_wolf = array(
-    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|響狼|です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。一定回数まで音を鳴らさず襲撃することもできます。",
-    'type' => 'wolf');
+    'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|響狼|です。夜の投票時にあなたと投票先の通り道で#足音#が鳴ります。一定回数まで音を鳴らさず襲撃することもできます。\n　コツコツと夜に響く#足音#は哀れな村人に捧ぐ死の旋律。あなたはその音を巧みに奏でる事で村人達を恐怖に震え上がらせるのです！",
+    'type' => 'wolf', 'delimiter' => array('#' => 'step'));
 
   public $blue_wolf = array(
     'message' => "[役割] [|人狼|陣営] [|人狼|系]\n　あなたは|蒼狼|です。襲撃した人が#妖狐#だった場合は_はぐれ者_にすることができます。\n　あなたの牙で念話を噛み切り連携を切り崩し、#妖狐#を烏合の衆にしてしまうのです！",
@@ -735,8 +735,8 @@ class RoleMessageList {
     'type' => 'mad', 'delimiter' => array('#' => 'chiroptera'));
 
   public $step_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|家鳴|です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
-    'type' => 'mad');
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|家鳴|です。夜の投票先の通り道で#足音#が鳴ります。あなたの奏でる不吉な音色で全ての者の精神を狂わせるのです！",
+    'type' => 'mad', 'delimiter' => array('#' => 'step'));
 
   public $dream_eater_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|獏|です。夜の間に村人一人の夢を食べることで夢能力者を殺すことができます。\n　天敵たる_夢守人_に注意しながら、夢の世界にいる住人や#妖精#たちを食らい尽くすのです！",
@@ -847,8 +847,8 @@ class RoleMessageList {
     'type' => 'phantom_fox');
 
   public $step_fox = array(
-    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|響狐|です。夜の投票時にあなたと投票先の通り道で足音が鳴ります。",
-    'type' => 'fox');
+    'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|響狐|です。夜の投票先の通り道で^足音^が鳴ります。|狐|の響きは#狼#すら予測不能。あなたの^足音^で全ての敵を混乱に陥れましょう！",
+    'type' => 'fox', 'delimiter' => array('^' => 'step'));
 
   public $revive_fox = array(
     'message' => "[役割] [|妖狐|陣営] [|妖狐|系]\n　あなたは|仙狐|です。一度だけ、死んだ人を誰か一人ほぼ確実に_蘇生_することができます。\n　繁栄を司るその神通力で、今まで散々不敬を働いた村人たちに恐怖の鉄槌を下すのです！",
@@ -2289,11 +2289,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Test('poison_ogre');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
-#$builder->Output('step_mage', array(0,0,0.7,0,0));
-#$builder->Output('step_guard', array(0));
-#$builder->Output('step_wolf', array(0));
-#$builder->Output('step_mad', array(0));
-#$builder->Output('step_fox', array(0));
-
-#$builder->Output('brownie', array(0,0));
-$builder->Output('shepherd_patron', array(0,0));
+$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));

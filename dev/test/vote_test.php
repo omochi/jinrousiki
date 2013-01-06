@@ -8,7 +8,7 @@ Loader::LoadFile('test_class', 'image_class');
 $vote_view_mode = false; //投票表示モード
 $cast_view_mode = false; //配役情報表示モード
 $talk_view_mode = false; //発言表示モード
-$role_view_mode = true; false; //画像表示モード
+$role_view_mode = false; //画像表示モード
 $role_view_list = array(
   'main'    => true, #false,
   'sub'     => false,
@@ -76,7 +76,8 @@ RQ::GetTest()->test_users[14]->live = 'live';
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
 RQ::GetTest()->test_users[15]->live = 'live';
 
-RQ::GetTest()->test_users[16]->role = 'sweet_fairy lovers[16] challenge_lovers';
+#RQ::GetTest()->test_users[16]->role = 'sweet_fairy lovers[16] challenge_lovers';
+RQ::GetTest()->test_users[16]->role = 'step_mage lovers[16] challenge_lovers';
 RQ::GetTest()->test_users[16]->live = 'live';
 
 RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
@@ -235,6 +236,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
     #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
     #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
+    array('user_no' => 16, 	'target_no' => '11 6 1 2 3 4 5',	'type' => 'STEP_MAGE_DO'),
     #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
     #array('user_no' => 18, 	'type' => 'VOODOO_FOX_DO', 'target_no' => 20),
     #array('user_no' => 18, 	'target_no' => '13 8 9 10',	'type' => 'STEP_WOLF_EAT'),
@@ -296,7 +298,7 @@ if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 #DB::$USER->ByID(9)->live = 'live';
-DB::$SELF = DB::$USER->ByID(1);
+DB::$SELF = DB::$USER->ByID(16);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;

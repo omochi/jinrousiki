@@ -38,7 +38,8 @@ EOF;
     $stack = array(
       '' => '普通', 'chaos' => '闇鍋', 'chaosfull' => '真・闇鍋', 'chaos_hyper' => '超・闇鍋',
       'chaos_verso' => '裏・闇鍋', 'duel' => '決闘', 'duel_auto_open_cast' => '自動公開決闘',
-      'duel_not_open_cast' => '非公開決闘', 'gray_random' => 'グレラン', 'quiz' => 'クイズ');
+      'duel_not_open_cast' => '非公開決闘', 'gray_random' => 'グレラン', 'step' => '足音',
+      'quiz' => 'クイズ');
     $checked_key = isset($_POST[$id]) && array_key_exists($_POST[$id], $stack) ?
       $_POST[$id] : 'chaos_hyper';
     foreach ($stack as $key => $value) {
@@ -108,6 +109,7 @@ EOF;
       case 'chaos_verso':
       case 'duel':
       case 'gray_random':
+      case 'step':
       case 'quiz':
 	$stack->game_option[] = $_POST['game_option'];
 	break;
@@ -487,6 +489,66 @@ class VoteTest {
 	Image::Role()->Output('prediction_weather_'.$stack['event']);
       }
     }
+    HTML::OutputFooter(true);
+  }
+}
+
+//投票テスト
+class StepVoteTest {
+  static function Output() {
+    Loader::LoadFile('vote_message');
+
+    $stack = new RequestGameVote();
+    RQ::$get->vote       = $stack->vote;
+    RQ::$get->target_no  = $stack->target_no;
+    RQ::$get->situation  = $stack->situation;
+    RQ::$get->add_action = $stack->add_action;
+    RQ::$get->back_url   = '<a href="vote_test.php">戻る</a>';
+
+    if (RQ::$get->vote) { //投票処理
+      HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
+      if (RQ::$get->target_no == 0) { //空投票検出
+	HTML::OutputResult('空投票', '投票先を指定してください');
+      }
+      elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
+	//Vote::VoteDay();
+      }
+      elseif (DB::$ROOM->IsNight()) { //夜の投票処理
+	Vote::VoteNight();
+      }
+      else { //ここに来たらロジックエラー
+	VoteHTML::OutputError('投票コマンドエラー', '投票先を指定してください');
+      }
+    }
+    else {
+      RQ::$get->post_url = 'step_vote_test.php';
+      DB::$SELF->last_load_scene = DB::$ROOM->scene;
+
+      if (DB::$SELF->IsDead()) {
+	DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
+      }
+      else {
+	switch(DB::$ROOM->scene) {
+	case 'beforegame':
+	  VoteHTML::OutputBeforeGame();
+	  break;
+
+	case 'day':
+	  VoteHTML::OutputDay();
+	  break;
+
+	case 'night':
+	  VoteHTML::OutputNight();
+	  break;
+
+	default: //ここに来たらロジックエラー
+	  VoteHTML::OutputError('投票シーンエラー');
+	  break;
+	}
+      }
+    }
+    DB::$SELF = DB::$USER->ByID(1);
+    GameHTML::OutputPlayer();
     HTML::OutputFooter(true);
   }
 }

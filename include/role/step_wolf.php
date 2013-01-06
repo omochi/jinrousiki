@@ -12,7 +12,7 @@ class Role_step_wolf extends Role_wolf {
 
   protected function OutputResult() {
     if (! DB::$ROOM->IsNight()) return;
-    $count = max(0, 2 - (int)$this->GetActor()->GetMainRoleTarget());
+    $count = max(0, 1 - (int)$this->GetActor()->GetMainRoleTarget());
     RoleHTML::OutputAbilityResult('ability_' . $this->role, $count);
   }
 
@@ -22,7 +22,7 @@ class Role_step_wolf extends Role_wolf {
   }
 
   private function IsSilentVote() {
-    return (int)$this->GetActor()->GetMainRoleTarget() < 2;
+    return (int)$this->GetActor()->GetMainRoleTarget() < 1;
   }
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }
@@ -38,13 +38,7 @@ class Role_step_wolf extends Role_wolf {
     $stack = $this->GetVoteNightTarget();
     //Text::p($stack);
 
-    $actor = $this->GetActor();
-    $id  = $actor->user_no;
-    $max = count(DB::$USER->rows);
-
-    $last_vector = null;
-    $count       = 0;
-    $root_list   = array();
+    $root_list = array();
     if ($this->IsDummyBoy()) { //身代わり君襲撃モード
       $id = array_shift($stack);
       if (! DB::$USER->ByID($id)->IsDummyBoy()) { //身代わり君判定
@@ -54,15 +48,19 @@ class Role_step_wolf extends Role_wolf {
       if (count($stack) > 0) return '通り道が一本に繋がっていません';
       $root_list[] = $id;
     } else {
+      $id  = $this->GetActor()->user_no;
+      $max = count(DB::$USER->rows);
+      $vector = null;
+      $count  = 0;
       do {
 	$chain = $this->GetChain($id, $max);
 	$point = array_intersect($chain, $stack);
 	if (count($point) != 1) return '通り道が一本に繋がっていません';
 
-	$vector = array_shift(array_keys($point));
-	if ($vector != $last_vector) {
+	$new_vector = array_shift(array_keys($point));
+	if ($new_vector != $vector) {
 	  if ($count++ > 1) return '方向転換は一回まで';
-	  $last_vector = $vector;
+	  $vector = $new_vector;
 	}
 
 	$id = array_shift($point);
@@ -72,16 +70,16 @@ class Role_step_wolf extends Role_wolf {
     }
     if (count($root_list) < 1) return '通り道が自分と繋がっていません';
 
-    $user = DB::$USER->ByID($id);
-    $live = DB::$USER->IsVirtualLive($user->user_no); //仮想的な生死を判定
-    if (! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
+    $target = DB::$USER->ByID($id);
+    $live   = DB::$USER->IsVirtualLive($target->user_no); //仮想的な生死を判定
+    if (! is_null($str = parent::IgnoreVoteNight($target, $live))) return $str;
 
     $target_stack = array();
     $handle_stack = array();
     foreach ($root_list as $id) { //投票順に意味があるので sort しない
-      $user = DB::$USER->ByID($id);
-      $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
-      $handle_stack[$id] = $user->handle_name;
+      //対象者のみ憑依追跡する
+      $target_stack[] = $id == $target->user_no ? DB::$USER->ByReal($id)->user_no : $id;
+      $handle_stack[] = DB::$USER->ByID($id)->handle_name;
     }
 
     $this->SetStack(implode(' ', $target_stack), 'target_no');
@@ -92,13 +90,13 @@ class Role_step_wolf extends Role_wolf {
   //足音処理
   function Step(array $list) {
     array_pop($list); //最後尾は対象者なので除く
-    sort($list);
-    $result = array();
+    $stack = array();
     foreach ($list as $id) {
-      if (DB::$USER->IsVirtualLive($id)) $result[] = $id;
+      if (DB::$USER->IsVirtualLive($id)) $stack[] = $id;
     }
-    if (count($result) < 1) return true;
-    return DB::$ROOM->ResultDead(implode(' ', $result), 'STEP');
+    if (count($stack) < 1) return true;
+    sort($stack);
+    return DB::$ROOM->ResultDead(implode(' ', $stack), 'STEP');
   }
 
   //ステルス襲撃回数更新

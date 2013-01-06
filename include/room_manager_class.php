@@ -165,7 +165,7 @@ class RoomManager {
 	RoomOption::LoadPost('secret_sub_role', 'topping', 'boost_rate', 'chaos_open_cast',
 			     'sub_role_limit');
       }
-      elseif (! RQ::$get->duel && ! RQ::$get->gray_random) { //通常村
+      elseif (! RQ::$get->duel && ! RQ::$get->gray_random && ! RQ::$get->step) { //通常村
 	RoomOption::LoadPost(
           'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf', 'possessed_wolf',
 	  'sirius_wolf', 'fox', 'child_fox', 'medium');

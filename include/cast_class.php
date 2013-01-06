@@ -186,6 +186,9 @@ class Cast {
     elseif (DB::$ROOM->IsOption('gray_random')) { //グレラン村
       $role_list = self::SetGrayRandom($user_count);
     }
+    elseif (DB::$ROOM->IsOption('step')) { //足音村
+      $role_list = self::SetStep($user_count);
+    }
     elseif (DB::$ROOM->IsQuiz()) { //クイズ村
       $role_list = self::SetQuiz($user_count);
     }
@@ -262,6 +265,7 @@ class Cast {
     }
   }
 
+  //サブ役職配布
   static function SetSubRole(array &$fix_role_list) {
     $rand_keys = array_keys($fix_role_list); //人数分の ID リストを取得
     shuffle($rand_keys); //シャッフルしてランダムキーに変換
@@ -350,6 +354,13 @@ class Cast {
     return self::FilterRole($count, array('wolf', 'mad', 'fox'));
   }
 
+  //足音村の配役処理
+  static function SetStep($count) {
+    $stack = array('step_mage' => 'mage', 'necromancer', 'step_guard' => 'guard',
+		   'step_wolf' => 'wolf', 'step_mad' => 'mad', 'step_fox' => 'fox');
+    return self::FilterRole($count, $stack);
+  }
+
   //村人置換村の処理
   static function ReplaceRole(array &$list) {
     $stack = array();
@@ -403,9 +414,9 @@ class Cast {
     $stack = array();
     foreach (CastConfig::$role_list[$count] as $key => $value) {
       $role = 'human';
-      foreach ($filter as $set_role) {
-	if (strpos($key, $set_role) !== false) {
-	  $role = $set_role;
+      foreach ($filter as $set_role => $target_role) {
+	if (strpos($key, $target_role) !== false) {
+	  $role = is_int($set_role) ? $target_role : $set_role;
 	  break;
 	}
       }
