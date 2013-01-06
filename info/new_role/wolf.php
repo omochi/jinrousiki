@@ -92,11 +92,12 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#revive_wolf">仙狼</a>
 <a href="#trap_wolf">狡狼</a>
 <a href="#fire_wolf">火狼</a>
+<a href="#step_wolf">響狼</a>
 <a href="#blue_wolf">蒼狼</a>
 <a href="#emerald_wolf">翠狼</a>
-<a href="#decieve_wolf">欺狼</a>
 </p>
 <p>
+<a href="#decieve_wolf">欺狼</a>
 <a href="#doom_wolf">冥狼</a>
 <a href="#sex_wolf">雛狼</a>
 <a href="#sharp_wolf">鋭狼</a>
@@ -106,9 +107,9 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#sirius_wolf">天狼</a>
 <a href="#elder_wolf">古狼</a>
 <a href="#cute_wolf">萌狼</a>
-<a href="#scarlet_wolf">紅狼</a>
 </p>
 <p>
+<a href="#scarlet_wolf">紅狼</a>
 <a href="#silver_wolf">銀狼</a>
 <a href="#emperor_wolf">帝狼</a>
 </p>
@@ -428,6 +429,19 @@ InfoHTML::OutputRoleHeader('人狼陣営');
 <a href="#doom_wolf">冥狼</a>の<a href="sub_role.php#black_wisp">天火</a>バージョンです。
 襲撃失敗時の対応に幅を持たせることができます。
 Ver. 2.1.0 α4 からは貴重な対護衛能力者として生まれ変わりました。
+</pre>
+
+<h3 id="step_wolf">響狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 2.2.0 α3～]</h3>
+<pre>
+夜の投票時に自分と投票先の間で足音が鳴る人狼。
+一定回数だけ、足音を鳴らさずに襲撃できる。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#step">足音能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 </pre>
 
 <h3 id="blue_wolf">蒼狼 (占い結果：人狼 / 霊能結果：人狼) [Ver. 1.4.0 β8～]</h3>
@@ -1077,12 +1091,13 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#jammer_mad">月兎</a>
 <a href="#voodoo_mad">呪術師</a>
 <a href="#enchant_mad">狢</a>
+<a href="#step_mad">家鳴</a>
 <a href="#dream_eater_mad">獏</a>
 <a href="#possessed_mad">犬神</a>
 <a href="#trap_mad">罠師</a>
-<a href="#snow_trap_mad">雪女</a>
 </p>
 <p>
+<a href="#snow_trap_mad">雪女</a>
 <a href="#corpse_courier_mad">火車</a>
 <a href="#amaze_mad">傘化け</a>
 <a href="#agitate_mad">扇動者</a>
@@ -1210,6 +1225,19 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 <a href="chiroptera.php#fairy_group">妖精</a>の狂人バージョンで、「むじな」と読みます。
 客観的に存在していることを証明することができます。
+</pre>
+
+<h3 id="step_mad">家鳴 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
+<pre>
+夜の投票先の間で足音が鳴る特殊な狂人。
+投票はキャンセル可能。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#step">足音能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 </pre>
 
 <h3 id="dream_eater_mad">獏 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α21～]</h3>

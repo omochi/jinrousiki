@@ -5,6 +5,7 @@ Loader::LoadFile('info_functions');
 InfoHTML::OutputRoleHeader('能力者逆引き');
 ?>
 <p>
+<a href="#step">足音</a>
 <a href="#assassin">暗殺</a>
 <a href="#anti_assassin">暗殺耐性</a>
 <a href="#mage">占い</a>
@@ -14,9 +15,9 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#guard">護衛</a>
 <a href="#guard_limit">護衛制限</a>
 <a href="#doom">死の宣告</a>
-<a href="#decide">処刑者決定</a>
 </p>
 <p>
+<a href="#decide">処刑者決定</a>
 <a href="#vote_action">処刑投票</a>
 <a href="#vote_reaction">処刑得票</a>
 <a href="#sudden_death">ショック死</a>
@@ -26,9 +27,9 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
-<a href="#same">同一表示</a>
 </p>
 <p>
+<a href="#same">同一表示</a>
 <a href="#frostbite">凍傷</a>
 <a href="#authority">投票数変化</a>
 <a href="#stargazer">投票能力</a>
@@ -52,6 +53,11 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#necromancer">霊能</a>
 <a href="#trap">罠</a>
 </p>
+
+<h2 id="step">足音能力者</h2>
+<pre>
+<a href="human.php#step_mage">審神者</a>・<a href="human.php#step_guard">山立</a>・<a href="wolf.php#step_wolf">響狼</a>・<a href="wolf.php#step_mad">家鳴</a>・<a href="fox.php#step_fox">響狐</a>
+</pre>
 
 <h2 id="assassin">暗殺能力者</h2>
 <h3 id="assassin_kill">暗殺型</h3>

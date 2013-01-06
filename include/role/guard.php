@@ -103,7 +103,7 @@ class Role_guard extends Role {
       'critical_avenger') ||
       ($user->IsRole('possessed_fox') && count($user->GetPartner('possessed_target', true)) < 1) ||
       ($user->IsRoleGroup('mad') &&
-       ! $user->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'swindle_mad', 'therian_mad',
-		       'revive_mad', 'immolate_mad'));
+       ! $user->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'swindle_mad', 'step_mad',
+		       'therian_mad', 'revive_mad', 'immolate_mad'));
   }
 }

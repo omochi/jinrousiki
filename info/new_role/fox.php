@@ -75,14 +75,15 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <a href="#sacrifice_fox">白蔵主</a>
 <a href="#emerald_fox">翠狐</a>
 <a href="#voodoo_fox">九尾</a>
+<a href="#step_fox">響狐</a>
 <a href="#revive_fox">仙狐</a>
 <a href="#possessed_fox">憑狐</a>
 <a href="#doom_fox">冥狐</a>
 <a href="#trap_fox">狡狐</a>
 <a href="#cursed_fox">天狐</a>
-<a href="#elder_fox">古狐</a>
 </p>
 <p>
+<a href="#elder_fox">古狐</a>
 <a href="#cute_fox">萌狐</a>
 <a href="#scarlet_fox">紅狐</a>
 <a href="#silver_fox">銀狐</a>
@@ -331,6 +332,20 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <a href="wolf.php#voodoo_mad">呪術師</a>の妖狐バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/58" target="_top">新役職考案スレ(58)</a> が原型です。
 対占い・対人狼襲撃耐性は通常の<a href="#fox">妖狐</a>と同じですが
 呪い能力を持った代わりに<a href="human.php#guard_hunt">狩人</a>にも弱くなっています。
+</pre>
+
+<h3 id="step_fox">響狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
+<h4>[耐性] 人狼襲撃：無効</h4>
+<pre>
+夜の投票先の間で足音が鳴る妖狐。
+投票はキャンセル可能。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#step">足音能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 </pre>
 
 <h3 id="revive_fox">仙狐 (占い結果：村人(呪殺) / 霊能結果：村人) [Ver. 1.4.0 β2～]</h3>

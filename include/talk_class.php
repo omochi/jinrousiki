@@ -140,6 +140,11 @@ class TalkParser {
 	$this->sentence = ' ' . Message::$assassin_not_do;
 	return;
 
+      case 'STEP_NOT_DO':
+	$this->class = 'step-do';
+	$this->sentence = ' ' . Message::$step_not_do;
+	return;
+
       case 'TRAP_MAD_NOT_DO':
 	$this->class = 'wolf-eat';
 	$this->sentence = ' ' . Message::$trap_not_do;

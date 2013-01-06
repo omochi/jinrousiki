@@ -8,7 +8,7 @@ Loader::LoadFile('test_class', 'image_class');
 $vote_view_mode = false; //投票表示モード
 $cast_view_mode = false; //配役情報表示モード
 $talk_view_mode = false; //発言表示モード
-$role_view_mode = false; //画像表示モード
+$role_view_mode = true; false; //画像表示モード
 $role_view_list = array(
   'main'    => true, #false,
   'sub'     => false,

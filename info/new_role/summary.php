@@ -100,7 +100,9 @@ Ver. 2.1.0
 <a href="#ver210a4">α4</a>
 <a href="#ver210a5">α5</a>
 <a href="#ver210a6">α6</a>
-<a href="#ver210a7">α7</a>
+<a href="#ver210a7">α7</a><br>
+Ver. 2.2.0
+<a href="#ver220a3">α3</a>
 </p>
 
 <p>
@@ -3021,6 +3023,51 @@ Ver. 2.1.0
   <td>蝙蝠</td>
   <td class="ability">吸血先に一定確率 (50%) で<a href="sub_role.php#passion">恋色迷彩</a>もつけてしまう特殊な吸血鬼。</td>
   <td>Ver. 2.1.0 α7</td>
+</tr>
+<tr id="ver220a3">
+  <td><a href="human.php#step_mage">審神者</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#mage_group">占い師系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">夜の投票時に自分と投票先の間で足音が鳴る特殊な占い師。</td>
+  <td>Ver. 2.2.0 α3</td>
+</tr>
+<tr>
+  <td><a href="human.php#step_guard">山立</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#guard_group">狩人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">夜の投票時に自分と投票先の間で足音が鳴る特殊な狩人。</td>
+  <td>Ver. 2.2.0 α3</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#step_wolf">響狼</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#wolf_group">人狼系</a></td>
+  <td>人狼</td>
+  <td>人狼</td>
+  <td class="ability">夜の投票時に自分と投票先の間で足音が鳴る人狼。</td>
+  <td>Ver. 2.2.0 α3</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#step_mad">家鳴</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">夜の投票先の間で足音が鳴る特殊な狂人。</td>
+  <td>Ver. 2.2.0 α3</td>
+</tr>
+<tr>
+  <td><a href="fox.php#step_fox">響狐</a></td>
+  <td><a href="fox.php">妖狐</a></td>
+  <td><a href="fox.php#fox_group">妖狐系</a></td>
+  <td>村人<br>(呪殺)</td>
+  <td>村人</td>
+  <td class="ability">夜の投票先の間で足音が鳴る妖狐。</td>
+  <td>Ver. 2.2.0 α3</td>
 </tr>
 </table>
 

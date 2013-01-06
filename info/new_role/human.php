@@ -246,6 +246,7 @@ PP ラインの計算を複雑にするために作成してみました。
 <p>
 <a href="#mage">占い師</a>
 <a href="#puppet_mage">傀儡師</a>
+<a href="#step_mage">審神者</a>
 <a href="#soul_mage">魂の占い師</a>
 <a href="#psycho_mage">精神鑑定士</a>
 <a href="#sex_mage">ひよこ鑑定士</a>
@@ -294,6 +295,19 @@ PP ラインの計算を複雑にするために作成してみました。
 人形に告発されるので潜伏は難しいですが<a href="#dummy_mage">夢見人</a>でない事を自覚できるので
 動きやすいかも知れません。
 紅系と違い、人狼・妖狐からは見えないので注意して下さい。
+</pre>
+
+<h3 id="step_mage">審神者 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
+<h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
+<pre>
+夜の投票時に自分と投票先の間で足音が鳴る特殊な占い師。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#step">足音能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 </pre>
 
 <h3 id="soul_mage">魂の占い師 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 α3-7～]</h3>
@@ -1076,11 +1090,14 @@ PP ラインの計算を複雑にするために作成してみました。
 <a href="#hunter_guard">猟師</a>
 <a href="#blind_guard">夜雀</a>
 <a href="#gatekeeper_guard">門番</a>
+<a href="#step_guard">山立</a>
 <a href="#reflect_guard">侍</a>
 <a href="#poison_guard">騎士</a>
 <a href="#fend_guard">忍者</a>
 <a href="#reporter">ブン屋</a>
 <a href="#anti_voodoo">厄神</a>
+</p>
+<p>
 <a href="#elder_guard">老兵</a>
 <a href="#dummy_guard">夢守人</a>
 </p>
@@ -1105,7 +1122,7 @@ PP ラインの計算を複雑にするために作成してみました。
 <pre>
 1. 狩り能力があるのは<a href="#guard">狩人</a>・<a href="#hunter_guard">猟師</a>・<a href="#reflect_guard">侍</a>・<a href="#poison_guard">騎士</a>・<a href="#fend_guard">忍者</a>。
 2. 対象は特殊狂人・特殊妖狐・特殊天使・特殊吸血鬼・特殊蝙蝠・特殊復讐者。
-2-1. 特殊狂人 (<a href="wolf.php#mad">狂人</a>・<a href="wolf.php#fanatic_mad">狂信者</a>・<a href="wolf.php#whisper_mad">囁き狂人</a>・<a href="wolf.php#swindle_mad">因幡兎</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<a href="wolf.php#immolate_mad">殉教者</a>以外の<a href="wolf.php#mad_group">狂人系</a>)
+2-1. 特殊狂人 (<a href="wolf.php#mad">狂人</a>・<a href="wolf.php#fanatic_mad">狂信者</a>・<a href="wolf.php#whisper_mad">囁き狂人</a>・<a href="wolf.php#swindle_mad">因幡兎</a>・<a href="wolf.php#step_mad">家鳴</a>・<a href="wolf.php#therian_mad">獣人</a>・<a href="wolf.php#revive_mad">尸解仙</a>・<a href="wolf.php#immolate_mad">殉教者</a>以外の<a href="wolf.php#mad_group">狂人系</a>)
 2-2. 特殊妖狐 (<a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#voodoo_fox">九尾</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#doom_fox">冥狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="fox.php#cursed_fox">天狐</a>)
 2-3. 特殊天使 (<a href="lovers.php#cursed_angel">堕天使</a>)
 2-4. 特殊吸血鬼 (<a href="vampire.php#incubus_vampire">青髭公</a>・<a href="vampire.php#succubus_vampire">飛縁魔</a>・<a href="vampire.php#doom_vampire">冥血鬼</a>・<a href="vampire.php#sacrifice_vampire">吸血公</a>・<a href="vampire.php#soul_vampire">吸血姫</a>)
@@ -1184,6 +1201,19 @@ PP ラインの計算を複雑にするために作成してみました。
 <h4>[作成者からのコメント]</h4>
 <pre>
 暗殺能力に対する護衛力を持った特殊狩人で、対<a href="ogre.php#ogre_do">人攫い</a>が主眼です。
+</pre>
+
+<h3 id="step_guard">山立 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
+<h4>[狩人能力] 護衛：通常 / 護衛制限：有り / 狩り：有り / 罠：有効</h4>
+<pre>
+夜の投票時に自分と投票先の間で足音が鳴る特殊な狩人。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#step">足音能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
 </pre>
 
 <h3 id="reflect_guard">侍 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β22～]</h3>

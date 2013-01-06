@@ -925,16 +925,16 @@ class Vote {
     }
     RoleManager::$get->vote_data = $vote_data;
 
-    //-- 足音処理 --//
+    //-- 足音レイヤー --//
     $step_list = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
     if (DB::$ROOM->date > 1) $step_list[] = 'STEP_GUARD_DO';
-    foreach ($step_list as $action) {
+    foreach ($step_list as $action) { //足音処理
       foreach ($vote_data[$action] as $id => $target_id) {
 	RoleManager::LoadMain(DB::$USER->ByID($id))->Step(explode(' ', $target_id));
       }
     }
 
-    foreach ($vote_data['SILENT_WOLF_EAT'] as $id => $target_id) {
+    foreach ($vote_data['SILENT_WOLF_EAT'] as $id => $target_id) { //ステルス投票カウントアップ
       RoleManager::LoadMain(DB::$USER->ByID($id))->UpdateStep();
     }
 
@@ -947,9 +947,8 @@ class Vote {
     }
     foreach (array('STEP_WOLF_EAT', 'SILENT_WOLF_EAT') as $action) { //響狼の襲撃情報取得
       foreach ($vote_data[$action] as $id => $target_id) {
-	$stack     = explode(' ', $target_id);
 	$voted_wolf  = DB::$USER->ByID($id);
-	$wolf_target = DB::$USER->ByID(array_pop($stack));
+	$wolf_target = DB::$USER->ByID(array_pop(explode(' ', $target_id)));
       }
     }
     RoleManager::$get->voted_wolf  = $voted_wolf;
