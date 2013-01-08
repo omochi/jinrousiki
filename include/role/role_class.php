@@ -987,7 +987,20 @@ class RoleHTML {
       case 'STEP_MAGE_DO':
       case 'STEP_GUARD_DO':
       case 'SPREAD_WIZARD_DO':
+	$str_stack = array();
+	foreach (explode(' ', $stack['target_no']) as $id) {
+	  $user = DB::$USER->ByVirtual($id);
+	  $str_stack[$user->user_no] = $user->handle_name;
+	}
+	ksort($str_stack);
+	$str = implode('さん ', $str_stack) . 'さんに投票済み';
+	break;
+
       case 'STEP_DO':
+	if ($not_type != '' && $stack['type'] == $not_type) {
+	  $str = 'キャンセル投票済み';
+	  break;
+	}
 	$str_stack = array();
 	foreach (explode(' ', $stack['target_no']) as $id) {
 	  $user = DB::$USER->ByVirtual($id);
@@ -1010,7 +1023,7 @@ class RoleHTML {
 	break;
       }
     }
-    echo '<span class="ability ' . $class . '">' . $str . '</span><br>'."\n";
+    printf('<span class="ability %s">%s</span><br>'."\n", $class, $str);
   }
 
   //能力発動結果を表示する

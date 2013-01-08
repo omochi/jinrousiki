@@ -196,7 +196,8 @@ class GameOptionConfig {
     'l' => 'L：白銀村',
     'm' => 'M：暗殺村',
     'n' => 'N：罠村',
-    'o' => 'O：陰陽村');
+    'o' => 'O：陰陽村',
+    'p' => 'P：音鳴村');
 
   static $boost_rate_enable = true; //出現率変動モード
   static $boost_rate_list = array(

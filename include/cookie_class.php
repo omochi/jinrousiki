@@ -17,11 +17,10 @@ class JinroCookie {
     setcookie('scene', DB::$ROOM->scene, $time); //シーンを登録
 
     /* 再投票 */
-    if (DB::$ROOM->vote_count > 1) { //再投票回数を登録
-      setcookie('vote_count', DB::$ROOM->vote_count, $time);
-    }
-    else { //再投票が無いなら削除
-      setcookie('vote_count', '', DB::$ROOM->system_time - self::TIME);
+    if (DB::$ROOM->vote_count > 1) {
+      setcookie('vote_count', DB::$ROOM->vote_count, $time); //再投票回数を登録
+    } else {
+      setcookie('vote_count', '', DB::$ROOM->system_time - self::TIME); //再投票が無いなら削除
     }
 
     /* 入村情報 */

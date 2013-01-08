@@ -311,19 +311,22 @@ PP ラインの計算を複雑にするために作成してみました。
 <ol>
 <li>通常の投票と違い、始点から終点までの「通り道」を全てチェックする必要があります。</li>
 <li>「通り道」とは参加者の位置で、生死は無関係に選択できます。</li>
-<li>直線で到達できない場合は通り道から上下左右のどれかで曲がる事ができます。</li>
+<li>直線で到達できない場合は通り道から上下左右のどれかで曲がる事ができます (方向転換)。</li>
+<li>方向転換は一度しかできません。</li>
 <li>通り道を斜めに進むことはできません。</li>
 <li>通り道は必ず最短で選ぶ必要があります。</li>
 <li>最短ルートが複数ある場合は任意の通り方を一つ選ぶ事ができます。</li>
+<li><a href="#clairvoyance_scanner">猩々</a>が透視した場合は全ての投票先が表示される。</li>
 </ol>
 <h4>足音システム</h4>
 <ol>
 <li>足音能力者の通り道のうち、判定時に生存している位置全てで足音が鳴ります。</li>
 <li><a href="../spec.php#vote_night">判定</a>は接触レイヤーの前で行います。</li>
+<li><a href="ability.php#guard">護衛</a>や<a href="ability.php#trap">罠</a>などの他の能力の干渉は受けません。</li>
 <li>足音は死亡者メッセージ欄に表示され、参加者全てが見ることができます。</li>
 <li>足音メッセージは一人の足音能力者の判定毎に出力されます。</li>
 <li>他の死亡者メッセージ同様、ランダム処理が入るので表示順と投票順は無関係です。</li>
-<li>憑依で入れ替わっている場合でも、生死判定は見た目通りの状態で判定される。</li>
+<li>憑依で入れ替わっている場合でも、生死判定は見た目通りの状態で判定されます。</li>
 </ol>
 <h4>判定例</h4>
 <pre>
@@ -783,7 +786,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </ol>
 <h4>封印対象</h4>
 <pre>
-<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#revive_mad">尸解仙</a>
+<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#revive_wolf">仙狼</a>・<a href="wolf.php#step_wolf">響狼</a>・<a href="wolf.php#tongue_wolf">舌禍狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="wolf.php#trap_mad">罠師</a>・<a href="wolf.php#revive_mad">尸解仙</a>
 <a href="fox.php#phantom_fox">幻狐</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="fox.php#emerald_fox">翠狐</a>・<a href="fox.php#revive_fox">仙狐</a>・<a href="fox.php#possessed_fox">憑狐</a>・<a href="fox.php#trap_fox">狡狐</a>・<a href="lovers.php#revive_cupid">邪仙</a>・<a href="duelist.php#revive_avenger">夜刀神</a>
 </pre>
 <h5>Ver. 2.1.0 α4～</h5>
@@ -2346,7 +2349,8 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <li>能力を発動できなかった場合でも分かる。<br>
   例) 人狼に噛み殺された占い師の投票先は分かる。
 </li>
-<li>投票先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡する。</a>
+<li>投票先に<a href="wolf.php#trap_mad">罠師</a>の罠が設置されていたら死亡する。</a></li>
+<li><a href="#barrier_wizard">結界師</a>・<a href="ability.php#step">足音能力者</a>を透視した場合は全ての投票先が表示される。</li>
 </ol>
 <h4>関連役職</h4>
 <pre>
@@ -2933,7 +2937,7 @@ MVP の賞品としてプレゼントしたものです。
 <li>護衛に失敗した場合は襲撃先を選択していた場合でも何も表示されない。</li>
 <li>他の護衛先で罠死した場合でも護衛は有効。</li>
 <li>自分を護衛することはできない。</li>
-<li><a href="#clairvoyance_scanner">猩々</a>が尾行した場合は全ての護衛先が表示される。</li>
+<li><a href="#clairvoyance_scanner">猩々</a>が透視した場合は全ての護衛先が表示される。</li>
 </ol>
 <h4>天候：<a href="../weather.php#weather_full_wizard">霧雨</a></h4>
 <pre>

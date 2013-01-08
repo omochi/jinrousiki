@@ -83,7 +83,7 @@ RQ::GetTest()->test_users[16]->live = 'live';
 RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
 RQ::GetTest()->test_users[17]->live = 'dead';
 
-RQ::GetTest()->test_users[18]->role = 'step_wolf[1] no_last_words';
+RQ::GetTest()->test_users[18]->role = 'step_wolf no_last_words';
 RQ::GetTest()->test_users[18]->live = 'live';
 
 RQ::GetTest()->test_users[19]->role = 'shadow_fairy psycho_infected';
@@ -98,7 +98,7 @@ RQ::GetTest()->test_users[21]->live = 'live';
 RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'mad deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'clairvoyance_scanner deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->role = 'barrier_wizard infected[20]';
@@ -201,7 +201,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 2, 	'target_no' => 21,	'type' => 'WOLF_EAT'),
     #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
     #array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
-    array('user_no' => 4, 	'target_no' => '9 14 19 20',	'type' => 'STEP_MAGE_DO'),
+    array('user_no' => 4, 	'target_no' => '9 14 19 18 3',	'type' => 'STEP_MAGE_DO'),
     array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
     #array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
     array('user_no' => 7, 	'target_no' => '12 13',	'type' => 'STEP_GUARD_DO'),
@@ -254,7 +254,7 @@ if ($set_date == 1) { //初日用
     #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
     #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
     #array('user_no' => 23, 	'type' => 'ASSASSIN_DO', 'target_no' => 3),
-    #array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 24),
+    array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 16),
     #array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
     #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
     #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
@@ -298,7 +298,7 @@ if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 #DB::$USER->ByID(9)->live = 'live';
-DB::$SELF = DB::$USER->ByID(16);
+DB::$SELF = DB::$USER->ByID(1);
 #DB::$SELF = DB::$USER->TraceExchange(14);
 foreach (DB::$USER->rows as $user) {
   if (! isset($user->target_no)) $user->target_no = 0;

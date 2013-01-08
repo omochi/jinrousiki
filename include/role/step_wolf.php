@@ -10,26 +10,16 @@ class Role_step_wolf extends Role_wolf {
   public $submit     = 'wolf_eat';
   public $checkbox   = '<input type="checkbox" name="target_no[]"';
 
-  protected function OutputResult() {
-    if (! DB::$ROOM->IsNight()) return;
-    $count = max(0, 1 - (int)$this->GetActor()->GetMainRoleTarget());
-    RoleHTML::OutputAbilityResult('ability_' . $this->role, $count);
-  }
-
   function IsFinishVote(array $list) {
-    if ($this->IsSilentVote()) unset($list[$this->not_action]);
+    if (! $this->GetActor()->IsActive()) unset($list[$this->not_action]);
     return parent::IsFinishVote($list);
-  }
-
-  private function IsSilentVote() {
-    return (int)$this->GetActor()->GetMainRoleTarget() < 1;
   }
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }
 
   function SetVoteNight() {
     parent::SetVoteNight();
-    if ($this->IsDummyBoy() || ! $this->IsSilentVote()) {
+    if ($this->IsDummyBoy() || ! $this->GetActor()->IsActive()) {
       $this->SetStack(null, 'add_action');
     }
   }
@@ -97,13 +87,5 @@ class Role_step_wolf extends Role_wolf {
     if (count($stack) < 1) return true;
     sort($stack);
     return DB::$ROOM->ResultDead(implode(' ', $stack), 'STEP');
-  }
-
-  //ステルス襲撃回数更新
-  function UpdateStep() {
-    $role  = $this->role;
-    $times = (int)$this->GetActor()->GetMainRoleTarget();
-    if ($times > 0) $role .= sprintf('[%d]', $times);
-    $this->GetActor()->ReplaceRole($role, sprintf('%s[%d]', $this->role, $times + 1));
   }
 }

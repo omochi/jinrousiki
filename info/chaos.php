@@ -617,7 +617,7 @@ InfoHTML::OutputHeader('闇鍋モード');
 <?php InfoHTML::OutputItemList('topping', range('a', 'h')); ?>
 </p>
 <p>
-<?php InfoHTML::OutputItemList('topping', range('i', 'o')); ?>
+<?php InfoHTML::OutputItemList('topping', range('i', 'p')); ?>
 </p>
 
 <?php InfoHTML::OutputItem('topping', 'a', 'Ver. 1.4.0 β19'); ?>
@@ -740,6 +740,12 @@ InfoHTML::OutputHeader('闇鍋モード');
 <pre>
 <a href="new_role/human.php#voodoo_killer">陰陽師</a>1　<a href="new_role/human.php#wizard_group">魔法使い系</a>1　<a href="new_role/ogre.php#cursed_yaksa">滝夜叉姫</a>1　<a href="new_role/duelist.php#cursed_avenger">がしゃどくろ</a>1
 </pre>
+
+<?php InfoHTML::OutputItem('topping', 'p', 'Ver. 2.2.0 α3'); ?>
+<pre>
+<a href="new_role/wolf.php#step_wolf">響狼</a>1　<a href="new_role/ability.php#step">足音能力者</a>2 (<a href="new_role/wolf.php#step_wolf">響狼</a>を除く)
+</pre>
+
 
 <h2 id="boost_rate"><?php OptionManager::OutputCaption('boost_rate'); ?> [Ver. 1.5.0 β7～]</h2>
 <ol>

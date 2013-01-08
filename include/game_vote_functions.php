@@ -935,7 +935,7 @@ class Vote {
     }
 
     foreach ($vote_data['SILENT_WOLF_EAT'] as $id => $target_id) { //ステルス投票カウントアップ
-      RoleManager::LoadMain(DB::$USER->ByID($id))->UpdateStep();
+      DB::$USER->ByID($id)->LostAbility();
     }
 
     //-- 接触系レイヤー --//
