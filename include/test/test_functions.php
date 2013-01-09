@@ -5,16 +5,16 @@ class DevRoom {
   static function Initialize($list = array()) {
     //初期村データを生成
     $base_list = array(
-     'id' => RQ::$get->room_no, 'comment' => '',
+     'id' => RQ::Get()->room_no, 'comment' => '',
      'date' => 0, 'scene' => 'beforegame', 'status' => 'waiting',
      'game_option' => 'dummy_boy real_time:6:4 wish_role',
      'option_role' => '', 'vote_count' => 1
     );
 
-    RQ::$get->room_no     = 1;
-    RQ::$get->vote_times  = 1;
-    RQ::$get->reverse_log = null;
-    RQ::$get->TestItems   = new StdClass();
+    RQ::Get()->room_no     = 1;
+    RQ::Get()->vote_times  = 1;
+    RQ::Get()->reverse_log = null;
+    RQ::Get()->TestItems   = new StdClass();
     RQ::GetTest()->test_room = array_merge($base_list, $list);
     RQ::GetTest()->is_virtual_room = true;
     RQ::GetTest()->event           = array();
@@ -25,7 +25,7 @@ class DevRoom {
 
   //村データロード
   static function Load() {
-    DB::$ROOM = new Room(RQ::$get);
+    DB::$ROOM = new Room(RQ::Get());
     DB::$ROOM->test_mode    = true;
     DB::$ROOM->log_mode     = true;
     DB::$ROOM->scene        = 'beforegame';
@@ -112,7 +112,7 @@ class DevUser {
   //ユーザデータ補完
   static function Complement($scene = 'beforegame') {
     foreach (RQ::GetTest()->test_users as $id => $user) {
-      $user->room_no = RQ::$get->room_no;
+      $user->room_no = RQ::Get()->room_no;
       $user->user_no = $id;
       if (! isset($user->sex)) $user->sex = $id % 2 == 0 ? 'female' : 'male';
       $user->role_id = $id;
@@ -128,7 +128,7 @@ class DevUser {
 
   //ユーザ情報をロード
   static function Load() {
-    DB::$USER = new UserData(RQ::$get);
+    DB::$USER = new UserData(RQ::Get());
     DB::$SELF = DB::$USER->ByID(1);
     if (DB::$ROOM->IsBeforeGame()) {
       foreach (DB::$USER->rows as $user) {

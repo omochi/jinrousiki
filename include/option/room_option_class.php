@@ -27,7 +27,7 @@ class RoomOption {
 
   //オプションを登録
   static function SetOption($type, $name) {
-    RQ::$get->$name = true;
+    RQ::Set($name, true);
     if (! in_array($name, self::$$type)) array_push(self::$$type, $name);
   }
 

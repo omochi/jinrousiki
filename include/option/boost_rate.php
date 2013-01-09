@@ -20,7 +20,7 @@ class Option_boost_rate extends SelectorRoomOptionItem {
     $post = $_POST[$this->name];
 
     if (array_key_exists($post, $this->form_list)) {
-      RQ::$get->{$this->name} = true;
+      RQ::Set($this->name, true);
       array_push(RoomOption::${$this->group}, sprintf('%s:%s', $this->name, $post));
     }
   }

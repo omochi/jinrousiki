@@ -35,7 +35,7 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
 
     foreach ($this->form_list as $option => $value) {
       if ($post == $value) {
-	RQ::$get->$option = true;
+	RQ::Set($option, true);
 	array_push(RoomOption::${$this->group}, $option);
 	break;
       }

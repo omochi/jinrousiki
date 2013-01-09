@@ -1,44 +1,45 @@
 <?php
 //-- 引数管理クラス --//
 class RQ {
-  public static $get = null; //Request クラス
+  public  static $src = null; //固定リクエストソース
+  private static $instance = null; //Request クラス
 
   //Request クラスの初期化
   private function __construct($class) {
-    return self::$get = new $class();
+    return self::$instance = new $class();
   }
 
   //Request クラスのロード
   static function Load($class = 'RequestBase', $force = true) {
-    if ($force || is_null(self::$get)) new self($class);
+    if ($force || is_null(self::$instance)) new self($class);
   }
 
   //インスタンス取得
-  static function Get() { return self::$get; }
+  static function Get() { return self::$instance; }
 
   //テストデータ取得
-  static function GetTest() { return self::$get->GetTest(); }
+  static function GetTest() { return self::Get()->GetTest(); }
 
   //テスト村データ取得
-  static function GetTestRoom() { return self::$get->GetTestRoom(); }
+  static function GetTestRoom() { return self::Get()->GetTestRoom(); }
 
   //インスタンス代入
   static function Set($key, $value) {
-    self::$get->$key = $value;
+    self::Get()->$key = $value;
   }
 
   //テスト村データセット
   static function SetTestRoom($key, $value) {
-    self::$get->GetTest()->test_room[$key] = $value;
+    self::GetTest()->test_room[$key] = $value;
   }
 
   //テスト村データ追加
   static function AddTestRoom($key, $value) {
-    self::$get->GetTest()->test_room[$key] .= ' ' . $value;
+    self::GetTest()->test_room[$key] .= ' ' . $value;
   }
 
   //データ展開
-  static function ToArray() { return self::$get->ToArray(); }
+  static function ToArray() { return self::Get()->ToArray(); }
 }
 
 //-- 引数解析の基底クラス --//
@@ -72,7 +73,12 @@ class RequestBase {
     $spec_list = func_get_args();
     $processor = array_shift($spec_list);
     foreach ($spec_list as $spec) {
-      list($src, $item) = explode('.', $spec);
+      if (is_null(RQ::$src)) {
+	list($src, $item) = explode('.', $spec);
+      } else {
+	$src  = RQ::$src;
+	$item = $spec;
+      }
       $value_list = $this->GetSource($src);
 
       if (array_key_exists($item, $value_list)) {
@@ -329,17 +335,18 @@ class RequestGameVote extends RequestBaseGamePlay {
 //-- old_log.php --//
 class RequestOldLog extends RequestBase {
   function __construct() {
-    $this->Parse('intval', 'get.db_no');
-    $this->Parse('IsOn', 'get.watch');
+    RQ::$src = 'get';
+    $this->Parse('intval', 'db_no');
+    $this->Parse('IsOn', 'watch');
     if ($this->is_room = isset($_GET['room_no'])) {
-      $this->Parse('intval', 'get.room_no', 'get.user_no');
-      $this->Parse('IsOn', 'get.reverse_log', 'get.heaven_talk', 'get.heaven_only',
-		   'get.add_role', 'get.personal_result', 'get.time', 'get.icon');
+      $this->Parse('intval', 'room_no', 'user_no');
+      $this->Parse('IsOn', 'reverse_log', 'heaven_talk', 'heaven_only', 'add_role',
+		   'personal_result', 'time', 'icon');
       $this->AttachTestParameters();
     }
     else {
-      $this->Parse(null, 'get.reverse');
-      $this->Parse('SetPage', 'get.page');
+      $this->Parse(null, 'reverse');
+      $this->Parse('SetPage', 'page');
     }
   }
 }
@@ -380,8 +387,9 @@ class RequestSharedRoom extends RequestBase {
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase {
   function __construct() {
+    RQ::$src = 'post';
     Text::Encode();
-    $this->Parse('Escape', 'post.name', 'post.caption', 'post.user', 'post.password');
+    $this->Parse('Escape', 'name', 'caption', 'user', 'password');
     $file = new StdClass();
     foreach ($this->GetSource('file') as $key => $value) {
       $file->$key = $value;

@@ -13,9 +13,9 @@ class GamePlay {
     DB::Connect();
     Session::CertifyGamePlay(); //セッション認証
 
-    DB::$ROOM = new Room(RQ::$get); //村情報をロード
-    DB::$ROOM->dead_mode    = RQ::$get->dead_mode;
-    DB::$ROOM->heaven_mode  = RQ::$get->heaven_mode;
+    DB::$ROOM = new Room(RQ::Get()); //村情報をロード
+    DB::$ROOM->dead_mode    = RQ::Get()->dead_mode;
+    DB::$ROOM->heaven_mode  = RQ::Get()->heaven_mode;
     DB::$ROOM->system_time  = Time::Get();
     DB::$ROOM->sudden_death = 0; //突然死実行までの残り時間
 
@@ -25,24 +25,24 @@ class GamePlay {
     }
     elseif (DB::$ROOM->IsBeforeGame()) { //ゲームオプション表示
       Loader::LoadFile('cast_config', 'image_class', 'room_option_class');
-      RQ::$get->retrive_type = DB::$ROOM->scene;
+      RQ::Set('retrive_type', DB::$ROOM->scene);
     }
     elseif (! DB::$ROOM->heaven_mode && DB::$ROOM->IsDay()) {
-      RQ::$get->retrive_type = DB::$ROOM->scene;
+      RQ::Set('retrive_type', DB::$ROOM->scene);
     }
 
-    DB::$USER = new UserData(RQ::$get); //ユーザ情報をロード
+    DB::$USER = new UserData(RQ::Get()); //ユーザ情報をロード
     DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
     //「異議」ありセット判定
-    if (RQ::$get->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
+    if (RQ::Get()->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
 	(DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
       DB::$SELF->objection++;
       DB::$SELF->Update('objection', DB::$SELF->objection);
       DB::$ROOM->Talk('', 'OBJECTION', DB::$SELF->uname);
     }
 
-    if (RQ::$get->play_sound) { //音でお知らせ
+    if (RQ::Get()->play_sound) { //音でお知らせ
       Loader::LoadFile('cookie_class');
       JinroCookie::Set(); //クッキー情報セット
     }
@@ -50,18 +50,18 @@ class GamePlay {
     //-- 発言処理 --//
     $say_limit = null;
     if (! DB::$ROOM->dead_mode || DB::$ROOM->heaven_mode) { //発言が送信されるのは bottom フレーム
-      $say_limit = RoleTalk::Convert(RQ::$get->say); //発言置換処理
+      $say_limit = RoleTalk::Convert(RQ::Get()->say); //発言置換処理
 
-      if (RQ::$get->say == '') {
+      if (RQ::Get()->say == '') {
 	self::CheckSilence(); //発言が空ならゲーム停滞のチェック (沈黙、突然死)
       }
-      elseif (RQ::$get->last_words && (! DB::$SELF->IsDummyBoy() || DB::$ROOM->IsBeforeGame())) {
-	self::SaveLastWords(RQ::$get->say); //遺言登録 (細かい判定条件は関数内で行う)
+      elseif (RQ::Get()->last_words && (! DB::$SELF->IsDummyBoy() || DB::$ROOM->IsBeforeGame())) {
+	self::SaveLastWords(RQ::Get()->say); //遺言登録 (細かい判定条件は関数内で行う)
       }
       //死者 or 身代わり君 or 同一ゲームシーンなら書き込む
       elseif (DB::$SELF->IsDead() || DB::$SELF->IsDummyBoy() ||
 	      DB::$SELF->last_load_scene == DB::$ROOM->scene) {
-	self::Talk(RQ::$get->say);
+	self::Talk(RQ::Get()->say);
       }
       else {
 	self::CheckSilence(); //発言ができない状態ならゲーム停滞チェック
@@ -87,7 +87,7 @@ class GamePlay {
     self::OutputHeader();
     if ($say_limit === false) printf(self::SAY_LIMIT, Message::$say_limit);
     if (! DB::$ROOM->heaven_mode) {
-      if (! RQ::$get->list_down) GameHTML::OutputPlayer();
+      if (! RQ::Get()->list_down) GameHTML::OutputPlayer();
       RoleHTML::OutputAbility();
       if (DB::$ROOM->IsDay() && DB::$SELF->IsLive() && DB::$ROOM->date != 1) { //処刑投票メッセージ
 	if (is_null(DB::$SELF->target_no)) {
@@ -111,7 +111,7 @@ class GamePlay {
       GameHTML::OutputDead();
       GameHTML::OutputVote();
       if (! DB::$ROOM->dead_mode) self::OutputLastWords();
-      if (RQ::$get->list_down) GameHTML::OutputPlayer();
+      if (RQ::Get()->list_down) GameHTML::OutputPlayer();
     }
     HTML::OutputFooter();
   }
@@ -233,7 +233,7 @@ class GamePlay {
     if (! DB::$ROOM->IsPlaying()) { //ゲーム開始前後
       return RoleTalk::Save($say, DB::$ROOM->scene, null, 0, true);
     }
-    if (RQ::$get->last_words && DB::$SELF->IsDummyBoy()) { //身代わり君のシステムメッセージ (遺言)
+    if (RQ::Get()->last_words && DB::$SELF->IsDummyBoy()) { //身代わり君のシステムメッセージ (遺言)
       return RoleTalk::Save($say, DB::$ROOM->scene, 'dummy_boy');
     }
     if (DB::$SELF->IsDead()) return RoleTalk::Save($say, 'heaven'); //死者の霊話
@@ -368,23 +368,23 @@ EOF;
       $format  = "[%s\" class=\"option-%s\">音</a>]\n";
       $url     = self::GetURL(array('play_sound'));
       $add_url = '&play_sound=on';
-      RQ::$get->play_sound ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
+      RQ::Get()->play_sound ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
     }
 
     //アイコン表示
     $format = "[%s\" class=\"option-%s\">アイコン</a>]\n";
     $url    = self::GetURL(array('icon'));
-    RQ::$get->icon ? printf($format, $url, 'on') : printf($format, $url . '&icon=on', 'off');
+    RQ::Get()->icon ? printf($format, $url, 'on') : printf($format, $url . '&icon=on', 'off');
 
     if (DB::$ROOM->IsFinished()) { //ユーザ名表示
       $format = "[%s\" class=\"option-%s\">名前</a>]\n";
       $url    = self::GetURL(array('name'));
-      RQ::$get->name ? printf($format, $url, 'on') : printf($format, $url . '&name=on', 'off');
+      RQ::Get()->name ? printf($format, $url, 'on') : printf($format, $url . '&name=on', 'off');
     }
 
     //プレイヤーリストの表示位置
     $url = self::GetURL(array('list_down'));
-    echo $url . sprintf("%sリスト</a>\n", RQ::$get->list_down ? '">↑' : '&list_down=on">↓');
+    echo $url . sprintf("%sリスト</a>\n", RQ::Get()->list_down ? '">↑' : '&list_down=on">↓');
 
     //別ページリンク
     $format = '<a target="_blank" href="game_play.php%s">別ページ</a>%s';
@@ -407,7 +407,7 @@ EOF;
     }
 
     //音でお知らせ処理
-    if (RQ::$get->play_sound && (DB::$ROOM->IsBeforeGame() || DB::$ROOM->IsDay())) {
+    if (RQ::Get()->play_sound && (DB::$ROOM->IsBeforeGame() || DB::$ROOM->IsDay())) {
       if (DB::$ROOM->IsBeforeGame()) { //入村・満員
 	if (JinroCookie::$user_count > 0) {
 	  $user_count = DB::$USER->GetUserCount();
@@ -553,11 +553,11 @@ EOF;
   private function SetURL() {
     self::$url_stack['room'] = '?room_no=' . DB::$ROOM->id;
 
-    $url = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
+    $url = RQ::Get()->auto_reload > 0 ? '&auto_reload=' . RQ::Get()->auto_reload : '';
     self::$url_stack['auto_reload'] = $url;
 
     foreach (array('play_sound', 'icon', 'name', 'list_down') as $name) {
-      $url = RQ::$get->$name ? sprintf('&%s=on', $name) : '';
+      $url = RQ::Get()->$name ? sprintf('&%s=on', $name) : '';
       self::$url_stack[$name] = $url;
     }
 

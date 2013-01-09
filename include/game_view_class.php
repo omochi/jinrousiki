@@ -8,7 +8,7 @@ class GameView {
   static function Output() {
     //-- データ収集 --//
     DB::Connect();
-    DB::$ROOM = new Room(RQ::$get); //村情報を取得
+    DB::$ROOM = new Room(RQ::Get()); //村情報を取得
     DB::$ROOM->view_mode   = true;
     DB::$ROOM->system_time = Time::Get();
 
@@ -20,14 +20,14 @@ class GameView {
     }
 
     //ユーザ情報を取得
-    if (DB::$ROOM->IsBeforeGame()) RQ::$get->retrive_type = DB::$ROOM->scene;
-    DB::$USER = new UserData(RQ::$get);
+    if (DB::$ROOM->IsBeforeGame()) RQ::Set('retrive_type', DB::$ROOM->scene);
+    DB::$USER = new UserData(RQ::Get());
     DB::$SELF = new User();
 
     //-- 出力 --//
     HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
-    if (GameConfig::AUTO_RELOAD && RQ::$get->auto_reload > 0) { //自動更新
-      printf(self::AUTO_RELOAD, RQ::$get->auto_reload);
+    if (GameConfig::AUTO_RELOAD && RQ::Get()->auto_reload > 0) { //自動更新
+      printf(self::AUTO_RELOAD, RQ::Get()->auto_reload);
     }
     echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
 
@@ -43,8 +43,8 @@ EOF;
     printf($header, $body, DB::$ROOM->GenerateTitleTag());
 
     //更新
-    $url = sprintf(self::URL_HEADER, RQ::$get->room_no);
-    $auto_reload = RQ::$get->auto_reload > 0 ? '&auto_reload=' . RQ::$get->auto_reload : '';
+    $url = sprintf(self::URL_HEADER, RQ::Get()->room_no);
+    $auto_reload = RQ::Get()->auto_reload > 0 ? '&auto_reload=' . RQ::Get()->auto_reload : '';
     printf('%s%s">[更新]</a>'."\n", $url, $auto_reload);
     if (GameConfig::AUTO_RELOAD) GameHTML::OutputAutoReloadLink($url); //自動更新設定
 

@@ -59,9 +59,9 @@ abstract class CheckRoomOptionItem extends RoomOptionItem {
   public $form_value = 'on';
 
   function LoadPost() {
-    RQ::$get->Parse('IsOn', 'post.' . $this->name);
-    if (RQ::$get->{$this->name}) array_push(RoomOption::${$this->group}, $this->name);
-    return RQ::$get->{$this->name};
+    RQ::Get()->Parse('IsOn', 'post.' . $this->name);
+    if (RQ::Get()->{$this->name}) array_push(RoomOption::${$this->group}, $this->name);
+    return RQ::Get()->{$this->name};
   }
 }
 
@@ -86,7 +86,7 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
     $post = $_POST[$this->name];
 
     if (in_array($post, $this->form_list)) {
-      RQ::$get->$post = true;
+      RQ::Set($post, true);
       array_push(RoomOption::${$this->group}, $post);
     }
   }
@@ -126,5 +126,5 @@ abstract class TextRoomOptionItem extends RoomOptionItem {
   public $group = RoomOption::NOT_OPTION;
   public $type  = 'textbox';
 
-  function LoadPost() { RQ::$get->Parse('Escape', 'post.' . $this->name); }
+  function LoadPost() { RQ::Get()->Parse('Escape', 'post.' . $this->name); }
 }

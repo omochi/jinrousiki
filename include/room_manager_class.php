@@ -23,24 +23,24 @@ class RoomManager {
     //-- 入力データのエラーチェック --//
     foreach (array('room_name', 'room_comment') as $type) { //村の名前・説明のデータチェック
       RoomOption::LoadPost($type);
-      if (RQ::$get->$type == '') { //未入力チェック
+      if (RQ::Get()->$type == '') { //未入力チェック
 	RoomManagerHTML::OutputResult('empty', OptionManager::GenerateCaption($type));
       }
 
-      if (strlen(RQ::$get->$type) > RoomConfig::$$type ||
-	  preg_match(RoomConfig::NG_WORD, RQ::$get->$type)) { //文字列チェック
+      if (strlen(RQ::Get()->$type) > RoomConfig::$$type ||
+	  preg_match(RoomConfig::NG_WORD, RQ::Get()->$type)) { //文字列チェック
 	RoomManagerHTML::OutputResult('comment', OptionManager::GenerateCaption($type));
       }
     }
 
     RoomOption::LoadPost('max_user'); //最大人数チェック
-    if (! in_array(RQ::$get->max_user, RoomConfig::$max_user_list)) {
+    if (! in_array(RQ::Get()->max_user, RoomConfig::$max_user_list)) {
       HTML::OutputResult('村作成 [入力エラー]', '無効な最大人数です。');
     }
 
     if (! DB::Lock('room')) RoomManagerHTML::OutputResult('busy'); //トランザクション開始
 
-    if (RQ::$get->change_room) {
+    if (RQ::Get()->change_room) {
       OptionManager::$change = true;
       Session::Certify();
       $title = 'オプション変更';
@@ -55,8 +55,8 @@ class RoomManager {
 	HTML::OutputResult($title . ' [エラー]', $body);
       }
 
-      DB::$USER = new UserData(RQ::$get); //ユーザ情報をロード
-      if (RQ::$get->max_user < DB::$USER->GetUserCount()) {
+      DB::$USER = new UserData(RQ::Get()); //ユーザ情報をロード
+      if (RQ::Get()->max_user < DB::$USER->GetUserCount()) {
 	HTML::OutputResult($title . ' [入力エラー]', '現在の参加人数より少なくできません。');
       }
 
@@ -68,7 +68,7 @@ class RoomManager {
     }
 
     //デバッグモード時は村作成制限をスキップ
-    if (! ServerConfig::DEBUG_MODE && ! RQ::$get->change_room) {
+    if (! ServerConfig::DEBUG_MODE && ! RQ::Get()->change_room) {
       //ブラックリストチェック
       if (Security::CheckBlackList() || Security::CheckEstablishBlackList()) {
 	HTML::OutputResult('村作成 [制限事項]', '村立て制限ホストです。');
@@ -77,8 +77,8 @@ class RoomManager {
       $room_password = ServerConfig::ROOM_PASSWORD;
       if (isset($room_password)) { //パスワードチェック
 	$str = 'room_password';
-	RQ::$get->Parse('Escape', 'post.' . $str);
-	if (RQ::$get->$str != $room_password) {
+	RQ::Get()->Parse('Escape', 'post.' . $str);
+	if (RQ::Get()->$str != $room_password) {
 	  HTML::OutputResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
 	}
       }
@@ -106,9 +106,9 @@ class RoomManager {
 
     //-- ゲームオプションをセット --//
     RoomOption::LoadPost('wish_role', 'real_time');
-    if (RQ::$get->real_time) { //制限時間チェック
-      $day   = RQ::$get->real_time_day;
-      $night = RQ::$get->real_time_night;
+    if (RQ::Get()->real_time) { //制限時間チェック
+      $day   = RQ::Get()->real_time_day;
+      $night = RQ::Get()->real_time_night;
       if ($day <= 0 || 99 < $day || $night <= 0 || 99 < $night) {
 	RoomManagerHTML::OutputResult('time');
       }
@@ -119,62 +119,62 @@ class RoomManager {
       'open_vote', 'settle', 'seal_message', 'open_day', 'dummy_boy_selector',
       'not_open_cast_selector', 'perverseness', 'replace_human_selector', 'special_role');
     if (GameConfig::TRIP) RoomOption::LoadPost('necessary_name', 'necessary_trip');
-    if (RQ::$get->change_room) { //変更できないオプションを自動セット
+    if (RQ::Get()->change_room) { //変更できないオプションを自動セット
       foreach (array('gm_login', 'dummy_boy') as $option) {
 	if (DB::$ROOM->IsOption($option)) {
-	  RQ::$get->$option = true;
+	  RQ::Get()->$option = true;
 	  RoomOption::SetOption(RoomOption::GAME_OPTION, $option);
 	  break;
 	}
       }
     }
 
-    if (RQ::$get->quiz) { //クイズ村
-      if (! RQ::$get->change_room) {
-	RQ::$get->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック
-	if (RQ::$get->gm_password == '') RoomManagerHTML::OutputResult('no_password');
+    if (RQ::Get()->quiz) { //クイズ村
+      if (! RQ::Get()->change_room) {
+	RQ::Get()->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック
+	if (RQ::Get()->gm_password == '') RoomManagerHTML::OutputResult('no_password');
 	$dummy_boy_handle_name = 'GM';
-	$dummy_boy_password    = RQ::$get->gm_password;
+	$dummy_boy_password    = RQ::Get()->gm_password;
       }
       RoomOption::SetOption(RoomOption::GAME_OPTION, 'dummy_boy');
       RoomOption::SetOption(RoomOption::GAME_OPTION, 'gm_login');
     }
     else {
       //身代わり君関連のチェック
-      if (RQ::$get->dummy_boy) {
-	if (! RQ::$get->change_room) {
+      if (RQ::Get()->dummy_boy) {
+	if (! RQ::Get()->change_room) {
 	  $dummy_boy_handle_name = '身代わり君';
 	  $dummy_boy_password    = ServerConfig::PASSWORD;
 	}
 	RoomOption::LoadPost('gerd');
       }
-      elseif (RQ::$get->gm_login) {
-	if (! RQ::$get->change_room) {
-	  RQ::$get->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック
-	  if (RQ::$get->gm_password == '') RoomManagerHTML::OutputResult('no_password');
+      elseif (RQ::Get()->gm_login) {
+	if (! RQ::Get()->change_room) {
+	  RQ::Get()->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック
+	  if (RQ::Get()->gm_password == '') RoomManagerHTML::OutputResult('no_password');
 	  $dummy_boy_handle_name = 'GM';
-	  $dummy_boy_password    = RQ::$get->gm_password;
+	  $dummy_boy_password    = RQ::Get()->gm_password;
 	}
 	RoomOption::SetOption(RoomOption::GAME_OPTION, 'dummy_boy');
 	RoomOption::LoadPost('gerd');
       }
 
       //闇鍋モード
-      if (RQ::$get->chaos || RQ::$get->chaosfull || RQ::$get->chaos_hyper ||
-	  RQ::$get->chaos_verso) {
+      if (RQ::Get()->chaos || RQ::Get()->chaosfull || RQ::Get()->chaos_hyper ||
+	  RQ::Get()->chaos_verso) {
 	RoomOption::LoadPost('secret_sub_role', 'topping', 'boost_rate', 'chaos_open_cast',
 			     'sub_role_limit');
       }
-      elseif (! RQ::$get->duel && ! RQ::$get->gray_random && ! RQ::$get->step) { //通常村
+      elseif (! RQ::Get()->duel && ! RQ::Get()->gray_random && ! RQ::Get()->step) { //通常村
 	RoomOption::LoadPost(
           'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf', 'possessed_wolf',
 	  'sirius_wolf', 'fox', 'child_fox', 'medium');
-	if (! RQ::$get->full_cupid)   RoomOption::LoadPost('cupid');
-	if (! RQ::$get->full_mania)   RoomOption::LoadPost('mania');
-	if (! RQ::$get->perverseness) RoomOption::LoadPost('decide', 'authority');
+	if (! RQ::Get()->full_cupid)   RoomOption::LoadPost('cupid');
+	if (! RQ::Get()->full_mania)   RoomOption::LoadPost('mania');
+	if (! RQ::Get()->perverseness) RoomOption::LoadPost('decide', 'authority');
       }
 
-      if (! RQ::$get->perverseness) RoomOption::LoadPost('sudden_death');
+      if (! RQ::Get()->perverseness) RoomOption::LoadPost('sudden_death');
       RoomOption::LoadPost(
         'liar', 'gentleman', 'deep_sleep', 'mind_open', 'blinder', 'critical', 'joker',
 	'death_note', 'detective', 'weather', 'festival', 'change_common_selector',
@@ -184,16 +184,16 @@ class RoomManager {
     $game_option = RoomOption::GetOption(RoomOption::GAME_OPTION);
     $option_role = RoomOption::GetOption(RoomOption::ROLE_OPTION);
     //Text::p($_POST, 'Post');
-    //Text::p(RQ::$get, 'RQ');
+    //Text::p(RQ::Get(), 'RQ');
     //Text::p($game_option, 'GameOption');
     //Text::p($option_role, 'OptionRole');
     //HTML::OutputFooter(true); //テスト用
 
-    if (RQ::$get->change_room) { //オプション変更
+    if (RQ::Get()->change_room) { //オプション変更
       $list = array(
-	'name'        => RQ::$get->room_name,
-	'comment'     => RQ::$get->room_comment,
-	'max_user'    => RQ::$get->max_user,
+	'name'        => RQ::Get()->room_name,
+	'comment'     => RQ::Get()->room_comment,
+	'max_user'    => RQ::Get()->max_user,
 	'game_option' => $game_option,
 	'option_role' => $option_role
       );
@@ -227,22 +227,22 @@ EOF;
       }
 	
       //身代わり君を入村させる
-      if (RQ::$get->dummy_boy && RoomManagerDB::GetUserCount($room_no) == 0) {
+      if (RQ::Get()->dummy_boy && RoomManagerDB::GetUserCount($room_no) == 0) {
 	if (! DB::InsertUser($room_no, 'dummy_boy', $dummy_boy_handle_name, $dummy_boy_password,
-			     1, RQ::$get->gerd ? UserIconConfig::GERD : 0)) {
+			     1, RQ::Get()->gerd ? UserIconConfig::GERD : 0)) {
 	  RoomManagerHTML::OutputResult('busy');
 	}
       }
     }
 
-    JinroTwitter::Send($room_no, RQ::$get->room_name, RQ::$get->room_comment); //Twitter 投稿
+    JinroTwitter::Send($room_no, RQ::Get()->room_name, RQ::Get()->room_comment); //Twitter 投稿
     //JinroRSS::Update(); //RSS更新 //テスト中
 
     DB::Commit();
 
     $format = '%s 村を作成しました。トップページに飛びます。' .
       '切り替わらないなら <a href="%s">ここ</a> 。';
-    $str = sprintf($format, RQ::$get->room_name, ServerConfig::SITE_ROOT);
+    $str = sprintf($format, RQ::Get()->room_name, ServerConfig::SITE_ROOT);
     HTML::OutputResult('村作成', $str, ServerConfig::SITE_ROOT);
   }
 
@@ -261,7 +261,7 @@ EOF;
       return;
     }
 
-    OptionManager::$change = RQ::$get->room_no > 0;
+    OptionManager::$change = RQ::Get()->room_no > 0;
     if (OptionManager::$change) {
       Session::Certify();
       $title = 'オプション変更';
@@ -276,7 +276,7 @@ EOF;
 	HTML::OutputResult($title . ' [エラー]', $body);
       }
 
-      DB::$USER = new UserData(RQ::$get); //ユーザ情報をロード
+      DB::$USER = new UserData(RQ::Get()); //ユーザ情報をロード
       DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
       if (! DB::$SELF->IsDummyBoy()) {
 	HTML::OutputResult($title . ' [エラー]', '身代わり君・GM 以外は変更できません');
@@ -344,7 +344,7 @@ SELECT room_no AS id, name, comment, date, scene, status, game_option, option_ro
 FROM room WHERE room_no = ?
 EOF;
     if ($lock) $query .= ' FOR UPDATE';
-    DB::Prepare($query, array(RQ::$get->room_no));
+    DB::Prepare($query, array(RQ::Get()->room_no));
     return DB::FetchClass('Room', true);
   }
 
@@ -356,7 +356,7 @@ vote_count, scene_start_time, last_update_time, establisher_ip, establish_dateti
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), ?, NOW())
 EOF;
     $list = array(
-      $room_no, RQ::$get->room_name, RQ::$get->room_comment, RQ::$get->max_user, $game_option,
+      $room_no, RQ::Get()->room_name, RQ::Get()->room_comment, RQ::Get()->max_user, $game_option,
       $option_role, 'waiting', 0, 'beforegame', 1, Security::GetIP());
     DB::Prepare($query, $list);
     return DB::Execute();
@@ -436,7 +436,7 @@ EOF;
 
     //パラメータセット
     if (OptionManager::$change) {
-      $url     = sprintf('?room_no=%d', RQ::$get->room_no);
+      $url     = sprintf('?room_no=%d', RQ::Get()->room_no);
       $command = 'change_room';
       $submit  = '変更';
     } else {

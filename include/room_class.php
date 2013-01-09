@@ -38,7 +38,7 @@ class Room {
 
   //option_role を追加ロードする
   function LoadOption() {
-    $option_role = RQ::$get->IsVirtualRoom() ? RQ::GetTest()->test_room['option_role'] :
+    $option_role = RQ::Get()->IsVirtualRoom() ? RQ::GetTest()->test_room['option_role'] :
       RoomDB::Fetch('option_role');
     $this->option_role = new OptionParser($option_role);
     $this->option_list = array_merge($this->option_list, array_keys($this->option_role->list));
@@ -55,7 +55,7 @@ class Room {
 
   //シーンに合わせた投票情報を取得する
   function LoadVote($kick = false) {
-    if (RQ::$get->IsVirtualRoom()) {
+    if (RQ::Get()->IsVirtualRoom()) {
       if (is_null($vote_list = RQ::GetTest()->vote->{$this->scene})) return null;
     }
     else {
@@ -154,7 +154,7 @@ class Room {
   function LoadWeather($shift = false) {
     if (! $this->IsPlaying()) return null;
     $date = $this->date;
-    if (($shift && RQ::$get->reverse_log) || $this->IsAfterGame()) $date++;
+    if (($shift && RQ::Get()->reverse_log) || $this->IsAfterGame()) $date++;
     $format = 'SELECT message FROM system_message' . RoomDB::DATE . " AND type = 'WEATHER'";
     $result = DB::FetchResult(sprintf($format, $this->id, $date));
     $this->event->weather = $result === false ? null : $result; //天候を格納
@@ -712,9 +712,9 @@ EOF;
   static function GetFinished($reverse) {
     $order = $reverse ? 'DESC' : 'ASC';
     $query = 'SELECT room_no FROM room WHERE status = ? ORDER BY room_no ' . $order;
-    if (RQ::$get->page != 'all') {
+    if (RQ::Get()->page != 'all') {
       $view = OldLogConfig::VIEW;
-      $query .= sprintf(' LIMIT %d, %d', $view * (RQ::$get->page - 1), $view);
+      $query .= sprintf(' LIMIT %d, %d', $view * (RQ::Get()->page - 1), $view);
     }
     DB::Prepare($query, array('finished'));
     return DB::FetchColumn();
@@ -773,14 +773,14 @@ EOF;
 SELECT room_no AS id, name, comment, status, game_option, option_role
 FROM room WHERE room_no = ?
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no));
+    DB::Prepare($query, array(RQ::Get()->room_no));
     return DB::FetchClass('Room', true);
   }
 
   //村存在判定
   static function Exists() {
     $query = 'SELECT room_no FROM room WHERE room_no = ?';
-    DB::Prepare($query, array(RQ::$get->room_no));
+    DB::Prepare($query, array(RQ::Get()->room_no));
     return DB::Count() > 0;
   }
 }

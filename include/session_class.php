@@ -61,7 +61,7 @@ class Session {
     if (self::Certify(false)) return true;
 
     if (RoomDataDB::Exists()) { //村が存在するなら観戦ページにジャンプする
-      $url   = sprintf('game_view.php?room_no=%d', RQ::$get->room_no);
+      $url   = sprintf('game_view.php?room_no=%d', RQ::Get()->room_no);
       $title = '観戦ページにジャンプ';
       $body  = "観戦ページに移動します。<br>\n" .
 	'切り替わらないなら <a href="%s" target="_top">ここ</a> 。' . "\n" . '%s';
@@ -105,7 +105,7 @@ class SessionDB {
   //認証
   static function Certify() {
     $query = 'SELECT user_no FROM user_entry WHERE session_id = ? AND room_no = ? AND live <> ?';
-    DB::Prepare($query, array(Session::GetID(), RQ::$get->room_no, 'kick'));
+    DB::Prepare($query, array(Session::GetID(), RQ::Get()->room_no, 'kick'));
     return DB::FetchColumn();
   }
 }

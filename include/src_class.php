@@ -105,7 +105,7 @@ EOF;
     }
 
     Loader::LoadRequest('RequestSrcUpload');
-    foreach (RQ::$get as $key => $value) { //引数のエラーチェック
+    foreach (RQ::Get() as $key => $value) { //引数のエラーチェック
       if (is_object($value)) continue;
       $label = SourceUploadConfig::$form_list[$key]['label'];
       $size  = SourceUploadConfig::$form_list[$key]['size'];
@@ -119,23 +119,23 @@ EOF;
       }
     }
 
-    if (RQ::$get->password == SourceUploadConfig::PASSWORD) { //パスワードのチェック
+    if (RQ::Get()->password == SourceUploadConfig::PASSWORD) { //パスワードのチェック
       self::OutputResult('パスワード認証エラー。');
     }
 
     //ファイルの種類のチェック
-    //Text::p(RQ::$get->file);
-    $file_name = strtolower(trim(RQ::$get->file->name));
-    $file_type = RQ::$get->file->type;
+    //Text::p(RQ::Get()->file);
+    $file_name = strtolower(trim(RQ::Get()->file->name));
+    $file_type = RQ::Get()->file->type;
     if (! (preg_match('/application\/(octet-stream|zip|lzh|lha|x-zip-compressed)/i', $file_type) &&
 	   preg_match('/^.*\.(zip|lzh)$/', $file_name))) {
-      Text::p(RQ::$get->file);
+      Text::p(RQ::Get()->file);
       $str = sprintf("<span>%s</span> : <span>%s</span><br>\n", $file_name, $file_type);
       self::OutputResult($str . 'zip/lzh 以外のファイルはアップロードできません。');
     }
 
     //ファイルサイズのチェック
-    $file_size = RQ::$get->file->size;
+    $file_size = RQ::Get()->file->size;
     if ($file_size == 0 || $file_size > SourceUploadConfig::MAX_SIZE) {
       $str = sprintf('ファイルサイズは <span>%dbyte</span> まで。', SourceUploadConfig::MAX_SIZE);
       self::OutputResult($str);
@@ -174,11 +174,11 @@ EOF;
     }
 
     $html = <<<EOF
-<td class="link"><a href="file/{$number}.{$ext}">{RQ::$get->name}</a></td>
+<td class="link"><a href="file/{$number}.{$ext}">{RQ::Get()->name}</a></td>
 <td class="type">$ext</td>
 <td class="size">$file_size</td>
-<td class="explain">{RQ::$get->caption}</td>
-<td class="name">{RQ::$get->user}</td>
+<td class="explain">{RQ::Get()->caption}</td>
+<td class="name">{RQ::Get()->user}</td>
 <td class="date">$time</td>
 
 EOF;
@@ -199,7 +199,7 @@ EOF;
     fclose($io); //ファイルのクローズ
 
     //ファイルのコピー
-    if (move_uploaded_file(RQ::$get->file->tmp_name, 'file/' . $number . '.' . $ext)) {
+    if (move_uploaded_file(RQ::Get()->file->tmp_name, 'file/' . $number . '.' . $ext)) {
       self::OutputResult('ファイルのアップロードに成功しました。');
     } else {
       self::OutputResult('ファイルのコピー失敗。' . $footer);

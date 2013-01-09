@@ -125,7 +125,7 @@ class Loader {
   }
 
   //リクエストクラスロード
-  static function LoadRequest($class = null, $load = false) {
+  static function LoadRequest($class = 'RequestBase' , $load = false) {
     if ($load) self::LoadFile('game_config');
     self::LoadFile('request_class');
     return RQ::Load($class);

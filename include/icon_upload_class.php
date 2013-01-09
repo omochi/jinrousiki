@@ -10,7 +10,7 @@ class IconUpload {
       HTML::OutputResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
     }
     Loader::LoadRequest('RequestIconUpload');
-    isset(RQ::$get->command) ? self::Upload() : self::Output();
+    isset(RQ::Get()->command) ? self::Upload() : self::Output();
   }
 
   //投稿処理
@@ -19,7 +19,7 @@ class IconUpload {
       HTML::OutputResult('ユーザアイコンアップロード', '無効なアクセスです');
     }
 
-    switch (RQ::$get->command) {
+    switch (RQ::Get()->command) {
     case 'upload':
       break;
 
@@ -28,7 +28,7 @@ class IconUpload {
       $str = '登録完了：アイコン一覧のページに飛びます。<br>'."\n" .
 	'切り替わらないなら <a href="%s">ここ</a> 。';
       DB::Connect();
-      if (! IconDB::ClearSession(RQ::$get->icon_no)) {
+      if (! IconDB::ClearSession(RQ::Get()->icon_no)) {
 	$str .= "<br>\nセッションの削除に失敗しました。";
       }
       HTML::OutputResult('アイコン登録完了', sprintf($str, $url), $url);
@@ -43,7 +43,7 @@ class IconUpload {
       if (! DB::Lock('icon')) HTML::OutputResult(self::TITLE, $str . self::URL);
 
       //アイコンのファイル名と登録時のセッション ID を取得
-      $stack = IconDB::GetSession(RQ::$get->icon_no);
+      $stack = IconDB::GetSession(RQ::Get()->icon_no);
       if (count($stack) < 1) HTML::OutputResult(self::TITLE, $str . self::URL);
       extract($stack);
 
@@ -52,7 +52,7 @@ class IconUpload {
 	HTML::OutputResult('アイコン削除失敗', $str . self::URL);
       }
 
-      if (! IconDB::Delete(RQ::$get->icon_no, $icon_filename)) { //削除処理
+      if (! IconDB::Delete(RQ::Get()->icon_no, $icon_filename)) { //削除処理
 	HTML::OutputResult(self::TITLE, $str . self::URL);
       }
       DB::Disconnect();

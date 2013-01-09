@@ -265,7 +265,7 @@ class GameHTML {
 		     $header . $target_name, '</tr>');
       $table_stack[$count][] = implode('</td>', $stack);
     }
-    if (! RQ::$get->reverse_log) krsort($table_stack); //正順なら逆転させる
+    if (! RQ::Get()->reverse_log) krsort($table_stack); //正順なら逆転させる
 
     $header = '<tr><td class="vote-times" colspan="4">' . $date . ' 日目 ( ';
     $footer = ' 回目)</td>';
@@ -441,9 +441,11 @@ EOF;
   static function OutputHeader($css = 'game') {
     //引数を格納
     $url_header = sprintf('game_frame.php?room_no=%d', DB::$ROOM->id);
-    if (RQ::$get->auto_reload > 0) $url_header .= sprintf('&auto_reload=%d', RQ::$get->auto_reload);
-    if (RQ::$get->play_sound)      $url_header .= '&play_sound=on';
-    if (RQ::$get->list_down)       $url_header .= '&list_down=on';
+    if (RQ::Get()->auto_reload > 0) {
+      $url_header .= sprintf('&auto_reload=%d', RQ::Get()->auto_reload);
+    }
+    if (RQ::Get()->play_sound) $url_header .= '&play_sound=on';
+    if (RQ::Get()->list_down)  $url_header .= '&list_down=on';
 
     $title = ServerConfig::TITLE . ' [プレイ]';
     $anchor_header = '<br>'."\n";
@@ -493,8 +495,8 @@ EOF;
       $on_load = sprintf("change_css('%s');", DB::$ROOM->scene);
     }
 
-    if (RQ::$get->auto_reload != 0 && ! DB::$ROOM->IsAfterGame()) { //自動リロードをセット
-      printf('<meta http-equiv="Refresh" content="%s">'."\n", RQ::$get->auto_reload);
+    if (RQ::Get()->auto_reload != 0 && ! DB::$ROOM->IsAfterGame()) { //自動リロードをセット
+      printf('<meta http-equiv="Refresh" content="%s">'."\n", RQ::Get()->auto_reload);
     }
 
     //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
@@ -535,10 +537,10 @@ EOF;
 
   //自動更新リンク出力
   static function OutputAutoReloadLink($url) {
-    $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::$get->auto_reload > 0 ? '手動' : '【手動】');
+    $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::Get()->auto_reload > 0 ? '手動' : '【手動】');
     foreach (GameConfig::$auto_reload_list as $time) {
       $name  = $time . '秒';
-      $value = RQ::$get->auto_reload == $time ? sprintf('【%s】', $name) : $name;
+      $value = RQ::Get()->auto_reload == $time ? sprintf('【%s】', $name) : $name;
       $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
     }
     echo $str . ')'."\n";
@@ -710,7 +712,7 @@ EOF;
 
   //再投票メッセージ出力
   static function OutputRevote() {
-    if (RQ::$get->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
+    if (RQ::Get()->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
 	DB::$ROOM->vote_count > JinroCookie::$vote_count) {
       Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
     }

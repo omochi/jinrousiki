@@ -4,7 +4,7 @@ class Login {
   //基幹処理
   static function Execute() {
     DB::Connect();
-    if (RQ::$get->login_manually) { //ユーザ名とパスワードで手動ログイン
+    if (RQ::Get()->login_manually) { //ユーザ名とパスワードで手動ログイン
       if (self::LoginManually()) {
 	self::Output('ログインしました', 'game_frame');
       }
@@ -47,7 +47,7 @@ class Login {
       $url = '';
     }
     else {
-      $url = sprintf('%s.php?room_no=%s', $jump, RQ::$get->room_no);
+      $url = sprintf('%s.php?room_no=%s', $jump, RQ::Get()->room_no);
       $str = "。<br>\n".'切り替わらないなら <a href="%s" target="_top">ここ</a> 。';
       $body .= sprintf($str, $url);
     }
@@ -63,7 +63,7 @@ class LoginDB {
 SELECT user_no FROM user_entry
 WHERE room_no = ? AND uname = ? AND password = ? AND live <> ?
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, $uname, $password, 'kick'));
+    DB::Prepare($query, array(RQ::Get()->room_no, $uname, $password, 'kick'));
     return DB::Count() == 1;
   }
 
@@ -73,7 +73,7 @@ EOF;
 UPDATE user_entry SET session_id = ?
 WHERE room_no = ? AND uname = ? AND password = ? AND live <> ?
 EOF;
-    DB::Prepare($query, array(Session::GetID(true), RQ::$get->room_no, $uname, $password, 'kick'));
+    DB::Prepare($query, array(Session::GetID(true), RQ::Get()->room_no, $uname, $password, 'kick'));
     return DB::Execute();
   }
 }

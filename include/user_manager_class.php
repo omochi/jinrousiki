@@ -69,9 +69,9 @@ class UserManager {
 
     //DB から現在のユーザ情報を取得 (ロック付き)
     RQ::Load('RequestBase', true);
-    RQ::$get->room_no      = $room_no;
-    RQ::$get->retrive_type = 'entry_user';
-    DB::$USER = new UserData(RQ::$get);
+    RQ::Get()->room_no      = $room_no;
+    RQ::Get()->retrive_type = 'entry_user';
+    DB::$USER = new UserData(RQ::Get());
 
     $user_count = DB::$USER->GetUserCount(); //現在の KICK されていない住人の数を取得
     if ($user_no < 1 && $user_count >= DB::$ROOM->max_user) { //定員オーバー判定
@@ -87,7 +87,7 @@ class UserManager {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
       }
       $target->user_no = $user_no;
-      $target->room_no = RQ::$get->room_no;
+      $target->room_no = RQ::Get()->room_no;
 
       if (! $target->IsDummyBoy() && ($handle_name == '身代わり君' || $handle_name == 'システム')) {
 	$format = '村人名「%s」は使用できません%s';
@@ -186,18 +186,18 @@ class UserManager {
 
   //ユーザ登録画面表示
   static function Output() {
-    if (RQ::$get->user_no > 0) { //登録情報変更モード
+    if (RQ::Get()->user_no > 0) { //登録情報変更モード
       $stack = UserDB::GetUser();
       if ($stack['session_id'] != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
       }
       foreach ($stack as $key => $value) {
-	if (array_key_exists($key, RQ::$get)) RQ::Set($key, $value);
+	if (array_key_exists($key, RQ::Get())) RQ::Set($key, $value);
       }
     }
 
     DB::$ROOM = RoomDataDB::LoadEntryUserPage();
-    $str = sprintf('%d 番地の村は', RQ::$get->room_no);
+    $str = sprintf('%d 番地の村は', RQ::Get()->room_no);
     if (is_null(DB::$ROOM->id)) {
       HTML::OutputResult('村人登録 [村番号エラー]', $str . '存在しません');
     }
@@ -264,7 +264,7 @@ EOF;
 
 EOF;
     $url = sprintf(self::URL, DB::$ROOM->id);
-    if (RQ::$get->user_no > 0) $url .= sprintf('&user_no=%d', RQ::$get->user_no);
+    if (RQ::Get()->user_no > 0) $url .= sprintf('&user_no=%d', RQ::Get()->user_no);
 
     printf($format,
 	   $url, self::PATH, DB::$ROOM->name, self::PATH, DB::$ROOM->comment, DB::$ROOM->id);
@@ -300,7 +300,7 @@ EOF;
 
     $male   = '';
     $female = '';
-    switch (RQ::$get->sex) {
+    switch (RQ::Get()->sex) {
     case 'male':
       $male = ' checked';
       break;
@@ -311,8 +311,8 @@ EOF;
     }
 
     printf($format,
-	   self::GenerateUname(), self::PATH, RQ::$get->handle_name, self::GeneratePassword(),
-	   self::PATH, self::PATH, $male, self::PATH, $female, self::PATH, RQ::$get->profile);
+	   self::GenerateUname(), self::PATH, RQ::Get()->handle_name, self::GeneratePassword(),
+	   self::PATH, self::PATH, $male, self::PATH, $female, self::PATH, RQ::Get()->profile);
   }
 
   //希望役職選択フォーム出力
@@ -372,7 +372,7 @@ EOF;
       if ($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
       $count++;
       $alt = '←' . ($role == 'none' ? '無し' : RoleData::$main_role_list[$role]);
-      $checked = RQ::$get->role == $role ? ' checked' : '';
+      $checked = RQ::Get()->role == $role ? ' checked' : '';
       printf($format, $role, $role, $role, $checked, self::PATH, $role, $alt);
     }
     echo "</tr>\n</table>";
@@ -407,9 +407,9 @@ EOF;
 <tr><td colspan="5">
 
 EOF;
-    if (isset(RQ::$get->icon_no) && RQ::$get->icon_no > (RQ::$get->user_no > 0 ? -1 : 0)) {
+    if (isset(RQ::Get()->icon_no) && RQ::Get()->icon_no > (RQ::Get()->user_no > 0 ? -1 : 0)) {
       $checked = ' checked';
-      $icon_no = RQ::$get->icon_no;
+      $icon_no = RQ::Get()->icon_no;
     } else {
       $checked = '';
       $icon_no = '';
@@ -432,14 +432,14 @@ EOF;
 
 EOF;
 
-    if (RQ::$get->user_no > 0) { //登録情報変更モード時はユーザ名は変更不可
+    if (RQ::Get()->user_no > 0) { //登録情報変更モード時はユーザ名は変更不可
       $format .= <<<EOF
 <td>%s</td>
 <td class="explain">%s</td>
 </tr>
 EOF;
       $str = self::UNAME_EXPLAIN_HEADER . '<br>' . self::UNAME_EXPLAIN_FOOTER;
-      return sprintf($format, self::PATH, RQ::$get->uname, $str);
+      return sprintf($format, self::PATH, RQ::Get()->uname, $str);
     }
     elseif (GameConfig::TRIP) { //トリップ対応
       $format .= self::UNAME_INPUT . "\n" . <<<EOF
@@ -458,7 +458,7 @@ EOF;
       } elseif (DB::$ROOM->IsOption('necessary_trip')) {
 	$str .= '<br><span>必ずトリップを入力してください</span>';
       }
-      return sprintf($format, self::PATH, RQ::$get->uname, RQ::$get->trip, $str);
+      return sprintf($format, self::PATH, RQ::Get()->uname, RQ::Get()->trip, $str);
     }
     else {
       $format .= self::UNAME_INPUT . "\n" . <<<EOF
@@ -466,13 +466,13 @@ EOF;
 </tr>
 EOF;
       $str = self::UNAME_EXPLAIN_HEADER . '<br>' . self::UNAME_EXPLAIN_FOOTER;
-      return sprintf($format, self::PATH, RQ::$get->uname, $str);
+      return sprintf($format, self::PATH, RQ::Get()->uname, $str);
     }
   }
 
   //パスワードフォーム生成
   private static function GeneratePassword() {
-    if (RQ::$get->user_no > 0) return '';
+    if (RQ::Get()->user_no > 0) return '';
     $format = <<<EOF
 <tr>
 <td class="img"><label for="password"><img src="%s/password.gif" alt="パスワード"></label></td>

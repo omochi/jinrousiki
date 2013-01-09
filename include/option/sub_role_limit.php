@@ -46,7 +46,7 @@ class Option_sub_role_limit extends SelectorRoomOptionItem {
     $post = $_POST[$this->name];
     foreach ($this->form_list as $option => $value) {
       if ($value == $post) {
-	RQ::$get->$option = true;
+	RQ::Set($option, true);
 	array_push(RoomOption::${$this->group}, $option);
 	break;
       }

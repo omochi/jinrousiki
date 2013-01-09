@@ -19,15 +19,18 @@ class RoleTest {
   const BOX   = '<input type="checkbox" id="%s" name="%s" value="on"><label for="%s">%s</label>';
 
   function Output() {
+    Loader::LoadRequest();
+    RQ::$src = 'post';
     HTML::OutputHeader('配役テストツール', 'test/role', true);
     foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
-      $$key = isset($_POST[$key]) && $_POST[$key] > 0 ? $_POST[$key] : $value;
+      RQ::Get()->Parse('intval', $key);
+      $$key = RQ::Get()->$key > 0 ? RQ::Get()->$key : $value;
     }
     $id_u = 'user_count';
     $id_t = 'try_count';
     echo <<<EOF
 <form method="POST" action="role_test.php">
-<input type="hidden" name="command" value="role_test">
+<input type="hidden" name="execute" value="on">
 <label for="{$id_u}">人数</label><input type="text" id="{$id_u}" name="{$id_u}" size="2" value="{$$id_u}">
 <label for="{$id_t}">試行回数</label><input type="text" id="{$id_t}" name="{$id_t}" size="2" value="{$$id_t}">
 <input type="submit" value=" 実 行 "><br>
@@ -36,12 +39,12 @@ EOF;
 
     $id    = 'game_option';
     $stack = array(
-      '' => '普通', 'chaos' => '闇鍋', 'chaosfull' => '真・闇鍋', 'chaos_hyper' => '超・闇鍋',
+      'normal' => '普通', 'chaos' => '闇鍋', 'chaosfull' => '真・闇鍋', 'chaos_hyper' => '超・闇鍋',
       'chaos_verso' => '裏・闇鍋', 'duel' => '決闘', 'duel_auto_open_cast' => '自動公開決闘',
       'duel_not_open_cast' => '非公開決闘', 'gray_random' => 'グレラン', 'step' => '足音',
       'quiz' => 'クイズ');
-    $checked_key = isset($_POST[$id]) && array_key_exists($_POST[$id], $stack) ?
-      $_POST[$id] : 'chaos_hyper';
+    RQ::Get()->Parse(null, $id);
+    $checked_key = array_key_exists(RQ::Get()->$id, $stack) ? RQ::Get()->$id : 'chaos_hyper';
     foreach ($stack as $key => $value) {
       $label   = $id . '_' . $key;
       $checked = $checked_key == $key ? ' checked' : '';
@@ -57,8 +60,7 @@ EOF;
 	  $value   = $mode;
 	  $checked = '';
 	  $name    = OptionManager::GenerateCaption($mode);
-	}
-	else {
+	} else {
 	  $value   = '';
 	  $checked = ' checked';
 	  $name    = $mode;
@@ -93,16 +95,17 @@ EOF;
     }
     Text::Output('</form>');
 
-    if (@$_POST['command'] == 'role_test') {
-      Loader::LoadRequest('RequestBase'); //専用 Request を作るべき
-      RQ::$get->TestItems = new StdClass();
+    RQ::Get()->Parse('IsOn', 'execute');
+    if (RQ::Get()->execute) {
+      RQ::Get()->TestItems = new StdClass();
       RQ::GetTest()->is_virtual_room = true;
 
       $stack = new StdClass();
       $stack->game_option = array('dummy_boy');
       $stack->option_role = array();
 
-      switch (@$_POST['game_option']) { //メインオプション
+      RQ::Get()->Parse(null, 'game_option');
+      switch (RQ::Get()->game_option) { //メインオプション
       case 'chaos':
       case 'chaosfull':
       case 'chaos_hyper':
@@ -111,7 +114,7 @@ EOF;
       case 'gray_random':
       case 'step':
       case 'quiz':
-	$stack->game_option[] = $_POST['game_option'];
+	$stack->game_option[] = RQ::Get()->game_option;
 	break;
 
       case 'duel_auto_open_cast':
@@ -127,18 +130,20 @@ EOF;
 
       //置換系
       foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
-	if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
+	RQ::Get()->Parse(null, $option);
+	if (empty(RQ::Get()->$option)) continue;
 	$list = $option . '_selector_list';
-	if (array_search(@$_POST[$option], GameOptionConfig::$$list) !== false) {
-	  $stack->option_role[] = $_POST[$option];
+	if (array_search(RQ::Get()->$option, GameOptionConfig::$$list) !== false) {
+	  $stack->option_role[] = RQ::Get()->$option;
 	}
       }
 
       //闇鍋用オプション
       foreach (array('topping', 'boost_rate') as $option) {
-	if (! isset($_POST[$option]) || empty($_POST[$option])) continue;
-	if (array_key_exists($_POST[$option], GameOptionConfig::${$option.'_list'})) {
-	  $stack->option_role[] = $option . ':' . $_POST[$option];
+	RQ::Get()->Parse(null, $option);
+	if (empty(RQ::Get()->$option)) continue;
+	if (array_key_exists(RQ::Get()->$option, GameOptionConfig::${$option.'_list'})) {
+	  $stack->option_role[] = $option . ':' . RQ::Get()->$option;
 	}
       }
 
@@ -147,23 +152,26 @@ EOF;
         'gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
 	'possessed_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective');
       foreach ($option_stack as $option) {
-	if (@$_POST[$option] == 'on') $stack->option_role[] = $option;
+	RQ::Get()->Parse('IsOn', $option);
+	if (RQ::Get()->$option) $stack->option_role[] = $option;
       }
 
       foreach (array('festival') as $option) { //特殊村
-	if (@$_POST[$option] == 'on') $stack->game_option[] = $option;
+	RQ::Get()->Parse('IsOn', $option);
+	if (RQ::Get()->$option) $stack->game_option[] = $option;
       }
-      if (@$_POST['limit_off'] == 'on') ChaosConfig::$role_group_rate_list = array();
+      RQ::Get()->Parse('IsOn', 'post.limit_off');
+      if (RQ::Get()->limit_off) ChaosConfig::$role_group_rate_list = array();
 
       RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
       RQ::SetTestRoom('option_role', implode(' ', $stack->option_role));
 
-      DB::$ROOM = new Room(RQ::$get);
+      DB::$ROOM = new Room(RQ::Get());
       DB::$ROOM->LoadOption();
       //Text::p(DB::$ROOM);
 
-      $user_count = @(int)$_POST['user_count'];
-      $try_count  = @(int)$_POST['try_count'];
+      $user_count = RQ::Get()->user_count;
+      $try_count  = RQ::Get()->try_count;
       $str = '%0' . strlen($try_count) . 'd回目: ';
       for ($i = 1; $i <= $try_count; $i++) {
 	printf($str, $i);
@@ -200,7 +208,7 @@ EOF;
 
     if (@$_POST['command'] == 'role_test') {
       Loader::LoadRequest('RequestBase'); //専用 Request を作るべき
-      RQ::$get->TestItems = new StdClass();
+      RQ::Get()->TestItems = new StdClass();
       RQ::GetTest()->is_virtual_room = true;
 
       $stack = new StdClass();
@@ -209,7 +217,7 @@ EOF;
 
       RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
       RQ::SetTestRoom('option_role', implode(' ', $stack->option_role));
-      DB::$ROOM = new Room(RQ::$get);
+      DB::$ROOM = new Room(RQ::Get());
       DB::$ROOM->LoadOption();
 
       $user_count = @(int)$_POST['user_count'];
@@ -366,15 +374,15 @@ class VoteTest {
     Loader::LoadFile('vote_message');
 
     $stack = new RequestGameVote();
-    RQ::$get->vote       = $stack->vote;
-    RQ::$get->target_no  = $stack->target_no;
-    RQ::$get->situation  = $stack->situation;
-    RQ::$get->add_action = $stack->add_action;
-    RQ::$get->back_url   = '<a href="vote_test.php">戻る</a>';
+    RQ::Set('vote',       $stack->vote);
+    RQ::Set('target_no',  $stack->target_no);
+    RQ::Set('situation',  $stack->situation);
+    RQ::Set('add_action', $stack->add_action);
+    RQ::Set('back_url',   '<a href="vote_test.php">戻る</a>');
 
-    if (RQ::$get->vote) { //投票処理
+    if (RQ::Get()->vote) { //投票処理
       HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
-      if (RQ::$get->target_no == 0) { //空投票検出
+      if (RQ::Get()->target_no == 0) { //空投票検出
 	HTML::OutputResult('空投票', '投票先を指定してください');
       }
       elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
@@ -388,7 +396,7 @@ class VoteTest {
       }
     }
     else {
-      RQ::$get->post_url = 'vote_test.php';
+      RQ::Set('post_url', 'vote_test.php');
       DB::$SELF->last_load_scene = DB::$ROOM->scene;
 
       if (DB::$SELF->IsDead()) {
@@ -450,7 +458,7 @@ class VoteTest {
   static function OutputTalk() {
     Loader::LoadFile('talk_class');
 
-    RQ::$get->add_role  = false;
+    RQ::Set('add_role', false);
     RQ::GetTest()->talk = array();
     foreach (RQ::GetTest()->talk_data->{DB::$ROOM->scene} as $stack) {
       RQ::GetTest()->talk[] = new TalkParser($stack);
@@ -499,15 +507,15 @@ class StepVoteTest {
     Loader::LoadFile('vote_message');
 
     $stack = new RequestGameVote();
-    RQ::$get->vote       = $stack->vote;
-    RQ::$get->target_no  = $stack->target_no;
-    RQ::$get->situation  = $stack->situation;
-    RQ::$get->add_action = $stack->add_action;
-    RQ::$get->back_url   = '<a href="vote_test.php">戻る</a>';
+    RQ::Set('vote',       $stack->vote);
+    RQ::Set('target_no',  $stack->target_no);
+    RQ::Set('situation',  $stack->situation);
+    RQ::Set('add_action', $stack->add_action);
+    RQ::Set('back_url',   '<a href="step_vote_test.php">戻る</a>');
 
-    if (RQ::$get->vote) { //投票処理
+    if (RQ::Get()->vote) { //投票処理
       HTML::OutputHeader('投票テスト', 'game_play', true); //HTMLヘッダ
-      if (RQ::$get->target_no == 0) { //空投票検出
+      if (RQ::Get()->target_no == 0) { //空投票検出
 	HTML::OutputResult('空投票', '投票先を指定してください');
       }
       elseif (DB::$ROOM->IsDay()) { //昼の処刑投票処理
@@ -521,7 +529,7 @@ class StepVoteTest {
       }
     }
     else {
-      RQ::$get->post_url = 'step_vote_test.php';
+      RQ::Set('post_url', 'step_vote_test.php');
       DB::$SELF->last_load_scene = DB::$ROOM->scene;
 
       if (DB::$SELF->IsDead()) {

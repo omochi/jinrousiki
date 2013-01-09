@@ -130,8 +130,8 @@ RQ::GetTest()->system_message = array(
 );
 
 //-- 仮想発言をセット --//
-RQ::$get->say = '';
-RQ::$get->font_type = 'normal';
+RQ::Set('say', '');
+RQ::Set('font_type', 'normal');
 
 //-- データ収集 --//
 //DB::Connect(); //DB接続 (必要なときだけ設定する)

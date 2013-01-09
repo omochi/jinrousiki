@@ -141,7 +141,7 @@ class Vote {
   static function VoteKick() {
     self::CheckSituation('KICK_DO'); //コマンドチェック
     $str = 'Kick 投票：';
-    $target = DB::$USER->ByID(RQ::$get->target_no); //投票先のユーザ情報を取得
+    $target = DB::$USER->ByID(RQ::Get()->target_no); //投票先のユーザ情報を取得
     if ($target->uname == '' || $target->live == 'kick') {
       VoteHTML::OutputResult($str . '投票先が指定されていないか、すでに Kick されています');
     }
@@ -177,14 +177,14 @@ class Vote {
   //昼の投票
   static function VoteDay() {
     self::CheckSituation('VOTE_KILL'); //コマンドチェック
-    $target = DB::$USER->ByReal(RQ::$get->target_no); //投票先のユーザ情報を取得
+    $target = DB::$USER->ByReal(RQ::Get()->target_no); //投票先のユーザ情報を取得
     if (is_null($target->user_no)) VoteHTML::OutputResult('処刑：無効な投票先です');
     if ($target->IsSelf()) VoteHTML::OutputResult('処刑：自分には投票できません');
     if ($target->IsDead()) VoteHTML::OutputResult('処刑：死者には投票できません');
 
     //特殊イベントを取得
     $vote_duel = isset(DB::$ROOM->event->vote_duel) ? DB::$ROOM->event->vote_duel : null;
-    if (is_array($vote_duel) && ! in_array(RQ::$get->target_no, $vote_duel)) {
+    if (is_array($vote_duel) && ! in_array(RQ::Get()->target_no, $vote_duel)) {
       VoteHTML::OutputResult('処刑：決選投票対象者以外には投票できません');
     }
 
@@ -198,7 +198,7 @@ class Vote {
     else {
       $str = " AND scene = '%s' AND vote_count = %d AND revote_count = %d  AND user_no = %d";
       $query = DB::$ROOM->GetQuery(true, 'vote') .
-	sprintf($str, DB::$ROOM->scene, DB::$ROOM->vote_count, RQ::$get->revote_count,
+	sprintf($str, DB::$ROOM->scene, DB::$ROOM->vote_count, RQ::Get()->revote_count,
 		DB::$SELF->user_no);
       if (DB::FetchResult($query) > 0) VoteHTML::OutputResult('処刑：投票済み');
     }
@@ -236,35 +236,35 @@ class Vote {
   static function VoteNight() {
     //-- イベント名と役職の整合チェック --//
     $filter = self::GetNightFilter();
-    if (empty(RQ::$get->situation)) {
+    if (empty(RQ::Get()->situation)) {
       VoteHTML::OutputResult('夜：投票イベントが空です');
     }
-    elseif (RQ::$get->situation == RoleManager::$get->not_action) {
+    elseif (RQ::Get()->situation == RoleManager::$get->not_action) {
       $not_action = true;
     }
-    elseif (RQ::$get->situation != RoleManager::$get->action) {
+    elseif (RQ::Get()->situation != RoleManager::$get->action) {
       VoteHTML::OutputResult('夜：投票イベントが一致しません');
     }
     else {
-      if (isset(RoleManager::$get->add_action) && RQ::$get->add_action) {
-	RQ::$get->situation = RoleManager::$get->add_action;
+      if (isset(RoleManager::$get->add_action) && RQ::Get()->add_action) {
+	RQ::Set('situation', RoleManager::$get->add_action);
       }
       $not_action = false;
     }
     //Text::p($filter);
-    if (! DB::$ROOM->test_mode) self::CheckVoteNight(RQ::$get->situation); //投票済みチェック
+    if (! DB::$ROOM->test_mode) self::CheckVoteNight(RQ::Get()->situation); //投票済みチェック
 
     //-- 投票処理 --//
     if ($not_action) { //投票キャンセルタイプは何もしない
       //投票処理
-      if (! DB::$SELF->Vote(RQ::$get->situation)) VoteHTML::OutputResult('データベースエラー');
+      if (! DB::$SELF->Vote(RQ::Get()->situation)) VoteHTML::OutputResult('データベースエラー');
       $id = DB::$SELF->role_id;
-      DB::$ROOM->Talk('', RQ::$get->situation, DB::$SELF->uname, '', null, null, $id);
+      DB::$ROOM->Talk('', RQ::Get()->situation, DB::$SELF->uname, '', null, null, $id);
     }
     else {
       $filter->CheckVoteNight();
       //Text::p(RoleManager::$get);
-      if (! DB::$SELF->Vote(RQ::$get->situation, RoleManager::$get->target_no)) {
+      if (! DB::$SELF->Vote(RQ::Get()->situation, RoleManager::$get->target_no)) {
 	VoteHTML::OutputResult('データベースエラー'); //投票処理
       }
       $str = RoleManager::$get->target_handle;
@@ -1388,9 +1388,9 @@ class Vote {
   //投票コマンドチェック
   private function CheckSituation($applay_situation) {
     if (is_array($applay_situation)) {
-      if (in_array(RQ::$get->situation, $applay_situation)) return true;
+      if (in_array(RQ::Get()->situation, $applay_situation)) return true;
     }
-    elseif (RQ::$get->situation == $applay_situation) {
+    elseif (RQ::Get()->situation == $applay_situation) {
       return true;
     }
     VoteHTML::OutputResult('無効な投票です');
@@ -1487,7 +1487,7 @@ class VoteHTML {
 </td>
 </tr></table></div>%s
 EOF;
-    printf($str, GameConfig::KICK, RQ::$get->back_url, VoteMessage::$KICK_DO, RQ::$get->post_url,
+    printf($str, GameConfig::KICK, RQ::Get()->back_url, VoteMessage::$KICK_DO, RQ::Get()->post_url,
 	   VoteMessage::$GAME_START, "\n");
     if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
   }
@@ -1550,7 +1550,7 @@ EOF;
 </tr></table></div>
 </form>%s
 EOF;
-    printf($str, RQ::$get->back_url, VoteMessage::$VOTE_DO, "\n");
+    printf($str, RQ::Get()->back_url, VoteMessage::$VOTE_DO, "\n");
     if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
   }
 
@@ -1594,7 +1594,7 @@ EOF;
       RoleManager::$get->submit = RoleManager::$get->action;
     }
     $submit = strtoupper(RoleManager::$get->submit);
-    printf($format, VoteMessage::$CAUTION, RQ::$get->back_url, RoleManager::$get->action,
+    printf($format, VoteMessage::$CAUTION, RQ::Get()->back_url, RoleManager::$get->action,
 	   VoteMessage::$$submit);
 
     if (isset(RoleManager::$get->add_action)) {
@@ -1629,7 +1629,7 @@ EOF;
 	RoleManager::$get->not_submit = RoleManager::$get->not_action;
       }
       $not_submit = strtoupper(RoleManager::$get->not_submit);
-      printf($format, RQ::$get->post_url, RoleManager::$get->not_action, DB::$SELF->user_no,
+      printf($format, RQ::Get()->post_url, RoleManager::$get->not_action, DB::$SELF->user_no,
 	     VoteMessage::$$not_submit);
     }
 
@@ -1652,7 +1652,7 @@ EOF;
 <td><input type="submit" value="%s"></form></td>
 </tr></table></div>%s
 EOF;
-    printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, VoteMessage::$REVIVE_REFUSE, "\n");
+    printf($str, VoteMessage::$CAUTION, RQ::Get()->back_url, VoteMessage::$REVIVE_REFUSE, "\n");
     HTML::OutputFooter(true);
   }
 
@@ -1668,7 +1668,7 @@ EOF;
 <input type="submit" value="%s"></form>
 </td>%s
 EOF;
-    printf($str, VoteMessage::$CAUTION, RQ::$get->back_url, VoteMessage::$RESET_TIME, "\n");
+    printf($str, VoteMessage::$CAUTION, RQ::Get()->back_url, VoteMessage::$RESET_TIME, "\n");
 
     //蘇生辞退ボタン表示判定
     if (! DB::$SELF->IsDrop() && DB::$ROOM->IsOption('not_open_cast') &&
@@ -1682,7 +1682,7 @@ EOF;
 </form>
 </td>%s
 EOF;
-      printf($str, RQ::$get->post_url, VoteMessage::$REVIVE_REFUSE, "\n");
+      printf($str, RQ::Get()->post_url, VoteMessage::$REVIVE_REFUSE, "\n");
     }
     echo "</tr></table></div>\n";
     if (! DB::$ROOM->test_mode) HTML::OutputFooter(true);
@@ -1696,7 +1696,7 @@ EOF;
   }
 
   //結果生成
-  private function GenerateResult($str) { return sprintf(self::RESULT, $str, RQ::$get->back_url); }
+  private function GenerateResult($str) { return sprintf(self::RESULT, $str, RQ::Get()->back_url); }
 
   //ヘッダ出力
   private function OutputHeader() {
@@ -1710,6 +1710,6 @@ EOF;
 <form method="POST" action="%s">
 <input type="hidden" name="vote" value="on">%s
 EOF;
-    printf($str, RQ::$get->post_url, "\n");
+    printf($str, RQ::Get()->post_url, "\n");
   }
 }

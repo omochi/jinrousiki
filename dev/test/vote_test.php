@@ -279,9 +279,9 @@ RQ::GetTest()->system_message = array(
 );
 
 //-- 仮想発言をセット --//
-RQ::$get->say = '';
-#RQ::$get->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
-RQ::$get->font_type = 'weak'; 'normal';
+RQ::Set('say', '');
+#RQ::Get()->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
+RQ::Get()->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
 DB::Connect(); //DB接続 (必要なときだけ設定する)
@@ -377,17 +377,17 @@ if ($role_view_mode) VoteTest::OutputImage($role_view_list); //画像表示モ�
 HTML::OutputHeader('投票テスト', 'game_play', true);
 GameHTML::OutputPlayer();
 RoleHTML::OutputAbility();
-if (RQ::$get->say != '') { //発言変換テスト
-  RoleTalk::Convert(RQ::$get->say);
-  RoleTalk::Save(RQ::$get->say, 'day', 0);
+if (RQ::Get()->say != '') { //発言変換テスト
+  RoleTalk::Convert(RQ::Get()->say);
+  RoleTalk::Save(RQ::Get()->say, 'day', 0);
 }
 if (DB::$ROOM->IsDay()) { //昼の投票テスト
   $self_id = DB::$SELF->user_no;
-  RQ::$get->situation = 'VOTE_KILL';
-  RQ::$get->back_url = '';
+  RQ::Get()->situation = 'VOTE_KILL';
+  RQ::Get()->back_url = '';
   foreach (RQ::GetTest()->vote_target_day as $stack) {
     DB::$SELF = DB::$USER->ByID($stack['id']);
-    RQ::$get->target_no = $stack['target_no'];
+    RQ::Set('target_no', $stack['target_no']);
     Vote::VoteDay();
   }
   $vote_message_list = Vote::AggregateDay();

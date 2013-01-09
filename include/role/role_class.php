@@ -787,7 +787,7 @@ abstract class Role {
 
   //投票結果チェック (夜)
   function CheckVoteNight() {
-    $this->SetStack(RQ::$get->situation, 'message');
+    $this->SetStack(RQ::Get()->situation, 'message');
     if (! is_null($str = $this->VoteNight())) {
       VoteHTML::OutputResult('夜：投票先が正しくありません<br>'."\n" . $str);
     }
@@ -804,7 +804,7 @@ abstract class Role {
   }
 
   //投票対象者取得 (夜)
-  function GetVoteNightTarget() { return RQ::$get->target_no; }
+  function GetVoteNightTarget() { return RQ::Get()->target_no; }
 
   //投票スキップ判定 (夜)
   function IgnoreVoteNight(User $user, $live) {
@@ -893,7 +893,7 @@ class RoleTalk {
   //発言を DB に登録する
   static function Save($say, $scene, $location = null, $spend_time = 0, $update = false) {
     //声の大きさを決定
-    $voice = RQ::$get->font_type;
+    $voice = RQ::Get()->font_type;
     if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
       RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
       foreach (RoleManager::Load('voice') as $filter) $filter->FilterVoice($voice, $say);

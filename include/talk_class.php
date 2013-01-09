@@ -247,7 +247,7 @@ class TalkBuilder {
     }
 
     //実ユーザを取得
-    if (RQ::$get->add_role && $actor->user_no > 0) { //役職表示モード対応
+    if (RQ::Get()->add_role && $actor->user_no > 0) { //役職表示モード対応
       $real_user = isset($real) ? $real : $actor;
       $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
     }
@@ -342,7 +342,7 @@ class TalkBuilder {
 	}
 	$str = $talk->sentence; //改行を入れるため再セット
 	if (isset($talk->time)) $name .= sprintf('<br><span>%s</span>', $talk->date_time);
-	if (RQ::$get->icon) $symbol = Icon::GetUserIcon($actor) . $symbol;
+	if (RQ::Get()->icon) $symbol = Icon::GetUserIcon($actor) . $symbol;
 	return $this->AddRaw($symbol, $name, $str, $voice, '', $class);
       }
       else {
@@ -484,12 +484,12 @@ EOF;
     $color  = isset($talk->color) ? $talk->color : $user->color;
     $symbol = '<font style="color:' . $color . '">◆</font>';
     $name   = isset($talk->handle_name) ? $talk->handle_name : $user->handle_name;
-    if (RQ::$get->add_role && $user->user_no != 0) { //役職表示モード対応
+    if (RQ::Get()->add_role && $user->user_no != 0) { //役職表示モード対応
       $real = $talk->scene == 'heaven' ? $user :
 	(isset($real) ? $real : DB::$USER->ByReal($user->user_no));
       $name .= $real->GenerateShortRoleName();
     }
-    elseif (DB::$ROOM->IsFinished() && RQ::$get->name) { //ユーザ名表示モード
+    elseif (DB::$ROOM->IsFinished() && RQ::Get()->name) { //ユーザ名表示モード
       $name .= $user->GenerateShortRoleName();
     }
     if (DB::$ROOM->IsNight() &&
@@ -501,7 +501,7 @@ EOF;
     $voice = $talk->font_type;
     //発言フィルタ処理
     foreach ($this->filter as $filter) $filter->FilterTalk($user, $name, $voice, $str);
-    if (RQ::$get->icon && $name != '') $symbol = Icon::GetUserIcon($user) . $symbol;
+    if (RQ::Get()->icon && $name != '') $symbol = Icon::GetUserIcon($user) . $symbol;
     if (isset($talk->date_time)) $name .= "<br><span>{$talk->date_time}</span>";
     return $this->AddRaw($symbol, $name, $str, $voice);
   }
@@ -585,7 +585,7 @@ EOF;
 class TalkDB {
   //発言取得
   function Get($heaven = false) {
-    if (RQ::$get->IsVirtualRoom()) return RQ::GetTest()->talk;
+    if (RQ::Get()->IsVirtualRoom()) return RQ::GetTest()->talk;
 
     $format = 'SELECT %s FROM %s WHERE room_no = ?';
     $select = 'scene, location, uname, action, sentence, font_type';
@@ -632,7 +632,7 @@ class TalkDB {
     $list   = array(DB::$ROOM->id);
     $select = 'scene, location, uname, action, sentence, font_type';
     $table  = 'talk';
-    if (RQ::$get->time) $select .= ', time';
+    if (RQ::Get()->time) $select .= ', time';
 
     switch ($set_scene) {
     case 'beforegame':
@@ -659,7 +659,7 @@ class TalkDB {
       $list[] = $set_date;
 
       $stack = array('day', 'night');
-      if (RQ::$get->heaven_talk) $stack[] = 'heaven';
+      if (RQ::Get()->heaven_talk) $stack[] = 'heaven';
       $format .= sprintf('(%s)', implode(',', array_fill(0, count($stack), '?')));
       $list = array_merge($list, $stack);
       break;
@@ -669,7 +669,7 @@ class TalkDB {
       $list[] = 'system';
     }
     $query = sprintf($format, $select, $table);
-    $query .= ' ORDER BY id ' . (RQ::$get->reverse_log ? 'ASC' : 'DESC'); //ログの表示順
+    $query .= ' ORDER BY id ' . (RQ::Get()->reverse_log ? 'ASC' : 'DESC'); //ログの表示順
 
     DB::Prepare($query, $list);
     return DB::FetchClass('TalkParser');

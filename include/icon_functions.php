@@ -35,17 +35,17 @@ class IconDB {
 
   //次のアイコン番号取得
   static function GetNumber() {
-    return DB::FetchResult('SELECT MAX(icon_no) + 1 FROM user_icon');
+    return (int)DB::FetchResult('SELECT MAX(icon_no) FROM user_icon') + 1;
   }
 
   //アイコンリスト取得
   static function GetList(array $where) {
     $format  = 'SELECT * FROM user_icon WHERE %s ORDER BY %s';
     $where[] = 'icon_no > 0';
-    $sort    = RQ::$get->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name';
+    $sort    = RQ::Get()->sort_by_name ? 'icon_name, icon_no' : 'icon_no, icon_name';
     $query   = sprintf($format, implode(' AND ', $where), $sort);
-    if (RQ::$get->page != 'all') {
-      $limit = max(0, IconConfig::VIEW * (RQ::$get->page - 1));
+    if (RQ::Get()->page != 'all') {
+      $limit = max(0, IconConfig::VIEW * (RQ::Get()->page - 1));
       $query .= sprintf(' LIMIT %d, %d', $limit, IconConfig::VIEW);
     }
     DB::Prepare($query, array());
@@ -61,7 +61,7 @@ class IconDB {
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示します。
   static function GetSelectionByType($type) {
     //選択状態の抽出
-    $data   = RQ::$get->search ? RQ::$get->$type : Session::Get('icon_view', $type);
+    $data   = RQ::Get()->search ? RQ::Get()->$type : Session::Get('icon_view', $type);
     $target = empty($data) ? array() : (is_array($data) ? $data : array($data));
     Session::Set('icon_view', $type, $target);
     if ($type == 'keyword') return $target;
@@ -159,12 +159,12 @@ class IconHTML {
       現時点では GET で直接検索を試みたユーザーのセッション情報まで配慮していないが、
       いずれ必要になるかも知れない (enogu)
     */
-    if (is_null(RQ::$get->page)) Session::Clear('icon_view');
+    if (is_null(RQ::Get()->page)) Session::Clear('icon_view');
 
     //編集フォームの表示
     if ($base_url == 'icon_view') {
       $footer = "</fieldset>\n";
-      if (RQ::$get->icon_no > 0) {
+      if (RQ::Get()->icon_no > 0) {
 	$params = RQ::ToArray();
 	unset($params['icon_no']);
 	echo <<<HTML
@@ -172,7 +172,7 @@ class IconHTML {
 <fieldset><legend>アイコン設定の変更</legend>
 
 HTML;
-	self::OutputEdit(RQ::$get->icon_no);
+	self::OutputEdit(RQ::Get()->icon_no);
 	echo $footer;
       }
       else {
@@ -283,7 +283,7 @@ EOF;
     }
     $keyword = $stack[0];
 
-    $sort_by_name_checked = RQ::$get->sort_by_name ? ' checked' : '';
+    $sort_by_name_checked = RQ::Get()->sort_by_name ? ' checked' : '';
     echo <<<EOF
 </tr>
 <tr>
@@ -297,7 +297,7 @@ EOF;
 EOF;
 
     //検索結果の表示
-    if (empty(RQ::$get->room_no)) {
+    if (empty(RQ::Get()->room_no)) {
       $method = 'OutputDetailForIconView';
       echo <<<HTML
 <table>
@@ -310,7 +310,7 @@ EOF;
 
 HTML;
     }
-    elseif (isset(RQ::$get->room_no)) {
+    elseif (isset(RQ::Get()->room_no)) {
       $method = 'OutputDetailForUserEntry';
       echo <<<HTML
 <table>
@@ -332,11 +332,11 @@ HTML;
     $CONF->page       = IconConfig::PAGE;
     $CONF->url        = $base_url;
     $CONF->count      = IconDB::GetCount($where);
-    $CONF->current    = RQ::$get->page;
+    $CONF->current    = RQ::Get()->page;
     $CONF->option     = $url_option;
     $CONF->attributes = array('onclick' => 'return "return submit_icon_search(\'$page\');";');
-    if (RQ::$get->room_no > 0) $CONF->option[] = 'room_no=' . RQ::$get->room_no;
-    if (RQ::$get->icon_no > 0) $CONF->option[] = 'icon_no=' . RQ::$get->icon_no;
+    if (RQ::Get()->room_no > 0) $CONF->option[] = 'room_no=' . RQ::Get()->room_no;
+    if (RQ::Get()->icon_no > 0) $CONF->option[] = 'icon_no=' . RQ::Get()->icon_no;
     printf('<td colspan="%d" class="page-link">', $colspan);
     self::OutputPageLink($CONF);
     echo <<<HTML

@@ -714,7 +714,7 @@ EOF;
     }
     if (isset($vote_number)) {
       $items  .= ', vote_number, revote_count';
-      $values .= sprintf(', %d, %d', $vote_number, RQ::$get->revote_count);
+      $values .= sprintf(', %d, %d', $vote_number, RQ::Get()->revote_count);
     }
     return DB::Insert('vote', $items, $values);
   }
@@ -884,7 +884,7 @@ class UserData {
 
       if ($this->IsAppear($role = 'shadow_fairy')) { //影妖精の処理
 	$date = DB::$ROOM->date; //判定用の日付
-	if ((DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) && ! RQ::$get->reverse_log) {
+	if ((DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) && ! RQ::Get()->reverse_log) {
 	  $date--;
 	}
 	RoleManager::GetClass($role)->BadStatus($this, $date);
@@ -1136,7 +1136,7 @@ class UserDB {
   //ユーザ情報取得
   static function GetUser() {
     $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
-    DB::Prepare($query, array(RQ::$get->room_no, RQ::$get->user_no));
+    DB::Prepare($query, array(RQ::Get()->room_no, RQ::Get()->user_no));
     return DB::FetchAssoc(true);
   }
 
@@ -1169,7 +1169,7 @@ SELECT uname, handle_name, sex, profile, role, icon_no, u.session_id, color, ico
 FROM user_entry AS u INNER JOIN user_icon USING (icon_no)
 WHERE room_no = ? AND user_no = ?
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, $user_no));
+    DB::Prepare($query, array(RQ::Get()->room_no, $user_no));
     return DB::FetchClass('User', true);
   }
 
@@ -1179,7 +1179,7 @@ EOF;
     $query = <<<EOF
 SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND uname = ?
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, 'kick', $uname));
+    DB::Prepare($query, array(RQ::Get()->room_no, 'kick', $uname));
     return DB::Count() > 0;
   }
 
@@ -1188,7 +1188,7 @@ EOF;
     $query = <<<EOF
 SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND (uname = ? OR handle_name = ?)
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, 'live', $uname, $handle_name));
+    DB::Prepare($query, array(RQ::Get()->room_no, 'live', $uname, $handle_name));
     return DB::Count() > 0;
   }
 
@@ -1197,7 +1197,7 @@ EOF;
     $query = <<<EOF
 SELECT user_no FROM user_entry WHERE room_no = ? AND user_no != ? AND live = ? AND handle_name = ?
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, $user_no, 'live', $handle_name));
+    DB::Prepare($query, array(RQ::Get()->room_no, $user_no, 'live', $handle_name));
     return DB::Count() > 0;
   }
 
@@ -1206,7 +1206,7 @@ EOF;
     $query = <<<EOF
 SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?
 EOF;
-    DB::Prepare($query, array(RQ::$get->room_no, 'live', Security::GetIP()));
+    DB::Prepare($query, array(RQ::Get()->room_no, 'live', Security::GetIP()));
     return DB::Count() > 0;
   }
 }
