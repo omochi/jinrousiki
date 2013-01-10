@@ -16,12 +16,12 @@ class Option_topping extends SelectorRoomOptionItem {
   function GetExplain() { return '固定配役に追加する役職セットです'; }
 
   function LoadPost() {
-    if (! isset($_POST[$this->name]) || empty($_POST[$this->name])) return false;
-    $post = $_POST[$this->name];
+    RQ::Get()->ParsePostData($this->name);
+    if (is_null(RQ::Get()->{$this->name})) return false;
 
-    if (array_key_exists($post, $this->form_list)) {
-      RQ::Set($this->name, true);
-      array_push(RoomOption::${$this->group}, sprintf('%s:%s', $this->name, $post));
-    }
+    $post = RQ::Get()->{$this->name};
+    $flag = array_key_exists($post, $this->form_list);
+    if ($flag) array_push(RoomOption::${$this->group}, sprintf('%s:%s', $this->name, $post));
+    RQ::Set($this->name, $flag);
   }
 }

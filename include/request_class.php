@@ -1,7 +1,6 @@
 <?php
 //-- 引数管理クラス --//
 class RQ {
-  public  static $src = null; //固定リクエストソース
   private static $instance = null; //Request クラス
 
   //Request クラスの初期化
@@ -69,34 +68,73 @@ class RequestBase {
   }
 
   //引数解析
-  public function Parse($items) {
-    $spec_list = func_get_args();
-    $processor = array_shift($spec_list);
+  public function Parse($src, $filter, array $spec_list) {
+    $value_list = $this->GetSource($src);
     foreach ($spec_list as $spec) {
-      if (is_null(RQ::$src)) {
-	list($src, $item) = explode('.', $spec);
+      $value = array_key_exists($spec, $value_list) ? $value_list[$spec] : null;
+      if (empty($filter)) {
+	$this->$spec = $value;
+      } elseif (method_exists($this, $filter)) {
+	$this->$spec = $this->$filter($value);
+      } elseif (method_exists('Text', $filter)) {
+	$this->$spec = Text::$filter($value);
       } else {
-	$src  = RQ::$src;
-	$item = $spec;
-      }
-      $value_list = $this->GetSource($src);
-
-      if (array_key_exists($item, $value_list)) {
-	$value = $value_list[$item];
-      } elseif (! $this->GetDefault($item, $value)) {
-	$value = null;
-      }
-
-      if (empty($processor)) {
-	$this->$item = $value;
-      } elseif (method_exists($this, $processor)) {
-	$this->$item = $this->$processor($value);
-      } elseif (method_exists('Text', $processor)) {
-	$this->$item = Text::$processor($value);
-      } else {
-	$this->$item = $processor($value);
+	$this->$spec = $filter($value);
       }
     }
+  }
+
+  public function ParseGet($stack) {
+    $stack  = func_get_args();
+    $filter = array_shift($stack);
+    $this->Parse('get', $filter, $stack);
+  }
+
+  public function ParsePost($stack) {
+    $stack  = func_get_args();
+    $filter = array_shift($stack);
+    $this->Parse('post', $filter, $stack);
+  }
+
+  public function ParseRequest($stack) {
+    $stack  = func_get_args();
+    $filter = array_shift($stack);
+    $this->Parse('request', $filter, $stack);
+  }
+
+  public function ParseGetInt($stack) {
+    $stack = func_get_args();
+    $this->Parse('get', 'intval', $stack);
+  }
+
+  public function ParsePostInt($stack) {
+    $stack = func_get_args();
+    $this->Parse('post', 'intval', $stack);
+  }
+
+  public function ParseGetOn($stack) {
+    $stack = func_get_args();
+    $this->Parse('get', 'IsOn', $stack);
+  }
+
+  public function ParsePostOn($stack) {
+    $stack = func_get_args();
+    $this->Parse('post', 'IsOn', $stack);
+  }
+
+  public function ParsePostStr($stack) {
+    $stack = func_get_args();
+    $this->Parse('post', 'Escape', $stack);
+  }
+
+  public function ParseGetData($stack) {
+    $stack = func_get_args();
+    $this->Parse('get', null, $stack);
+  }
+
+  public function ParsePostData($stack) {
+    $stack = func_get_args();
+    $this->Parse('post', null, $stack);
   }
 
   //対象リクエスト変数取得
@@ -122,9 +160,6 @@ class RequestBase {
     }
   }
 
-  //初期値設定
-  protected function GetDefault($item, &$value) { return false; }
-
   //存在判定
   protected function Exists($arg) { return ! empty($arg); }
 
@@ -144,25 +179,12 @@ class RequestBase {
     $int = intval($arg);
     return $int > 0 ? $int : 1;
   }
-
-  //テスト用パラメータセット
-  protected function AttachTestParameters() {
-    if (ServerConfig::DEBUG_MODE) $this->TestItems = new RequestTestParams();
-  }
-}
-
-//-- テスト用パラメータ設定クラス --//
-class RequestTestParams extends RequestBase {
-  function __construct() {
-    $this->Parse(null, 'post.test_users', 'post.test_room', 'post.test_mode');
-    $this->is_virtual_room = isset($this->test_users);
-  }
 }
 
 //-- game 用共通クラス --//
 class RequestBaseGame extends RequestBase {
   function __construct() {
-    $this->Parse('intval', 'get.room_no', 'get.auto_reload');
+    $this->ParseGetInt('room_no', 'auto_reload');
     $min = min(GameConfig::$auto_reload_list);
     if ($this->auto_reload != 0 && $this->auto_reload < $min) $this->auto_reload = $min;
     $this->add_role = null;
@@ -173,7 +195,7 @@ class RequestBaseGame extends RequestBase {
 class RequestBaseGamePlay extends RequestBaseGame {
   function __construct() {
     parent::__construct();
-    $this->Parse('IsOn', 'get.play_sound', 'get.icon', 'get.name', 'get.list_down');
+    $this->ParseGetOn('play_sound', 'icon', 'name', 'list_down');
   }
 
   protected function GetURL($auto_reload = false) {
@@ -191,18 +213,16 @@ class RequestBaseGamePlay extends RequestBaseGame {
 class RequestBaseIcon extends RequestBase {
   function __construct() {
     Text::Encode();
-    $this->Parse('intval', 'post.icon_no');
-    $this->Parse('Escape', 'post.icon_name', 'post.appearance', 'post.category',
-		 'post.author', 'post.color');
-    $this->Parse('Exists', 'post.search');
+    $this->ParsePostInt('icon_no');
+    $this->ParsePostStr('icon_name', 'appearance', 'category', 'author', 'color');
+    $this->ParsePost('Exists', 'search');
   }
 
   protected function GetIconData() {
-    $this->Parse('IsOn', 'request.sort_by_name');
-    $this->Parse('Escape', 'request.appearance', 'request.category', 'request.author',
-		 'request.keyword');
-    $this->Parse('Exists', 'request.search');
-    $this->Parse('SetPage', 'request.page');
+    $this->ParseRequest('IsOn', 'sort_by_name');
+    $this->ParseRequest('Escape', 'appearance', 'category', 'author', 'keyword');
+    $this->ParseRequest('Exists', 'search');
+    $this->ParseRequest('SetPage', 'page');
   }
 }
 
@@ -210,8 +230,8 @@ class RequestBaseIcon extends RequestBase {
 class RequestRoomManager extends RequestBase {
   function __construct() {
     Text::Encode();
-    $this->Parse('intval', 'get.room_no');
-    $this->Parse('IsOn', 'post.create_room', 'post.change_room');
+    $this->ParseGetInt('room_no');
+    $this->ParsePostOn('create_room', 'change_room');
   }
 }
 
@@ -219,11 +239,11 @@ class RequestRoomManager extends RequestBase {
 class RequestLogin extends RequestBase {
   function __construct() {
     Text::Encode();
-    $this->Parse('intval', 'get.room_no');
-    $this->Parse('IsOn', 'post.login_manually');
-    $this->Parse('Escape', 'post.password');
-    $this->Parse('ConvertTrip', 'post.uname');
-    $this->Parse(null, 'post.trip');
+    $this->ParseGetInt('room_no');
+    $this->ParsePostOn('login_manually');
+    $this->ParsePostStr('password');
+    $this->ParsePostData('trip');
+    $this->ParsePost('ConvertTrip', 'uname');
   }
 }
 
@@ -231,18 +251,19 @@ class RequestLogin extends RequestBase {
 class RequestUserManager extends RequestBaseIcon {
   function __construct() {
     Text::Encode();
-    $this->Parse('IsRoomNo', 'get.room_no');
-    $this->Parse('intval', 'post.icon_no', 'get.user_no');
-    $this->Parse('IsOn', 'post.login_manually');
-    $this->Parse('Exists', 'post.entry');
-    $this->Parse('Escape', 'post.password');
-    $this->Parse(null, 'post.trip', 'post.profile', 'post.sex', 'post.role');
+    $this->ParseGet('IsRoomNo', 'room_no');
+    $this->ParseGetInt('user_no');
+    $this->ParsePostInt('icon_no');
+    $this->ParsePostOn('login_manually');
+    $this->ParsePostStr('password');
+    $this->ParsePostData('trip', 'profile', 'sex', 'role');
+    $this->ParsePost('Exists', 'entry');
     $this->GetIconData();
     Text::Escape($this->profile, false);
     if ($this->entry) {
-      $this->Parse('ConvertTrip', 'post.uname', 'post.handle_name');
+      $this->ParsePost('ConvertTrip', 'uname', 'handle_name');
     } else {
-      $this->Parse('Escape', 'post.uname', 'post.trip', 'post.handle_name');
+      $this->ParsePostStr('uname', 'trip', 'handle_name');
     }
   }
 }
@@ -251,7 +272,7 @@ class RequestUserManager extends RequestBaseIcon {
 class RequestGameFrame extends RequestBaseGamePlay {
   function __construct() {
     parent::__construct();
-    $this->Parse('IsOn', 'get.dead_mode');
+    $this->ParseGetOn('dead_mode');
     $this->url = $this->GetURL(true);
   }
 }
@@ -260,7 +281,7 @@ class RequestGameFrame extends RequestBaseGamePlay {
 class RequestGameUp extends RequestBaseGamePlay {
   function __construct() {
     parent::__construct();
-    $this->Parse('IsOn', 'get.dead_mode', 'get.heaven_mode');
+    $this->ParseGetOn('dead_mode', 'heaven_mode');
 
     $url = $this->GetURL(true);
     if ($this->dead_mode)   $url .= '&dead_mode=on';
@@ -274,9 +295,10 @@ class RequestGamePlay extends RequestBaseGamePlay {
   function __construct() {
     Text::Encode();
     parent::__construct();
-    $this->Parse('IsOn', 'get.dead_mode', 'get.heaven_mode', 'post.set_objection');
-    $this->Parse('Escape', 'post.font_type');
-    $this->Parse(null, 'post.say');
+    $this->ParseGetOn('dead_mode', 'heaven_mode');
+    $this->ParsePostOn('set_objection');
+    $this->ParsePostStr('font_type');
+    $this->ParsePostData('say');
     Text::Escape($this->say, false);
     $this->last_words = $this->font_type == 'last_words';
   }
@@ -285,9 +307,9 @@ class RequestGamePlay extends RequestBaseGamePlay {
 //-- game_log.php --//
 class RequestGameLog extends RequestBase {
   function __construct() {
-    $this->Parse('IsRoomNo', 'get.room_no');
-    $this->Parse('intval', 'get.date', 'get.user_no');
-    $this->Parse(null, 'get.scene');
+    $this->ParseGet('IsRoomNo', 'room_no');
+    $this->ParseGetInt('date', 'user_no');
+    $this->ParseGetData('scene');
     if ($this->IsInvalidScene()) HTML::OutputResult('引数エラー', '無効な引数です');
   }
 
@@ -321,10 +343,9 @@ class RequestGameVote extends RequestBaseGamePlay {
   */
   function __construct() {
     parent::__construct();
-    $this->Parse('intval', 'post.revote_count');
-    $this->Parse('IsOn', 'post.vote', 'post.add_action');
-    $this->Parse(null, 'post.target_no', 'post.situation');
-    $this->AttachTestParameters(); //テスト用引数のロード
+    $this->ParsePostInt('revote_count');
+    $this->ParsePostOn('vote', 'add_action');
+    $this->ParsePostData('target_no', 'situation');
 
     $url = $this->GetURL();
     $this->post_url = 'game_vote.php' . $url;
@@ -335,18 +356,17 @@ class RequestGameVote extends RequestBaseGamePlay {
 //-- old_log.php --//
 class RequestOldLog extends RequestBase {
   function __construct() {
-    RQ::$src = 'get';
-    $this->Parse('intval', 'db_no');
-    $this->Parse('IsOn', 'watch');
-    if ($this->is_room = isset($_GET['room_no'])) {
-      $this->Parse('intval', 'room_no', 'user_no');
-      $this->Parse('IsOn', 'reverse_log', 'heaven_talk', 'heaven_only', 'add_role',
-		   'personal_result', 'time', 'icon');
-      $this->AttachTestParameters();
+    $this->ParseGetInt('db_no', 'room_no');
+    $this->ParseGetOn('watch');
+    if ($this->room_no > 0) {
+      $this->is_room = true;
+      $this->ParseGetInt('user_no');
+      $this->ParseGetOn('reverse_log', 'heaven_talk', 'heaven_only', 'add_role',
+			'personal_result', 'time', 'icon');
     }
     else {
-      $this->Parse(null, 'reverse');
-      $this->Parse('SetPage', 'page');
+      $this->ParseGetData('reverse');
+      $this->ParseGet('SetPage', 'page');
     }
   }
 }
@@ -355,8 +375,8 @@ class RequestOldLog extends RequestBase {
 class RequestIconView extends RequestBaseIcon {
   function __construct() {
     $this->GetIconData();
-    $this->Parse('intval', 'get.icon_no');
-    $this->Parse(null, 'get.category', 'get.appearance', 'get.author');
+    $this->ParseGetInt('icon_no');
+    $this->ParseGetData('category', 'appearance', 'author');
     $this->room_no = null;
   }
 }
@@ -365,8 +385,8 @@ class RequestIconView extends RequestBaseIcon {
 class RequestIconEdit extends RequestBaseIcon {
   function __construct() {
     parent::__construct();
-    $this->Parse('IsOn', 'post.disable');
-    $this->Parse('Escape', 'post.password');
+    $this->ParsePostOn('disable');
+    $this->ParsePostStr('password');
   }
 }
 
@@ -374,22 +394,22 @@ class RequestIconEdit extends RequestBaseIcon {
 class RequestIconUpload extends RequestBaseIcon {
   function __construct() {
     parent::__construct();
-    $this->Parse('intval', 'file.size');
-    $this->Parse(null, 'post.command', 'file.type', 'file.tmp_name');
+    $this->Parse('file', 'intval', array('size'));
+    $this->Parse('file', null, array('type', 'tmp_name'));
+    $this->ParsePostData('command');
   }
 }
 
 //-- shared_room.php --//
 class RequestSharedRoom extends RequestBase {
-  function __construct() { $this->Parse('intval', 'get.id'); }
+  function __construct() { $this->ParseGetInt('id'); }
 }
 
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase {
   function __construct() {
-    RQ::$src = 'post';
     Text::Encode();
-    $this->Parse('Escape', 'name', 'caption', 'user', 'password');
+    $this->ParsePostStr('name', 'caption', 'user', 'password');
     $file = new StdClass();
     foreach ($this->GetSource('file') as $key => $value) {
       $file->$key = $value;

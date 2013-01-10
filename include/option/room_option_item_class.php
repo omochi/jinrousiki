@@ -59,7 +59,7 @@ abstract class CheckRoomOptionItem extends RoomOptionItem {
   public $form_value = 'on';
 
   function LoadPost() {
-    RQ::Get()->Parse('IsOn', 'post.' . $this->name);
+    RQ::Get()->ParsePostOn($this->name);
     if (RQ::Get()->{$this->name}) array_push(RoomOption::${$this->group}, $this->name);
     return RQ::Get()->{$this->name};
   }
@@ -82,13 +82,16 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
   }
 
   function LoadPost() {
-    if (! isset($_POST[$this->name]) || empty($_POST[$this->name])) return false;
-    $post = $_POST[$this->name];
+    RQ::Get()->ParsePostData($this->name);
+    if (is_null(RQ::Get()->{$this->name})) return false;
 
-    if (in_array($post, $this->form_list)) {
-      RQ::Set($post, true);
+    $post = RQ::Get()->{$this->name};
+    $flag = in_array($post, $this->form_list);
+    if ($flag) {
+      RQ::Set($post, $flag);
       array_push(RoomOption::${$this->group}, $post);
     }
+    RQ::Set($this->name, $flag);
   }
 
   //個別データ取得
@@ -126,5 +129,5 @@ abstract class TextRoomOptionItem extends RoomOptionItem {
   public $group = RoomOption::NOT_OPTION;
   public $type  = 'textbox';
 
-  function LoadPost() { RQ::Get()->Parse('Escape', 'post.' . $this->name); }
+  function LoadPost() { RQ::Get()->ParsePost('Escape', $this->name); }
 }

@@ -20,10 +20,9 @@ class RoleTest {
 
   function Output() {
     Loader::LoadRequest();
-    RQ::$src = 'post';
     HTML::OutputHeader('配役テストツール', 'test/role', true);
     foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
-      RQ::Get()->Parse('intval', $key);
+      RQ::Get()->ParsePostInt($key);
       $$key = RQ::Get()->$key > 0 ? RQ::Get()->$key : $value;
     }
     $id_u = 'user_count';
@@ -43,7 +42,7 @@ EOF;
       'chaos_verso' => '裏・闇鍋', 'duel' => '決闘', 'duel_auto_open_cast' => '自動公開決闘',
       'duel_not_open_cast' => '非公開決闘', 'gray_random' => 'グレラン', 'step' => '足音',
       'quiz' => 'クイズ');
-    RQ::Get()->Parse(null, $id);
+    RQ::Get()->ParsePostData($id);
     $checked_key = array_key_exists(RQ::Get()->$id, $stack) ? RQ::Get()->$id : 'chaos_hyper';
     foreach ($stack as $key => $value) {
       $label   = $id . '_' . $key;
@@ -95,7 +94,7 @@ EOF;
     }
     Text::Output('</form>');
 
-    RQ::Get()->Parse('IsOn', 'execute');
+    RQ::Get()->ParsePostOn('execute');
     if (RQ::Get()->execute) {
       RQ::Get()->TestItems = new StdClass();
       RQ::GetTest()->is_virtual_room = true;
@@ -104,7 +103,7 @@ EOF;
       $stack->game_option = array('dummy_boy');
       $stack->option_role = array();
 
-      RQ::Get()->Parse(null, 'game_option');
+      RQ::Get()->ParsePostData('game_option');
       switch (RQ::Get()->game_option) { //メインオプション
       case 'chaos':
       case 'chaosfull':
@@ -130,7 +129,7 @@ EOF;
 
       //置換系
       foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
-	RQ::Get()->Parse(null, $option);
+	RQ::Get()->ParsePostData($option);
 	if (empty(RQ::Get()->$option)) continue;
 	$list = $option . '_selector_list';
 	if (array_search(RQ::Get()->$option, GameOptionConfig::$$list) !== false) {
@@ -140,7 +139,7 @@ EOF;
 
       //闇鍋用オプション
       foreach (array('topping', 'boost_rate') as $option) {
-	RQ::Get()->Parse(null, $option);
+	RQ::Get()->ParsePostData($option);
 	if (empty(RQ::Get()->$option)) continue;
 	if (array_key_exists(RQ::Get()->$option, GameOptionConfig::${$option.'_list'})) {
 	  $stack->option_role[] = $option . ':' . RQ::Get()->$option;
@@ -151,16 +150,16 @@ EOF;
       $option_stack = array(
         'gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
 	'possessed_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective');
+      RQ::Get()->Parse('post', 'IsOn', $option_stack);
       foreach ($option_stack as $option) {
-	RQ::Get()->Parse('IsOn', $option);
 	if (RQ::Get()->$option) $stack->option_role[] = $option;
       }
 
       foreach (array('festival') as $option) { //特殊村
-	RQ::Get()->Parse('IsOn', $option);
+	RQ::Get()->ParsePostOn($option);
 	if (RQ::Get()->$option) $stack->game_option[] = $option;
       }
-      RQ::Get()->Parse('IsOn', 'post.limit_off');
+      RQ::Get()->ParsePostOn('limit_off');
       if (RQ::Get()->limit_off) ChaosConfig::$role_group_rate_list = array();
 
       RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));

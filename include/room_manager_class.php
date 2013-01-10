@@ -77,7 +77,7 @@ class RoomManager {
       $room_password = ServerConfig::ROOM_PASSWORD;
       if (isset($room_password)) { //パスワードチェック
 	$str = 'room_password';
-	RQ::Get()->Parse('Escape', 'post.' . $str);
+	RQ::Get()->ParsePostStr($str);
 	if (RQ::Get()->$str != $room_password) {
 	  HTML::OutputResult('村作成 [制限事項]', '村作成パスワードが正しくありません。');
 	}
@@ -131,7 +131,7 @@ class RoomManager {
 
     if (RQ::Get()->quiz) { //クイズ村
       if (! RQ::Get()->change_room) {
-	RQ::Get()->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック
+	RQ::Get()->ParsePostStr('gm_password'); //GM ログインパスワードをチェック
 	if (RQ::Get()->gm_password == '') RoomManagerHTML::OutputResult('no_password');
 	$dummy_boy_handle_name = 'GM';
 	$dummy_boy_password    = RQ::Get()->gm_password;
@@ -150,7 +150,7 @@ class RoomManager {
       }
       elseif (RQ::Get()->gm_login) {
 	if (! RQ::Get()->change_room) {
-	  RQ::Get()->Parse('Escape', 'post.gm_password'); //GM ログインパスワードをチェック
+	  RQ::Get()->ParsePostStr('gm_password'); //GM ログインパスワードをチェック
 	  if (RQ::Get()->gm_password == '') RoomManagerHTML::OutputResult('no_password');
 	  $dummy_boy_handle_name = 'GM';
 	  $dummy_boy_password    = RQ::Get()->gm_password;

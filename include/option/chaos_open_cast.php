@@ -38,9 +38,10 @@ class Option_chaos_open_cast extends SelectorRoomOptionItem {
   }
 
   function LoadPost() {
-    if (! isset($_POST[$this->name])) return false;
-    $post = $_POST[$this->name];
+    RQ::Get()->ParsePostData($this->name);
+    if (is_null(RQ::Get()->{$this->name})) return false;
 
+    $post = RQ::Get()->{$this->name};
     foreach ($this->form_list as $option => $value) {
       if ($value == $post) {
 	RQ::Set($option, true);

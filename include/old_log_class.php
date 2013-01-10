@@ -1,6 +1,7 @@
 <?php
 //-- 過去ログ表示クラス --//
 class OldLog {
+  /* ◆ 文字化け抑制用 */
   static function Output() {
     DB::Connect(RQ::Get()->db_no);
     if (RQ::Get()->is_room) {

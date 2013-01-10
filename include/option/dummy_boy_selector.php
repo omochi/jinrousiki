@@ -30,9 +30,10 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
   }
 
   function LoadPost() {
-    if (! isset($_POST[$this->name])) return false;
-    $post = $_POST[$this->name];
+    RQ::Get()->ParsePostData($this->name);
+    if (is_null(RQ::Get()->{$this->name})) return false;
 
+    $post = RQ::Get()->{$this->name};
     foreach ($this->form_list as $option => $value) {
       if ($post == $value) {
 	RQ::Set($option, true);

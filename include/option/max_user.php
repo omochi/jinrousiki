@@ -15,5 +15,5 @@ class Option_max_user extends SelectorRoomOptionItem {
 
   function GetExplain() { return '配役は<a href="info/rule.php">ルール</a>を確認して下さい'; }
 
-  function LoadPost() { RQ::Get()->Parse('intval', 'post.' . $this->name); }
+  function LoadPost() { RQ::Get()->ParsePostInt($this->name); }
 }

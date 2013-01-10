@@ -11,11 +11,9 @@ class Option_real_time extends CheckRoomOptionItem {
   function GetExplain() { return '制限時間が実時間で消費されます'; }
 
   function LoadPost() {
-    RQ::Get()->Parse('IsOn', 'post.' . $this->name);
+    RQ::Get()->ParsePostOn($this->name);
     if (RQ::Get()->{$this->name}) {
-      RQ::Get()->Parse('intval',
-		      sprintf('post.%s_day',   $this->name),
-		      sprintf('post.%s_night', $this->name));
+      RQ::Get()->ParsePostInt(sprintf('%s_day', $this->name), sprintf('%s_night', $this->name));
     }
     return RQ::Get()->{$this->name};
   }
