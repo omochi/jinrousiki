@@ -69,7 +69,7 @@ class IconUpload {
     }
 
     //アップロードされたファイルのエラーチェック
-    if ($_FILES['upfile']['error'][$i] != 0) {
+    if (@$_FILES['upfile']['error'][$i] != 0) {
       $str = "ファイルのアップロードエラーが発生しました。<br>\n再度実行してください。";
       HTML::OutputResult(self::TITLE, $str . self::URL);
     }

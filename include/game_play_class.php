@@ -101,6 +101,9 @@ class GamePlay {
 	printf(self::VOTE_DAY, DB::$ROOM->revote_count + 1, $str, $vote);
       }
       if (DB::$ROOM->IsPlaying()) GameHTML::OutputRevote();
+      if (DB::$ROOM->IsQuiz() && DB::$ROOM->IsDay() && DB::$SELF->IsDummyBoy()) {
+	GameHTML::OutputQuizVote();
+      }
     }
     (DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) ? Talk::OutputHeaven() : Talk::Output();
 
@@ -518,6 +521,13 @@ EOF;
     elseif (DB::$ROOM->IsEvent('wait_morning')) {
       printf($str, Message::$wait_morning);
     }
+    elseif (DB::$SELF->IsDummyBoy()) {
+      $count = 0;
+      foreach (DB::$USER->rows as $user) {
+	if (count($user->target_no) > 0) $count++;
+      }
+      printf('投票済み：%d人' . Text::BR . Text::LF, $count);
+    }
 
     if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()) {
       printf($str, Message::$close_cast);
@@ -556,9 +566,9 @@ EOF;
     }
 
     foreach (array('dead', 'heaven') as $name) {
-      $mode = $mode . '_mode';
-      $url = DB::$ROOM->$name ? sprintf('&%s=on', $name) : '';
-      self::$url_stack[$name] = $url;
+      $mode = $name . '_mode';
+      $url = DB::$ROOM->$mode ? sprintf('&%s=on', $mode) : '';
+      self::$url_stack[$mode] = $url;
     }
   }
 

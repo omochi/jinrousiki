@@ -113,12 +113,13 @@ class Loader {
     if (is_null($name) || in_array($name, self::$class)) return false;
     self::LoadDependence($name);
 
-    if (is_null($class_name = self::$class_list[$name])) {
-      $class_name = $name;
-      new $class_name();
+    if (isset(self::$class_list[$name])) {
+      $class_name = self::$class_list[$name];
+      $GLOBALS[$name] = new $class_name();
     }
     else {
-      $GLOBALS[$name] = new $class_name();
+      $class_name = $name;
+      new $class_name();
     }
     self::$class[] = $class_name;
     return true;
@@ -176,7 +177,6 @@ class Loader {
 
     case 'role_class':
     case 'role_data_class':
-    case 'chatengine':
     case 'paparazzi':
     case 'paparazzi_class':
     case 'test_class':

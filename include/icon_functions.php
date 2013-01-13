@@ -452,7 +452,7 @@ HTML;
     $end_page = $CONFIG->current + $CONFIG->page - 1;
     if ($end_page > $page_count) $end_page = $page_count;
 
-    $url_stack = array('[' . (is_null($CONFIG->title) ? 'Page' : $CONFIG->title) . ']');
+    $url_stack = array('[' . (isset($CONFIG->title) ? $CONFIG->title : 'Page') . ']');
     $url_header = '<a href="' . $CONFIG->url . '.php?';
 
     if ($page_count > $CONFIG->page && $CONFIG->current> 1) {
@@ -487,7 +487,7 @@ HTML;
   //ページ送り用のリンクタグを作成する
   private function GeneratePageLink(StdClass $CONFIG, $page, $title = null) {
     if ($page == $CONFIG->current) return sprintf('[%s]', $page);
-    $option = (is_null($CONFIG->page_type) ? 'page' : $CONFIG->page_type) . '=' . $page;
+    $option = (isset($CONFIG->page_type) ? $CONFIG->page_type : 'page') . '=' . $page;
     $list   = $CONFIG->option;
     array_unshift($list, $option);
     $url = $CONFIG->url . '.php?' . implode('&', $list);

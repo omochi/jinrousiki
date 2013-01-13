@@ -7,25 +7,22 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.2.0α2アップロード (2013/01/03 (Thu) 03:16) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57777/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.0α3アップロード (2013/01/14 (Mon) 02:07) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57871/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>ログイン画面にトリップ入力欄を追加</li>
-  <li>基幹ライブラリの再構成</li>
+  <li>「審神者」「山立」「響狼」「家鳴」「響狐」実装</li>
+  <li>「足音村」オプション実装</li>
+  <li>固定配役追加モード：P(音鳴村)追加</li>
+  <li>役職システムメッセージ画像のフォントサイズを変更</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>審神者：投票者と投票先の間で「足音」が鳴る占い師</li>
-  <li>山立：投票者と投票先の間で「足音」が鳴る狩人</li>
-  <li>家鳴：投票先の間で「足音」が鳴る狂人</li>
-  <li>響狐：投票先の間で「足音」が鳴る妖狐</li>
-  <li>「足音村」オプション：配役が足音能力者ベースになります</li>
-  <li>固定配役追加モード：P(音鳴村)追加</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>響狼：投票者と投票先の間で「足音」が鳴る人狼</li>
+  <li>なし</li>
 </ul>

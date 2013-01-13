@@ -723,6 +723,23 @@ EOF;
     echo self::LoadVote(DB::$ROOM->date); //投票結果を出力
   }
 
+  //投票結果表示 (クイズ村 GM 専用)
+  static function OutputQuizVote() {
+    $stack = array();
+    foreach (SystemMessageDB::GetQuizVote() as $key => $list) {
+      $stack[$list['target_no']][] = $key;
+    }
+    ksort($stack);
+    $format = '<tr><td class="vote-name">%s</td><td class="vote-times">%d票</td></tr>';
+    $table_stack = array('<table class="vote-list">',
+			 '<tr class="vote-name"><td>名前</td><td>得票数</td></tr>');
+    foreach ($stack as $id => $list) {
+      $table_stack[] = sprintf($format, DB::$USER->ByID($id)->handle_name, count($list));
+    }
+    $table_stack[] = '</table>';
+    Text::Output(implode(Text::LF, $table_stack));
+  }
+
   //指定した日付の投票結果をロードして ParseVote() に渡す
   private function LoadVote($date) {
     if (DB::$ROOM->personal_mode) return null; //スキップ判定

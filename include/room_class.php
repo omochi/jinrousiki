@@ -709,6 +709,13 @@ EOF;
     return DB::FetchAssoc();
   }
 
+  //処刑結果取得 (クイズ村 GM 専用)
+  static function GetQuizVote() {
+    $query = 'SELECT target_no FROM vote WHERE room_no = ? AND date = ? AND vote_count = ?';
+    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->vote_count));
+    return DB::FetchAssoc();
+  }
+
   //死者情報取得
   static function GetDead($shift = false) {
     if (DB::$ROOM->test_mode) return RQ::GetTest()->result_dead;
