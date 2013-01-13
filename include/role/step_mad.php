@@ -32,7 +32,7 @@ class Role_step_mad extends Role {
       $new_vector = array_shift(array_keys($point));
       if ($new_vector != $vector) {
 	if ($count++ > 0) return '通り道は直線にしてください';
-	$new_vector = $vector;
+	$vector = $new_vector;
       }
 
       $id = array_shift($point);
