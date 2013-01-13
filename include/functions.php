@@ -1,9 +1,13 @@
 <?php
 //-- テキスト処理クラス --//
 class Text {
+  const BR = '<br>';
+  const LF = "\n";
+  const TR = "</tr>\n<tr>";
+
   //テキスト出力
   static function Output($str = '', $line = false) {
-    echo $str . ($line ? '<br>' : '') . "\n";
+    echo $str . ($line ? self::BR : '') . self::LF;
   }
 
   //改行タグ付きテキスト出力 (デバッグ用)
@@ -118,7 +122,7 @@ class Text {
 
   //改行コードを <br> に変換する (PHP5.3 以下の nl2br() だと <br /> 固定なので HTML 4.01 だと不向き)
   static function ConvertLine(&$str) {
-    return $str = str_replace("\n", '<br>', $str);
+    return $str = str_replace(self::LF, self::BR, $str);
   }
 }
 
@@ -261,9 +265,10 @@ class HTML {
 <meta http-equiv="Content-Type" content="text/html; charset=%s">
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
-<title>%s</title>%s
+<title>%s</title>
+
 EOF;
-    $data = sprintf($str, ServerConfig::ENCODE, $title, "\n");
+    $data = sprintf($str, ServerConfig::ENCODE, $title);
     if (is_null($css)) $css = 'action';
     $data .= self::LoadCSS(sprintf('%s/%s', JINRO_CSS, $css));
     if ($close) $data .= self::GenerateBodyHeader();
@@ -372,9 +377,10 @@ EOF;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=%s">
 <title>%s</title>
-</head>%s
+</head>
+
 EOF;
-    printf($str, ServerConfig::ENCODE, $title, "\n");
+    printf($str, ServerConfig::ENCODE, $title);
   }
 
   //フレーム HTML フッタ出力

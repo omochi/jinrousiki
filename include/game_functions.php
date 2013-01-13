@@ -70,13 +70,11 @@ class Winner {
     if (DB::$ROOM->test_mode) return false;
 
     //コピー能力者がいるのでキャッシュを更新するかクエリから引くこと
-    $query_count = DB::$ROOM->GetQuery(false, 'user_entry') .
-      " AND live = 'live' AND user_no > 0 AND ";
-    $human  = DB::FetchResult($query_count . "!(role LIKE '%wolf%') AND !(role LIKE '%fox%')"); //村人
-    $wolf   = DB::FetchResult($query_count . "role LIKE '%wolf%'"); //人狼
-    $fox    = DB::FetchResult($query_count . "role LIKE '%fox%'"); //妖狐
-    $lovers = DB::FetchResult($query_count . "role LIKE '%lovers%'"); //恋人
-    $quiz   = DB::FetchResult($query_count . "role LIKE 'quiz%'"); //出題者
+    $human  = UserDB::GetCampCount('human');  //村人
+    $wolf   = UserDB::GetCampCount('wolf');   //人狼
+    $fox    = UserDB::GetCampCount('fox');    //妖狐
+    $lovers = UserDB::GetCampCount('lovers'); //恋人
+    $quiz   = UserDB::GetCampCount('quiz');   //出題者
 
     //-- 吸血鬼の勝利判定 --//
     $vampire = false;
@@ -103,7 +101,7 @@ class Winner {
       }
     }
 
-    $winner = ''; //勝利陣営
+    //勝利陣営判定
     if ($human == $quiz && $wolf == 0 && $fox == 0) { //全滅
       $winner = $quiz > 0 ? 'quiz' : 'vanish';
     } elseif ($vampire) { //吸血鬼支配
@@ -118,9 +116,9 @@ class Winner {
       $winner = 'quiz_dead';
     } elseif ($check_draw && DB::$ROOM->revote_count >= GameConfig::DRAW) { //引き分け
       $winner = 'draw';
+    } else {
+      return false;
     }
-
-    if ($winner == '') return false;
 
     //ゲーム終了
     //JinroRSS::Update(); //RSS機能はテスト中
@@ -155,9 +153,10 @@ class Winner {
     $format = <<<EOF
 <table class="winner winner-%s"><tr>
 <td>%s</td>
-</tr></table>%s
+</tr></table>
+
 EOF;
-    $str = sprintf($format, $class, WinnerMessage::$$text, "\n");
+    $str = sprintf($format, $class, WinnerMessage::$$text);
 
     /* 個々の勝敗結果 */
     //スキップ判定 (勝敗未決定/観戦モード/ログ閲覧モード)
@@ -242,7 +241,7 @@ EOF;
       }
     }
 
-    return $str . sprintf($format, $class, WinnerMessage::${'self_' . $result}, "\n");
+    return $str . sprintf($format, $class, WinnerMessage::${'self_' . $result});
   }
 
   //勝敗結果出力
@@ -272,8 +271,8 @@ class GameHTML {
     $str    = '';
     foreach ($table_stack as $count => $stack) {
       array_unshift($stack, '<table class="vote-list">', $header . $count . $footer);
-      $stack[] = '</table>'."\n";
-      $str .= implode("\n", $stack);
+      $stack[] = '</table>' . Text::LF;
+      $str .= implode(Text::LF, $stack);
     }
     return $str;
   }
@@ -297,9 +296,9 @@ class GameHTML {
       $trip_to   = array('◆<br>', '◇<br>');
     }
     $count = 0; //改行カウントを初期化
-    $str   = '<div class="player"><table><tr>'."\n";
+    $str   = '<div class="player"><table><tr>' . Text::LF;
     foreach (DB::$USER->rows as $id => $user) {
-      if ($count > 0 && ($count % 5) == 0) $str .= "</tr>\n<tr>\n"; //5個ごとに改行
+      if ($count > 0 && ($count % 5) == 0) $str .= Text::TR . Text::LF; //5個ごとに改行
       $count++;
 
       //投票済み判定
@@ -341,8 +340,8 @@ class GameHTML {
 
       //ユーザプロフィールと枠線の色を追加
       //Title 内の改行はブラウザ依存あり (Firefox 系は無効)
-      $profile = str_replace("\n", '&#13;&#10', $user->profile);
-      $str .= sprintf($img_format, $path, $user->color, $profile, $mouse) . '</td>'."\n";
+      $profile = str_replace(Text::LF, '&#13;&#10', $user->profile);
+      $str .= sprintf($img_format, $path, $user->color, $profile, $mouse) . '</td>'. Text::LF;
 
       //HN を追加
       $name_format = '%s<font color="%s">◆</font>%s';
@@ -361,9 +360,9 @@ class GameHTML {
 	}
 	$str .= ')<br>' . $user->GenerateRoleName(); //役職情報を追加
       }
-      $str .= sprintf('<br>%s</td>'."\n", $live);
+      $str .= sprintf('<br>%s</td>' . Text::LF, $live);
     }
-    return $str . '</tr></table></div>'."\n";
+    return $str . '</tr></table></div>' . Text::LF;
   }
 
   //死亡メッセージ生成
@@ -372,7 +371,7 @@ class GameHTML {
     if (! DB::$ROOM->IsPlaying()) return null;
 
     $str = self::GenerateWeather();
-    $stack_list = DB::$ROOM->test_mode ? RQ::GetTest()->result_dead : RoomDB::GetDead();
+    $stack_list = SystemMessageDB::GetDead();
     if (count($stack_list) > 0) {
       shuffle($stack_list);
       foreach ($stack_list as $stack) {
@@ -386,7 +385,7 @@ class GameHTML {
       return $str;
     }
     $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする
-    $stack_list = RoomDB::GetDead(true);
+    $stack_list = SystemMessageDB::GetDead(true);
     if (count($stack_list) > 0) {
       shuffle($stack_list);
       foreach ($stack_list as $stack) {
@@ -400,7 +399,7 @@ class GameHTML {
   static function GenerateLastWords($shift = false) {
     //スキップ判定
     if (! (DB::$ROOM->IsPlaying() || DB::$ROOM->log_mode) || DB::$ROOM->personal_mode) return null;
-    $stack = RoomDB::GetLastWords($shift);
+    $stack = SystemMessageDB::GetLastWords($shift);
     if (count($stack) < 1) return null;
     shuffle($stack); //表示順はランダム
 
@@ -422,9 +421,10 @@ EOF;
 <td>%s</td>
 </tr></table>
 <table class="lastwords">
-%s</table>%s
+%s</table>
+
 EOF;
-    return sprintf($format, Message::$lastwords, $str, "\n");
+    return sprintf($format, Message::$lastwords, $str);
   }
 
   //投票結果生成
@@ -496,7 +496,7 @@ EOF;
     }
 
     if (RQ::Get()->auto_reload != 0 && ! DB::$ROOM->IsAfterGame()) { //自動リロードをセット
-      printf('<meta http-equiv="Refresh" content="%s">'."\n", RQ::Get()->auto_reload);
+      printf('<meta http-equiv="Refresh" content="%s">' . Text::LF, RQ::Get()->auto_reload);
     }
 
     //ゲーム中、リアルタイム制なら経過時間を Javascript でリアルタイム表示
@@ -517,8 +517,7 @@ EOF;
 	}
 
 	if ($novote_flag) {
-	  $query = DB::$ROOM->GetQueryHeader('room', 'UNIX_TIMESTAMP() - last_update_time');
-	  if (TimeConfig::ALERT > TimeConfig::SUDDEN_DEATH - DB::FetchResult($query)) { //警告判定
+	  if (TimeConfig::ALERT > TimeConfig::SUDDEN_DEATH - RoomDB::GetTime()) { //警告判定
 	    $alert_flag = true;
 	    $sound_type = 'alert';
 	  }
@@ -543,7 +542,7 @@ EOF;
       $value = RQ::Get()->auto_reload == $time ? sprintf('【%s】', $name) : $name;
       $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
     }
-    echo $str . ')'."\n";
+    Text::Output($str . ')');
   }
 
   //ログへのリンク出力
@@ -556,12 +555,11 @@ EOF;
 
   //日付と生存者の人数を出力
   static function OutputTimeTable() {
-    echo '<table class="time-table"><tr>'."\n"; //ヘッダを表示
+    Text::Output('<table class="time-table"><tr>'); //ヘッダを表示
 
     if (DB::$ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
-    $query = DB::$ROOM->GetQuery(false, 'user_entry') . " AND live = 'live'";
-    $str = '<td> %d 日目<span>(生存者 %d 人)</span></td>'."\n";
-    printf($str, DB::$ROOM->date, DB::FetchResult($query));
+    $str = '<td> %d 日目<span>(生存者 %d 人)</span></td>' . Text::LF;
+    printf($str, DB::$ROOM->date, count(DB::$USER->GetLivingUsers()));
   }
 
   //プレイヤー一覧出力
@@ -575,10 +573,8 @@ EOF;
     }
 
     $header = '<b>前日の夜、';
-    $footer = '</b><br>'."\n";
-    $stack_list = DB::$ROOM->test_mode ? RQ::GetTest()->ability_action_list : RoomDB::GetAbility();
-
-    foreach ($stack_list as $stack) {
+    $footer = '</b><br>' . Text::LF;
+    foreach (SystemMessageDB::GetAbility() as $stack) {
       list($actor, $target) = explode("\t", $stack['message']);
       echo $header.DB::$USER->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
       switch ($stack['type']) {
@@ -716,27 +712,21 @@ EOF;
 	DB::$ROOM->vote_count > JinroCookie::$vote_count) {
       Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
     }
-    if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false; //投票結果表示は再投票のみ
 
-    //投票済みチェック
-    $query = DB::$ROOM->GetQuery(true, 'vote') .
-      sprintf(' AND vote_count = %d AND user_no = %d', DB::$ROOM->vote_count, DB::$SELF->user_no);
-    if (DB::FetchResult($query) == 0) {
-      $str = '<div class="revote">%s (%d回%s)</div><br>'."\n";
+    //投票結果表示は再投票のみ
+    if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false;
+
+    if (! UserDB::IsVoteKill()) { //投票済みチェック
+      $str = '<div class="revote">%s (%d回%s)</div><br>' . Text::LF;
       printf($str, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
     }
-
     echo self::LoadVote(DB::$ROOM->date); //投票結果を出力
   }
 
   //指定した日付の投票結果をロードして ParseVote() に渡す
   private function LoadVote($date) {
     if (DB::$ROOM->personal_mode) return null; //スキップ判定
-    //指定された日付の投票結果を取得
-    $query = DB::$ROOM->GetQueryHeader('result_vote_kill', 'count', 'handle_name', 'target_name',
-				       'vote', 'poll') . " AND date = {$date} ORDER BY count, id";
-    DB::Prepare($query);
-    return self::ParseVote(DB::FetchAssoc(), $date);
+    return self::ParseVote(SystemMessageDB::GetVote($date), $date);
   }
 
   //死亡メッセージパース
@@ -748,7 +738,7 @@ EOF;
     $action = strtolower($type);
     $open_reason = DB::$ROOM->IsOpenData();
     $show_reason = $open_reason || DB::$SELF->IsLiveRole('yama_necromancer');
-    $str = '<table class="dead-type">'."\n";
+    $str = '<table class="dead-type">' . Text::LF;
     switch ($type) {
     case 'VOTE_KILLED':
     case 'BLIND_VOTE':
@@ -823,8 +813,8 @@ EOF;
     }
     $str .= is_null($class) ? '<tr>' : sprintf('<tr class="dead-type-%s">', $class);
     $str .= sprintf('<td>%s%s</td>', $name, Message::${$base ? 'deadman' : $action});
-    if (isset($reason)) $str .= sprintf("</tr>\n<tr><td>(%s%s)</td>", $name, Message::$$reason);
-    return $str."</tr>\n</table>\n";
+    if (isset($reason)) $str .= sprintf(Text::TR . '<td>(%s%s)</td>', $name, Message::$$reason);
+    return $str . "</tr>\n</table>" . Text::LF;
   }
 
   //天候メッセージ生成

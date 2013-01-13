@@ -65,7 +65,7 @@ class SrcHTML {
 EOF;
     self::OutputUploadFile();
     echo <<<EOF
-<form method="POST" action="upload.php" enctype="multipart/form-data">
+<form method="post" action="upload.php" enctype="multipart/form-data">
 <table id="upload">
 <tr>
   <td><label>ファイル選択</label></td>

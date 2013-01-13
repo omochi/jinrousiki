@@ -170,7 +170,7 @@ class UserManager {
       setcookie('objection',  '', $cookie_time);
 
       DB::$ROOM->Talk($handle_name . ' ' . Message::$entry_user); //入村メッセージ
-      DB::$ROOM->UpdateTime();
+      RoomDB::UpdateTime();
       DB::Commit();
 
       $url = sprintf('game_frame.php?room_no=%d', $room_no);
@@ -244,7 +244,7 @@ class UserManagerHTML {
   static function OutputChange() {
     $str = <<<EOF
 登録データを変更しました。<br>
-<form action="#" method="post">
+<form method="post" action="#">
 <input type="button" value="ウィンドウを閉じる" onClick="window.close()">
 </form>
 EOF;
@@ -255,7 +255,7 @@ EOF;
   private static function OutputHeader() {
     $format = <<<EOF
 <a href="./">←戻る</a><br>
-<form method="POST" action="%s">
+<form method="post" action="%s">
 <div align="center">
 <table class="main">
 <tr><td><img src="%s/title.gif" alt="申請書"></td></tr>
@@ -369,7 +369,7 @@ EOF;
 EOF;
     $count = 0;
     foreach ($stack as $role) {
-      if ($count > 0 && $count % 4 == 0) echo "</tr>\n<tr>"; //4個ごとに改行
+      if ($count > 0 && $count % 4 == 0) Text::Output(Text::TR); //4個ごとに改行
       $count++;
       $alt = '←' . ($role == 'none' ? '無し' : RoleData::$main_role_list[$role]);
       $checked = RQ::Get()->role == $role ? ' checked' : '';

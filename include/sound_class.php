@@ -14,7 +14,7 @@ class Sound {
     $format = "<object classid='%s' codebase='%s%s' width='0' height='0'>" .
       "<param name='movie' value='%s'><param name='quality' value='high'>" .
       "<embed src='%s' type='%s' quality='high' width='0' height='0' loop='false'" .
-      " pluginspage='%s%s'></embed></object>";
+      " pluginspage='%s%s'></object>";
     return self::Convert($format, $type);
   }
 
@@ -25,7 +25,7 @@ class Sound {
 <param name="movie" value="%s">
 <param name="quality" value="high">
 <embed src="%s" type="%s" quality="high" width="0" height="0" loop="false" pluginspage="%s%s">
-</embed></object>%s
+</object>%s
 EOF;
     echo self::Convert($format, $type);
   }

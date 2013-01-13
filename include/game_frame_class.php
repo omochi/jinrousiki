@@ -1,10 +1,10 @@
 <?php
 //-- GameFrame 出力クラス --//
+//-- ◆ 文字化け抑制 --//
 class GameFrame {
   const BORDER = ' border="1" frameborder="1" framespacing="1" bordercolor="#C0C0C0"';
 
   static function Output() {
-    //-- ◆ 文字化け抑制 --//
     HTML::OutputFrameHeader(ServerConfig::TITLE . '[プレイ]');
     if (RQ::Get()->dead_mode) {
       $format = <<<EOF

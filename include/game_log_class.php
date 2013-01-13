@@ -13,7 +13,7 @@ class GameLog {
     DB::$USER = new UserData(RQ::Get()); //ユーザ情報を取得
     DB::$SELF = DB::$USER->BySession(); //自分の情報をロード
 
-    //エラーチェック
+    //-- エラーチェック --//
     if (! (DB::$SELF->IsDead() || DB::$ROOM->IsFinished())) { //死者かゲーム終了後だけ
       $title = 'ログ閲覧認証エラー';
       $body  = '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
@@ -44,7 +44,7 @@ class GameLog {
 
     //-- ログ出力 --//
     GameHTML::OutputHeader('game_log');
-    $format = '<h1>ログ閲覧 %s</h1>'."\n";
+    $format = '<h1>ログ閲覧 %s</h1>'.Text::LF;
     switch (RQ::Get()->scene) {
     case 'beforegame':
       $scene = '(開始前)';

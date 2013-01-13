@@ -11,12 +11,11 @@ class DevRoom {
      'option_role' => '', 'vote_count' => 1
     );
 
-    RQ::Get()->room_no     = 1;
-    RQ::Get()->vote_times  = 1;
-    RQ::Get()->reverse_log = null;
-    RQ::Get()->TestItems   = new StdClass();
+    RQ::Set('room_no', 1);
+    RQ::Set('vote_times', 1);
+    RQ::Set('reverse_log', null);
+    RQ::InitTestRoom();
     RQ::GetTest()->test_room = array_merge($base_list, $list);
-    RQ::GetTest()->is_virtual_room = true;
     RQ::GetTest()->event           = array();
     RQ::GetTest()->result_ability  = array();
     RQ::GetTest()->result_dead     = array();
@@ -31,6 +30,49 @@ class DevRoom {
     DB::$ROOM->scene        = 'beforegame';
     DB::$ROOM->revote_count = 0;
     if (! isset(DB::$ROOM->vote)) DB::$ROOM->vote = array();
+  }
+
+  //イベント情報取得
+  static function GetEvent() {
+    $stack = array();
+    foreach (RQ::GetTest()->system_message as $date => $date_list) {
+      //Text::p($date_list, $date);
+      if ($date != DB::$ROOM->date) continue;
+      foreach ($date_list as $type => $type_list) {
+	switch ($type) {
+	case 'WEATHER':
+	case 'EVENT':
+	case 'SAME_FACE':
+	case 'VOTE_DUEL':
+	case 'BLIND_VOTE':
+	  foreach ($type_list as $event) {
+	    $stack[] = array('type' => $type, 'message' => $event);
+	  }
+	  break;
+	}
+      }
+    }
+    return $stack;
+  }
+
+  //配役テスト
+  static function Cast(StdClass $stack) {
+    RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
+    RQ::SetTestRoom('option_role', implode(' ', $stack->option_role));
+
+    DB::$ROOM = new Room(RQ::Get());
+    DB::$ROOM->LoadOption();
+    //Text::p(DB::$ROOM);
+
+    $user_count = RQ::Get()->user_count;
+    $try_count  = RQ::Get()->try_count;
+    $str = '%0' . strlen($try_count) . 'd回目: ';
+    for ($i = 1; $i <= $try_count; $i++) {
+      printf($str, $i);
+      $role_list = Cast::GetRoleList($user_count);
+      if ($role_list == '') break;
+      Text::p(Vote::GenerateRoleNameList(array_count_values($role_list), true));
+    }
   }
 }
 
@@ -135,5 +177,38 @@ class DevUser {
 	if (! isset($user->vote_type)) $user->vote_type = 'GAME_START';
       }
     }
+  }
+}
+
+//-- HTML 生成クラス (テスト拡張) --//
+class DevHTML {
+  //共通リクエストロード
+  static function LoadRequest() {
+    Loader::LoadRequest();
+    RQ::Get()->ParsePostOn('execute');
+  }
+
+  static function IsExecute() {
+    return RQ::Get()->execute;
+  }
+
+  // フォームヘッダ出力
+  static function OutputFormHeader($title, $url) {
+    self::LoadRequest();
+    HTML::OutputHeader($title, 'test/role', true);
+    foreach (array('user_count' => 20, 'try_count' => 100) as $key => $value) {
+      RQ::Get()->ParsePostInt($key);
+      $$key = RQ::Get()->$key > 0 ? RQ::Get()->$key : $value;
+    }
+    $id_u = 'user_count';
+    $id_t = 'try_count';
+    echo <<<EOF
+<form method="post" action="{$url}">
+<input type="hidden" name="execute" value="on">
+<label for="{$id_u}">人数</label><input type="text" id="{$id_u}" name="{$id_u}" size="2" value="{$$id_u}">
+<label for="{$id_t}">試行回数</label><input type="text" id="{$id_t}" name="{$id_t}" size="2" value="{$$id_t}">
+<input type="submit" value=" 実 行 "><br>
+
+EOF;
   }
 }

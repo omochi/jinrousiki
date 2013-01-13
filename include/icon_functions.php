@@ -194,7 +194,7 @@ HTML;
       $location = Icon::GetFile($icon_filename);
       $checked  = $disable > 0 ? ' checked' : '';
       echo <<<EOF
-<form action="icon_edit.php" method="POST">
+<form method="post" action="icon_edit.php">
 <input type="hidden" name="icon_no" value="{$icon_no}">
 <table cellpadding="3">
 <tr>
@@ -247,7 +247,7 @@ EOF;
     $query_stack   = array();
     $category_list = IconDB::GetCategoryList('category');
     echo <<<EOF
-<form id="icon_search" method="GET">
+<form method="get" id="icon_search">
 <table class="selector">
 <tr>
 

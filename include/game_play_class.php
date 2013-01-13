@@ -102,7 +102,6 @@ class GamePlay {
       }
       if (DB::$ROOM->IsPlaying()) GameHTML::OutputRevote();
     }
-
     (DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) ? Talk::OutputHeaven() : Talk::Output();
 
     if (! DB::$ROOM->heaven_mode) {
@@ -129,17 +128,16 @@ class GamePlay {
       if (! DB::Transaction()) return false; //判定条件が全て DB なので即ロック
 
       //シーン再判定 (ロック付き)
-      if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
+      if (RoomDB::GetScene() != DB::$ROOM->scene) return DB::Rollback();
       $silence_pass_time = GameTime::GetTalkPass($left_time, true);
 
       if ($left_time > 0) { //制限時間超過判定
-	if (DB::$ROOM->LoadTime() <= TimeConfig::SILENCE) return DB::Rollback(); //沈黙判定
+	if (RoomDB::GetTime() <= TimeConfig::SILENCE) return DB::Rollback(); //沈黙判定
 
 	//沈黙メッセージを発行してリセット
 	$str = '・・・・・・・・・・ ' . $silence_pass_time . ' ' . Message::$silence;
 	DB::$ROOM->Talk($str, null, '', '', null, null, null, TimeConfig::SILENCE_PASS);
-	DB::$ROOM->UpdateTime();
-	return DB::Commit();
+	return RoomDB::UpdateTime() ? DB::Commit() : DB::Rollback();
       }
     }
 
@@ -149,19 +147,18 @@ class GamePlay {
 	if (! DB::Transaction()) return false;
 
 	//シーン再判定 (ロック付き)
-	if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
+	if (RoomDB::GetScene() != DB::$ROOM->scene) return DB::Rollback();
       }
       DB::$ROOM->ChangeNight(); //夜に切り替え
-      DB::$ROOM->UpdateTime(); //最終書き込み時刻を更新
-      return DB::Commit(); //ロック解除
+      return RoomDB::UpdateTime() ? DB::Commit() : DB::Rollback(); //最終書き込み時刻を更新
     }
 
-    if (! DB::$ROOM->IsOvertimeAlert()) { //警告メッセージ出力判定
+    if (! RoomDB::IsOvertimeAlert()) { //警告メッセージ出力判定
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
 	if (! DB::Transaction()) return false;
 
 	//シーン再判定 (ロック付き)
-	if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
+	if (RoomDB::GetScene() != DB::$ROOM->scene) return DB::Rollback();
       }
 
       //警告メッセージを出力 (最終出力判定は呼び出し先で行う)
@@ -186,16 +183,15 @@ class GamePlay {
       if (! DB::Transaction()) return false;
 
       //シーン再判定 (ロック付き)
-      if (DB::$ROOM->LoadScene() != DB::$ROOM->scene) return DB::Rollback();
+      if (RoomDB::GetScene() != DB::$ROOM->scene) return DB::Rollback();
 
       DB::$ROOM->SetSuddenDeath(); //制限時間を再計算
       if (DB::$ROOM->sudden_death > 0) return DB::Rollback();
     }
 
     if (abs(DB::$ROOM->sudden_death) > TimeConfig::SERVER_DISCONNECT) { //サーバダウン検出
-      DB::$ROOM->UpdateTime(); //突然死タイマーをリセット
-      DB::$ROOM->UpdateOvertimeAlert(); //警告出力判定をリセット
-      return DB::Commit(); //ロック解除
+      //突然死タイマーと警告出力判定をリセット
+      return RoomDB::UpdateOvertimeAlert() ? DB::Commit() : DB::Rollback();
     }
 
     $novote_list = array(); //未投票者リスト
@@ -221,9 +217,7 @@ class GamePlay {
     RoleManager::GetClass('medium')->InsertResult();
 
     DB::$ROOM->Talk(Message::$vote_reset); //投票リセットメッセージ
-    DB::$ROOM->UpdateVoteCount(true); //投票回数を更新
-    DB::$ROOM->UpdateTime(); //制限時間リセット
-    //DB::$ROOM->DeleteVote(); //投票リセット
+    RoomDB::ResetVote(); //投票リセット
     if (Winner::Check()) DB::$USER->ResetJoker(); //勝敗チェック
     return DB::Commit(); //ロック解除
   }
@@ -349,7 +343,7 @@ class GamePlay {
       echo DB::$ROOM->GenerateTitleTag() . '<td class="view-option">'."\n";
       if (DB::$SELF->IsDead() && DB::$ROOM->dead_mode) { //死亡者の場合の、真ん中の全表示地上モード
 	$format = <<<EOF
-<form method="POST" action="%s" name="reload_middle_frame" target="middle">
+<form method="post" action="%s" name="reload_middle_frame" target="middle">
 <input type="submit" value="更新">
 </form>
 
@@ -411,7 +405,7 @@ EOF;
       if (DB::$ROOM->IsBeforeGame()) { //入村・満員
 	if (JinroCookie::$user_count > 0) {
 	  $user_count = DB::$USER->GetUserCount();
-	  $max_user   = DB::$ROOM->LoadMaxUser();
+	  $max_user   = RoomDB::Fetch('max_user');
 	  if ($user_count == $max_user && JinroCookie::$user_count != $max_user) {
 	    Sound::Output('full');
 	  } elseif (JinroCookie::$user_count != $user_count) {
@@ -487,7 +481,7 @@ EOF;
 	(DB::$ROOM->IsDay() && ! DB::$ROOM->dead_mode &&
 	 ! DB::$ROOM->heaven_mode && $left_time > 0)) {
       $format = <<<EOF
-<td class="objection"><form method="POST" action="%s">
+<td class="objection"><form method="post" action="%s">
 <input type="hidden" name="set_objection" value="on">
 <input type="image" name="objimage" src="%s">
 (%d)</form></td>

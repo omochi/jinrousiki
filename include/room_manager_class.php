@@ -203,15 +203,12 @@ class RoomManager {
       $str = 'システム：村のオプションを変更しました。';
       DB::$ROOM->TalkBeforeGame($str, DB::$SELF->uname, DB::$SELF->handle_name, DB::$SELF->color);
 
-      //投票リセット処理
-      DB::$ROOM->UpdateVoteCount();
-      DB::$ROOM->UpdateTime();
-
+      RoomDB::UpdateVoteCount(); //投票リセット処理
       DB::Commit();
 
       $str = <<<EOF
 村のオプションを変更しました。<br>
-<form action="#" method="post">
+<form method="post" action="#">
 <input type="button" value="ウィンドウを閉じる" onClick="window.close()">
 </form>
 
@@ -422,7 +419,7 @@ EOF;
   static function OutputCreate() {
     //フォーマットセット
     $header = <<<EOF
-<form method="POST" action="room_manager.php%s">
+<form method="post" action="room_manager.php%s">
 <input type="hidden" name="%s" value="on">
 <table>
 

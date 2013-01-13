@@ -55,7 +55,7 @@ EOF;
     $login_form = <<<EOF
 </td></tr></table>
 <table class="login"><tr>
-<td><form method="POST" action="login.php?room_no=%d">
+<td><form method="post" action="login.php?room_no=%d">
 <label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">%s
 <label for="login_password">パスワード</label><input type="password" class="login-password" id="login_password" name="password" size="20" value="">
 <input type="hidden" name="login_manually" value="on">

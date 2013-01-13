@@ -30,7 +30,7 @@ class GameUp {
 EOF;
 
     //送信用フォーム
-    $form_header = '<form method="POST" action="game_play.php%s" target="bottom" ';
+    $form_header = '<form method="post" action="game_play.php%s" target="bottom" ';
     $header = sprintf($form_header, RQ::Get()->url);
     $reload = $header . 'name="reload_game"></form>'; //自動リロード用ダミー送信フォーム
 

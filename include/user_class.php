@@ -1133,32 +1133,13 @@ class UserData {
 
 //-- データベースアクセス (User 拡張) --//
 class UserDB {
+  //-- user_entry --//
+  const ROLE = 'SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND user_no > ? AND ';
+
   //ユーザ情報取得
   static function GetUser() {
     $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
     DB::Prepare($query, array(RQ::Get()->room_no, RQ::Get()->user_no));
-    return DB::FetchAssoc(true);
-  }
-
-  //投票取得
-  static function GetVote($user_no, $type, $not_type) {
-    $query = <<<EOF
-SELECT type, target_no FROM vote WHERE room_no = ? AND date = ? AND vote_count = ? AND 
-EOF;
-    $list = array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->vote_count);
-    if ($type == 'WOLF_EAT' || $type == 'STEP_WOLF_EAT') {
-      $query .= 'type IN (?, ?, ?)';
-      array_push($list, 'WOLF_EAT', 'STEP_WOLF_EAT', 'SILENT_WOLF_EAT');
-    }
-    elseif ($not_type != '') {
-      $query .= 'user_no = ? AND type IN (?, ?)';
-      array_push($list, $user_no, $type, $not_type);
-    }
-    else {
-      $query .= 'user_no = ? AND type = ?';
-      array_push($list, $user_no, $type);
-    }
-    DB::Prepare($query, $list);
     return DB::FetchAssoc(true);
   }
 
@@ -1171,6 +1152,42 @@ WHERE room_no = ? AND user_no = ?
 EOF;
     DB::Prepare($query, array(RQ::Get()->room_no, $user_no));
     return DB::FetchClass('User', true);
+  }
+
+  //生存陣営カウント
+  static function GetCampCount($type) {
+    $query = self::ROLE;
+    $list  = array(DB::$ROOM->id, 'live', 0);
+
+    switch ($type) {
+    case 'human':
+      $query .= '!(role LIKE ?) AND !(role LIKE ?)';
+      array_push($list, '%wolf%', '%fox%');
+      break;
+
+    case 'wolf':
+      $query .= 'role LIKE ?';
+      $list[] = '%wolf%';
+      break;
+
+    case 'fox':
+      $query .= 'role LIKE ?';
+      $list[] = '%fox%';
+      break;
+
+    case 'lovers':
+      $query .= 'role LIKE ?';
+      $list[] = '%lovers%';
+      break;
+
+    case 'quiz':
+      $query .= 'role LIKE ?';
+      $list[] = '%quiz%';
+      break;
+    }
+
+    DB::Prepare($query, $list);
+    return DB::Count();
   }
 
 
@@ -1207,6 +1224,41 @@ EOF;
 SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?
 EOF;
     DB::Prepare($query, array(RQ::Get()->room_no, 'live', Security::GetIP()));
+    return DB::Count() > 0;
+  }
+
+  //-- vote --//
+  //投票取得
+  static function GetVote($user_no, $type, $not_type) {
+    $query = <<<EOF
+SELECT type, target_no FROM vote WHERE room_no = ? AND date = ? AND vote_count = ? AND 
+EOF;
+    $list = array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->vote_count);
+    if ($type == 'WOLF_EAT' || $type == 'STEP_WOLF_EAT') {
+      $query .= 'type IN (?, ?, ?)';
+      array_push($list, 'WOLF_EAT', 'STEP_WOLF_EAT', 'SILENT_WOLF_EAT');
+    }
+    elseif ($not_type != '') {
+      $query .= 'user_no = ? AND type IN (?, ?)';
+      array_push($list, $user_no, $type, $not_type);
+    }
+    else {
+      $query .= 'user_no = ? AND type = ?';
+      array_push($list, $user_no, $type);
+    }
+
+    DB::Prepare($query, $list);
+    return DB::FetchAssoc(true);
+  }
+
+  //処刑投票済み判定
+  static function IsVoteKill() {
+    //シーン進行の仕様上、この関数をコールした時点では同日投票データは処刑しか存在しない
+    $query = <<<EOF
+SELECT user_no FROM vote WHERE room_no = ? AND date = ? AND vote_count = ? AND user_no = ?
+EOF;
+    $list = array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->vote_count, DB::$SELF->user_no);
+    DB::Prepare($query, $list);
     return DB::Count() > 0;
   }
 }

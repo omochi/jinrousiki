@@ -22,16 +22,16 @@ class RoomOption {
     'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
     'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
 
-  //登録されたオプションを取得
+  //登録オプション取得
   static function GetOption($type) { return implode(' ', self::$$type); }
 
-  //オプションを登録
+  //オプション登録
   static function SetOption($type, $name) {
     RQ::Set($name, true);
     if (! in_array($name, self::$$type)) array_push(self::$$type, $name);
   }
 
-  //フォームからの入力値を取得
+  //フォーム入力値取得
   static function LoadPost($name) {
     foreach (func_get_args() as $option) {
       $filter = OptionManager::GetClass($option);
@@ -82,10 +82,8 @@ class RoomOption {
 
   //ゲームオプション画像出力
   static function Output() {
-    $query = DB::$ROOM->GetQueryHeader('room', 'game_option', 'option_role', 'max_user');
-    DB::Prepare($query);
-    extract(DB::FetchAssoc(true));
-    $format = "<div class=\"game-option\">ゲームオプション：%s</div>\n";
+    extract(RoomDB::GetOption());
+    $format = '<div class="game-option">ゲームオプション：%s</div>'.Text::LF;
     printf($format, self::Generate($game_option, $option_role, $max_user));
   }
 }

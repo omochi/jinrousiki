@@ -32,6 +32,12 @@ class RQ {
     self::GetTest()->test_room[$key] = $value;
   }
 
+  //テスト村データ初期化
+  static function InitTestRoom() {
+    self::Set('TestItems', new StdClass());
+    self::GetTest()->is_virtual_room = true;
+  }
+
   //テスト村データ追加
   static function AddTestRoom($key, $value) {
     self::GetTest()->test_room[$key] .= ' ' . $value;

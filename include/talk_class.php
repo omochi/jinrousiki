@@ -450,7 +450,7 @@ class TalkBuilder {
       return false;
     }
 
-    if (is_null($time = DB::FetchResult(DB::$ROOM->GetQueryHeader('room', $type)))) return false;
+    if (is_null($time = RoomDB::Fetch($type))) return false;
     $talk = new TalkParser();
     $talk->sentence = $sentence . '：' . Time::ConvertTimeStamp($time);
     $talk->uname    = 'system';

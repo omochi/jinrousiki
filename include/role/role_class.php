@@ -907,7 +907,7 @@ class RoleTalk {
       $role_id = DB::$ROOM->IsPlaying() ? DB::$SELF->role_id : null;
       DB::$ROOM->Talk($say, null, $uname, $scene, $location, $voice, $role_id, $spend_time);
     }
-    if ($update) DB::$ROOM->UpdateTime();
+    if ($update) RoomDB::UpdateTime();
   }
 }
 
