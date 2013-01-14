@@ -290,6 +290,10 @@ InfoHTML::OutputRoleHeader('サブ役職');
 <pre>
 <a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="vampire.php#passion_vampire">牡丹灯篭</a>
 </pre>
+<h5>Ver. 2.2.0 α4～</h5>
+<pre>
+変換テーブルを管理者設定で変更できる仕様に変更
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#liar">狼少年</a>の恋人バージョンで、Twitter 上の雑談から生まれた役職です。

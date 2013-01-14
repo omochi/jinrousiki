@@ -261,14 +261,10 @@ class Message {
 
   //発言置換系役職
   static public $cute_wolf = ''; //萌狼・不審者 (空なら狼の遠吠えになる)
-  //static public $gentleman_header = "お待ち下さい。\n";  //紳士 (前半)
-  //static public $gentleman_footer = 'さん、ハンケチーフを落としておりますぞ。'; //紳士 (後半)
-  static public $gentleman_header = "お待ち下さい。\nあぁ……";  //紳士 (前半)
-  static public $gentleman_footer = '様の残り湯、美味にございます……。'; //紳士 (後半)
-  //static public $lady_header = "お待ちなさい！\n"; //淑女 (前半)
-  //static public $lady_footer = '、タイが曲がっていてよ。'; //淑女 (後半)
-  static public $lady_header = "こんなのがいいの！？\n"; //淑女 (前半)
-  static public $lady_footer = '！　そこに直って！　わたくしの足をなめなさい！！'; //淑女 (後半)
+  //static public $gentleman = "お待ち下さい。\n%sさん、ハンケチーフを落としておりますぞ。";  //紳士
+  static public $gentleman = "お待ち下さい。\nあぁ……%s様の残り湯、美味にございます……。";  //紳士
+  //static public $lady = "お待ちなさい！\n%s、タイが曲がっていてよ。"; //淑女
+  static public $lady = "こんなのがいいの！？\n%s！　そこに直って！　わたくしの足をなめなさい！！"; //淑女
 
   //-- game_vote.php --//
   //Kick で村から去った人

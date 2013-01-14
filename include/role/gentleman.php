@@ -11,9 +11,7 @@ class Role_gentleman extends Role {
     $stack = DB::$USER->GetLivingUsers(); //生存者のユーザ名を取得
     unset($stack[array_search($this->GetUname(), $stack)]); //自分を削除
     $target = DB::$USER->GetHandleName(Lottery::Get($stack), true);
-
-    $say = Message::${$this->role . '_header'} . $target . Message::${$this->role . '_footer'};
-    $this->SetStack($say, 'say');
+    $this->SetStack(sprintf(Message::${$this->role}, $target), 'say');
     return true;
   }
 }

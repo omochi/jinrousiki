@@ -545,7 +545,8 @@ InfoHTML::OutputHeader('ゲームオプション');
   <li>出現役職は村人・共有者・人狼・狂人・妖狐です</li>
   <li>GM 以外の全員に<a href="new_role/sub_role.php#panelist">解答者</a>がつきます</li>
   <li>人狼は常時 GM しか狙えません</li>
-  <li>GM は噛まれても殺されません</li>
+  <li>GM は人狼に襲撃されても死亡しません</li>
+  <li>GM のみ、処刑投票の集計状況が見えます</li>
   <li>以下のような使い方を想定しています</li>
   <ol>
     <li>GM がクイズを出題してゲーム開始</li>
@@ -558,5 +559,9 @@ InfoHTML::OutputHeader('ゲームオプション');
     <li>以下、勝敗が決まるまで繰り返す</li>
   </ol>
 </ul>
+<h5>Ver. 2.2.0 α4～</h5>
+<pre>
+GM のみ、処刑投票の集計状況が見えます
+</pre>
 </body>
 </html>
