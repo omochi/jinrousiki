@@ -7,215 +7,6 @@ class RoleManager {
   static $actor; //対象ユーザ
   static $get;   //スタックデータ
 
-  //常時表示サブ役職 (本体 / 順番依存あり)
-  static $display_real_list = array(
-    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller', 'lost_ability',
-    'muster_ability', 'lovers', 'sweet_status', 'challenge_lovers', 'possessed_exchange', 'joker',
-    'rival', 'death_note');
-
-  //常時表示サブ役職 (仮想 / 順番依存あり)
-  static $display_virtual_list = array(
-    'death_selected', 'febris', 'frostbite', 'death_warrant', 'day_voter', 'wirepuller_luck',
-    'occupied_luck', 'mind_open', 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
-    'mind_friend', 'mind_sympathy', 'mind_sheep', 'mind_presage', 'wisp', 'black_wisp',
-    'spell_wisp', 'foughten_wisp', 'gold_wisp', 'sheep_wisp');
-
-  //非表示サブ役職 (呼び出し抑制用)
-  static $display_none_list = array(
-    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'critical_voter',
-    'critical_luck', 'confession', 'enemy', 'supported', 'infected', 'psycho_infected',
-    'possessed_target', 'possessed', 'bad_status', 'protected', 'changed_disguise',
-    'changed_therian', 'changed_vindictive');
-
-  //初期配役抑制役職
-  static $disable_cast_list = array(
-    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'confession',
-    'day_voter', 'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
-    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
-    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
-    'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
-    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_disguise',
-    'changed_therian', 'changed_vindictive', 'copied', 'copied_trick', 'copied_basic',
-    'copied_soul', 'copied_teller');
-
-  //発言表示
-  static $talk_list = array('blinder', 'earplug', 'speaker');
-
-  //発言表示 (囁き)
-  static $talk_whisper_list = array('lovers');
-
-  //発言表示 (妖狐)
-  static $talk_fox_list = array('wise_wolf', 'wise_ogre');
-
-  //発言表示 (独り言)
-  static $talk_self_list = array('silver_wolf', 'howl_fox', 'mind_lonely', 'lovers');
-
-  //発言表示 (耳鳴)
-  static $talk_ringing_list = array('whisper_ringing', 'howl_ringing');
-
-  //閲覧判定
-  static $mind_read_list = array(
-    'leader_common', 'whisper_scanner', 'howl_scanner', 'telepath_scanner', 'minstrel_cupid',
-    'mind_read', 'mind_friend', 'mind_open');
-
-  //閲覧判定 (能動型)
-  static $mind_read_active_list = array('mind_receiver');
-
-  //閲覧判定 (憑依型)
-  static $mind_read_possessed_list = array('possessed_wolf', 'possessed_mad', 'possessed_fox');
-
-  //発言置換 (仮想 / 順番依存あり)
-  static $say_convert_virtual_list = array('confession', 'cute_camouflage', 'gentleman', 'lady');
-
-  //発言置換 (本体)
-  static $say_convert_list = array('suspect', 'cute_mage', 'cute_wolf', 'cute_fox',
-				   'cute_chiroptera', 'cute_avenger');
-
-  //悪戯発言変換
-  static $say_bad_status_list = array('fairy', 'spring_fairy', 'summer_fairy', 'autumn_fairy',
-				      'winter_fairy', 'greater_fairy');
-
-  //発言変換 (順番依存あり)
-  static $say_list = array('passion', 'actor', 'liar', 'rainbow', 'weekly', 'grassy', 'invisible',
-			   'side_reverse', 'line_reverse', 'mower', 'silent');
-
-  //声量
-  static $voice_list = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
-			     'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
-
-  //処刑投票 (メイン)
-  static $vote_do_main_list = array(
-    'human', 'elder', 'scripter', 'eccentricer', 'elder_guard', 'critical_common', 'ascetic_wolf',
-    'elder_wolf', 'possessed_mad', 'elder_fox', 'elder_chiroptera', 'critical_duelist',
-    'cowboy_duelist');
-
-  //処刑投票 (サブ)
-  static $vote_do_sub_list = array(
-    'authority', 'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter',
-    'day_voter', 'wirepuller_luck', 'watcher', 'panelist');
-
-  //処刑得票 (メイン)
-  static $vote_poll_main_list = array('critical_common', 'critical_patron');
-
-  //処刑得票 (サブ)
-  static $vote_poll_sub_list = array(
-    'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck', 'random_luck',
-    'occupied_luck', 'wirepuller_luck');
-
-  //処刑投票能力者
-  static $vote_day_list = array(
-    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'spell_common',
-    'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
-    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
-    'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie',  'disguise_wolf',
-    'purple_wolf', 'snow_wolf', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
-    'critical_mad', 'follow_mad', 'purple_fox', 'snow_fox', 'critical_fox', 'sweet_cupid',
-    'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague',
-    'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
-
-  //反逆者判定
-  static $rebel_list = array('rebel');
-
-  //処刑者決定 (順番依存あり)
-  static $vote_kill_list = array('decide', 'bad_luck', 'counter_decide', 'dropout', 'impatience',
-				 'good_luck', 'plague', 'quiz', 'executor', 'saint', 'agitate_mad');
-
-  //毒能力鑑定
-  static $distinguish_poison_list = array('pharmacist', 'alchemy_pharmacist');
-
-  //解毒判定
-  static $detox_list = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
-
-  //処刑者カウンター
-  static $vote_kill_counter_list = array('brownie', 'sun_brownie', 'doom_doll', 'miasma_fox',
-					 'mirror_fairy');
-
-  //処刑投票能力処理 (順番依存あり)
-  static $vote_action_list = array(
-    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
-    'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
-    'critical_fox', 'critical_avenger', 'purple_wolf', 'purple_fox', 'cursed_avenger',
-    'sweet_cupid', 'snow_cupid', 'disguise_wolf');
-
-  //霊能
-  static $necromancer_list = array(
-    'necromancer', 'soul_necromancer', 'psycho_necromancer', 'embalm_necromancer',
-    'emissary_necromancer', 'dummy_necromancer', 'monk_fox');
-
-  //得票カウンター
-  static $voted_reaction_list = array('trap_common', 'jealousy');
-
-  //落雷判定
-  static $thunderbolt_list = array('thunder_brownie');
-
-  //ショック死 (メイン)
-  static $sudden_death_main_list = array('eclipse_medium', 'cursed_angel');
-
-  //ショック死 (サブ / 順番依存あり)
-  static $sudden_death_sub_list = array(
-    'challenge_lovers', 'febris', 'frostbite', 'death_warrant', 'panelist', 'chicken', 'rabbit',
-    'perverseness', 'flattery', 'celibacy', 'nervy', 'androphobia', 'gynophobia', 'impatience');
-
-  //ショック死抑制
-  static $cure_list = array('cure_pharmacist', 'revive_pharmacist');
-
-  //処刑得票カウンター
-  static $vote_kill_reaction_list = array('divorce_jealousy', 'harvest_brownie', 'maple_brownie',
-					  'cursed_brownie', 'snow_wolf', 'snow_fox');
-
-  //道連れ
-  static $followed_list = array('follow_mad');
-
-  //人狼襲撃耐性 (順番依存あり)
-  static $wolf_eat_resist_list = array(
-    'challenge_lovers', 'protected', 'sacrifice_angel', 'doom_vampire', 'sacrifice_patron',
-    'sacrifice_mania', 'fend_guard', 'ascetic_assassin', 'awake_wizard');
-
-  //人狼襲撃得票カウンター (+ 身代わり能力者)
-  static $wolf_eat_reaction_list = array(
-    'therian_mad', 'immolate_mad', 'sacrifice_common', 'doll_master', 'sacrifice_fox',
-    'sacrifice_vampire', 'boss_chiroptera', 'sacrifice_ogre');
-
-  //人狼襲撃カウンター
-  static $wolf_eat_counter_list = array(
-    'ghost_common', 'presage_scanner', 'cursed_brownie', 'sun_brownie', 'history_brownie',
-    'miasma_fox', 'revive_mania', 'mind_sheep');
-
-  //襲撃毒死回避
-  static $avoid_poison_eat_list = array('guide_poison', 'poison_jealousy', 'poison_wolf');
-
-  //罠
-  static $trap_list = array('trap_mad', 'snow_trap_mad');
-
-  //護衛
-  static $guard_list = array('guard', 'barrier_wizard');
-
-  //対暗殺護衛
-  static $guard_assassin_list = array('gatekeeper_guard');
-
-  //対夢護衛
-  static $guard_dream_list = array('dummy_guard');
-
-  //厄払い
-  static $guard_curse_list = array('anti_voodoo');
-
-  //復活
-  static $resurrect_list = array(
-    'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_mad', 'revive_cupid',
-    'scarlet_vampire', 'revive_ogre', 'revive_avenger', 'resurrect_mania');
-
-  //イベントセット
-  static $event_virtual_list = array('no_last_words', 'whisper_ringing', 'howl_ringing',
-				     'sweet_ringing', 'deep_sleep', 'mind_open');
-
-  //イベントセット (昼限定)
-  static $event_virtual_day_list = array(
-    'actor', 'passion', 'rainbow', 'grassy', 'invisible', 'side_reverse', 'line_reverse',
-    'critical_voter', 'critical_luck', 'blinder', 'earplug', 'silent', 'mower');
-
-  //特殊勝敗判定 (ジョーカー系)
-  static $joker_list = array('joker', 'rival');
-
   //フィルタロード
   static function Load($type, $shift = false, $virtual = false) {
     $stack = array();
@@ -280,9 +71,7 @@ class RoleManager {
 
   //役職リスト取得
   private function GetList($type) {
-    $stack = $type == 'main_role' ? array(self::$actor->GetMainRole(true)) :
-      self::${$type . '_list'};
-    return is_array($stack) ? $stack : array();
+    return $type == 'main_role' ? array(self::$actor->GetMainRole(true)) : RoleFilterData::$$type;
   }
 
   //役職リストに応じたクラスリスト取得
@@ -303,6 +92,218 @@ class RoleManager {
     }
     return true;
   }
+}
+
+//-- 役職フィルタデータベース --//
+class RoleFilterData {
+  //常時表示サブ役職 (本体 / 順番依存あり)
+  static $display_real = array(
+    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller', 'lost_ability',
+    'muster_ability', 'lovers', 'sweet_status', 'challenge_lovers', 'possessed_exchange', 'joker',
+    'rival', 'death_note');
+
+  //常時表示サブ役職 (仮想 / 順番依存あり)
+  static $display_virtual = array(
+    'death_selected', 'febris', 'frostbite', 'death_warrant', 'day_voter', 'wirepuller_luck',
+    'occupied_luck', 'mind_open', 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
+    'mind_friend', 'mind_sympathy', 'mind_sheep', 'mind_presage', 'wisp', 'black_wisp',
+    'spell_wisp', 'foughten_wisp', 'gold_wisp', 'sheep_wisp');
+
+  //非表示サブ役職 (呼び出し抑制用)
+  static $display_none = array(
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'critical_voter',
+    'critical_luck', 'confession', 'enemy', 'supported', 'infected', 'psycho_infected',
+    'possessed_target', 'possessed', 'bad_status', 'protected', 'changed_disguise',
+    'changed_therian', 'changed_vindictive');
+
+  //初期配役抑制役職
+  static $disable_cast = array(
+    'febris', 'frostbite', 'death_warrant', 'panelist', 'cute_camouflage', 'confession',
+    'day_voter', 'wirepuller_luck', 'occupied_luck', 'mind_read', 'mind_receiver', 'mind_friend',
+    'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
+    'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
+    'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
+    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_disguise',
+    'changed_therian', 'changed_vindictive', 'copied', 'copied_trick', 'copied_basic',
+    'copied_soul', 'copied_teller');
+
+  //発言表示
+  static $talk = array('blinder', 'earplug', 'speaker');
+
+  //発言表示 (囁き)
+  static $talk_whisper = array('lovers');
+
+  //発言表示 (妖狐)
+  static $talk_fox = array('wise_wolf', 'wise_ogre');
+
+  //発言表示 (独り言)
+  static $talk_self = array('silver_wolf', 'howl_fox', 'mind_lonely', 'lovers');
+
+  //発言表示 (耳鳴)
+  static $talk_ringing = array('whisper_ringing', 'howl_ringing');
+
+  //閲覧判定
+  static $mind_read = array(
+    'leader_common', 'whisper_scanner', 'howl_scanner', 'telepath_scanner', 'minstrel_cupid',
+    'mind_read', 'mind_friend', 'mind_open');
+
+  //閲覧判定 (能動型)
+  static $mind_read_active = array('mind_receiver');
+
+  //閲覧判定 (憑依型)
+  static $mind_read_possessed = array('possessed_wolf', 'possessed_mad', 'possessed_fox');
+
+  //発言置換 (仮想 / 順番依存あり)
+  static $say_convert_virtual = array('confession', 'cute_camouflage', 'gentleman', 'lady');
+
+  //発言置換 (本体)
+  static $say_convert = array('suspect', 'cute_mage', 'cute_wolf', 'cute_fox',
+				   'cute_chiroptera', 'cute_avenger');
+
+  //悪戯発言変換
+  static $say_bad_status = array('fairy', 'spring_fairy', 'summer_fairy', 'autumn_fairy',
+				      'winter_fairy', 'greater_fairy');
+
+  //発言変換 (順番依存あり)
+  static $say = array('passion', 'actor', 'liar', 'rainbow', 'weekly', 'grassy', 'invisible',
+			   'side_reverse', 'line_reverse', 'mower', 'silent');
+
+  //声量
+  static $voice = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
+			     'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
+
+  //処刑投票 (メイン)
+  static $vote_do_main = array(
+    'human', 'elder', 'scripter', 'eccentricer', 'elder_guard', 'critical_common', 'ascetic_wolf',
+    'elder_wolf', 'possessed_mad', 'elder_fox', 'elder_chiroptera', 'critical_duelist',
+    'cowboy_duelist');
+
+  //処刑投票 (サブ)
+  static $vote_do_sub = array(
+    'authority', 'reduce_voter', 'upper_voter', 'downer_voter', 'critical_voter', 'random_voter',
+    'day_voter', 'wirepuller_luck', 'watcher', 'panelist');
+
+  //処刑得票 (メイン)
+  static $vote_poll_main = array('critical_common', 'critical_patron');
+
+  //処刑得票 (サブ)
+  static $vote_poll_sub = array(
+    'upper_luck', 'downer_luck', 'star', 'disfavor', 'critical_luck', 'random_luck',
+    'occupied_luck', 'wirepuller_luck');
+
+  //処刑投票能力者
+  static $vote_day = array(
+    'saint', 'executor', 'bacchus_medium', 'seal_medium', 'trap_common', 'spell_common',
+    'pharmacist', 'cure_pharmacist', 'revive_pharmacist', 'alchemy_pharmacist',
+    'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
+    'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie',  'disguise_wolf',
+    'purple_wolf', 'snow_wolf', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
+    'critical_mad', 'follow_mad', 'purple_fox', 'snow_fox', 'critical_fox', 'sweet_cupid',
+    'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague',
+    'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+
+  //反逆者判定
+  static $rebel = array('rebel');
+
+  //処刑者決定 (順番依存あり)
+  static $vote_kill = array('decide', 'bad_luck', 'counter_decide', 'dropout', 'impatience',
+				 'good_luck', 'plague', 'quiz', 'executor', 'saint', 'agitate_mad');
+
+  //毒能力鑑定
+  static $distinguish_poison = array('pharmacist', 'alchemy_pharmacist');
+
+  //解毒判定
+  static $detox = array('pharmacist', 'cure_pharmacist', 'alchemy_pharmacist');
+
+  //処刑者カウンター
+  static $vote_kill_counter = array('brownie', 'sun_brownie', 'doom_doll', 'miasma_fox',
+					 'mirror_fairy');
+
+  //処刑投票能力処理 (順番依存あり)
+  static $vote_action = array(
+    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
+    'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
+    'critical_fox', 'critical_avenger', 'purple_wolf', 'purple_fox', 'cursed_avenger',
+    'sweet_cupid', 'snow_cupid', 'disguise_wolf');
+
+  //霊能
+  static $necromancer = array(
+    'necromancer', 'soul_necromancer', 'psycho_necromancer', 'embalm_necromancer',
+    'emissary_necromancer', 'dummy_necromancer', 'monk_fox');
+
+  //得票カウンター
+  static $voted_reaction = array('trap_common', 'jealousy');
+
+  //落雷判定
+  static $thunderbolt = array('thunder_brownie');
+
+  //ショック死 (メイン)
+  static $sudden_death_main = array('eclipse_medium', 'cursed_angel');
+
+  //ショック死 (サブ / 順番依存あり)
+  static $sudden_death_sub = array(
+    'challenge_lovers', 'febris', 'frostbite', 'death_warrant', 'panelist', 'chicken', 'rabbit',
+    'perverseness', 'flattery', 'celibacy', 'nervy', 'androphobia', 'gynophobia', 'impatience');
+
+  //ショック死抑制
+  static $cure = array('cure_pharmacist', 'revive_pharmacist');
+
+  //処刑得票カウンター
+  static $vote_kill_reaction = array('divorce_jealousy', 'harvest_brownie', 'maple_brownie',
+					  'cursed_brownie', 'snow_wolf', 'snow_fox');
+
+  //道連れ
+  static $followed = array('follow_mad');
+
+  //人狼襲撃耐性 (順番依存あり)
+  static $wolf_eat_resist = array(
+    'challenge_lovers', 'protected', 'sacrifice_angel', 'doom_vampire', 'sacrifice_patron',
+    'sacrifice_mania', 'fend_guard', 'ascetic_assassin', 'awake_wizard');
+
+  //人狼襲撃得票カウンター (+ 身代わり能力者)
+  static $wolf_eat_reaction = array(
+    'therian_mad', 'immolate_mad', 'sacrifice_common', 'doll_master', 'sacrifice_fox',
+    'sacrifice_vampire', 'boss_chiroptera', 'sacrifice_ogre');
+
+  //人狼襲撃カウンター
+  static $wolf_eat_counter = array(
+    'ghost_common', 'presage_scanner', 'cursed_brownie', 'sun_brownie', 'history_brownie',
+    'miasma_fox', 'revive_mania', 'mind_sheep');
+
+  //襲撃毒死回避
+  static $avoid_poison_eat = array('guide_poison', 'poison_jealousy', 'poison_wolf');
+
+  //罠
+  static $trap = array('trap_mad', 'snow_trap_mad');
+
+  //護衛
+  static $guard = array('guard', 'barrier_wizard');
+
+  //対暗殺護衛
+  static $guard_assassin = array('gatekeeper_guard');
+
+  //対夢護衛
+  static $guard_dream = array('dummy_guard');
+
+  //厄払い
+  static $guard_curse = array('anti_voodoo');
+
+  //復活
+  static $resurrect = array(
+    'revive_pharmacist', 'revive_brownie', 'revive_doll', 'revive_mad', 'revive_cupid',
+    'scarlet_vampire', 'revive_ogre', 'revive_avenger', 'resurrect_mania');
+
+  //イベントセット
+  static $event_virtual = array('no_last_words', 'whisper_ringing', 'howl_ringing',
+				     'sweet_ringing', 'deep_sleep', 'mind_open');
+
+  //イベントセット (昼限定)
+  static $event_virtual_day = array(
+    'actor', 'passion', 'rainbow', 'grassy', 'invisible', 'side_reverse', 'line_reverse',
+    'critical_voter', 'critical_luck', 'blinder', 'earplug', 'silent', 'mower');
+
+  //特殊勝敗判定 (ジョーカー系)
+  static $joker = array('joker', 'rival');
 }
 
 //-- 役職の基底クラス --//
@@ -939,7 +940,7 @@ class RoleHTML {
 
     $stack = array();
     foreach (array('real', 'virtual', 'none') as $name) {
-      $stack = array_merge($stack, RoleManager::${'display_' . $name . '_list'});
+      $stack = array_merge($stack, RoleFilterData::${'display_' . $name});
     }
     //Text::p($stack);
     $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);

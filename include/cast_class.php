@@ -271,7 +271,7 @@ class Cast {
     shuffle($rand_keys); //シャッフルしてランダムキーに変換
     //Text::p($rand_keys, 'rand_keys');
 
-    OptionManager::$stack = RoleManager::$disable_cast_list; //割り振り対象外役職のリスト
+    OptionManager::$stack = RoleFilterData::$disable_cast; //割り振り対象外役職のリスト
     //サブ役職テスト用
     /*
     $stack = array('wisp', 'black_wisp', 'spell_wisp', 'foughten_wisp', 'gold_wisp');

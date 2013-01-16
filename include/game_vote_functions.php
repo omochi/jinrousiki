@@ -676,7 +676,7 @@ class Vote {
 
       $role_flag   = new StdClass();
       $wizard_flag = new StdClass();
-      foreach (RoleManager::$necromancer_list as $role) { //対象役職を初期化
+      foreach (RoleFilterData::$necromancer as $role) { //対象役職を初期化
 	$role_flag->$role   = false;
 	$wizard_flag->$role = false;
       }
@@ -705,7 +705,7 @@ class Vote {
       }
 
       $name = DB::$USER->GetHandleName($vote_target->uname, true);
-      foreach (RoleManager::$necromancer_list as $role) {
+      foreach (RoleFilterData::$necromancer as $role) {
 	if ($role_flag->$role || $wizard_flag->$role) {
 	  $str = RoleManager::GetClass($role)->Necromancer($vote_target, $stolen_flag);
 	  if (is_null($str)) continue;

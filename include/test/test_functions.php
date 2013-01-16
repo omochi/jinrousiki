@@ -4,6 +4,9 @@ class DevRoom {
   //テスト村データ初期化
   static function Initialize($list = array()) {
     //初期村データを生成
+    RQ::Set('room_no', 1);
+    RQ::Set('vote_times', 1);
+    RQ::Set('reverse_log', null);
     $base_list = array(
      'id' => RQ::Get()->room_no, 'comment' => '',
      'date' => 0, 'scene' => 'beforegame', 'status' => 'waiting',
@@ -11,9 +14,6 @@ class DevRoom {
      'option_role' => '', 'vote_count' => 1
     );
 
-    RQ::Set('room_no', 1);
-    RQ::Set('vote_times', 1);
-    RQ::Set('reverse_log', null);
     RQ::InitTestRoom();
     RQ::GetTest()->test_room = array_merge($base_list, $list);
     RQ::GetTest()->event           = array();
@@ -52,6 +52,7 @@ class DevRoom {
 	}
       }
     }
+    //Text::p($stack);
     return $stack;
   }
 

@@ -868,7 +868,7 @@ class UserData {
     //Text::p(DB::$ROOM->event, 'Event');
 
     if (DB::$ROOM->IsDay()) { //昼限定
-      foreach (RoleManager::$event_virtual_day_list as $role) {
+      foreach (RoleFilterData::$event_virtual_day as $role) {
 	if (DB::$ROOM->IsEvent($role)) {
 	  foreach ($this->rows as $user) $user->AddVirtualRole($role);
 	}
@@ -876,7 +876,7 @@ class UserData {
     }
 
     if (DB::$ROOM->IsPlaying()) { //昼夜両方
-      foreach (RoleManager::$event_virtual_list as $role) {
+      foreach (RoleFilterData::$event_virtual as $role) {
 	if (DB::$ROOM->IsEvent($role)) {
 	  foreach ($this->rows as $user) $user->AddVirtualRole($role);
 	}

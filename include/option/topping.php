@@ -20,7 +20,7 @@ class Option_topping extends SelectorRoomOptionItem {
     if (is_null(RQ::Get()->{$this->name})) return false;
 
     $post = RQ::Get()->{$this->name};
-    $flag = array_key_exists($post, $this->form_list);
+    $flag = ! empty($post) && array_key_exists($post, $this->form_list);
     if ($flag) array_push(RoomOption::${$this->group}, sprintf('%s:%s', $this->name, $post));
     RQ::Set($this->name, $flag);
   }
