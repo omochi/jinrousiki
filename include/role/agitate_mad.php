@@ -9,7 +9,7 @@ class Role_agitate_mad extends Role {
   public $sudden_death = 'AGITATED';
 
   function SetVoteDay($uname) {
-    if ($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStackName($uname);
   }
 
   function DecideVoteKill() {

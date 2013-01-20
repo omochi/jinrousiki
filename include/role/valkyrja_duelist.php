@@ -39,7 +39,7 @@ class Role_valkyrja_duelist extends Role {
   function IsVoteCheckbox(User $user, $live) { return $live && ! $user->IsDummyBoy(); }
 
   function IsVoteCheckboxChecked(User $user) {
-    return $this->IsSelfShoot() && $this->IsActor($user->uname);
+    return $this->IsSelfShoot() && $this->IsActor($user);
   }
 
   //自分撃ち判定
@@ -59,7 +59,7 @@ class Role_valkyrja_duelist extends Role {
       //例外処理
       if ($user->IsDead() || $user->IsDummyBoy()) return '死者と身代わり君には投票できません';
       $user_list[$id] = $user;
-      $self_shoot |= $this->IsActor($user->uname); //自分撃ち判定
+      $self_shoot |= $this->IsActor($user); //自分撃ち判定
     }
 
     if (! $self_shoot) { //自分撃ちエラー判定
@@ -93,7 +93,7 @@ class Role_valkyrja_duelist extends Role {
   //勝利判定
   function Win($winner) {
     $actor  = $this->GetActor();
-    $id     = $actor->user_no;
+    $id     = $actor->id;
     $target = 0;
     $count  = 0;
     foreach (DB::$USER->rows as $user) {

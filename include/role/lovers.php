@@ -10,12 +10,12 @@ class Role_lovers extends Role {
     $target = $this->GetActor()->partner_list;
     $stack  = array();
     foreach (DB::$USER->rows as $user) {
-      if ($this->IsActor($user->uname)) continue;
+      if ($this->IsActor($user)) continue;
       //夢求愛者・悲恋対応
       if ($user->IsPartner($this->role, $target) ||
-	  $this->GetActor()->IsPartner('dummy_chiroptera', $user->user_no) ||
+	  $this->GetActor()->IsPartner('dummy_chiroptera', $user->id) ||
 	  (DB::$ROOM->date == 1 && $user->IsPartner('sweet_status', $target))) {
-	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
+	$stack[] = $user->GetName(); //憑依追跡
       }
     }
     RoleHTML::OutputPartner($stack, 'partner_header', 'lovers_footer');
@@ -38,7 +38,7 @@ class Role_lovers extends Role {
 
     foreach (DB::$USER->rows as $user) { //キューピッドと死んだ恋人のリストを作成
       foreach ($user->GetPartner($this->role, true) as $id) {
-	$cupid_list[$id][] = $user->user_no;
+	$cupid_list[$id][] = $user->id;
 	if ($user->dead_flag || $user->revive_flag) $lost_cupid_list[$id] = $id;
       }
     }
@@ -48,7 +48,7 @@ class Role_lovers extends Role {
       $checked_list[] = $cupid_id;
       foreach ($cupid_list[$cupid_id] as $lovers_id) { //キューピッドのリストから恋人の ID を取得
 	$user = DB::$USER->ById($lovers_id); //恋人の情報を取得
-	if (! DB::$USER->Kill($user->user_no, 'LOVERS_FOLLOWED')) continue;
+	if (! DB::$USER->Kill($user->id, 'LOVERS_FOLLOWED')) continue;
 	//突然死の処理
 	if ($sudden_death) DB::$ROOM->Talk($user->handle_name . Message::$lovers_followed);
 	$user->suicide_flag = true;

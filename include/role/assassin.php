@@ -3,6 +3,7 @@
   ◆暗殺者 (assassin)
   ○仕様
   ・暗殺：標準
+  ・暗殺失敗：通常
 */
 class Role_assassin extends Role {
   public $action     = 'ASSASSIN_DO';
@@ -29,25 +30,39 @@ class Role_assassin extends Role {
   function SetAssassin(User $user) {
     $actor = $this->GetActor();
     foreach (RoleManager::LoadFilter('trap') as $filter) { //罠判定
-      if ($filter->TrapStack($actor, $user->uname)) return;
+      if ($filter->TrapStack($actor, $user->id)) return;
     }
     foreach (RoleManager::LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
-      if ($filter->GuardAssassin($user->uname)) return;
+      if ($filter->GuardAssassin($user->id)) return;
     }
     if ($user->IsRoleGroup('escaper')) return; //逃亡者は無効
-    if ($user->IsRefrectAssassin()) { //反射判定
-      $this->AddSuccess($actor->user_no, 'assassin');
+    if ($user->IsReflectAssassin() || $this->IsReflectAssassin()) { //反射判定
+      $this->AddSuccess($actor->id, 'assassin');
       return;
     }
     $class = $this->GetClass($method = 'Assassin');
     $class->$method($user);
   }
 
-  //暗殺処理 (protected)
+  //暗殺反射判定
+  protected function IsReflectAssassin() { return false; }
+
+  //暗殺処理
   function Assassin(User $user) {
-    if ($flag = $user->IsLive(true)) $this->AddSuccess($user->user_no, 'assassin');
-    return $flag;
+    if ($user->IsDead(true) || $this->IgnoreAssassin($user)) return false;
+    $this->SetAssassinTarget($user);
+    $this->AssassinAction($user);
+    return true;
   }
+
+  //暗殺失敗判定
+  protected function IgnoreAssassin(User $user) { return false; }
+
+  //暗殺死対象セット
+  protected function SetAssassinTarget(User $user) { $this->AddSuccess($user->id, 'assassin'); }
+
+  //暗殺追加処理
+  protected function AssassinAction(User $user) {}
 
   //暗殺死処理
   function AssassinKill() {

@@ -45,10 +45,33 @@ EOF;
 
 //-- 「福引」クラス --//
 class Lottery {
-  //配列からランダムに一つ取り出す
-  static function Get(array $array) {
-    return count($array) > 0 ? $array[array_rand($array)] : null;
+  static public $display = false;
+
+  //確率表示設定 (デバッグ用)
+  static function d($flag = true) {
+    self::$display = $flag;
   }
+
+  //確率判定
+  static function Rate($base, $rate) {
+    $rand = mt_rand(1, $base);
+    if (self::$display) Text::p(sprintf('%d <= %d', $rand, $rate), 'rate');
+    return $rand <= $rate;
+  }
+
+  //bool 判定
+  static function Bool() { return self::Percent(50); }
+
+  //パーセント判定
+  static function Percent($rate) { return self::Rate(100, $rate); }
+
+  //配列からランダムに一つ取り出す
+  static function Get(array $list) {
+    return count($list) > 0 ? $list[array_rand($list)] : null;
+  }
+
+  //一定範囲からランダムに取り出す
+  static function GetRange($from, $to) { return self::Get(range($from, $to)); }
 
   //闇鍋モードの配役リスト取得
   static function GetChaos(array $list, array $filter) {

@@ -24,17 +24,18 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
   */
   function Report(User $user) {
     foreach ($this->GetStack('vote_data') as $action => $vote_stack) {
-      if (strpos($action, '_NOT_DO') !== false ||
-	  ! array_key_exists($user->user_no, $vote_stack)) continue;
+      if (strpos($action, '_NOT_DO') !== false || ! array_key_exists($user->id, $vote_stack)) {
+	continue;
+      }
       $actor_id     = $this->GetID();
-      $target_name  = DB::$USER->ByVirtual($user->user_no)->handle_name;
-      $target_stack = $vote_stack[$user->user_no];
+      $target_name  = DB::$USER->ByVirtual($user->id)->handle_name;
+      $target_stack = $vote_stack[$user->id];
 
       if ($user->IsRole('barrier_wizard')) { //結界師
 	$result_stack = array();
 	foreach (explode(' ', $target_stack) as $id) { //憑依を追跡する
-	  $voted_user = DB::$USER->ByVirtual($id);
-	  $result_stack[$voted_user->user_no] = $voted_user->handle_name;
+	  $target = DB::$USER->ByVirtual($id);
+	  $result_stack[$target->id] = $target->handle_name;
 	}
 	ksort($result_stack);
 	foreach ($result_stack as $result) {
@@ -42,9 +43,9 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
 	}
       }
       elseif ($user->IsRole('step_mage', 'step_guard', 'step_wolf')) { //審神者・山立・響狼
-	$id_stack     = explode(' ', $target_stack);
-	$voted_user   = DB::$USER->ByVirtual(array_pop($id_stack)); //最終到達点は憑依を追跡する
-	$result_stack = array($voted_user->user_no => $voted_user->handle_name);
+	$id_stack = explode(' ', $target_stack);
+	$target   = DB::$USER->ByVirtual(array_pop($id_stack)); //最終到達点は憑依を追跡する
+	$result_stack = array($target->id => $target->handle_name);
 	foreach ($id_stack as $id) {
 	  $result_stack[$id] = DB::$USER->ByID($id)->handle_name;
 	}

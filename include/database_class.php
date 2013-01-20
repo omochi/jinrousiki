@@ -255,7 +255,7 @@ class DB {
     self::$display = $flag;
   }
 
-  //SQL リセット
+  //statement リセット
   private static function Reset() {
     self::$statement = null;
     self::$parameter = null;

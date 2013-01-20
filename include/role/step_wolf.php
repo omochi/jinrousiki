@@ -15,7 +15,7 @@ class Role_step_wolf extends Role_wolf {
     return parent::IsFinishVote($list);
   }
 
-  function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }
+  function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user); }
 
   function SetVoteNight() {
     parent::SetVoteNight();
@@ -38,7 +38,7 @@ class Role_step_wolf extends Role_wolf {
       if (count($stack) > 0) return '通り道が一本に繋がっていません';
       $root_list[] = $id;
     } else {
-      $id  = $this->GetActor()->user_no;
+      $id  = $this->GetActor()->id;
       $max = count(DB::$USER->rows);
       $vector = null;
       $count  = 0;
@@ -61,14 +61,14 @@ class Role_step_wolf extends Role_wolf {
     if (count($root_list) < 1) return '通り道が自分と繋がっていません';
 
     $target = DB::$USER->ByID($id);
-    $live   = DB::$USER->IsVirtualLive($target->user_no); //仮想的な生死を判定
+    $live   = DB::$USER->IsVirtualLive($target->id); //仮想的な生死を判定
     if (! is_null($str = parent::IgnoreVoteNight($target, $live))) return $str;
 
     $target_stack = array();
     $handle_stack = array();
     foreach ($root_list as $id) { //投票順に意味があるので sort しない
       //対象者のみ憑依追跡する
-      $target_stack[] = $id == $target->user_no ? DB::$USER->ByReal($id)->user_no : $id;
+      $target_stack[] = $id == $target->id ? DB::$USER->ByReal($id)->id : $id;
       $handle_stack[] = DB::$USER->ByID($id)->handle_name;
     }
 

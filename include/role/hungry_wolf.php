@@ -6,11 +6,11 @@
 */
 RoleManager::LoadFile('wolf');
 class Role_hungry_wolf extends Role_wolf {
-  function IsWolfEatTarget($id) { return true; }
+  protected function IsWolfEatTarget($id) { return true; }
 
   function WolfEatSkip(User $user) { return false; }
 
   function WolfEatAction(User $user) { return ! $user->IsRoleGroup('wolf', 'fox'); }
 
-  function WolfKill(User $user) { DB::$USER->Kill($user->user_no, 'HUNGRY_WOLF_KILLED'); }
+  function WolfKill(User $user) { DB::$USER->Kill($user->id, 'HUNGRY_WOLF_KILLED'); }
 }

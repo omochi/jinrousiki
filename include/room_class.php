@@ -672,33 +672,6 @@ EOF;
     return DB::FetchResult();
   }
 
-  //前日の能力発動結果取得
-  static function GetAbility() {
-    if (DB::$ROOM->test_mode) return RQ::GetTest()->ability_action_list;
-    $query = <<<EOF
-SELECT message, type FROM system_message WHERE room_no = ? AND date = ? AND type IN 
-EOF;
-    $date = DB::$ROOM->date - 1;
-    $list = array(DB::$ROOM->id, $date);
-    $action_list = array('MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO',
-			 'WOLF_EAT', 'STEP_WOLF_EAT', 'SILENT_WOLF_EAT', 'JAMMER_MAD_DO',
-			 'STEP_DO', 'STEP_NOT_DO', 'VOODOO_MAD_DO', 'VOODOO_FOX_DO',
-			 'CHILD_FOX_DO', 'FAIRY_DO');
-    if ($date == 1) {
-      array_push($action_list, 'CUPID_DO', 'DUELIST_DO', 'MANIA_DO');
-    } else {
-      array_push($action_list, 'GUARD_DO', 'STEP_GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
-		 'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO', 'DREAM_EAT', 'ASSASSIN_DO',
-		 'ASSASSIN_NOT_DO', 'POISON_CAT_DO', 'POISON_CAT_NOT_DO', 'TRAP_MAD_DO',
-		 'TRAP_MAD_NOT_DO', 'POSSESSED_DO', 'POSSESSED_NOT_DO', 'VAMPIRE_DO', 'OGRE_DO',
-		 'OGRE_NOT_DO', 'DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO');
-    }
-    $query .= sprintf('(%s)', implode(',', array_fill(0, count($action_list), '?')));
-
-    DB::Prepare($query, array_merge($list, $action_list));
-    return DB::FetchAssoc();
-  }
-
   //処刑結果取得
   static function GetVote($date) {
     $query = <<<EOF

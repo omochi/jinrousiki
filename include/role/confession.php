@@ -13,7 +13,7 @@ class Role_confession extends Role {
     $target = $this->GetActor()->partner_list;
     $stack  = array();
     foreach (DB::$USER->rows as $user) {
-      if ($this->IsActor($user->uname)) continue;
+      if ($this->IsActor($user)) continue;
       if ($user->IsPartner('lovers', $target)) {
 	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
       }

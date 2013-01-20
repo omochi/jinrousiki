@@ -23,7 +23,7 @@ class Role_barrier_wizard extends Role_wizard {
     foreach ($stack as $id) {
       $user = DB::$USER->ByID($id);
       //例外判定
-      if ($this->IsActor($user->uname) || ! DB::$USER->IsVirtualLive($id) || $user->IsDummyBoy()) {
+      if ($this->IsActor($user) || ! DB::$USER->IsVirtualLive($id) || $user->IsDummyBoy()) {
 	return '自分・死者・身代わり君には投票できません';
       }
       $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
@@ -37,34 +37,35 @@ class Role_barrier_wizard extends Role_wizard {
     return null;
   }
 
-  function SetGuard($list) {
-    $actor     = $this->GetActor()->uname;
-    $stack     = array();
+  final function SetGuard($list) {
+    $actor     = $this->GetActor();
+    $stack     = $this->GetStack(null, true);
     $trapped   = false;
     $frostbite = false;
     foreach (explode(' ', $list) as $id) {
-      $uname = DB::$USER->ByID($id)->uname;
-      $stack[$actor][] = $uname;
-      $trapped   |= in_array($uname, $this->GetStack('trap')); //罠死判定
-      $frostbite |= in_array($uname, $this->GetStack('snow_trap')); //凍傷判定
+      $user = DB::$USER->ByID($id);
+      $stack[$actor->id][] = $user->id;
+      $trapped   |= in_array($user->id, $this->GetStack('trap'));      //罠死判定
+      $frostbite |= in_array($user->id, $this->GetStack('snow_trap')); //凍傷判定
     }
     $this->SetStack($stack);
     if ($trapped) {
-      $this->AddSuccess($actor, 'trapped');
+      $this->AddSuccess($actor->id, 'trapped');
     }
     elseif ($frostbite) {
-      $this->AddSuccess($actor, 'frostbite');
+      $this->AddSuccess($actor->id, 'frostbite');
     }
   }
 
-  function GetGuard($uname, array &$list) {
-    $rate = $this->GetGuardRate();
-    foreach ($this->GetStack() as $target_uname => $target_list) {
-      if (in_array($uname, $target_list) &&
-	  mt_rand(1, 100) <= (100 - count($target_list) * 20) * $rate) {
-	$list[] = $target_uname;
+  final function GetGuard($target_id) {
+    $result = array();
+    $rate   = $this->GetGuardRate();
+    foreach ($this->GetStack() as $id => $stack) {
+      if (in_array($target_id, $stack) && Lottery::Percent((100 - count($stack) * 20) * $rate)) {
+	$result[] = $id;
       }
     }
+    return $result;
   }
 
   //護衛成功係数取得
@@ -73,7 +74,7 @@ class Role_barrier_wizard extends Role_wizard {
       (DB::$ROOM->IsEvent('debilitate_wizard') ? 0.75 : 1);
   }
 
-  function GuardFailed() { return false; }
+  function IgnoreGuard() { return false; }
 
   function GuardAction(User $user, $flag) {}
 }

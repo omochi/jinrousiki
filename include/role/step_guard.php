@@ -2,9 +2,6 @@
 /*
   ◆山立 (step_guard)
   ○仕様
-  ・護衛失敗：通常
-  ・護衛処理：なし
-  ・狩り：通常
 */
 RoleManager::LoadFile('guard');
 class Role_step_guard extends Role_guard {
@@ -12,13 +9,13 @@ class Role_step_guard extends Role_guard {
   public $submit = 'guard_do';
   public $checkbox = '<input type="checkbox" name="target_no[]"';
 
-  function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user->uname); }
+  function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user); }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();
     //Text::p($stack);
 
-    $id  = $this->GetActor()->user_no;
+    $id  = $this->GetActor()->id;
     $max = count(DB::$USER->rows);
     $vector = null;
     $count  = 0;
@@ -41,7 +38,7 @@ class Role_step_guard extends Role_guard {
     if (count($root_list) < 1) return '通り道が自分と繋がっていません';
 
     $target = DB::$USER->ByID($id);
-    if ($this->IsActor($target->uname) || ! DB::$USER->IsVirtualLive($id)) { //例外判定
+    if ($this->IsActor($target) || ! DB::$USER->IsVirtualLive($id)) { //例外判定
       return '自分・死者には投票できません';
     }
 
@@ -49,7 +46,7 @@ class Role_step_guard extends Role_guard {
     $handle_stack = array();
     foreach ($root_list as $id) { //投票順に意味があるので sort しない
       //対象者のみ憑依追跡する
-      $target_stack[] = $id == $target->user_no ? DB::$USER->ByReal($id)->user_no : $id;
+      $target_stack[] = $id == $target->id ? DB::$USER->ByReal($id)->id : $id;
       $handle_stack[] = DB::$USER->ByID($id)->handle_name;
     }
 

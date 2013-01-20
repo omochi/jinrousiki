@@ -82,7 +82,6 @@ class GameLog {
     }
     Talk::Output();
     if (DB::$ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示
-      GameHTML::OutputAbilityAction();
       GameHTML::OutputLastWords();
       GameHTML::OutputDead();
     }

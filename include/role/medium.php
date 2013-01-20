@@ -14,9 +14,9 @@ class Role_medium extends Role {
     foreach (DB::$USER->rows as $user) {
       $flag |= $user->IsRoleGroup($this->role);
       if ($user->suicide_flag) {
-	$virtual_user = DB::$USER->ByVirtual($user->user_no);
-	$id = $virtual_user->user_no;
-	$stack[$id] = array('target' => $virtual_user->handle_name, 'result' => $user->GetCamp());
+	$virtual = DB::$USER->ByVirtual($user->id);
+	$id = $virtual->id;
+	$stack[$id] = array('target' => $virtual->handle_name, 'result' => $user->GetCamp());
       }
     }
     if (! $flag) return;

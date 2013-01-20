@@ -11,7 +11,7 @@ class Role_avenger extends Role_valkyrja_duelist {
   public $check_self_shoot = false;
 
   function IsVoteCheckbox(User $user, $live) {
-    return parent::IsVoteCheckbox($user, $live) && ! $this->IsActor($user->uname);
+    return parent::IsVoteCheckbox($user, $live) && ! $this->IsActor($user);
   }
 
   function VoteNight() {
@@ -24,7 +24,7 @@ class Role_avenger extends Role_valkyrja_duelist {
     sort($stack);
     foreach ($stack as $id) {
       $user = DB::$USER->ByID($id);
-      if ($this->IsActor($user->uname) || $user->IsDead() || $user->IsDummyBoy()) { //例外判定
+      if ($this->IsActor($user) || $user->IsDead() || $user->IsDummyBoy()) { //例外判定
 	return '自分・死者・身代わり君には投票できません';
       }
       $user_list[$id] = $user;

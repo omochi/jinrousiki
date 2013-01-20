@@ -207,7 +207,7 @@ class RoleFilterData {
 
   //処刑者決定 (順番依存あり)
   static $vote_kill = array('decide', 'bad_luck', 'counter_decide', 'dropout', 'impatience',
-				 'good_luck', 'plague', 'quiz', 'executor', 'saint', 'agitate_mad');
+			    'good_luck', 'plague', 'quiz', 'executor', 'saint', 'agitate_mad');
 
   //毒能力鑑定
   static $distinguish_poison = array('pharmacist', 'alchemy_pharmacist');
@@ -217,7 +217,7 @@ class RoleFilterData {
 
   //処刑者カウンター
   static $vote_kill_counter = array('brownie', 'sun_brownie', 'doom_doll', 'miasma_fox',
-					 'mirror_fairy');
+				    'mirror_fairy');
 
   //処刑投票能力処理 (順番依存あり)
   static $vote_action = array(
@@ -250,7 +250,7 @@ class RoleFilterData {
 
   //処刑得票カウンター
   static $vote_kill_reaction = array('divorce_jealousy', 'harvest_brownie', 'maple_brownie',
-					  'cursed_brownie', 'snow_wolf', 'snow_fox');
+				     'cursed_brownie', 'snow_wolf', 'snow_fox');
 
   //道連れ
   static $followed = array('follow_mad');
@@ -295,7 +295,7 @@ class RoleFilterData {
 
   //イベントセット
   static $event_virtual = array('no_last_words', 'whisper_ringing', 'howl_ringing',
-				     'sweet_ringing', 'deep_sleep', 'mind_open');
+				'sweet_ringing', 'deep_sleep', 'mind_open');
 
   //イベントセット (昼限定)
   static $event_virtual_day = array(
@@ -362,7 +362,7 @@ abstract class Role {
   protected function GetActor() { return RoleManager::$actor; }
 
   //ユーザ ID 取得
-  protected function GetID() { return $this->GetActor()->user_no; }
+  protected function GetID() { return $this->GetActor()->id; }
 
   //ユーザ名取得
   protected function GetUname($uname = null) {
@@ -387,12 +387,18 @@ abstract class Role {
   }
 
   //データ追加
-  protected function AddStack($data, $role = null, $uname = null) {
+  protected function AddStack($data, $role = null, $id = null) {
+    if (is_null($id)) $id = $this->GetID();
+    RoleManager::$get->{is_null($role) ? $this->role : $role}[$id] = $data;
+  }
+
+  //データ追加 (一時互換用)
+  protected function AddStackName($data, $role = null, $uname = null) {
     RoleManager::$get->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
   }
 
   //同一ユーザ判定
-  protected function IsActor($uname) { return $this->GetActor()->IsSame($uname); }
+  protected function IsActor(User $user) { return $this->GetActor()->IsSame($user); }
 
   //発動日判定
   protected function IsDoom() {
@@ -606,14 +612,12 @@ abstract class Role {
       $stack = RQ::GetTest()->result_ability;
       $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : array();
       $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
-      //Text::p($stack, $user_no);
       if ($limit) {
 	$limit_stack = array();
 	foreach ($stack as $list) {
-	  if ($list['user_no'] == DB::$SELF->user_no) $limit_stack[] = $list;
+	  if ($list['user_no'] == DB::$SELF->id) $limit_stack[] = $list;
 	}
 	$stack = $limit_stack;
-	//Text::p($stack, $user_no);
       }
       $result_list = $stack;
     }
@@ -621,7 +625,7 @@ abstract class Role {
       $str = 'SELECT DISTINCT target, result FROM result_ability WHERE room_no = %d ' .
 	"AND date = %d AND type = '%s'";
       $query = sprintf($str, DB::$ROOM->id, $target_date, $action);
-      if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->user_no);
+      if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->id);
       DB::Prepare($query);
       $result_list = DB::FetchAssoc();
     }
@@ -769,7 +773,7 @@ abstract class Role {
   }
 
   //投票対象判定
-  function IsVoteCheckbox(User $user, $live) { return $live && ! $this->IsActor($user->uname); }
+  function IsVoteCheckbox(User $user, $live) { return $live && ! $this->IsActor($user); }
 
   //投票対象自動チェック判定
   function IsVoteCheckboxChecked(User $user) { return false; }
@@ -797,9 +801,9 @@ abstract class Role {
   //投票処理 (夜)
   function VoteNight() {
     $user = DB::$USER->ByID($this->GetVoteNightTarget());
-    $live = DB::$USER->IsVirtualLive($user->user_no); //仮想的な生死を判定
+    $live = DB::$USER->IsVirtualLive($user->id); //仮想的な生死を判定
     if (! is_null($str = $this->IgnoreVoteNight($user, $live))) return $str;
-    $this->SetStack(DB::$USER->ByReal($user->user_no)->user_no, 'target_no');
+    $this->SetStack(DB::$USER->ByReal($user->id)->id, 'target_no');
     $this->SetStack($user->handle_name, 'target_handle');
     return null;
   }
@@ -809,7 +813,7 @@ abstract class Role {
 
   //投票スキップ判定 (夜)
   function IgnoreVoteNight(User $user, $live) {
-    return ! $live || $this->IsActor($user->uname) ? '自分・死者には投票できません' : null;
+    return ! $live || $this->IsActor($user) ? '自分・死者には投票できません' : null;
   }
 
   //隣り合っている ID を取得
@@ -867,7 +871,7 @@ class RoleTalk {
     //if (DB::$SELF->IsDead()) return false; //テスト用
 
     RoleManager::$get->say = $say;
-    RoleManager::$actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->user_no)); //仮想ユーザを取得
+    RoleManager::$actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->id)); //仮想ユーザを取得
     do { //発言置換処理
       foreach (RoleManager::Load('say_convert_virtual') as $filter) {
 	if ($filter->ConvertSay()) break 2;
@@ -896,7 +900,7 @@ class RoleTalk {
     //声の大きさを決定
     $voice = RQ::Get()->font_type;
     if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
-      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
+      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->id);
       foreach (RoleManager::Load('voice') as $filter) $filter->FilterVoice($voice, $say);
     }
 
@@ -932,7 +936,7 @@ class RoleHTML {
     foreach (RoleManager::Load('display_real') as $filter) $filter->OutputAbility();
 
     //-- ここからは憑依先の役職を表示 --//
-    RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no);
+    RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->id);
     foreach (RoleManager::Load('display_virtual') as $filter) $filter->OutputAbility();
 
     //-- これ以降はサブ役職非公開オプションの影響を受ける --//
@@ -991,7 +995,7 @@ class RoleHTML {
 	$str_stack = array();
 	foreach (explode(' ', $stack['target_no']) as $id) {
 	  $user = DB::$USER->ByVirtual($id);
-	  $str_stack[$user->user_no] = $user->handle_name;
+	  $str_stack[$user->id] = $user->handle_name;
 	}
 	ksort($str_stack);
 	$str = implode('さん ', $str_stack) . 'さんに投票済み';
@@ -1005,7 +1009,7 @@ class RoleHTML {
 	$str_stack = array();
 	foreach (explode(' ', $stack['target_no']) as $id) {
 	  $user = DB::$USER->ByVirtual($id);
-	  $str_stack[$user->user_no] = $user->handle_name;
+	  $str_stack[$user->id] = $user->handle_name;
 	}
 	ksort($str_stack);
 	$str = implode('さん ', $str_stack) . 'さんに投票済み';

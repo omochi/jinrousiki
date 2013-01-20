@@ -26,19 +26,19 @@ class Role_mage extends Role {
 
   //占い失敗判定
   function IsJammer(User $user) {
-    $uname   = $this->GetUname();
-    $half    = DB::$ROOM->IsEvent('half_moon') && mt_rand(0, 1) > 0; //半月
+    $id      = $this->GetID();
+    $half    = DB::$ROOM->IsEvent('half_moon') && Lottery::Bool(); //半月
     $phantom = $user->IsLive(true) && $user->IsRoleGroup('phantom') && $user->IsActive(); //幻系
 
     if ($half || $phantom) {
       foreach ($this->GetGuardCurse() as $filter) { //厄払い判定
-	if ($filter->IsGuard($uname)) return false;
+	if ($filter->IsGuard($id)) return false;
       }
     }
 
-    if ($half || in_array($uname, $this->GetStack('jammer'))) return true; //占い妨害判定
+    if ($half || in_array($id, $this->GetStack('jammer'))) return true; //占い妨害判定
     if ($phantom) { //幻系判定
-      $this->AddSuccess($user->user_no, 'phantom');
+      $this->AddSuccess($user->id, 'phantom');
       return true;
     }
     return false;
@@ -46,12 +46,12 @@ class Role_mage extends Role {
 
   //呪返し判定
   function IsCursed(User $user) {
-    if ($user->IsCursed() || in_array($user->uname, $this->GetStack('voodoo'))) {
+    if ($user->IsCursed() || in_array($user->id, $this->GetStack('voodoo'))) {
       $actor = $this->GetActor();
       foreach ($this->GetGuardCurse() as $filter) { //厄払い判定
-	if ($filter->IsGuard($actor->uname)) return false;
+	if ($filter->IsGuard($actor->id)) return false;
       }
-      DB::$USER->Kill($actor->user_no, 'CURSED');
+      DB::$USER->Kill($actor->id, 'CURSED');
       return true;
     }
     return false;
@@ -68,7 +68,7 @@ class Role_mage extends Role {
 
   //占い結果取得
   function GetMageResult(User $user) {
-    if (array_key_exists($user->uname, $this->GetStack('possessed'))) { //憑依キャンセル判定
+    if (array_key_exists($user->id, $this->GetStack('possessed'))) { //憑依キャンセル判定
       $user->possessed_cancel = true;
     }
 
@@ -77,13 +77,13 @@ class Role_mage extends Role {
 	(($user->IsFox() && ! $user->IsChildFox() &&
 	  ! $user->IsRole('white_fox', 'black_fox', 'mist_fox', 'sacrifice_fox')) ||
 	 $user->IsRoleGroup('spell'))) {
-      DB::$USER->Kill($user->user_no, 'FOX_DEAD');
+      DB::$USER->Kill($user->id, 'FOX_DEAD');
     }
     return $this->DistinguishMage($user); //占い判定
   }
 
   //占い判定
-  function DistinguishMage(User $user, $reverse = false) {
+  final function DistinguishMage(User $user, $reverse = false) {
     //鬼火系判定
     if ($user->IsDoomRole('sheep_wisp')) return $reverse ? 'wolf' : 'human';
     if ($user->IsRole('wisp'))           return 'ogre';
@@ -104,8 +104,7 @@ class Role_mage extends Role {
   }
 
   //占い結果登録
-  function SaveMageResult(User $user, $result, $action) {
-    $target = DB::$USER->GetHandleName($user->uname, true);
-    return DB::$ROOM->ResultAbility($action, $result, $target, $this->GetID());
+  final function SaveMageResult(User $user, $result, $action) {
+    return DB::$ROOM->ResultAbility($action, $result, $user->GetName(), $this->GetID());
   }
 }

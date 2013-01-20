@@ -184,7 +184,7 @@ class TalkBuilder {
   public $flag;
 
   function __construct($class, $id = null) {
-    $this->actor = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想ユーザを取得
+    $this->actor = DB::$USER->ByVirtual(DB::$SELF->id); //仮想ユーザを取得
     //観戦モード判定
     if ((is_null($this->actor->live) || ! DB::$ROOM->IsOpenCast()) && ! DB::$ROOM->IsFinished()) {
       //本人視点が変化するタイプに仮想役職をセットする
@@ -220,7 +220,7 @@ class TalkBuilder {
     $real  = $actor;
     if (DB::$ROOM->log_mode && isset($talk->role_id)) { //役職スイッチ処理
       //閲覧者のスイッチに伴う可視性のリロード処理
-      if ($actor->ChangePlayer($talk->role_id) && $actor->IsSame($this->actor->uname)) {
+      if ($actor->ChangePlayer($talk->role_id) && $actor->IsSame($this->actor)) {
 	//Text::p($talk->role_id, 'Switch');
 	$this->LoadFilter();
 	$this->SetFlag();
@@ -229,8 +229,8 @@ class TalkBuilder {
     switch ($talk->scene) {
     case 'day':
     case 'night':
-      $virtual = DB::$USER->ByVirtual($actor->user_no);
-      if ($actor->user_no != $virtual->user_no) $actor = $virtual;
+      $virtual = DB::$USER->ByVirtual($actor->id);
+      if (! $actor->IsSame($virtual)) $actor = $virtual;
       break;
     }
 
@@ -293,7 +293,7 @@ class TalkBuilder {
     case 'day':
       //強風判定 (身代わり君と本人は対象外)
       if (DB::$ROOM->IsEvent('blind_talk_day') &&
-	  ! $this->flag->dummy_boy && ! $this->actor->IsSame($talk->uname)) {
+	  ! $this->flag->dummy_boy && ! $this->actor->IsSameName($talk->uname)) {
 	//位置判定 (観戦者以外の上下左右)
 	$viewer = $this->actor->user_no;
 	$target = $actor->user_no;
@@ -402,7 +402,7 @@ class TalkBuilder {
 	  return false;
 
 	case 'self_talk': //独り言
-	  if ($this->flag->dummy_boy || $mind_read || $this->actor->IsSame($talk->uname)) {
+	  if ($this->flag->dummy_boy || $mind_read || $this->actor->IsSameName($talk->uname)) {
 	    return $this->Add($actor, $talk, $real);
 	  }
 	  foreach (RoleManager::Load('talk_self') as $filter) {
@@ -678,7 +678,7 @@ class TalkDB {
   //発言取得 (直近限定)
   static function GetRecent() {
     $query = <<<EOF
-SELECT uname, sentence FROM talk WHERE room_no = ? AND date = ? AND scene = ?
+SELECT user_no AS id, sentence FROM talk WHERE room_no = ? AND date = ? AND scene = ?
 ORDER BY id DESC LIMIT 5
 EOF;
     DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene));

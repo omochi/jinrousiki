@@ -8,7 +8,7 @@ RoleManager::LoadFile('fox');
 class Role_snow_fox extends Role_fox {
   function SetVoteDay($uname) {
     $this->InitStack();
-    if ($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStackName($uname);
   }
 
   function VoteKillReaction() {

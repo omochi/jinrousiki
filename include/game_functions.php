@@ -354,8 +354,8 @@ class GameHTML {
 	//憑依状態なら憑依しているユーザを追加
 	$real_user = DB::$USER->ByReal($id);
 	//交換憑依判定
-	if ($real_user->IsSame($user->uname)) $real_user = DB::$USER->TraceExchange($id);
-	if (! $real_user->IsSame($user->uname) && $real_user->IsLive()) {
+	if ($real_user->IsSame($user)) $real_user = DB::$USER->TraceExchange($id);
+	if (! $real_user->IsSame($user) && $real_user->IsLive()) {
 	  $str .= sprintf('<br>[%s]', $real_user->uname);
 	}
 	$str .= ')<br>' . $user->GenerateRoleName(); //役職情報を追加
@@ -565,129 +565,6 @@ EOF;
   //プレイヤー一覧出力
   static function OutputPlayer() { echo self::GeneratePlayer(); }
 
-  //前日の能力発動結果出力
-  static function OutputAbilityAction() {
-    //昼間で役職公開が許可されているときのみ表示
-    if (! DB::$ROOM->IsDay() || ! (DB::$SELF->IsDummyBoy() || DB::$ROOM->IsOpenCast())) {
-      return false;
-    }
-
-    $header = '<b>前日の夜、';
-    $footer = '</b><br>' . Text::LF;
-    foreach (SystemMessageDB::GetAbility() as $stack) {
-      list($actor, $target) = explode("\t", $stack['message']);
-      echo $header.DB::$USER->ByHandleName($actor)->GenerateShortRoleName(false, true).' ';
-      switch ($stack['type']) {
-      case 'CUPID_DO': //DB 登録時にタブ区切りで登録していないので個別の名前は取得不可
-      case 'FAIRY_DO':
-      case 'DUELIST_DO':
-      case 'SPREAD_WIZARD_DO':
-	$target = 'は '.$target;
-	break;
-
-      case 'STEP_MAGE_DO':
-      case 'STEP_GUARD_DO':
-      case 'STEP_WOLF_EAT':
-      case 'SILENT_WOLF_EAT':
-      case 'STEP_DO':
-	$target = 'は '.$stack['message'];
-	break;
-
-      default:
-	$target = 'は '.DB::$USER->ByHandleName($target)->GenerateShortRoleName(false, true).' ';
-	break;
-      }
-
-      switch ($stack['type']) {
-      case 'GUARD_DO':
-      case 'REPORTER_DO':
-      case 'ASSASSIN_DO':
-      case 'WIZARD_DO':
-      case 'ESCAPE_DO':
-      case 'WOLF_EAT':
-      case 'DREAM_EAT':
-      case 'STEP_DO':
-      case 'CUPID_DO':
-      case 'VAMPIRE_DO':
-      case 'FAIRY_DO':
-      case 'OGRE_DO':
-      case 'DUELIST_DO':
-      case 'DEATH_NOTE_DO':
-	echo $target.Message::${strtolower($stack['type'])};
-	break;
-
-      case 'ASSASSIN_NOT_DO':
-      case 'POSSESSED_NOT_DO':
-      case 'OGRE_NOT_DO':
-      case 'DEATH_NOTE_NOT_DO':
-	echo Message::${strtolower($stack['type'])};
-	break;
-
-      case 'POISON_CAT_DO':
-	echo $target.Message::$revive_do;
-	break;
-
-      case 'POISON_CAT_NOT_DO':
-	echo Message::$revive_not_do;
-	break;
-
-      case 'SPREAD_WIZARD_DO':
-	echo $target.Message::$wizard_do;
-	break;
-
-      case 'TRAP_MAD_DO':
-	echo $target.Message::$trap_do;
-	break;
-
-      case 'TRAP_MAD_NOT_DO':
-	echo Message::$trap_not_do;
-	break;
-
-      case 'MAGE_DO':
-      case 'STEP_MAGE_DO':
-      case 'CHILD_FOX_DO':
-	echo $target.'を占いました';
-	break;
-
-      case 'VOODOO_KILLER_DO':
-	echo $target.'の呪いを祓いました';
-	break;
-
-      case 'STEP_GUARD_DO':
-	echo $target.Message::$guard_do;
-	break;
-
-      case 'ANTI_VOODOO_DO':
-	echo $target.'の厄を祓いました';
-	break;
-
-      case 'MIND_SCANNER_DO':
-	echo $target.'の心を読みました';
-	break;
-
-      case 'JAMMER_MAD_DO':
-	echo $target.'の占いを妨害しました';
-	break;
-
-      case 'VOODOO_MAD_DO':
-      case 'VOODOO_FOX_DO':
-	echo $target.'に呪いをかけました';
-	break;
-
-      case 'STEP_WOLF_EAT':
-      case 'SILENT_WOLF_EAT':
-      case 'POSSESSED_DO':
-	echo $target.'を狙いました';
-	break;
-
-      case 'MANIA_DO':
-	echo $target.'を真似しました';
-	break;
-      }
-      echo $footer;
-    }
-  }
-
   //前日の死亡メッセージ出力
   static function OutputDead() {
     if (is_null($str = self::GenerateDead())) return false;
@@ -716,7 +593,7 @@ EOF;
     //投票結果表示は再投票のみ
     if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false;
 
-    if (! UserDB::IsVoteKill()) { //投票済みチェック
+    if (is_null(DB::$SELF->target_no)) { //投票済みチェック
       $str = '<div class="revote">%s (%d回%s)</div><br>' . Text::LF;
       printf($str, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
     }

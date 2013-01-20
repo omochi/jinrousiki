@@ -34,13 +34,13 @@ DevUser::Initialize(25);
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
-RQ::GetTest()->test_users[2]->role = 'step_wolf authority';
+RQ::GetTest()->test_users[2]->role = 'sex_wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
 RQ::GetTest()->test_users[3]->live = 'live';
 
-RQ::GetTest()->test_users[4]->role = 'step_mage lovers[16] challenge_lovers rebel';
+RQ::GetTest()->test_users[4]->role = 'psycho_mage lovers[16] challenge_lovers rebel';
 RQ::GetTest()->test_users[4]->live = 'live';
 
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
@@ -52,25 +52,25 @@ RQ::GetTest()->test_users[6]->live = 'dead';
 RQ::GetTest()->test_users[7]->role = 'step_guard lovers[16]';
 RQ::GetTest()->test_users[7]->live = 'live';
 
-RQ::GetTest()->test_users[8]->role = 'poison_guard';
-RQ::GetTest()->test_users[8]->live = 'dead';
+RQ::GetTest()->test_users[8]->role = 'anti_voodoo';
+RQ::GetTest()->test_users[8]->live = 'live';
 
-RQ::GetTest()->test_users[9]->role = 'missfire_cat joker[2]';
+RQ::GetTest()->test_users[9]->role = 'poison_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'ascetic_assassin death_note[5] speaker';
+RQ::GetTest()->test_users[10]->role = 'reverse_assassin death_note[5] speaker';
 RQ::GetTest()->test_users[10]->live = 'live';
 
-RQ::GetTest()->test_users[11]->role = 'fox downer_luck changed_vindictive';
+RQ::GetTest()->test_users[11]->role = 'voodoo_mad downer_luck';
 RQ::GetTest()->test_users[11]->live = 'live';
 
-RQ::GetTest()->test_users[12]->role = 'anti_voodoo death_selected[5]';
+RQ::GetTest()->test_users[12]->role = 'possessed_fox death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'step_mad';
+RQ::GetTest()->test_users[13]->role = 'voodoo_killer';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->role = 'purple_fox death_warrant[6]';
+RQ::GetTest()->test_users[14]->role = 'jammer_fox death_warrant[6]';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
@@ -83,28 +83,28 @@ RQ::GetTest()->test_users[16]->live = 'live';
 RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
 RQ::GetTest()->test_users[17]->live = 'dead';
 
-RQ::GetTest()->test_users[18]->role = 'step_wolf no_last_words';
-RQ::GetTest()->test_users[18]->live = 'live';
+RQ::GetTest()->test_users[18]->role = 'human no_last_words';
+RQ::GetTest()->test_users[18]->live = 'dead';
 
-RQ::GetTest()->test_users[19]->role = 'shadow_fairy psycho_infected';
+RQ::GetTest()->test_users[19]->role = 'light_fairy psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
-RQ::GetTest()->test_users[20]->role = 'passion_vampire';
+RQ::GetTest()->test_users[20]->role = 'soul_vampire mind_presage[23]';
 RQ::GetTest()->test_users[20]->live = 'live';
 
 RQ::GetTest()->test_users[21]->role = 'revive_mania[6] mind_friend[21]';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->role = 'divine_escaper reduce_voter';
+RQ::GetTest()->test_users[22]->role = 'psycho_escaper reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'clairvoyance_scanner deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'border_priest deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
-RQ::GetTest()->test_users[24]->role = 'barrier_wizard infected[20]';
+RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
-RQ::GetTest()->test_users[25]->role = 'vajra_yaksa disfavor';
+RQ::GetTest()->test_users[25]->role = 'vajra_yaksa[1] disfavor';
 RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -112,7 +112,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 DevUser::Complement();
 
 //-- 仮想投票データをセット --//
-$set_date = 6;
+$set_date = 4;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -198,71 +198,72 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    #array('user_no' => 2, 	'target_no' => 21,	'type' => 'WOLF_EAT'),
-    #array('user_no' => 3, 	'target_no' => 12,	'type' => 'WOLF_EAT'),
-    #array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
-    array('user_no' => 4, 	'target_no' => '9 14 19 18 3',	'type' => 'STEP_MAGE_DO'),
-    array('user_no' => 5, 	'target_no' => 13,	'type' => 'MAGE_DO'),
-    #array('user_no' => 7, 	'target_no' => 11,	'type' => 'GUARD_DO'),
-    array('user_no' => 7, 	'target_no' => '12 13',	'type' => 'STEP_GUARD_DO'),
-    #array('user_no' => 8, 	'target_no' => 15,	'type' => 'GUARD_DO'),
-    #array('user_no' => 8, 	'target_no' => 3,	'type' => 'ANTI_VOODOO_DO'),
-    array('user_no' => 9, 	'target_no' => 3,	'type' => 'POISON_CAT_DO'),
-    #array('user_no' => 9, 	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 10, 	'target_no' => 11,	'type' => 'ASSASSIN_DO'),
-    #array('user_no' => 10, 	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
-    #array('user_no' => 10, 	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
-    #array('user_no' => 10, 	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
-    #array('user_no' => 11, 	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
-    #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_MAD_DO'),
-    #array('user_no' => 11, 	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
-    #array('user_no' => 11, 	'type' => 'DREAM_EAT',	'target_no' => 14),
-    #array('user_no' => 12, 	'type' => 'TRAP_MAD_DO',	'target_no' => 16),
-    #array('user_no' => 12, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
-    #array('user_no' => 12, 	'type' => 'POSSESSED_DO',	'target_no' => 23),
-    #array('user_no' => 12, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
-    array('user_no' => 12, 	'type' => 'ANTI_VOODOO_DO',	'target_no' => 4),
-    #array('user_no' => 12, 	'type' => 'MAGE_DO', 'target_no' => 16),
-    #array('user_no' => 12, 	'type' => 'WOLF_EAT', 'target_no' => 2),
-    #array('user_no' => 12, 	'type' => 'VOODOO_FOX_DO',	'target_no' => 21),
-    #array('user_no' => 13, 	'type' => 'POSSESSED_DO',	'target_no' => 8),
-    #array('user_no' => 13, 	'type' => 'POSSESSED_NOT_DO',	'target_no' => null),
-    #array('user_no' => 13, 	'type' => 'POISON_CAT_DO',	'target_no' => 6),
-    #array('user_no' => 13, 	'type' => 'POISON_CAT_NOT_DO',	'target_no' => null),
-    #array('user_no' => 13, 	'type' => 'TRAP_MAD_DO',	'target_no' => 13),
-    #array('user_no' => 13, 	'type' => 'TRAP_MAD_NOT_DO',	'target_no' => null),
-    #array('user_no' => 13, 	'type' => 'VOODOO_KILLER_DO',	'target_no' =>  7),
-    array('user_no' => 13, 	'target_no' => '12 13 14',	'type' => 'STEP_DO'),
-    #array('user_no' => 14, 	'type' => 'CHILD_FOX_DO',	'target_no' => 18),
-    #array('user_no' => 14, 	'type' => 'VOODOO_KILLER_DO',	'target_no' => 10),
-    #array('user_no' => 14, 	'type' => 'JAMMER_MAD_DO',	'target_no' => 5),
-    array('user_no' => 16, 	'target_no' => '11 6 1 2 3 4 5',	'type' => 'STEP_MAGE_DO'),
-    #array('user_no' => 17, 	'type' => 'FAIRY_DO', 'target_no' => 22),
-    #array('user_no' => 18, 	'type' => 'VOODOO_FOX_DO', 'target_no' => 20),
-    #array('user_no' => 18, 	'target_no' => '13 8 9 10',	'type' => 'STEP_WOLF_EAT'),
-    array('user_no' => 18, 	'target_no' => '13 8 9 10',	'type' => 'SILENT_WOLF_EAT'),
-    array('user_no' => 19, 	'type' => 'FAIRY_DO', 'target_no' => 18),
-    array('user_no' => 20, 	'type' => 'VAMPIRE_DO', 'target_no' => 23),
-    #array('user_no' => 21, 	'type' => 'CHILD_FOX_DO',	'target_no' => 5),
-    array('user_no' => 22, 	'type' => 'ESCAPE_DO', 'target_no' => 12),
-    #array('user_no' => 22, 	'type' => 'FAIRY_DO', 'target_no' => 13),
-    #array('user_no' => 22, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-    #array('user_no' => 22, 	'type' => 'OGRE_DO', 'target_no' => 24),
-    #array('user_no' => 22, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
-    #array('user_no' => 22, 	'type' => 'WIZARD_DO', 'target_no' => 23),
-    #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 12),
-    #array('user_no' => 23, 	'type' => 'ESCAPE_DO', 'target_no' => 11),
-    #array('user_no' => 23, 	'type' => 'REPORTER_DO', 'target_no' => 13),
-    #array('user_no' => 23, 	'type' => 'ASSASSIN_DO', 'target_no' => 3),
-    array('user_no' => 23, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 16),
-    #array('user_no' => 23, 	'type' => 'VAMPIRE_DO', 'target_no' => 16),
-    #array('user_no' => 24, 	'type' => 'MIND_SCANNER_DO', 'target_no' => 2),
-    #array('user_no' => 24, 	'type' => 'WIZARD_DO', 'target_no' => 11),
-    array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => '12 13'),
-    #array('user_no' => 24, 	'type' => 'SPREAD_WIZARD_DO', 'target_no' => 12),
-    #array('user_no' => 25, 	'type' => 'TRAP_MAD_DO', 'target_no' => 22),
-    #array('user_no' => 25, 	'type' => 'OGRE_DO', 'target_no' => 9),
-    array('user_no' => 25, 	'type' => 'OGRE_NOT_DO', 'target_no' => null),
+    //array('user_no' => 2,	'target_no' => 23,	'type' => 'WOLF_EAT'),
+    array('user_no' => 3,	'target_no' => 9,	'type' => 'WOLF_EAT'),
+    array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
+    //array('user_no' => 4, 	'target_no' => '9 14 19 18 3',	'type' => 'STEP_MAGE_DO'),
+    array('user_no' => 5,	'target_no' => 13,	'type' => 'MAGE_DO'),
+    //array('user_no' => 7,	'target_no' => 11,	'type' => 'GUARD_DO'),
+    array('user_no' => 7,	'target_no' => '8 9',	'type' => 'STEP_GUARD_DO'),
+    //array('user_no' => 8,	'target_no' => 7,	'type' => 'GUARD_DO'),
+    array('user_no' => 8,	'target_no' => 15,	'type' => 'ANTI_VOODOO_DO'),
+    array('user_no' => 9,	'target_no' => 3,	'type' => 'POISON_CAT_DO'),
+    //array('user_no' => 9,	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
+    array('user_no' => 10,	'target_no' => 9,	'type' => 'ASSASSIN_DO'),
+    //array('user_no' => 10,	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
+    //array('user_no' => 10,	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
+    //array('user_no' => 10,	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
+    //array('user_no' => 11,	'target_no' => 16,	'type' => 'JAMMER_MAD_DO'),
+    array('user_no' => 11,	'target_no' => 2,	'type' => 'VOODOO_MAD_DO'),
+    //array('user_no' => 11,	'target_no' => 4,	'type' => 'VOODOO_FOX_DO'),
+    //array('user_no' => 11,	'target_no' => 16,	'type' => 'DREAM_EAT'),
+    //array('user_no' => 12,	'target_no' => 12,	'type' => 'TRAP_MAD_DO'),
+    //array('user_no' => 12,	'target_no' => null,	'type' => 'TRAP_MAD_NOT_DO'),
+    array('user_no' => 12,	'target_no' => 18,	'type' => 'POSSESSED_DO'),
+    //array('user_no' => 12,	'target_no' => null,	'type' => 'POSSESSED_NOT_DO'),
+    //array('user_no' => 12,	'target_no' => 4,	'type' => 'ANTI_VOODOO_DO'),
+    //array('user_no' => 12,	'target_no' => 16,	'type' => 'MAGE_DO'),
+    //array('user_no' => 12,	'target_no' => 2,	'type' => 'WOLF_EAT'),
+    //array('user_no' => 12,	'target_no' => 11,	'type' => 'VOODOO_FOX_DO'),
+    //array('user_no' => 13,	'target_no' => 8,	'type' => 'POSSESSED_DO'),
+    //array('user_no' => 13,	'target_no' => null,	'type' => 'POSSESSED_NOT_DO'),
+    //array('user_no' => 13,	'target_no' => 6,	'type' => 'POISON_CAT_DO'),
+    //array('user_no' => 13,	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
+    //array('user_no' => 13,	'target_no' => 13,	'type' => 'TRAP_MAD_DO'),
+    //array('user_no' => 13,	'target_no' => null,	'type' => 'TRAP_MAD_NOT_DO'),
+    array('user_no' => 13,	'target_no' => 11,	'type' => 'VOODOO_KILLER_DO'),
+    //array('user_no' => 13,	'target_no' => '12 13 14',	'type' => 'STEP_DO'),
+    //array('user_no' => 14,	'target_no' => 18,	'type' => 'CHILD_FOX_DO'),
+    //array('user_no' => 14,	'target_no' => 13,	'type' => 'VOODOO_KILLER_DO'),
+    array('user_no' => 14,	'target_no' => 5,	'type' => 'JAMMER_MAD_DO'),
+    array('user_no' => 16,	'target_no' => '11 6 1 2 3 4 5',	'type' => 'STEP_MAGE_DO'),
+    //array('user_no' => 17,	'target_no' => 22,	'type' => 'FAIRY_DO'),
+    //array('user_no' => 18,	'target_no' => 20,	'type' => 'VOODOO_FOX_DO'),
+    //array('user_no' => 18,	'target_no' => '13 8 9 10',	'type' => 'STEP_WOLF_EAT'),
+    //array('user_no' => 18,	'target_no' => '13 8 9 10',	'type' => 'SILENT_WOLF_EAT'),
+    array('user_no' => 19,	'target_no' => 23,	'type' => 'FAIRY_DO'),
+    //array('user_no' => 19,	'target_no' => '3 7 23',	'type' => 'SPREAD_WIZARD_DO'),
+    array('user_no' => 20,	'target_no' => 3,	'type' => 'VAMPIRE_DO'),
+    //array('user_no' => 21,	'target_no' => 5,	'type' => 'CHILD_FOX_DO'),
+    array('user_no' => 22,	'target_no' => 3,	'type' => 'ESCAPE_DO'),
+    //array('user_no' => 22,	'target_no' => 13,	'type' => 'FAIRY_DO'),
+    //array('user_no' => 22,	'target_no' => 22,	'type' => 'TRAP_MAD_DO'),
+    //array('user_no' => 22,	'target_no' => 24,	'type' => 'OGRE_DO'),
+    //array('user_no' => 22,	'target_no' => null,	'type' => 'OGRE_NOT_DO'),
+    //array('user_no' => 22,	'target_no' => 23,	'type' => 'WIZARD_DO'),
+    //array('user_no' => 23,	'target_no' => 12,	'type' => 'REPORTER_DO'),
+    //array('user_no' => 23,	'target_no' => 11,	'type' => 'ESCAPE_DO'),
+    //array('user_no' => 23,	'target_no' => 25,	'type' => 'REPORTER_DO'),
+    //array('user_no' => 23,	'target_no' => 3,	'type' => 'ASSASSIN_DO'),
+    //array('user_no' => 23,	'target_no' => 11,	'type' => 'MIND_SCANNER_DO'),
+    //array('user_no' => 23,	'target_no' => 16,	'type' => 'VAMPIRE_DO'),
+    //array('user_no' => 24,	'target_no' => 2,	'type' => 'MIND_SCANNER_DO'),
+    array('user_no' => 24,	'target_no' => 11,	'type' => 'WIZARD_DO'),
+    //array('user_no' => 24,	'target_no' => '3 9',	'type' => 'SPREAD_WIZARD_DO'),
+    //array('user_no' => 24,	'target_no' => 12,	'type' => 'SPREAD_WIZARD_DO'),
+    //array('user_no' => 25,	'target_no' => 22,	'type' => 'TRAP_MAD_DO'),
+    array('user_no' => 25,	'target_no' => 9,	'type' => 'OGRE_DO'),
+    //array('user_no' => 25,	'target_no' => null,	'type' => 'OGRE_NOT_DO'),
   );
 }
 
@@ -274,13 +275,14 @@ RQ::GetTest()->system_message = array(
 	     #'VOTE_DUEL' => array(8),
 	     'WEATHER' => array(44),
 	     ),
+  6 => array('WEATHER' => array(47)),
   8 => array('WEATHER' => array(33)
 	     )
 );
 
 //-- 仮想発言をセット --//
 RQ::Set('say', '');
-#RQ::Get()->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
+//RQ::Get()->say = "占いCO！\n赤は村人！今日は木曜日ですよwww？";
 RQ::Get()->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
@@ -297,6 +299,7 @@ DevUser::Load();
 if (DB::$ROOM->date == 1) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
+DB::$USER->SetEvent(); //天候テスト用
 #DB::$USER->ByID(9)->live = 'live';
 DB::$SELF = DB::$USER->ByID(1);
 #DB::$SELF = DB::$USER->TraceExchange(14);
@@ -428,47 +431,7 @@ do {
     $user->Reparse();
     $user->target_no = 0;
   }
-
-  foreach (RQ::GetTest()->vote->night as $stack) {
-    //$uname = DB::$USER->GetHandleName($stack['uname'], true);
-    $uname = DB::$USER->ByVirtual($stack['user_no'])->handle_name;
-    switch($stack['type']) {
-    case 'CUPID_DO':
-      $target_stack = array();
-      foreach (explode(' ', $stack['target_no']) as $id) {
-	$user = DB::$USER->ByVirtual($id);
-	$target_stack[$user->user_no] = $user->handle_name;
-      }
-      $target_uname = implode(' ', $target_stack);
-      break;
-
-    case 'STEP_MAGE_DO':
-    case 'STEP_GUARD_DO':
-    case 'SPREAD_WIZARD_DO':
-    case 'STEP_WOLF_EAT':
-    case 'SILENT_WOLF_EAT':
-    case 'STEP_DO':
-      $target_stack = array();
-      foreach (explode(' ', $stack['target_no']) as $id) {
-	$user = DB::$USER->ByVirtual($id);
-	$target_stack[$user->user_no] = $user->handle_name;
-      }
-      ksort($target_stack);
-      $target_uname = implode(' ', $target_stack);
-      break;
-
-    default:
-      //$target_uname = DB::$USER->GetHandleName($stack['target_uname'], true);
-      if (isset($stack['target_no'])) {
-	$target_uname = DB::$USER->ByVirtual($stack['target_no'])->handle_name;
-      }
-      break;
-    }
-    $stack_list[] = array('type' => $stack['type'],
-			  'message' =>  $uname . "\t" . $target_uname);
-    RQ::GetTest()->ability_action_list = $stack_list;
-  }
-  GameHTML::OutputAbilityAction();
+  DevHTML::OutputAbilityAction();
 
   //Text::p(RQ::GetTest()->system_message, 'SystemMessage');
   DB::$ROOM->LoadEvent();
@@ -494,4 +457,5 @@ do {
 
 //DB::Connect(); DB::d();
 //Text::p($stack);
+
 HTML::OutputFooter(true);

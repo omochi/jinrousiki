@@ -5,7 +5,7 @@
 */
 class Role_thunder_brownie extends Role {
   function SetVoteDay($uname) {
-    if ($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStackName($uname);
   }
 
   //落雷判定
@@ -25,6 +25,6 @@ class Role_thunder_brownie extends Role {
     }
     //Text::p($stack, 'ThunderboltBase');
     /* actor は直前に別フィルタで設定されたユーザが入るケースがあるので注意 */
-    $this->AddStack(DB::$USER->ByVirtual(Lottery::Get($stack))->uname, 'thunderbolt');
+    $this->AddStackName(DB::$USER->ByVirtual(Lottery::Get($stack))->uname, 'thunderbolt');
   }
 }

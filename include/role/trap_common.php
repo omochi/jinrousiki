@@ -7,7 +7,7 @@
 RoleManager::LoadFile('common');
 class Role_trap_common extends Role_common {
   function SetVoteDay($uname) {
-    if ($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStackName($uname);
   }
 
   function VotedReaction() {

@@ -13,11 +13,11 @@ class Role_sweet_status extends Role {
     $actor = $this->GetActor();
     if ($actor->IsRole('lovers')) return; //恋人持ちなら処理委託
     foreach (DB::$USER->rows as $user) {
-      if ($this->IsActor($user->uname)) continue;
+      if ($this->IsActor($user)) continue;
       //夢求愛者対応
-      if ($actor->IsPartner('dummy_chiroptera', $user->user_no) ||
+      if ($actor->IsPartner('dummy_chiroptera', $user->id) ||
 	  (DB::$ROOM->date == 1 && $user->IsPartner($this->role, $actor->partner_list))) {
-	$stack[] = DB::$USER->GetHandleName($user->uname, true); //憑依追跡
+	$stack[] = $user->GetName(); //憑依追跡
       }
     }
     RoleHTML::OutputPartner($stack, 'partner_header', 'lovers_footer');

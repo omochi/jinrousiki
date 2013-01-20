@@ -42,7 +42,7 @@ class Role_mirror_fairy extends Role_fairy {
     DB::$ROOM->SystemMessage($this->GetID(), 'VOTE_DUEL', 1);
   }
 
-  function SetEvent($USERS) {
+  function SetEvent(UserData $USERS) {
     $stack = array(); //決選投票対象者の ID リスト
     foreach ($this->GetActor()->GetPartner($this->role, true) as $key => $value) { //生存確認
       if ($USERS->IsVirtualLive($key))   $stack[] = $key;

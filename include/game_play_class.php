@@ -59,8 +59,7 @@ class GamePlay {
 	self::SaveLastWords(RQ::Get()->say); //遺言登録 (細かい判定条件は関数内で行う)
       }
       //死者 or 身代わり君 or 同一ゲームシーンなら書き込む
-      elseif (DB::$SELF->IsDead() || DB::$SELF->IsDummyBoy() ||
-	      DB::$SELF->last_load_scene == DB::$ROOM->scene) {
+      elseif (DB::$SELF->IsDead() || DB::$SELF->IsDummyBoy() || DB::$SELF->CheckScene()) {
 	self::Talk(RQ::Get()->say);
       }
       else {
@@ -68,9 +67,7 @@ class GamePlay {
       }
 
       //ゲームシーンを更新
-      if (DB::$SELF->last_load_scene != DB::$ROOM->scene) {
-	DB::$SELF->Update('last_load_scene', DB::$ROOM->scene);
-      }
+      if (! DB::$SELF->CheckScene()) DB::$SELF->Update('last_load_scene', DB::$ROOM->scene);
     }
     //霊界の GM でも突然死タイマーを見れるようにする
     elseif (DB::$ROOM->dead_mode && DB::$ROOM->IsPlaying() && DB::$SELF->IsDummyBoy()) {
@@ -108,7 +105,6 @@ class GamePlay {
     (DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) ? Talk::OutputHeaven() : Talk::Output();
 
     if (! DB::$ROOM->heaven_mode) {
-      if (DB::$SELF->IsDead()) GameHTML::OutputAbilityAction();
       GameHTML::OutputLastWords();
       GameHTML::OutputDead();
       GameHTML::OutputVote();
@@ -538,7 +534,7 @@ EOF;
   private function OutputLastWords() {
     if (DB::$ROOM->IsAfterGame()) return false; //ゲーム終了後は表示しない
 
-    $str = DB::$SELF->LoadLastWords();
+    $str = UserDB::GetLastWords(DB::$SELF->user_no);
     if ($str == '') return false;
 
     Text::ConvertLine($str); //改行コードを変換

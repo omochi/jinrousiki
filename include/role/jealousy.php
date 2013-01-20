@@ -9,7 +9,7 @@ class Role_jealousy extends Role {
 
   function SetVoteDay($uname) {
     $this->InitStack();
-    if ($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStackName($uname);
   }
 
   function VotedReaction() {

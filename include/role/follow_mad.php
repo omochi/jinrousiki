@@ -8,7 +8,7 @@ class Role_follow_mad extends Role {
   public $sudden_death = 'FOLLOWED';
 
   function SetVoteDay($uname) {
-    if ($this->IsRealActor()) $this->AddStack($uname);
+    if ($this->IsRealActor()) $this->AddStackName($uname);
   }
 
   function Followed($user_list) {

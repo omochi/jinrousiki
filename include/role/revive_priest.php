@@ -15,8 +15,8 @@ class Role_revive_priest extends Role_priest {
       return false;
     }
 
-    foreach ($role_flag->{$this->role} as $uname) {
-      $user = DB::$USER->ByUname($uname);
+    foreach ($role_flag->{$this->role} as $id) {
+      $user = DB::$USER->ByID($id);
       if ($user->IsLovers() || (DB::$ROOM->date >= 4 && $user->IsLive(true))) {
 	$user->LostAbility();
       }
@@ -28,7 +28,7 @@ class Role_revive_priest extends Role_priest {
   }
 
   //帰還
-  function PriestReturn() {
+  final function PriestReturn() {
     $user = $this->GetActor();
     if ($user->IsDummyBoy()) return;
     if ($user->IsLovers()) {

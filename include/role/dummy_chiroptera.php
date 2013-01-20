@@ -45,7 +45,7 @@ class Role_dummy_chiroptera extends Role {
     $stack = array();
     foreach ($list as $user) {
       $stack[] = $user->handle_name;
-      if (! $this->IsActor($user->uname)) $this->GetActor()->AddMainRole($user->user_no);
+      if (! $this->IsActor($user)) $this->GetActor()->AddMainRole($user->id);
     }
 
     $this->SetStack(implode(' ', array_keys($list)), 'target_no');

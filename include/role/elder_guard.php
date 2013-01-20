@@ -8,7 +8,7 @@
 */
 RoleManager::LoadFile('guard');
 class Role_elder_guard extends Role_guard {
-  function GuardFailed() { return mt_rand(0, 9) < 3 ? true : null; }
+  function IgnoreGuard() { return Lottery::Percent(30) ? true : null; }
 
   protected function IsHunt(User $user) { return false; }
 
