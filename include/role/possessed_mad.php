@@ -8,7 +8,6 @@
 class Role_possessed_mad extends Role {
   public $action     = 'POSSESSED_DO';
   public $not_action = 'POSSESSED_NOT_DO';
-  public $ignore_message = '初日は憑依できません';
   public $ability = 'ability_possessed_mad';
 
   function OutputResult() {
@@ -28,6 +27,8 @@ class Role_possessed_mad extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は憑依できません'; }
 
   function IsFinishVote(array $list) {
     return ! $this->GetActor()->IsActive() || parent::IsFinishVote($list);
@@ -50,8 +51,8 @@ class Role_possessed_mad extends Role {
     return $live ? '死者以外には投票できません' : null;
   }
 
-  function FilterVoteDo(&$number) {
-    if ($this->IsAbility()) $number++;
+  function FilterVoteDo(&$count) {
+    if ($this->IsAbility()) $count++;
   }
 
   //憑依情報セット

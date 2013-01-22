@@ -8,7 +8,6 @@
 */
 class Role_guard extends Role {
   public $action = 'GUARD_DO';
-  public $ignore_message = '初日は護衛できません';
 
   protected function OutputResult() {
     if (DB::$ROOM->date < 1 || DB::$ROOM->IsOption('seal_message')) return;
@@ -21,6 +20,8 @@ class Role_guard extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は護衛できません'; }
 
   //護衛先セット
   function SetGuard(User $user) {

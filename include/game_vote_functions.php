@@ -17,7 +17,7 @@ class Vote {
       if (DB::$ROOM->test_mode ||
 	  ! self::CheckSelfVoteNight('DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')) {
 	$filter = RoleManager::LoadMain(new User('mage')); //上記のバグ対策用 (本来は assassin 相当)
-	RoleManager::$actor->uname    = DB::$SELF->uname; //同一ユーザ判定用
+	RoleManager::$actor           = DB::$SELF; //同一ユーザ判定用
 	RoleManager::$get->action     = 'DEATH_NOTE_DO';
 	RoleManager::$get->not_action = 'DEATH_NOTE_NOT_DO';
       }
@@ -123,9 +123,7 @@ class Vote {
 
     //投票済みチェック
     DB::$ROOM->LoadVote();
-    if (in_array(DB::$SELF->user_no, DB::$ROOM->vote)) {
-      VoteHTML::OutputResult($str . '：投票済みです');
-    }
+    if (in_array(DB::$SELF->id, DB::$ROOM->vote)) VoteHTML::OutputResult($str . '：投票済みです');
 
     if (DB::$SELF->Vote('GAMESTART')) { //投票処理
       self::AggregateGameStart(); //集計処理
@@ -142,7 +140,7 @@ class Vote {
     self::CheckSituation('KICK_DO'); //コマンドチェック
     $str = 'Kick 投票：';
     $target = DB::$USER->ByID(RQ::Get()->target_no); //投票先のユーザ情報を取得
-    if ($target->uname == '' || $target->live == 'kick') {
+    if (is_null($target->id) || $target->live == 'kick') {
       VoteHTML::OutputResult($str . '投票先が指定されていないか、すでに Kick されています');
     }
     if ($target->IsDummyBoy()) VoteHTML::OutputResult($str . '身代わり君には投票できません');
@@ -151,12 +149,12 @@ class Vote {
     }
 
     DB::$ROOM->LoadVote(true); //投票情報をロード
-    $id = DB::$SELF->user_no;
-    if (isset(DB::$ROOM->vote[$id]) && in_array($target->user_no, DB::$ROOM->vote[$id])) {
+    $id = DB::$SELF->id;
+    if (isset(DB::$ROOM->vote[$id]) && in_array($target->id, DB::$ROOM->vote[$id])) {
       VoteHTML::OutputResult($str . "{$target->handle_name} さんへ Kick 投票済み");
     }
 
-    if (DB::$SELF->Vote('KICK_DO', $target->user_no)) { //投票処理
+    if (DB::$SELF->Vote('KICK_DO', $target->id)) { //投票処理
       DB::$ROOM->Talk($target->handle_name, 'KICK_DO', DB::$SELF->uname); //投票しました通知
       $vote_count = self::AggregateKick($target); //集計処理
       DB::Commit();
@@ -173,7 +171,7 @@ class Vote {
   static function VoteDay() {
     self::CheckSituation('VOTE_KILL'); //コマンドチェック
     $target = DB::$USER->ByReal(RQ::Get()->target_no); //投票先のユーザ情報を取得
-    if (is_null($target->user_no)) VoteHTML::OutputResult('処刑：無効な投票先です');
+    if (is_null($target->id)) VoteHTML::OutputResult('処刑：無効な投票先です');
     if ($target->IsSelf()) VoteHTML::OutputResult('処刑：自分には投票できません');
     if ($target->IsDead()) VoteHTML::OutputResult('処刑：死者には投票できません');
 
@@ -203,20 +201,21 @@ class Vote {
 
     //サブ役職の補正
     if (! DB::$ROOM->IsEvent('no_authority')) { //蜃気楼ならスキップ
-      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想投票者をセット
+      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->id); //仮想投票者をセット
       foreach (RoleManager::Load('vote_do_sub') as $filter) $filter->FilterVoteDo($vote_number);
     }
 
-    if (DB::$ROOM->IsEvent('hyper_random_voter')) $vote_number += mt_rand(0, 5); //天候補正
+    //天候補正
+    if (DB::$ROOM->IsEvent('hyper_random_voter')) $vote_number += Lottery::GetRange(0, 5);
     if ($vote_number < 0) $vote_number = 0; //マイナス補正
 
-    if (! DB::$SELF->Vote('VOTE_KILL', $target->user_no, $vote_number)) { //投票処理
+    if (! DB::$SELF->Vote('VOTE_KILL', $target->id, $vote_number)) { //投票処理
       VoteHTML::OutputResult('データベースエラー');
     }
 
     //システムメッセージ
     if (DB::$ROOM->test_mode) return true;
-    DB::$ROOM->Talk(DB::$USER->GetHandleName($target->uname, true), 'VOTE_DO', DB::$SELF->uname);
+    DB::$ROOM->Talk($target->GetName(), 'VOTE_DO', DB::$SELF->uname);
 
     self::AggregateDay(); //集計処理
     DB::Commit();
@@ -361,7 +360,7 @@ class Vote {
       foreach ($uname_list as $uname) {
 	do {
 	  $role = DB::$USER->GetRole($uname); //希望役職を取得
-	  if ($role == '' || mt_rand(1, 100) > CastConfig::WISH_ROLE_RATE) break;
+	  if ($role == '' || ! Lottery::Percent(CastConfig::WISH_ROLE_RATE)) break;
 	  $fix_role = $role;
 
 	  if ($wish_group) { //特殊村はグループ単位で希望処理を行なう
@@ -551,12 +550,12 @@ class Vote {
       if ($poll < 0) $poll = 0; //マイナス補正
 
       //リストにデータを追加
-      $live_uname_list[$user->user_no]   = $user->uname;
-      $vote_target_list[$user->uname]    = $target->uname;
-      $vote_count_list[$user->uname]     = $poll;
-      $vote_message_list[$user->user_no] = array('target_name' => $target->handle_name,
-						 'vote' => $vote, 'poll' => $poll);
-      if (DB::$USER->ByReal($user->user_no)->IsRole('philosophy_wizard')) { //賢者の魔法発動
+      $live_uname_list[$user->id]     = $user->uname;
+      $vote_target_list[$user->uname] = $target->uname;
+      $vote_count_list[$user->uname]  = $poll;
+      $vote_message_list[$user->id]   = array('target_name' => $target->handle_name,
+					      'vote' => $vote, 'poll' => $poll);
+      if (DB::$USER->ByReal($user->id)->IsRole('philosophy_wizard')) { //賢者の魔法発動
 	RoleManager::LoadMain($user)->SetWizard();
 	//Text::p($user->virtual_role, 'Wizard: ' . $user->uname);
       }
@@ -569,7 +568,9 @@ class Vote {
     //Text::p($vote_message_list, 'VoteMessage');
     ksort($vote_message_list); //投票順をソート (憑依対応)
     $stack = array();
-    foreach ($vote_message_list as $id => $list) $stack[DB::$USER->ByID($id)->uname] = $list;
+    foreach ($vote_message_list as $id => $list) {
+      $stack[DB::$USER->ByID($id)->uname] = $list;
+    }
     $vote_message_list = $stack;
     //Text::p($vote_message_list, 'VoteMessage');
 
@@ -592,7 +593,7 @@ class Vote {
       extract($stack); //配列を展開
       if ($poll > $max_poll) $max_poll = $poll; //最大得票数を更新
       if (DB::$ROOM->test_mode) continue;
-      $handle_name = DB::$USER->GetHandleName($uname);
+      $handle_name = DB::$USER->ByUname($uname)->handle_name; //憑依追跡済み
       $values = $values_header . "'{$handle_name}', '{$target_name}', {$vote}, {$poll}";
       DB::Insert('result_vote_kill', $items, $values);
     }
@@ -619,7 +620,7 @@ class Vote {
       //-- 処刑者情報収取 --//
       $uname = RoleManager::$get->vote_kill_uname; //ユーザ情報を取得
       $vote_target = DB::$USER->ByRealUname($uname);
-      DB::$USER->Kill($vote_target->user_no, 'VOTE_KILLED'); //処刑処理
+      DB::$USER->Kill($vote_target->id, 'VOTE_KILLED'); //処刑処理
       //処刑者を生存者リストから除く
       unset($live_uname_list[array_search($uname, $live_uname_list)]);
       $voter_list = array_keys($vote_target_list, $vote_target->uname); //投票した人を取得
@@ -631,7 +632,7 @@ class Vote {
 	if (! $vote_target->IsPoison()) break; //毒能力の発動判定
 
 	//薬師系の解毒判定 (夢毒者は対象外)
-	RoleManager::$actor = DB::$USER->ByVirtual($vote_target->user_no); //投票データは仮想ユーザ
+	RoleManager::$actor = DB::$USER->ByVirtual($vote_target->id); //投票データは仮想ユーザ
 	$role = 'alchemy_pharmacist'; //錬金術師
 	RoleManager::$actor->detox = false;
 	RoleManager::$actor->$role = false;
@@ -653,7 +654,7 @@ class Vote {
 	  $poison_target->LostAbility();
 	  break;
 	}
-	DB::$USER->Kill($poison_target->user_no, 'POISON_DEAD'); //死亡処理
+	DB::$USER->Kill($poison_target->id, 'POISON_DEAD'); //死亡処理
 
 	$role = 'chain_poison'; //連毒者の処理
 	if ($poison_target->IsRole($role)) RoleManager::GetClass($role)->Poison($poison_target);
@@ -698,13 +699,12 @@ class Vote {
 	  $wizard_action = 'SPIRITISM_WIZARD_RESULT';
 	  if (isset($wizard_flag->sex_necromancer)) {
 	    $result = $filter->Necromancer($vote_target, $stolen_flag);
-	    $name   = DB::$USER->GetHandleName($vote_target->uname, true);
-	    DB::$ROOM->ResultAbility($wizard_action, $result, $name);
+	    DB::$ROOM->ResultAbility($wizard_action, $result, $vote_target->GetName());
 	  }
 	}
       }
 
-      $name = DB::$USER->GetHandleName($vote_target->uname, true);
+      $name = $vote_target->GetName();
       foreach (RoleFilterData::$necromancer as $role) {
 	if ($role_flag->$role || $wizard_flag->$role) {
 	  $str = RoleManager::GetClass($role)->Necromancer($vote_target, $stolen_flag);
@@ -787,7 +787,7 @@ class Vote {
 	  $user = DB::$USER->ByRealUname($uname);
 	  if ($user->IsLive(true) && ! $user->IsAvoid(true) && ! $user->IsRole('psycho_infected') &&
 	      ! $user->IsCamp('vampire')) {
-	    $stack[] = $user->user_no;
+	    $stack[] = $user->id;
 	  }
 	}
 	//Text::p($stack, 'Target [psycho_infected]');

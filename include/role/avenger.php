@@ -35,7 +35,7 @@ class Role_avenger extends Role_valkyrja_duelist {
 
   function Win($winner) {
     $actor = $this->GetActor();
-    $id    = $actor->user_no;
+    $id    = $actor->id;
     $count = 0;
     foreach (DB::$USER->rows as $user) {
       if ($user->IsPartner($this->partner_role, $id)) {

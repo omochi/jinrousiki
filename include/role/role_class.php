@@ -315,7 +315,6 @@ abstract class Role {
   public $submit;
   public $not_submit;
   public $add_submit;
-  public $ignore_message;
   public $checkbox = '<input type="radio" name="target_no"';
 
   function __construct() {
@@ -344,7 +343,8 @@ abstract class Role {
   //メソッド保持クラス取得 (Mixin 用)
   protected function GetClass($method) {
     $class = 'Role_' . $this->role;
-    return method_exists($class, $method) ? new $class() : $this;
+    if ($class == get_class($this)) return $this;
+    return method_exists($class, $method) ? RoleManager::GetClass($this->role) : $this;
   }
 
   //プロパティ取得 (Mixin 用)
@@ -392,7 +392,7 @@ abstract class Role {
     RoleManager::$get->{is_null($role) ? $this->role : $role}[$id] = $data;
   }
 
-  //データ追加 (一時互換用)
+  //データ追加 (Uname 用)
   protected function AddStackName($data, $role = null, $uname = null) {
     RoleManager::$get->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
   }
@@ -753,7 +753,10 @@ abstract class Role {
   }
 
   //投票スキップ判定
-  function IgnoreVote() { return $this->IsVote() ? null : $this->ignore_message; }
+  function IgnoreVote() { return $this->IsVote() ? null : $this->GetIgnoreMessage(); }
+
+  //投票無効メッセージ取得
+  function GetIgnoreMessage() { return null; }
 
   //-- 投票画面表示 (夜) --//
   //投票対象ユーザ取得

@@ -8,13 +8,14 @@
 class Role_assassin extends Role {
   public $action     = 'ASSASSIN_DO';
   public $not_action = 'ASSASSIN_NOT_DO';
-  public $ignore_message = '初日は暗殺できません';
 
   function OutputAction() {
     RoleHTML::OutputVote('assassin-do', 'assassin_do', $this->action, $this->not_action);
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は暗殺できません'; }
 
   function IsFinishVote(array $list) {
     if (DB::$ROOM->IsEvent('force_assassin_do')) unset($list[$this->not_action]);

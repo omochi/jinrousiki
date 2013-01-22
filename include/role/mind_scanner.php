@@ -9,7 +9,6 @@
 class Role_mind_scanner extends Role {
   public $action = 'MIND_SCANNER_DO';
   public $mind_role = 'mind_read';
-  public $ignore_message = '初日以外は投票できません';
 
   protected function OutputPartner() {
     if (DB::$ROOM->date < 2 || is_null($this->mind_role)) return;
@@ -26,6 +25,8 @@ class Role_mind_scanner extends Role {
   }
 
   function IsVote() { return parent::IsVote() && DB::$ROOM->date == 1; }
+
+  function GetIgnoreMessage() { return '初日以外は投票できません'; }
 
   function IsVoteCheckbox(User $user, $live) {
     return parent::IsVoteCheckbox($user, $live) && ! $user->IsDummyBoy();

@@ -13,7 +13,7 @@ class Role_shadow_fairy extends Role_fairy {
 	if ($date != $base_date) continue;
 	$target = $USERS->ByID($id);
 	if ($target->IsRole($this->role)) {
-	  $stack[$target->user_no] = array('icon' => $user->icon_filename, 'color' => $user->color);
+	  $stack[$target->id] = array('icon' => $user->icon_filename, 'color' => $user->color);
 	}
       }
     }

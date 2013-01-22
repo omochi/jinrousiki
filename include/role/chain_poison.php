@@ -12,15 +12,15 @@ class Role_chain_poison extends Role {
 
   //毒処理
   function Poison(User $user) {
-    RoleManager::$actor = DB::$USER->ByVirtual($user->user_no); //解毒判定
+    RoleManager::$actor = DB::$USER->ByVirtual($user->id); //解毒判定
     RoleManager::$actor->detox = false;
     foreach (RoleManager::LoadFilter('detox') as $filter) $filter->Detox();
     if (RoleManager::$actor->detox) return;
 
     $stack = array();
-    foreach (DB::$USER->GetLivingUsers(true) as $uname) { //生存者から常時対象外の役職を除く
-      $user = DB::$USER->ByRealUname($uname);
-      if (! $user->IsAvoid(true)) $stack[] = $user->user_no;
+    foreach (DB::$USER->GetLivingUsers(true) as $id => $uname) { //生存者から常時対象外の役職を除く
+      $user = DB::$USER->ByReal($id);
+      if (! $user->IsAvoid(true)) $stack[] = $user->id;
     }
     //Text::p($stack, "Target [{$this->role}]");
 
@@ -42,7 +42,7 @@ class Role_chain_poison extends Role {
 	DB::$USER->Kill($id, 'POISON_DEAD'); //死亡処理
 
 	if (! $target->IsRole($this->role)) continue; //連鎖判定
-	RoleManager::$actor = DB::$USER->ByVirtual($target->user_no); //解毒判定
+	RoleManager::$actor = DB::$USER->ByVirtual($target->id); //解毒判定
 	RoleManager::$actor->detox = false;
 	foreach (RoleManager::LoadFilter('detox') as $filter) $filter->Detox();
 	if (! RoleManager::$actor->detox) $count++;

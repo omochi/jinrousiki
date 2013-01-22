@@ -10,13 +10,14 @@ class Role_mania extends Role {
   public $copied = 'copied';
   public $delay_copy = false;
   public $camp_copy  = false;
-  public $ignore_message = '初日以外は投票できません';
 
   function OutputAction() {
     RoleHTML::OutputVote('mania-do', 'mania_do', $this->action);
   }
 
   function IsVote() { return DB::$ROOM->date == 1; }
+
+  function GetIgnoreMessage() { return '初日以外は投票できません'; }
 
   //コピー処理
   function Copy(User $user) {

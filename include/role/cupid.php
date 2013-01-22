@@ -7,7 +7,6 @@
 */
 class Role_cupid extends Role {
   public $action = 'CUPID_DO';
-  public $ignore_message = '初日以外は投票できません';
   public $checkbox = '<input type="checkbox" name="target_no[]"';
   public $self_shoot  = false;
   public $shoot_count = 2;
@@ -26,6 +25,8 @@ class Role_cupid extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date == 1; }
+
+  function GetIgnoreMessage() { return '初日以外は投票できません'; }
 
   function SetVoteNight() {
     parent::SetVoteNight();

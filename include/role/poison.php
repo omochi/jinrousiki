@@ -12,7 +12,7 @@ class Role_poison extends Role {
     foreach ($list as $uname) {
       $user = DB::$USER->ByRealUname($uname);
       if ($user->IsLive(true) && ! $user->IsAvoidPoison(true) && $class->$method($user)) {
-	$stack[] = $user->user_no;
+	$stack[] = $user->id;
       }
     }
     return $stack;

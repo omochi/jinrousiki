@@ -7,11 +7,10 @@
 */
 class Role_poison_cat extends Role {
   public $mix_in = 'poison';
-  public $action     = 'POISON_CAT_DO';
-  public $not_action = 'POISON_CAT_NOT_DO';
-  public $submit     = 'revive_do';
-  public $not_submit = 'revive_not_do';
-  public $ignore_message = '初日は蘇生できません';
+  public $action      = 'POISON_CAT_DO';
+  public $not_action  = 'POISON_CAT_NOT_DO';
+  public $submit      = 'revive_do';
+  public $not_submit  = 'revive_not_do';
   public $revive_rate = 25;
   public $missfire_rate;
 
@@ -27,6 +26,8 @@ class Role_poison_cat extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date > 1 && ! DB::$ROOM->IsOpenCast(); }
+
+  function GetIgnoreMessage() { return '初日は蘇生できません'; }
 
   function IgnoreVote() {
     if (! is_null($str = parent::IgnoreVote())) return $str;

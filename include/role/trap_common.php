@@ -18,7 +18,7 @@ class Role_trap_common extends Role_common {
     foreach (array_keys($this->GetStack('target')) as $uname) {
       $user = DB::$USER->ByRealUname($uname);
       if (! $user->IsCamp('human', true)) {
-	$target_list[$user->user_no] = DB::$USER->ByVirtual($user->user_no)->uname;
+	$target_list[$user->id] = DB::$USER->ByVirtual($user->id)->uname;
       }
     }
     //Text::p($target_list, '! Human');

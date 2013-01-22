@@ -15,6 +15,6 @@ class Role_seal_medium extends Role_medium {
 
   function SetVoteAction(User $user) {
     if (! $user->IsRole($this->seal_list)) return;
-    $user->IsActive() ? $user->LostAbility() : $this->SuddenDeathKill($user->user_no);
+    $user->IsActive() ? $user->LostAbility() : $this->SuddenDeathKill($user->id);
   }
 }

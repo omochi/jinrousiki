@@ -7,7 +7,6 @@
 class Role_reporter extends Role {
   public $action = 'REPORTER_DO';
   public $result = 'REPORTER_SUCCESS';
-  public $ignore_message = '初日の尾行はできません';
 
   protected function OutputResult() {
     if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
@@ -18,6 +17,8 @@ class Role_reporter extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日の尾行はできません'; }
 
   //尾行
   function Report(User $user) {

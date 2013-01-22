@@ -10,13 +10,14 @@ RoleManager::LoadFile('mind_scanner');
 class Role_clairvoyance_scanner extends Role_mind_scanner {
   public $mind_role = null;
   public $result = 'CLAIRVOYANCE_RESULT';
-  public $ignore_message = '初日は透視できません';
 
   protected function OutputResult() {
     if (DB::$ROOM->date > 2) $this->OutputAbilityResult($this->result);
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は透視できません'; }
 
   /*
     複数の投票イベントを持つタイプが出現した場合は複数のメッセージを発行する必要がある

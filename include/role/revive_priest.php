@@ -35,7 +35,7 @@ class Role_revive_priest extends Role_priest {
       $user->LostAbility();
     }
     elseif ($user->IsLive(true)) {
-      DB::$USER->Kill($user->user_no, 'PRIEST_RETURNED');
+      DB::$USER->Kill($user->id, 'PRIEST_RETURNED');
     }
   }
 }

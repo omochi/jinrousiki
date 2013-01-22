@@ -5,13 +5,14 @@
 */
 class Role_dream_eater_mad extends Role {
   public $action = 'DREAM_EAT';
-  public $ignore_message = '初日は襲撃できません';
 
   function OutputAction() {
     RoleHTML::OutputVote('wolf-eat', 'dream_eat', $this->action);
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は襲撃できません'; }
 
   //夢食い処理
   final function DreamEat(User $user) {

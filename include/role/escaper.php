@@ -8,13 +8,14 @@
 */
 class Role_escaper extends Role {
   public $action = 'ESCAPE_DO';
-  public $ignore_message = '初日は逃亡できません';
 
   function OutputAction() {
     RoleHTML::OutputVote('escape-do', 'escape_do', $this->action);
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は逃亡できません'; }
 
   //逃亡
   function Escape(User $user) {

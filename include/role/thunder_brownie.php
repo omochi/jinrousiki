@@ -21,7 +21,7 @@ class Role_thunder_brownie extends Role {
     $stack = array();
     foreach ($list as $uname) {
       $user = DB::$USER->ByRealUname($uname);
-      if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
+      if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->id;
     }
     //Text::p($stack, 'ThunderboltBase');
     /* actor は直前に別フィルタで設定されたユーザが入るケースがあるので注意 */

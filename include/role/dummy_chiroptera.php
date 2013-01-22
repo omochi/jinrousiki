@@ -12,7 +12,7 @@ class Role_dummy_chiroptera extends Role {
     $target = $user->GetPartner($this->role);
     $stack  = $target;
     if (is_array($stack)) { //仮想恋人作成結果を表示
-      $stack[] = $user->user_no;
+      $stack[] = $user->id;
       asort($stack);
       $pair = array();
       foreach ($stack as $id) $pair[] = DB::$USER->ById($id)->handle_name;
@@ -22,7 +22,7 @@ class Role_dummy_chiroptera extends Role {
     if (! is_array($target) || $this->GetActor()->IsRole('lovers', 'sweet_status')) return;
     $lovers = array();
     foreach ($target as $id) {
-      $lovers[] = DB::$USER->GetHandleName(DB::$USER->ById($id)->uname, true);
+      $lovers[] = DB::$USER->ByVirtual($id)->handle_name;
     }
     RoleHTML::OutputPartner($lovers, 'partner_header', 'lovers_footer');
   }

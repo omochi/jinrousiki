@@ -26,7 +26,7 @@ class Role_barrier_wizard extends Role_wizard {
       if ($this->IsActor($user) || ! DB::$USER->IsVirtualLive($id) || $user->IsDummyBoy()) {
 	return '自分・死者・身代わり君には投票できません';
       }
-      $target_stack[$id] = DB::$USER->ByReal($id)->user_no;
+      $target_stack[$id] = DB::$USER->ByReal($id)->id;
       $handle_stack[$id] = $user->handle_name;
     }
     sort($target_stack);

@@ -9,7 +9,7 @@ class Role_snow_trap_mad extends Role_trap_mad {
   public $trap_action = 'snow_trap';
   public $trap_result = 'frostbite';
 
-  protected function IsVoteTrap() { return true; }
+  protected function IgnoreTrap() { return false; }
 
   protected function SetTrapAction() { return; }
 

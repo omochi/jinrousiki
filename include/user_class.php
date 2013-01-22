@@ -359,7 +359,7 @@ class User {
       return false;
     }
 
-    return $rate >= mt_rand(1, 100);
+    return Lottery::Percent($rate);
   }
 
   //憑依能力者判定 (被憑依者とコード上で区別するための関数)
@@ -995,7 +995,7 @@ class UserData {
     $user->suicide_flag = true;
 
     $str = $reason == 'NOVOTED' ? 'sudden_death' : 'vote_sudden_death';
-    DB::$ROOM->Talk($this->GetHandleName($user->uname, true) . ' ' . Message::$$str);
+    DB::$ROOM->Talk($user->GetName() . ' ' . Message::$$str);
     return true;
   }
 

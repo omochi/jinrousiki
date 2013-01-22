@@ -80,12 +80,12 @@ class Winner {
     $vampire = false;
     $living_id_list = array(); //生存者の ID リスト
     $infected_list  = array(); //吸血鬼 => 感染者リスト
-    foreach (DB::$USER->GetLivingUsers(true) as $uname) {
-      $user = DB::$USER->ByUname($uname);
+    foreach (DB::$USER->GetLivingUsers(true) as $id => $uname) {
+      $user = DB::$USER->ByID($id);
       $user->Reparse();
-      if (! $user->IsRole('psycho_infected')) $living_id_list[] = $user->user_no;
+      if (! $user->IsRole('psycho_infected')) $living_id_list[] = $user->id;
       if ($user->IsRole('infected')) {
-	foreach ($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->user_no;
+	foreach ($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->id;
       }
     }
     if (count($living_id_list) == 1) {

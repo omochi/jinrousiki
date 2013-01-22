@@ -6,7 +6,6 @@
 class Role_anti_voodoo extends Role {
   public $action = 'ANTI_VOODOO_DO';
   public $result = 'ANTI_VOODOO_SUCCESS';
-  public $ignore_message = '初日の厄払いはできません';
 
   protected function OutputResult() {
     if (DB::$ROOM->date > 2 && ! DB::$ROOM->IsOption('seal_message')) {
@@ -19,6 +18,8 @@ class Role_anti_voodoo extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日の厄払いはできません'; }
 
   //厄払い先セット
   function SetGuard(User $user) {

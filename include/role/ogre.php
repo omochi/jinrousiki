@@ -11,13 +11,14 @@ class Role_ogre extends Role {
   public $resist_rate  = 30;
   public $reduce_rate  =  5;
   public $reflect_rate = 30;
-  public $ignore_message = '初日は人攫いできません';
 
   function OutputAction() {
     RoleHTML::OutputVote('ogre-do', 'ogre_do', $this->action, $this->not_action);
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は人攫いできません'; }
 
   function IsFinishVote(array $list) {
     if (DB::$ROOM->IsEvent('force_assassin_do')) unset($list[$this->not_action]);

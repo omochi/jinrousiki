@@ -12,5 +12,5 @@ class Role_elder_guard extends Role_guard {
 
   protected function IsHunt(User $user) { return false; }
 
-  function FilterVoteDo(&$number) { $number++; }
+  function FilterVoteDo(&$count) { $count++; }
 }

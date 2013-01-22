@@ -7,7 +7,6 @@
 */
 class Role_vampire extends Role {
   public $action = 'VAMPIRE_DO';
-  public $ignore_message = '初日は襲撃できません';
 
   protected function OutputPartner() {
     /* 2日目の時点で感染者・洗脳者が発生する特殊イベントを実装したら対応すること */
@@ -30,6 +29,8 @@ class Role_vampire extends Role {
   }
 
   function IsVote() { return DB::$ROOM->date > 1; }
+
+  function GetIgnoreMessage() { return '初日は襲撃できません'; }
 
   //吸血対象セット
   function SetInfect(User $user) {
