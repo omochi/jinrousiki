@@ -8,18 +8,13 @@ class Role_step_wolf extends Role_wolf {
   public $action     = 'STEP_WOLF_EAT';
   public $add_action = 'SILENT_WOLF_EAT';
   public $submit     = 'wolf_eat';
-  public $checkbox   = '<input type="checkbox" name="target_no[]"';
-
-  function IsFinishVote(array $list) {
-    if (! $this->GetActor()->IsActive()) unset($list[$this->not_action]);
-    return parent::IsFinishVote($list);
-  }
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user); }
 
-  function SetVoteNight() {
-    parent::SetVoteNight();
-    if ($this->IsDummyBoy() || ! $this->GetActor()->IsActive()) {
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
+
+  function SetVoteNightFilter() {
+    if (DB::$ROOM->IsEvent('no_step') || $this->IsDummyBoy() || ! $this->GetActor()->IsActive()) {
       $this->SetStack(null, 'add_action');
     }
   }

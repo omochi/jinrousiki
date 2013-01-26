@@ -20,9 +20,13 @@ class Role_ogre extends Role {
 
   function GetIgnoreMessage() { return '初日は人攫いできません'; }
 
-  function IsFinishVote(array $list) {
+  function ExistsActionFilter(array $list) {
     if (DB::$ROOM->IsEvent('force_assassin_do')) unset($list[$this->not_action]);
-    return parent::IsFinishVote($list);
+    return $list;
+  }
+
+  function SetVoteNightFilter() {
+    if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');
   }
 
   function Win($winner) {
@@ -32,11 +36,6 @@ class Role_ogre extends Role {
       if ($user->IsLiveRoleGroup('wolf')) return true;
     }
     return false;
-  }
-
-  function SetVoteNight() {
-    parent::SetVoteNight();
-    if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');
   }
 
   //人攫い情報セット

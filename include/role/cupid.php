@@ -7,7 +7,6 @@
 */
 class Role_cupid extends Role {
   public $action = 'CUPID_DO';
-  public $checkbox = '<input type="checkbox" name="target_no[]"';
   public $self_shoot  = false;
   public $shoot_count = 2;
 
@@ -28,8 +27,7 @@ class Role_cupid extends Role {
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 
-  function SetVoteNight() {
-    parent::SetVoteNight();
+  function SetVoteNightFilter() {
     $this->SetStack(DB::$USER->GetUserCount() < GameConfig::CUPID_SELF_SHOOT, 'self_shoot');
   }
 
@@ -38,6 +36,8 @@ class Role_cupid extends Role {
   function IsVoteCheckboxChecked(User $user) {
     return $this->IsSelfShoot() && $this->IsActor($user);
   }
+
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   //自分撃ち判定
   function IsSelfShoot() { return $this->GetStack('self_shoot') || $this->self_shoot; }

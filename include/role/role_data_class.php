@@ -885,38 +885,38 @@ class RoleData {
   //このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
   static public $main_role_group_list = array(
     'wolf' => 'wolf',
-    'mad' => 'mad',
+    'mad'  => 'mad',
     'child_fox' => 'child_fox', 'sex_fox'        => 'child_fox', 'stargazer_fox' => 'child_fox',
     'monk_fox'  => 'child_fox', 'jammer_fox'     => 'child_fox', 'miasma_fox'    => 'child_fox',
     'howl_fox'  => 'child_fox', 'vindictive_fox' => 'child_fox', 'critical_fox'  => 'child_fox',
-    'fox' => 'fox',
+    'fox'       => 'fox',
     'cupid' => 'cupid',
     'angel' => 'angel',
     'quiz' => 'quiz',
     'vampire' => 'vampire',
     'chiroptera' => 'chiroptera',
-    'fairy' => 'fairy',
-    'ogre' => 'ogre',
+    'fairy'      => 'fairy',
+    'ogre'  => 'ogre',
     'yaksa' => 'yaksa',
     'duelist' => 'duelist',
     'avenger' => 'avenger',
-    'patron' => 'patron',
-    'mage' => 'mage', 'voodoo_killer' => 'mage',
+    'patron'  => 'patron',
+    'mage'        => 'mage', 'voodoo_killer' => 'mage',
     'necromancer' => 'necromancer',
-    'medium' => 'medium',
-    'jealousy' => 'jealousy',
-    'priest' => 'priest',
-    'guard' => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
-    'common' => 'common',
-    'cat' => 'poison_cat',
-    'pharmacist' => 'pharmacist',
-    'assassin' => 'assassin',
-    'scanner' => 'mind_scanner',
-    'brownie' => 'brownie',
-    'wizard' => 'wizard',
-    'doll' => 'doll',
-    'escaper' => 'escaper',
-    'poison' => 'poison',
+    'medium'      => 'medium',
+    'jealousy'    => 'jealousy',
+    'priest'      => 'priest',
+    'guard'       => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
+    'common'      => 'common',
+    'cat'         => 'poison_cat',
+    'pharmacist'  => 'pharmacist',
+    'assassin'    => 'assassin',
+    'scanner'     => 'mind_scanner',
+    'brownie'     => 'brownie',
+    'wizard'      => 'wizard',
+    'doll'        => 'doll',
+    'escaper'     => 'escaper',
+    'poison'      => 'poison',
     'unknown_mania'   => 'unknown_mania', 'wirepuller_mania' => 'unknown_mania',
     'fire_mania'      => 'unknown_mania', 'sacrifice_mania'  => 'unknown_mania',
     'resurrect_mania' => 'unknown_mania', 'revive_mania'     => 'unknown_mania',
@@ -956,10 +956,91 @@ class RoleData {
     'human'        => array('lost_ability', 'muster_ability'),
     'wolf'         => array('possessed_target', 'possessed', 'changed_disguise', 'changed_therian'),
     'fox'          => array('changed_vindictive'),
-    'mania'        => array('copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller'));
+    'mania'        => array('copied', 'copied_trick', 'copied_basic', 'copied_soul',
+			    'copied_teller'));
 
+  //-- 関数 --//
+  //役職グループ取得
+  static function GetGroup($role) {
+    foreach (self::$main_role_group_list as $key => $value) {
+      if (strpos($role, $key) !== false) return $value;
+    }
+    return 'human';
+  }
+
+  //所属陣営取得
+  static function GetCamp($role, $start = false) {
+    switch ($camp = self::GetGroup($role)) {
+    case 'wolf':
+    case 'mad':
+      return 'wolf';
+
+    case 'fox':
+    case 'child_fox':
+      return 'fox';
+
+    case 'cupid':
+    case 'angel':
+      return $start ? 'cupid' : 'lovers';
+
+    case 'quiz':
+    case 'vampire':
+      return $camp;
+
+    case 'chiroptera':
+    case 'fairy':
+      return 'chiroptera';
+
+    case 'ogre':
+    case 'yaksa':
+      return 'ogre';
+
+    case 'duelist':
+    case 'avenger':
+    case 'patron':
+      return 'duelist';
+
+    case 'mania':
+    case 'unknown_mania':
+      return $start ? 'mania' : 'human';
+
+    default:
+      return 'human';
+    }
+  }
+
+  //役職クラス (CSS) 取得
+  static function GetCSS($role) {
+    switch ($class = self::GetGroup($role)) {
+    case 'poison_cat':
+      $class = 'cat';
+      break;
+
+    case 'mind_scanner':
+      $class = 'mind';
+      break;
+
+    case 'child_fox':
+      $class = 'fox';
+      break;
+
+    case 'unknown_mania':
+      $class = 'mania';
+      break;
+    }
+    return $class;
+  }
+
+  //役職名のソート
+  static function Sort(array $list) {
+    return array_intersect(array_keys(self::$main_role_list), $list);
+  }
+}
+
+//-- 天候データベース --//
+class WeatherData {
   //天候のリスト
-  static public $weather_list = array(
+  static public $list = array(
      0 => array('name'    => 'スコール',
 		'event'   => 'grassy',
 		'caption' => '全員 草原迷彩'),
@@ -1124,115 +1205,81 @@ class RoleData {
 		'caption' => '全員 公開者'),
     54 => array('name'    => '極光',
 		'event'   => 'aurora',
-		'caption' => '全員 目隠し・公開者'));
+		'caption' => '全員 目隠し・公開者'),
+    55 => array('name'    => '霜柱',
+		'event'   => 'random_step',
+		'caption' => 'ランダム足音発生'),
+    56 => array('name'    => '地吹雪',
+		'event'   => 'no_step',
+		'caption' => '足音能力封印'),
+    57 => array('name'    => '月虹',
+		'event'   => 'confession',
+		'caption' => '全員 告白'),
+    58 => array('name'    => '春一番',
+		'event'   => 'gentleman',
+		'caption' => '全員 紳士'),
+    59 => array('name'    => '桜吹雪',
+		'event'   => 'lady',
+		'caption' => '全員 淑女'),
+  );
 
   //-- 関数 --//
-  //役職グループ判定
-  static function DistinguishRoleGroup($role) {
-    foreach (self::$main_role_group_list as $key => $value) {
-      if (strpos($role, $key) !== false) return $value;
-    }
-    return 'human';
+  //天候データ取得
+  static function Get($id = null) { return self::$list[$id]; }
+
+  //天候名取得
+  static function GetName($id) { return self::$list[$id]['name']; }
+
+  //イベント取得
+  static function GetEvent($id) { return self::$list[$id]['event']; }
+
+  //説明取得
+  static function GetCaption($id) { return self::$list[$id]['caption']; }
+
+  //天候イベント登録
+  static function SetEvent($id) {
+    DB::$ROOM->event->weather = $id;
+    DB::$ROOM->event->{self::GetEvent($id)} = true;
   }
 
-  //所属陣営判別
-  static function DistinguishCamp($role, $start = false) {
-    switch ($camp = self::DistinguishRoleGroup($role)) {
-    case 'wolf':
-    case 'mad':
-      return 'wolf';
+  //存在判定
+  static function Exists($id) { return isset(self::$list[$id]); }
+}
 
-    case 'fox':
-    case 'child_fox':
-      return 'fox';
+//-- HTML 生成クラス (RoleData 拡張) --//
+class RoleDataHTML {
+  const TAG  = '<%s class="%s">%s</%s>';
+  const SPAN = '<span class="%s">[%s]</span>';
+  const LINK = '<a href="new_role/%s.php#%s">%s</a>';
 
-    case 'cupid':
-    case 'angel':
-      return $start ? 'cupid' : 'lovers';
-
-    case 'quiz':
-    case 'vampire':
-      return $camp;
-
-    case 'chiroptera':
-    case 'fairy':
-      return 'chiroptera';
-
-    case 'ogre':
-    case 'yaksa':
-      return 'ogre';
-
-    case 'duelist':
-    case 'avenger':
-    case 'patron':
-      return 'duelist';
-
-    case 'mania':
-    case 'unknown_mania':
-      return $start ? 'mania' : 'human';
-
-    default:
-      return 'human';
-    }
+  //タグ生成
+  static function Generate($role, $css = null, $sub_role = false) {
+    $str  = $sub_role ? Text::BR : '';
+    $type = $sub_role ? 'sub' : 'main';
+    if (is_null($css)) $css = RoleData::GetCSS($role);
+    return $str . sprintf(self::SPAN, $css, @RoleData::${$type . '_role_list'}[$role]);
   }
 
-  //役職クラス (CSS) 判定
-  static function DistinguishRoleClass($role) {
-    switch ($class = self::DistinguishRoleGroup($role)) {
-    case 'poison_cat':
-      $class = 'cat';
-      break;
-
-    case 'mind_scanner':
-      $class = 'mind';
-      break;
-
-    case 'child_fox':
-      $class = 'fox';
-      break;
-
-    case 'unknown_mania':
-      $class = 'mania';
-      break;
-    }
-    return $class;
+  //タグ生成 (メイン役職専用)
+  static function GenerateMain($role, $tag = 'span') {
+    $name = RoleData::$main_role_list[$role];
+    return sprintf(self::TAG, $tag, RoleData::GetCSS($role), $name, $tag);
   }
 
-  //役職名のタグ生成
-  static function GenerateRoleTag($role, $css = null, $sub_role = false) {
-    $str = '';
-    if (is_null($css)) $css = self::DistinguishRoleClass($role);
-    if ($sub_role) $str .= '<br>';
-    $str .= '<span class="' . $css . '">[' .
-      ($sub_role ? @self::$sub_role_list[$role] : @self::$main_role_list[$role]) . ']</span>';
-    return $str;
-  }
-
-  //役職名のタグ生成 (メイン役職専用)
-  static function GenerateMainRoleTag($role, $tag = 'span') {
-    return '<' . $tag . ' class="' . self::DistinguishRoleClass($role) . '">' .
-      self::$main_role_list[$role] . '</' . $tag .'>';
-  }
-
-  //役職の説明ページへのリンク生成
-  static function GenerateRoleLink($role) {
-    if (array_key_exists($role, self::$sub_role_list)) {
+  //役職説明ページへのリンク生成
+  static function GenerateLink($role) {
+    if (array_key_exists($role, RoleData::$sub_role_list)) {
       $url  = 'sub_role';
-      $name = self::$sub_role_list[$role];
+      $name = RoleData::$sub_role_list[$role];
     }
-    elseif (self::DistinguishCamp($role, true) == 'mania') {
+    elseif (RoleData::GetCamp($role, true) == 'mania') {
       $url  = 'mania';
-      $name = self::$main_role_list[$role];
+      $name = RoleData::$main_role_list[$role];
     }
     else {
-      $url  = self::DistinguishCamp($role);
-      $name = self::$main_role_list[$role];
+      $url  = RoleData::GetCamp($role);
+      $name = RoleData::$main_role_list[$role];
     }
-    return '<a href="new_role/' . $url . '.php#' . $role . '">' . $name . '</a>';
-  }
-
-  //役職名のソート
-  static function SortRole(array $list) {
-    return array_intersect(array_keys(self::$main_role_list), $list);
+    return sprintf(self::LINK, $url, $role, $name);
   }
 }

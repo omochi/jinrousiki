@@ -34,7 +34,7 @@ DevUser::Initialize(25);
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
-RQ::GetTest()->test_users[2]->role = 'sex_wolf authority';
+RQ::GetTest()->test_users[2]->role = 'wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
@@ -58,7 +58,7 @@ RQ::GetTest()->test_users[8]->live = 'live';
 RQ::GetTest()->test_users[9]->role = 'poison_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'reverse_assassin death_note[5] speaker';
+RQ::GetTest()->test_users[10]->role = 'sweep_assassin death_note[5] speaker';
 RQ::GetTest()->test_users[10]->live = 'live';
 
 RQ::GetTest()->test_users[11]->role = 'voodoo_mad downer_luck';
@@ -67,7 +67,7 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'possessed_fox death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'voodoo_killer';
+RQ::GetTest()->test_users[13]->role = 'voodoo_killer lady';
 RQ::GetTest()->test_users[13]->live = 'live';
 
 RQ::GetTest()->test_users[14]->role = 'jammer_fox death_warrant[6]';
@@ -83,8 +83,8 @@ RQ::GetTest()->test_users[16]->live = 'live';
 RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
 RQ::GetTest()->test_users[17]->live = 'dead';
 
-RQ::GetTest()->test_users[18]->role = 'human no_last_words';
-RQ::GetTest()->test_users[18]->live = 'dead';
+RQ::GetTest()->test_users[18]->role = 'step_wolf no_last_words';
+RQ::GetTest()->test_users[18]->live = 'live';
 
 RQ::GetTest()->test_users[19]->role = 'light_fairy psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
@@ -92,19 +92,19 @@ RQ::GetTest()->test_users[19]->live = 'live';
 RQ::GetTest()->test_users[20]->role = 'soul_vampire mind_presage[23]';
 RQ::GetTest()->test_users[20]->live = 'live';
 
-RQ::GetTest()->test_users[21]->role = 'revive_mania[6] mind_friend[21]';
+RQ::GetTest()->test_users[21]->role = 'resurrect_mania[6] mind_friend[21]';
 RQ::GetTest()->test_users[21]->live = 'live';
 
 RQ::GetTest()->test_users[22]->role = 'psycho_escaper reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'border_priest deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'cursed_angel deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
-RQ::GetTest()->test_users[25]->role = 'vajra_yaksa[1] disfavor';
+RQ::GetTest()->test_users[25]->role = 'revive_ogre disfavor';
 RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -112,7 +112,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 DevUser::Complement();
 
 //-- 仮想投票データをセット --//
-$set_date = 4;
+$set_date = 6;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -198,8 +198,8 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    //array('user_no' => 2,	'target_no' => 23,	'type' => 'WOLF_EAT'),
-    array('user_no' => 3,	'target_no' => 9,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2,	'target_no' => 21,	'type' => 'WOLF_EAT'),
+    //array('user_no' => 3,	'target_no' => 9,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     //array('user_no' => 4, 	'target_no' => '9 14 19 18 3',	'type' => 'STEP_MAGE_DO'),
     array('user_no' => 5,	'target_no' => 13,	'type' => 'MAGE_DO'),
@@ -275,7 +275,8 @@ RQ::GetTest()->system_message = array(
 	     #'VOTE_DUEL' => array(8),
 	     'WEATHER' => array(44),
 	     ),
-  6 => array('WEATHER' => array(47)),
+  6 => array('WEATHER' => array(55)),
+  7 => array('WEATHER' => array(59)),
   8 => array('WEATHER' => array(33)
 	     )
 );
@@ -379,6 +380,7 @@ if ($role_view_mode) VoteTest::OutputImage($role_view_list); //画像表示モ�
 
 HTML::OutputHeader('投票テスト', 'game_play', true);
 GameHTML::OutputPlayer();
+GameHTML::OutputDead();
 RoleHTML::OutputAbility();
 if (RQ::Get()->say != '') { //発言変換テスト
   RoleTalk::Convert(RQ::Get()->say);
@@ -397,7 +399,7 @@ if (DB::$ROOM->IsDay()) { //昼の投票テスト
   if (! is_array($vote_message_list)) $vote_message_list = array();
   $stack = array();
   foreach ($vote_message_list as $uname => $vote_data) {
-    $vote_data['handle_name'] = DB::$USER->GetHandleName($uname);
+    $vote_data['handle_name'] = DB::$USER->ByUname($uname)->handle_name;
     $vote_data['count'] = DB::$ROOM->revote_count + 1;
     $stack[] = $vote_data;
   }

@@ -7,9 +7,10 @@ RoleManager::LoadFile('guard');
 class Role_step_guard extends Role_guard {
   public $action = 'STEP_GUARD_DO';
   public $submit = 'guard_do';
-  public $checkbox = '<input type="checkbox" name="target_no[]"';
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user); }
+
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();

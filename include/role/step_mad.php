@@ -6,13 +6,15 @@
 class Role_step_mad extends Role {
   public $action     = 'STEP_DO';
   public $not_action = 'STEP_NOT_DO';
-  public $checkbox   = '<input type="checkbox" name="target_no[]"';
+
 
   function OutputAction() {
     RoleHTML::OutputVote('step-do', 'step_do', $this->action, $this->not_action);
   }
 
   function IsVoteCheckbox(User $user, $live) { return true; }
+
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();

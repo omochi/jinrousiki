@@ -7,9 +7,10 @@ RoleManager::LoadFile('mage');
 class Role_step_mage extends Role_mage {
   public $action   = 'STEP_MAGE_DO';
   public $submit   = 'mage_do';
-  public $checkbox = '<input type="checkbox" name="target_no[]"';
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user); }
+
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();

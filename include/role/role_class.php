@@ -294,13 +294,13 @@ class RoleFilterData {
     'scarlet_vampire', 'revive_ogre', 'revive_avenger', 'resurrect_mania');
 
   //イベントセット
-  static $event_virtual = array('no_last_words', 'whisper_ringing', 'howl_ringing',
-				'sweet_ringing', 'deep_sleep', 'mind_open');
+  static $event_virtual = array('gentleman', 'lady', 'no_last_words', 'whisper_ringing',
+				'howl_ringing', 'sweet_ringing', 'deep_sleep', 'mind_open');
 
   //イベントセット (昼限定)
   static $event_virtual_day = array(
     'actor', 'passion', 'rainbow', 'grassy', 'invisible', 'side_reverse', 'line_reverse',
-    'critical_voter', 'critical_luck', 'blinder', 'earplug', 'silent', 'mower');
+    'confession', 'critical_voter', 'critical_luck', 'blinder', 'earplug', 'silent', 'mower');
 
   //特殊勝敗判定 (ジョーカー系)
   static $joker = array('joker', 'rival');
@@ -315,7 +315,6 @@ abstract class Role {
   public $submit;
   public $not_submit;
   public $add_submit;
-  public $checkbox = '<input type="radio" name="target_no"';
 
   function __construct() {
     $this->role = array_pop(explode('Role_', get_class($this)));
@@ -329,12 +328,13 @@ abstract class Role {
 
   //Mixin 呼び出し用
   function __call($name, $args) {
+    $format = 'Error: %s not found: %s: %s()';
     if (! is_object($this->filter)) {
-      Text::p('Error: Mixin not found: ' . get_class($this) . ": {$name}()");
+      Text::p(sprintf($format, 'Mixin', get_class($this), $name));
       return false;
     }
     if (! method_exists($this->filter, $name)) {
-      Text::p('Error: Method not found: ' . get_class($this) . ": {$name}()");
+      Text::p(sprintf($format, 'Method', get_class($this), $name));
       return false;
     }
     return call_user_func_array(array($this->filter, $name), $args);
@@ -743,17 +743,27 @@ abstract class Role {
       VoteHTML::OutputResult('夜：あなたは投票できません');
     }
     else {
-      if (! is_null($str = $this->IgnoreVote())) VoteHTML::OutputResult('夜：' . $str);
+      $str = $this->IgnoreVote();
+      if (is_null($str)) $str = $this->IgnoreVoteFilter(); //null なら追加判定
+      if (! is_null($str)) VoteHTML::OutputResult('夜：' . $str);
+
       foreach (array('', 'not_', 'add_') as $header) {
 	foreach (array('action', 'submit') as $data) {
 	  $this->SetStack($this->{$header . $data}, $header . $data);
 	}
       }
+      $this->SetVoteNightFilter();
     }
   }
 
+  //投票データセット (夜) 追加処理
+  function SetVoteNightFilter() {}
+
   //投票スキップ判定
   function IgnoreVote() { return $this->IsVote() ? null : $this->GetIgnoreMessage(); }
+
+  //投票スキップ追加判定
+  function IgnoreVoteFilter() { return null; }
 
   //投票無効メッセージ取得
   function GetIgnoreMessage() { return null; }
@@ -782,16 +792,27 @@ abstract class Role {
   function IsVoteCheckboxChecked(User $user) { return false; }
 
   //投票のチェックボックスヘッダ取得
-  function GetVoteCheckboxHeader() { return $this->checkbox; }
+  function GetVoteCheckboxHeader() { return '<input type="radio" name="target_no"'; }
 
   //-- 投票処理 (夜) --//
   //未投票チェック
   function IsFinishVote(array $list) {
-    if (! $this->IsVote()) return true;
-    $id = $this->GetID();
-    return (isset($list[$this->not_action]) && array_key_exists($id, $list[$this->not_action])) ||
-      isset($list[$this->action][$id]);
+    return ! $this->IsVote() || $this->IgnoreFinishVote() || $this->ExistsAction($list);
   }
+
+  //未投票チェックスキップ判定
+  function IgnoreFinishVote() { return false; }
+
+  //投票コマンド存在判定
+  function ExistsAction(array $list) {
+    $list = $this->ExistsActionFilter($list);
+    $id   = $this->GetID();
+    return isset($list[$this->action][$id]) ||
+      (isset($list[$this->not_action]) && array_key_exists($id, $list[$this->not_action]));
+  }
+
+  //投票コマンド存在判定前フィルタ
+  function ExistsActionFilter(array $list) { return $list; }
 
   //投票結果チェック (夜)
   function CheckVoteNight() {

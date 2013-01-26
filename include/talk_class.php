@@ -238,7 +238,7 @@ class TalkBuilder {
     if ($talk->uname == 'system') {
       $symbol = '';
       $name   = '';
-      $actor->user_no = 0;
+      $actor->id = 0;
     }
     else {
       $color  = isset($talk->color) ? $talk->color : $actor->color;
@@ -247,7 +247,7 @@ class TalkBuilder {
     }
 
     //実ユーザを取得
-    if (RQ::Get()->add_role && $actor->user_no > 0) { //役職表示モード対応
+    if (RQ::Get()->add_role && $actor->id > 0) { //役職表示モード対応
       $real_user = isset($real) ? $real : $actor;
       $name .= $real_user->GenerateShortRoleName($talk->scene == 'heaven');
     }
@@ -295,8 +295,8 @@ class TalkBuilder {
       if (DB::$ROOM->IsEvent('blind_talk_day') &&
 	  ! $this->flag->dummy_boy && ! $this->actor->IsSameName($talk->uname)) {
 	//位置判定 (観戦者以外の上下左右)
-	$viewer = $this->actor->user_no;
-	$target = $actor->user_no;
+	$viewer = $this->actor->id;
+	$target = $actor->id;
 	if (is_null($viewer) ||
 	    ! (abs($target - $viewer) == 5 ||
 	       ($target == $viewer - 1 && ($target % 5) != 0) ||
@@ -484,9 +484,9 @@ EOF;
     $color  = isset($talk->color) ? $talk->color : $user->color;
     $symbol = '<font style="color:' . $color . '">◆</font>';
     $name   = isset($talk->handle_name) ? $talk->handle_name : $user->handle_name;
-    if (RQ::Get()->add_role && $user->user_no != 0) { //役職表示モード対応
+    if (RQ::Get()->add_role && $user->id != 0) { //役職表示モード対応
       $real = $talk->scene == 'heaven' ? $user :
-	(isset($real) ? $real : DB::$USER->ByReal($user->user_no));
+	(isset($real) ? $real : DB::$USER->ByReal($user->id));
       $name .= $real->GenerateShortRoleName();
     }
     elseif (DB::$ROOM->IsFinished() && RQ::Get()->name) { //ユーザ名表示モード

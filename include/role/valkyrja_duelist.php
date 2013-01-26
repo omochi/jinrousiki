@@ -7,7 +7,6 @@
 */
 class Role_valkyrja_duelist extends Role {
   public $action = 'DUELIST_DO';
-  public $checkbox = '<input type="checkbox" name="target_no[]"';
   public $partner_role   = 'rival';
   public $partner_header = 'duelist_pair';
   public $check_self_shoot = true;
@@ -31,8 +30,7 @@ class Role_valkyrja_duelist extends Role {
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 
-  function SetVoteNight() {
-    parent::SetVoteNight();
+  function SetVoteNightFilter() {
     $flag = $this->check_self_shoot && DB::$USER->GetUserCount() < GameConfig::CUPID_SELF_SHOOT;
     $this->SetStack($flag, 'self_shoot');
   }
@@ -42,6 +40,8 @@ class Role_valkyrja_duelist extends Role {
   function IsVoteCheckboxChecked(User $user) {
     return $this->IsSelfShoot() && $this->IsActor($user);
   }
+
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   //自分撃ち判定
   function IsSelfShoot() { return $this->GetStack('self_shoot') || $this->self_shoot; }

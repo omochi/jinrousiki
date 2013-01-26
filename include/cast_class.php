@@ -58,7 +58,7 @@ class Cast {
       if (! $chaos_verso) { //-- 最小出現補正 --//
 	$stack = array(); //役職系統別配役数
 	foreach ($fix_role_list as $key => $value) { //固定枠内の該当グループをカウント
-	  $stack[RoleData::DistinguishRoleGroup($key)] = $value;
+	  $stack[RoleData::GetGroup($key)] = $value;
 	}
 	//Text::p($stack, 'FixRole');
 
@@ -97,10 +97,10 @@ class Cast {
 	$total_stack  = array(); //グループ別リスト (全配役)
 	$random_stack = array(); //グループ別リスト (ランダム)
 	foreach ($role_list as $role => $count) {
-	  $total_stack[RoleData::DistinguishRoleGroup($role)][$role] = $count;
+	  $total_stack[RoleData::GetGroup($role)][$role] = $count;
 	}
 	foreach ($random_role_list as $role => $count) {
-	  $random_stack[RoleData::DistinguishRoleGroup($role)][$role] = $count;
+	  $random_stack[RoleData::GetGroup($role)][$role] = $count;
 	}
 
 	foreach (ChaosConfig::$role_group_rate_list as $name => $rate) {

@@ -25,14 +25,9 @@ class Role_trap_mad extends Role {
   //罠能力無効判定
   protected function IgnoreTrap() { return ! $this->GetActor()->IsActive(); }
 
-  function IsFinishVote(array $list) {
-    return $this->IgnoreTrap() || parent::IsFinishVote($list);
-  }
+  function IgnoreFinishVote() { return $this->IgnoreTrap(); }
 
-  function IgnoreVote() {
-    if (! is_null($str = parent::IgnoreVote())) return $str;
-    return $this->IgnoreTrap() ? '能力喪失しています' : null;
-  }
+  function IgnoreVoteFilter() { return $this->IgnoreTrap() ? '能力喪失しています' : null; }
 
   function IsVoteCheckbox(User $user, $live) { return $live; }
 

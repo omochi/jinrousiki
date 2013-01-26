@@ -713,11 +713,12 @@ EOF;
 
   //天候メッセージ生成
   private function GenerateWeather() {
-    if (! isset(DB::$ROOM->event->weather) || (DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
+    if (! isset(DB::$ROOM->event->weather) ||
+	(! DB::$ROOM->test_mode  && DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
       return '';
     }
-    $weather = RoleData::$weather_list[DB::$ROOM->event->weather];
-    $str = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
-    return sprintf($str, $weather['name'], $weather['caption']);
+    $format  = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';
+    $weather = WeatherData::Get(DB::$ROOM->event->weather);
+    return sprintf($format, $weather['name'], $weather['caption']);
   }
 }

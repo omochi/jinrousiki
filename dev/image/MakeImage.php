@@ -2231,6 +2231,11 @@ class RoleMessageList {
   public $prediction_weather_blinder = array('message' => "|宵闇|です", 'type' => 'no_last_words');
   public $prediction_weather_mind_open = array('message' => "|白夜|です", 'type' => 'result_mind_scanner');
   public $prediction_weather_aurora = array('message' => "|極光|です", 'type' => 'no_last_words');
+  public $prediction_weather_random_step = array('message' => "|霜柱|です", 'delimiter' => array('|' => 'step'));
+  public $prediction_weather_no_step = array('message' => "|地吹雪|です", 'delimiter' => array('|' => 'step'));
+  public $prediction_weather_confession = array('message' => "|月虹|です", 'type' => 'liar');
+  public $prediction_weather_gentleman = array('message' => "|春一番|です", 'type' => 'liar');
+  public $prediction_weather_lady = array('message' => "|桜吹雪|です", 'type' => 'liar');
 }
 
 class WishRoleList {
@@ -2284,9 +2289,9 @@ class WishRoleList {
 $builder = new MessageImageBuilder('RoleMessageList');
 //$builder->OutputAll();
 //$builder->Output('mirror_fairy', array(1, 1, 1, 0, 0.5, 0, 1, -0.5)); //位置調整
-#$builder->Output('prediction_weather_aurora');
-#$builder->Save('mirror_fairy');
-#$builder->Test('poison_ogre');
+#$builder->Output('prediction_weather_lady');
+//$builder->Save('mirror_fairy');
+//$builder->Test('poison_ogre');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));

@@ -29,7 +29,7 @@ class Info {
   //追加役職の人数と説明ページリンク出力
   static function OutputAddRole($role, $add = false) {
     $format = '村の人口が%d人以上になったら%s%sします';
-    $str = RoleData::GenerateRoleLink($role);
+    $str = RoleDataHTML::GenerateLink($role);
     printf($format, CastConfig::$$role, $str, $add ? 'を追加' : 'が登場');
   }
 
@@ -37,7 +37,7 @@ class Info {
   static function OutputReplaceRole($option) {
     $format = 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
       '%sになります';
-    printf($format, RoleData::GenerateRoleLink(CastConfig::$replace_role_list[$option]));
+    printf($format, RoleDataHTML::GenerateLink(CastConfig::$replace_role_list[$option]));
   }
 }
 
@@ -118,11 +118,13 @@ EOF;
       $stack = array_merge($stack, array_keys($value));
       if ($key == $max) break;
     }
-    $role_list = RoleData::SortRole(array_unique($stack)); //表示順を決定
+    $role_list = RoleData::Sort(array_unique($stack)); //表示順を決定
 
     $header = '<table class="member">';
     $str = '<tr><th>人口</th>';
-    foreach ($role_list as $role) $str .= RoleData::GenerateMainRoleTag($role, 'th');
+    foreach ($role_list as $role) {
+      $str .= RoleDataHTML::GenerateMain($role, 'th');
+    }
     $str .= '</tr>'."\n";
     echo $header . $str;
 
@@ -148,7 +150,7 @@ EOF;
     ksort($stack); //人数順に並び替え
     foreach ($stack as $count => $list) {
       $order_stack = array();
-      foreach (RoleData::SortRole(array_keys($list)) as $role) { //役職順に並び替え
+      foreach (RoleData::Sort(array_keys($list)) as $role) { //役職順に並び替え
 	$order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
       }
       $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
@@ -169,6 +171,9 @@ EOF;
       printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);
     }
   }
+
+  //天候詳細表示
+  static function OutputWeatherCaption($id) { echo WeatherData::GetCaption($id); }
 
   //他のサーバの部屋画面ロード用データを出力
   static function OutputSharedRoomList() {

@@ -404,12 +404,10 @@ class User {
   }
 
   //所属陣営判別 (ラッパー)
-  public function DistinguishCamp() { return RoleData::DistinguishCamp($this->main_role); }
+  public function DistinguishCamp() { return RoleData::GetCamp($this->main_role); }
 
   //所属役職グループ陣営判別 (ラッパー)
-  public function DistinguishRoleGroup() {
-    return RoleData::DistinguishRoleGroup($this->main_role);
-  }
+  public function DistinguishRoleGroup() { return RoleData::GetGroup($this->main_role); }
 
   //精神鑑定
   public function DistinguishLiar() {
@@ -449,7 +447,7 @@ class User {
 
   //役職情報から表示情報を作成する
   public function GenerateRoleName($main_only = false) {
-    $str = RoleData::GenerateRoleTag($this->main_role); //メイン役職
+    $str = RoleDataHTML::Generate($this->main_role); //メイン役職
     if ($main_only) return $str;
 
     if (($role_count = count($this->role_list)) < 2) return $str; //サブ役職
@@ -470,7 +468,7 @@ class User {
 	  $css = $class;
 	  break;
 	}
-	$str .= RoleData::GenerateRoleTag($sub_role, $css, true);
+	$str .= RoleDataHTML::Generate($sub_role, $css, true);
 	if (++$count >= $role_count) break 2;
       }
     }
@@ -824,8 +822,7 @@ class UserData {
     foreach ($event_list as $event) {
       switch ($event['type']) {
       case 'WEATHER':
-	DB::$ROOM->event->weather = (int)$event['message']; //天候データを格納
-	DB::$ROOM->event->{RoleData::$weather_list[DB::$ROOM->event->weather]['event']} = true;
+	WeatherData::SetEvent((int)$event['message']);
 	break;
 
       case 'EVENT':

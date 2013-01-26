@@ -30,14 +30,11 @@ class Role_possessed_mad extends Role {
 
   function GetIgnoreMessage() { return '初日は憑依できません'; }
 
-  function IsFinishVote(array $list) {
-    return ! $this->GetActor()->IsActive() || parent::IsFinishVote($list);
-  }
+  function IgnoreFinishVote() { return ! $this->GetActor()->IsActive(); }
 
   function IsMindReadPossessed(User $user) { return $user->IsSame($this->GetViewer()); }
 
-  function IgnoreVote() {
-    if (! is_null($str = parent::IgnoreVote())) return $str;
+  function IgnoreVoteFilter() {
     return $this->GetActor()->IsActive() ? null : '能力喪失しています';
   }
 

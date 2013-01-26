@@ -29,8 +29,7 @@ class Role_poison_cat extends Role {
 
   function GetIgnoreMessage() { return '初日は蘇生できません'; }
 
-  function IgnoreVote() {
-    if (! is_null($str = parent::IgnoreVote())) return $str;
+  function IgnoreVoteFilter() {
     if (DB::$ROOM->IsOpenCast()) {
       return '「霊界で配役を公開しない」オプションがオフの時は投票できません';
     }

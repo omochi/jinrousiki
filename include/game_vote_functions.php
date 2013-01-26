@@ -48,7 +48,7 @@ class Vote {
       $main_role_list = array();
       foreach ($role_count_list as $key => $value) {
 	if (array_key_exists($key, RoleData::$main_role_list)) {
-	  $main_role_list[RoleData::DistinguishCamp($key, true)] += $value;
+	  $main_role_list[RoleData::GetCamp($key, true)] += $value;
 	}
       }
       break;
@@ -59,7 +59,7 @@ class Vote {
       $main_role_list = array();
       foreach ($role_count_list as $key => $value) {
 	if (array_key_exists($key, RoleData::$main_role_list)) {
-	  $main_role_list[RoleData::DistinguishRoleGroup($key)] += $value;
+	  $main_role_list[RoleData::GetGroup($key)] += $value;
 	}
       }
       break;
@@ -94,7 +94,7 @@ class Vote {
     foreach (RoleData::$main_role_list as $key => $value) {
       $count = isset($main_role_list[$key]) ? $main_role_list[$key] : 0;
       if ($count > 0) {
-	if ($css) $value = RoleData::GenerateMainRoleTag($key);
+	if ($css) $value = RoleDataHTML::GenerateMain($key);
 	$stack[] = $value . $main_type . $count;
       }
     }
@@ -366,7 +366,7 @@ class Vote {
 	  if ($wish_group) { //特殊村はグループ単位で希望処理を行なう
 	    $stack = array();
 	    foreach ($role_list as $stack_role) {
-	      if ($role == RoleData::DistinguishRoleGroup($stack_role)) $stack[] = $stack_role;
+	      if ($role == RoleData::GetGroup($stack_role)) $stack[] = $stack_role;
 	    }
 	    $fix_role = Lottery::Get($stack);
 	  }
@@ -913,16 +913,33 @@ class Vote {
     RoleManager::$get->vote_data = $vote_data;
 
     //-- 足音レイヤー --//
-    $step_list = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
-    if (DB::$ROOM->date > 1) $step_list[] = 'STEP_GUARD_DO';
-    foreach ($step_list as $action) { //足音処理
-      foreach ($vote_data[$action] as $id => $target_id) {
-	RoleManager::LoadMain(DB::$USER->ByID($id))->Step(explode(' ', $target_id));
+    if (! DB::$ROOM->IsEvent('no_step')) { //地吹雪は無効
+      $step_list = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
+      if (DB::$ROOM->date > 1) $step_list[] = 'STEP_GUARD_DO';
+      foreach ($step_list as $action) { //足音処理
+	foreach ($vote_data[$action] as $id => $target_id) {
+	  RoleManager::LoadMain(DB::$USER->ByID($id))->Step(explode(' ', $target_id));
+	}
       }
-    }
 
-    foreach ($vote_data['SILENT_WOLF_EAT'] as $id => $target_id) { //ステルス投票カウントアップ
-      DB::$USER->ByID($id)->LostAbility();
+      if (DB::$ROOM->IsEvent('random_step')) { //霜柱の処理
+	$stack = array();
+	foreach (DB::$USER->rows as $user) {
+	  if (DB::$USER->IsVirtualLive($user->id)) $stack[] = $user->id;
+	}
+	//Text::p($stack, 'random_step');
+	shuffle($stack);
+	$count = 0;
+	foreach ($stack as $id) {
+	  if (! Lottery::Percent(20)) continue;
+	  DB::$ROOM->ResultDead($id, 'STEP');
+	  if (++$count > 2) break;
+	}
+      }
+
+      foreach ($vote_data['SILENT_WOLF_EAT'] as $id => $target_id) { //ステルス投票カウントアップ
+	DB::$USER->ByID($id)->LostAbility();
+      }
     }
 
     //-- 接触レイヤー --//

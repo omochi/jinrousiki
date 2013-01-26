@@ -46,7 +46,8 @@ class Role_wolf extends Role {
 
   function IsVoteCheckboxChecked(User $user) { return $this->IsDummyBoy() && $user->IsDummyBoy(); }
 
-  function IsFinishVote(array $list) {
+  function ExistsAction(array $list) {
+    if (DB::$ROOM->IsEvent('no_step')) unset($list['SILENT_WOLF_EAT']);
     return count(array_intersect($this->wolf_action_list, array_keys($list))) > 0;
   }
 

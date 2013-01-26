@@ -17,13 +17,12 @@ class Role_assassin extends Role {
 
   function GetIgnoreMessage() { return '初日は暗殺できません'; }
 
-  function IsFinishVote(array $list) {
+  function ExistsActionFilter(array $list) {
     if (DB::$ROOM->IsEvent('force_assassin_do')) unset($list[$this->not_action]);
-    return parent::IsFinishVote($list);
+    return $list;
   }
 
-  function SetVoteNight() {
-    parent::SetVoteNight();
+  function SetVoteNightFilter() {
     if (DB::$ROOM->IsEvent('force_assassin_do')) $this->SetStack(null, 'not_action');
   }
 

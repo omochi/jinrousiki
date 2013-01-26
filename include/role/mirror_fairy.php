@@ -10,13 +10,14 @@ class Role_mirror_fairy extends Role_fairy {
   public $action = 'CUPID_DO';
   public $submit = 'fairy_do';
   public $event_day = 'vote_duel';
-  public $checkbox = '<input type="checkbox" name="target_no[]"';
 
   function IsVote() { return DB::$ROOM->date == 1; }
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 
   function IsVoteCheckbox(User $user, $live) { return $live && ! $user->IsDummyBoy(); }
+
+  function GetVoteCheckboxHeader() { return '<input type="checkbox" name="target_no[]"'; }
 
   function VoteNight() {
     $stack = $this->GetVoteNightTarget();

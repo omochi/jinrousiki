@@ -190,8 +190,8 @@ EOF;
 
     $stack = new StdClass();
     foreach (array_keys(RoleData::$main_role_list) as $role) { //役職データ収集
-      $stack->group[RoleData::DistinguishRoleGroup($role)][] = $role;
-      $stack->camp[RoleData::DistinguishCamp($role, true)][] = $role;
+      $stack->group[RoleData::GetGroup($role)][] = $role;
+      $stack->camp[RoleData::GetCamp($role, true)][] = $role;
     }
     $count = 0;
     foreach (array('camp' => '陣営', 'group' => '系') as $type => $name) {
@@ -225,7 +225,7 @@ EOF;
     default:
       return;
     }
-    foreach ($stack as $role) Text::d(RoleData::GenerateMainRoleTag($role));
+    foreach ($stack as $role) Text::d(RoleDataHTML::GenerateMain($role));
   }
 }
 
@@ -359,7 +359,7 @@ class VoteTest {
 	DB::$SELF->IsDummyBoy() ? VoteHTML::OutputDummyBoy() : VoteHTML::OutputHeaven();
       }
       else {
-	switch(DB::$ROOM->scene) {
+	switch (DB::$ROOM->scene) {
 	case 'beforegame':
 	  VoteHTML::OutputBeforeGame();
 	  break;
@@ -394,9 +394,8 @@ class VoteTest {
     Text::Output('<table border="1" cellspacing="0">');
     echo '<tr><th>人口</th>';
     foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
-      $role  = RoleData::DistinguishRoleGroup($group);
-      $class = RoleData::DistinguishRoleClass($role);
-      printf('<th class="%s">%s</th>', $class, RoleData::$short_role_list[$role]);
+      $role = RoleData::GetGroup($group);
+      printf('<th class="%s">%s</th>', RoleData::GetCSS($role), RoleData::$short_role_list[$role]);
     }
     Text::Output('</tr>');
     for ($i = 8; $i <= 40; $i++) {
@@ -425,7 +424,7 @@ class VoteTest {
     HTML::OutputBodyHeader();
     //Text::p(RQ::GetTest()->talk);
     GameHTML::OutputPlayer();
-    if (DB::$SELF->user_no > 0) RoleHTML::OutputAbility();
+    if (DB::$SELF->id > 0) RoleHTML::OutputAbility();
     Talk::Output();
     HTML::OutputFooter(true);
   }
@@ -449,7 +448,7 @@ class VoteTest {
       }
     }
     if ($list['weather']) {
-      foreach (RoleData::$weather_list as $stack) {
+      foreach (WeatherData::$list as $stack) {
 	Image::Role()->Output('prediction_weather_'.$stack['event']);
       }
     }
