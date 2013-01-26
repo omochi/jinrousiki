@@ -68,11 +68,11 @@ class Role_guard extends Role {
   //護衛制限判定
   private function IsGuardLimited(User $user) {
     return $user->IsRole(
-      'emissary_necromancer', 'reporter', 'detective_common', 'sacrifice_common', 'spell_common',
-      'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard', 'doll_master') ||
+      'step_mage', 'emissary_necromancer', 'reporter', 'detective_common', 'sacrifice_common',
+      'spell_common', 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard',
+      'doll_master') || $user->IsRoleGroup('assassin') ||
       ($user->IsRoleGroup('priest') &&
-       ! $user->IsRole('crisis_priest', 'widow_priest', 'revive_priest')) ||
-      $user->IsRoleGroup('assassin');
+       ! $user->IsRole('crisis_priest', 'widow_priest', 'revive_priest'));
   }
 
   //護衛失敗判定

@@ -298,6 +298,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </pre>
 
 <h3 id="step_mage">審神者 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
+<h4>[耐性] 護衛制限：有り</h4>
 <h4>[占い能力] 呪殺：有り / 憑依妨害：有り / 占い妨害：有効 / 呪い：有効</h4>
 <pre>
 夜の投票時に自分と投票先の間で足音が鳴る特殊な占い師。
@@ -343,6 +344,10 @@ PP ラインの計算を複雑にするために作成してみました。
 
 例3) 5 が 2 に投票 (5 → 4 → 3 → 2)
 → 3 で足音が鳴る
+</pre>
+<h5>Ver. 2.2.0 α4～</h5>
+<pre>
+[耐性] 「<a href="#guard_limit">護衛制限</a>：有り」追加
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1148,11 +1153,16 @@ PP ラインの計算を複雑にするために作成してみました。
 
 <h3 id="guard_limit">護衛制限</h3>
 <ol>
-<li>制限対象は、<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a>・<a href="#spell_common">葛の葉</a><br>
+<li>制限対象は、<a href="#step_mage">審神者</a>・<a href="#emissary_necromancer">密偵</a>・<a href="#priest_group">司祭系</a> (<a href="#crisis_priest">預言者</a>・<a href="#widow_priest">未亡人</a>・<a href="#revive_priest">天人</a>を除く)・<a href="#reporter">ブン屋</a>・<a href="#detective_common">探偵</a>・<a href="#sacrifice_common">首領</a>・<a href="#spell_common">葛の葉</a><br>
   <a href="#assassin_group">暗殺者系</a>・<a href="#clairvoyance_scanner">猩々</a>・<a href="#priest_jealousy">恋司祭</a>・<a href="#soul_wizard">八卦見</a>・<a href="#barrier_wizard">結界師</a>・<a href="#pierrot_wizard">道化師</a>・<a href="#doll_master">人形遣い</a>。</li>
 <li>対象を護衛して襲撃された場合、狩人に「護衛成功」のメッセージは出るが、護衛先は死亡する。</li>
-<li>影響を受けるのは<a href="ability.php#guard">護衛能力者</a>のみで、<a href="#blind_guard">夜雀</a>・<a href="#poison_guard">騎士</a>・<a href="#elder_guard">老兵</a>には適用されない。</li>
+<li>影響を受けるのは<a href="ability.php#guard">護衛能力者</a>のみで、<a href="#blind_guard">夜雀</a>・<a href="#step_guard">山立</a>・<a href="#poison_guard">騎士</a>・<a href="#elder_guard">老兵</a>には適用されない。</li>
 </ol>
+<h5>Ver. 2.2.0 α4～</h5>
+<pre>
+<a href="#step_mage">審神者</a>を対象に追加。
+<a href="#step_guard">山立</a>の仕様変更。
+</pre>
 <h5>Ver. 2.1.0 α2～</h5>
 <pre>
 <a href="#elder_guard">老兵</a>の仕様変更。
@@ -1248,7 +1258,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </pre>
 
 <h3 id="step_guard">山立 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α3～]</h3>
-<h4>[狩人能力] 護衛：通常 / 護衛制限：有り / 狩り：有り / 罠：有効</h4>
+<h4>[狩人能力] 護衛：通常 / 護衛制限：無し / 狩り：有り / 罠：有効</h4>
 <pre>
 夜の投票時に自分と投票先の間で足音が鳴る特殊な狩人。
 足音システムの基本は<a href="#step_mage">審神者</a>参照。
@@ -1258,6 +1268,10 @@ PP ラインの計算を複雑にするために作成してみました。
 <li>死者を通り道に選ぶ事もできますが、死者を護衛することはできません。</li>
 <li>足音は始点と終点の間で鳴ります。</li>
 </ol>
+<h5>Ver. 2.2.0 α4～</h5>
+<pre>
+護衛制限：有り → 無し
+</pre>
 <h4>関連役職</h4>
 <pre>
 <a href="ability.php#step">足音能力者</a>

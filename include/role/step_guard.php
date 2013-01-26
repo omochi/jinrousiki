@@ -2,11 +2,14 @@
 /*
   ◆山立 (step_guard)
   ○仕様
+  ・護衛失敗：制限なし
 */
 RoleManager::LoadFile('guard');
 class Role_step_guard extends Role_guard {
   public $action = 'STEP_GUARD_DO';
   public $submit = 'guard_do';
+
+  function IgnoreGuard() { return null; }
 
   function IsVoteCheckbox(User $user, $live) { return ! $this->IsActor($user); }
 
