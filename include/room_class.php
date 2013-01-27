@@ -672,6 +672,20 @@ EOF;
     return DB::FetchResult();
   }
 
+  //能力発動結果取得
+  static function GetAbility($date, $action, $limit) {
+    $query = <<<EOF
+SELECT target, result FROM result_ability WHERE room_no = ? AND date = ? AND type = ?
+EOF;
+    $list = array(DB::$ROOM->id, $date, $action);
+    if ($limit) {
+      $query .= ' AND user_no = ?';
+      $list[] = DB::$SELF->id;
+    }
+    DB::Prepare($query, $list);
+    return DB::FetchAssoc();
+  }
+
   //処刑結果取得
   static function GetVote($date) {
     $query = <<<EOF

@@ -83,6 +83,7 @@ InfoHTML::OutputRoleHeader('吸血鬼陣営');
 <a href="#incubus_vampire">青髭公</a>
 <a href="#succubus_vampire">飛縁魔</a>
 <a href="#passion_vampire">牡丹灯籠</a>
+<a href="#step_vampire">文武王</a>
 <a href="#doom_vampire">冥血鬼</a>
 <a href="#sacrifice_vampire">吸血公</a>
 <a href="#soul_vampire">吸血姫</a>
@@ -167,6 +168,33 @@ InfoHTML::OutputRoleHeader('吸血鬼陣営');
 <pre>
 <a href="#doom_vampire">冥血鬼</a>の<a href="sub_role.php#passion">恋色迷彩</a>バージョンです。
 <a href="sub_role.php#infected">感染者</a>が自覚できてしまうので難易度が上がります。
+</pre>
+
+<h3 id="step_vampire">文武王 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 2.2.0 α4～]</h3>
+<pre>
+夜の投票時に自分と投票先の間で足音が鳴る特殊な吸血鬼。
+足音システムの基本は<a href="human.php#step_mage">審神者</a>参照。
+また、処刑投票先を一定確率 (30%) 自分の<a href="sub_role.php#infected">感染者</a>にすることができる。
+</pre>
+<ol>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。
+<li>自分が処刑された場合は無効。
+<li>吸血鬼系、吸血鬼をコピーした<a href="mania.php#soul_mania">覚醒者</a>・<a href="mania.php#dummy_mania">夢語部</a>には無効。
+</ol>
+<h4>足音能力補足</h4>
+<ol>
+<li>投票の始点は自分から (チェック不要) で、終点は実際に護衛したい人を選んでください。</li>
+<li>死者を通り道に選ぶ事もできますが、死者を襲撃することはできません。</li>
+<li>足音は始点と終点の間で鳴ります。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#step">足音能力者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="human.php#step_mage">審神者</a>の吸血鬼バージョンです。
 </pre>
 
 <h3 id="doom_vampire">冥血鬼 (占い結果：蝙蝠 / 霊能結果：蝙蝠) [Ver. 1.4.0 β19～]</h3>

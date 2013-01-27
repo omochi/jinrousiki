@@ -158,15 +158,15 @@ class RoleFilterData {
 
   //発言置換 (本体)
   static $say_convert = array('suspect', 'cute_mage', 'cute_wolf', 'cute_fox',
-				   'cute_chiroptera', 'cute_avenger');
+			      'cute_chiroptera', 'cute_avenger');
 
   //悪戯発言変換
   static $say_bad_status = array('fairy', 'spring_fairy', 'summer_fairy', 'autumn_fairy',
-				      'winter_fairy', 'greater_fairy');
+				 'winter_fairy', 'greater_fairy');
 
   //発言変換 (順番依存あり)
   static $say = array('passion', 'actor', 'liar', 'rainbow', 'weekly', 'grassy', 'invisible',
-			   'side_reverse', 'line_reverse', 'mower', 'silent');
+		      'side_reverse', 'line_reverse', 'mower', 'silent');
 
   //声量
   static $voice = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
@@ -199,8 +199,8 @@ class RoleFilterData {
     'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie',  'disguise_wolf',
     'purple_wolf', 'snow_wolf', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
     'critical_mad', 'follow_mad', 'purple_fox', 'snow_fox', 'critical_fox', 'sweet_cupid',
-    'snow_cupid', 'quiz', 'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague',
-    'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'snow_cupid', 'quiz', 'step_vampire', 'cursed_avenger', 'critical_avenger', 'impatience',
+    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
   //反逆者判定
   static $rebel = array('rebel');
@@ -224,7 +224,7 @@ class RoleFilterData {
     'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
     'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
     'critical_fox', 'critical_avenger', 'purple_wolf', 'purple_fox', 'cursed_avenger',
-    'sweet_cupid', 'snow_cupid', 'disguise_wolf');
+    'sweet_cupid', 'snow_cupid', 'step_vampire', 'disguise_wolf');
 
   //霊能
   static $necromancer = array(
@@ -437,6 +437,7 @@ abstract class Role {
     $header = null;
     $footer = 'result_';
     $limit  = false;
+    $uniq   = false;
     switch ($action) {
     case 'MAGE_RESULT':
     case 'CHILD_FOX_RESULT':
@@ -594,6 +595,7 @@ abstract class Role {
       $type   = 'mage';
       $header = 'sympathy_result';
       $limit  = ! DB::$SELF->IsRole('ark_angel');
+      $uniq   = true;
       break;
 
     case 'PRESAGE_RESULT':
@@ -609,33 +611,20 @@ abstract class Role {
 
     $target_date = DB::$ROOM->date - 1;
     if (DB::$ROOM->test_mode) {
-      $stack = RQ::GetTest()->result_ability;
-      $stack = array_key_exists($target_date, $stack) ? $stack[$target_date] : array();
-      $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
-      if ($limit) {
-	$limit_stack = array();
-	foreach ($stack as $list) {
-	  if ($list['user_no'] == DB::$SELF->id) $limit_stack[] = $list;
-	}
-	$stack = $limit_stack;
-      }
-      $result_list = $stack;
-    }
-    else {
-      $str = 'SELECT DISTINCT target, result FROM result_ability WHERE room_no = %d ' .
-	"AND date = %d AND type = '%s'";
-      $query = sprintf($str, DB::$ROOM->id, $target_date, $action);
-      if ($limit) $query .= sprintf(' AND user_no = %d', DB::$SELF->id);
-      DB::Prepare($query);
-      $result_list = DB::FetchAssoc();
+      $result_list = DevRoom::GetAbility($target_date, $action, $limit);
+    } else {
+      $result_list = SystemMessageDB::GetAbility($target_date, $action, $limit);
     }
     //Text::p($result_list);
 
     switch ($type) {
     case 'mage':
     case 'guard':
+      if ($uniq) $stack = array();
       foreach ($result_list as $result) {
+	if ($uniq && in_array($result['target'], $stack)) continue;
 	RoleHTML::OutputAbilityResult($header, $result['target'], $footer . $result['result']);
+	if ($uniq) $stack[] = $result['target'];
       }
       break;
 
@@ -1016,6 +1005,7 @@ class RoleHTML {
       case 'STEP_MAGE_DO':
       case 'STEP_GUARD_DO':
       case 'SPREAD_WIZARD_DO':
+      case 'STEP_VAMPIRE_DO':
 	$str_stack = array();
 	foreach (explode(' ', $stack['target_no']) as $id) {
 	  $user = DB::$USER->ByVirtual($id);

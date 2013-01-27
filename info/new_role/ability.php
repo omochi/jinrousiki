@@ -56,7 +56,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="step">足音能力者</h2>
 <pre>
-<a href="human.php#step_mage">審神者</a>・<a href="human.php#step_guard">山立</a>・<a href="wolf.php#step_wolf">響狼</a>・<a href="wolf.php#step_mad">家鳴</a>・<a href="fox.php#step_fox">響狐</a>
+<a href="human.php#step_mage">審神者</a>・<a href="human.php#step_guard">山立</a>・<a href="wolf.php#step_wolf">響狼</a>・<a href="wolf.php#step_mad">家鳴</a>・<a href="fox.php#step_fox">響狐</a>・<a href="vampire.php#step_vampire">文武王</a>
 </pre>
 
 <h2 id="assassin">暗殺能力者</h2>
@@ -149,7 +149,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h2 id="vote_action">処刑投票能力者</h2>
 <pre>
 <a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#purple_wolf">紫狼</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#purple_fox">紫狐</a>・<a href="fox.php#critical_fox">寿羊狐</a>
-<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="vampire.php#step_vampire">文武王</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>)
 </pre>
 

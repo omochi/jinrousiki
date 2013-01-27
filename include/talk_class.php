@@ -116,6 +116,11 @@ class TalkParser {
 	$this->class = 'wolf-eat';
 	break;
 
+      case 'STEP_VAMPIRE_DO':
+	$action = 'vampire_do';
+	$this->class = 'vampire-do';
+	break;
+
       case 'JAMMER_MAD_DO':
       case 'VOODOO_MAD_DO':
       case 'VOODOO_FOX_DO':

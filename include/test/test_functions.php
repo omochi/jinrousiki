@@ -56,6 +56,21 @@ class DevRoom {
     return $stack;
   }
 
+  //能力発動結果取得
+  static function GetAbility($date, $action, $limit) {
+    $stack = RQ::GetTest()->result_ability;
+    $stack = array_key_exists($date,   $stack) ? $stack[$date]   : array();
+    $stack = array_key_exists($action, $stack) ? $stack[$action] : array();
+    if ($limit) {
+      $limit_stack = array();
+      foreach ($stack as $list) {
+	if ($list['user_no'] == DB::$SELF->id) $limit_stack[] = $list;
+      }
+      $stack = $limit_stack;
+    }
+    return $stack;
+  }
+
   //配役テスト
   static function Cast(StdClass $stack) {
     RQ::SetTestRoom('game_option', implode(' ', $stack->game_option));
@@ -236,6 +251,7 @@ EOF;
       case 'STEP_WOLF_EAT':
       case 'SILENT_WOLF_EAT':
       case 'STEP_DO':
+      case 'STEP_VAMPIRE_DO':
 	$target_stack = array();
 	foreach (explode(' ', $stack['target_no']) as $id) {
 	  $user = DB::$USER->ByVirtual($id);
@@ -329,6 +345,7 @@ EOF;
       case 'STEP_WOLF_EAT':
       case 'SILENT_WOLF_EAT':
       case 'POSSESSED_DO':
+      case 'STEP_VAMPIRE_DO':
 	echo 'を狙いました';
 	break;
 

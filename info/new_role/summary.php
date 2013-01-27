@@ -103,6 +103,7 @@ Ver. 2.1.0
 <a href="#ver210a7">α7</a><br>
 Ver. 2.2.0
 <a href="#ver220a3">α3</a>
+<a href="#ver220a4">α4</a>
 </p>
 
 <p>
@@ -3068,6 +3069,15 @@ Ver. 2.1.0
   <td>村人</td>
   <td class="ability">夜の投票先の間で足音が鳴る妖狐。</td>
   <td>Ver. 2.2.0 α3</td>
+</tr>
+<tr id="ver220a4">
+  <td><a href="vampire.php#step_vampire">文武王</a></td>
+  <td><a href="vampire.php">吸血鬼</a></td>
+  <td><a href="vampire.php#vampire_group">吸血鬼系</a></td>
+  <td>蝙蝠</td>
+  <td>蝙蝠</td>
+  <td class="ability">夜の投票時に自分と投票先の間で足音が鳴る特殊な吸血鬼。<br>また、処刑投票先を一定確率自分の感染者にすることができる。</td>
+  <td>Ver. 2.2.0 α4</td>
 </tr>
 </table>
 

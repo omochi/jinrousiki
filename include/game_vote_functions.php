@@ -460,13 +460,13 @@ class Vote {
     }
 
     //KICK の後処理
-    $user_no = 1;
+    $id = 1;
     foreach (DB::$USER->rows as $user) {
-      if ($user->user_no != $user_no) {
-	$user->UpdateID($user_no);
-	$user->user_no = $user_no;
+      if ($user->id != $id) {
+	$user->UpdateID($id);
+	$user->id = $id;
       }
-      $user_no++;
+      $id++;
     }
     foreach (DB::$USER->kick as $user) $user->UpdateID(-1);
 
@@ -749,7 +749,7 @@ class Vote {
 
       foreach (RoleManager::LoadFilter('cure') as $filter) $filter->Cure(); //薬師系の治療判定
       if (! RoleManager::$actor->cured_flag) {
-	$id = RoleManager::$actor->user_no;
+	$id = RoleManager::$actor->id;
 	DB::$USER->SuddenDeath($id, 'SUDDEN_DEATH', RoleManager::$get->sudden_death);
       }
     }
@@ -776,7 +776,7 @@ class Vote {
 	$stack = array();
 	foreach ($user_list as $uname) {
 	  $user = DB::$USER->ByRealUname($uname);
-	  if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->user_no;
+	  if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->id;
 	}
 	//Text::p($stack, 'Target [frostbite]');
 	DB::$USER->ByID(Lottery::Get($stack))->AddDoom(1, 'frostbite');
@@ -854,8 +854,8 @@ class Vote {
     else {
       array_push($stack, 'GUARD_DO', 'STEP_GUARD_DO', 'ANTI_VOODOO_DO', 'REPORTER_DO',
 		 'POISON_CAT_DO', 'ASSASSIN_DO', 'WIZARD_DO', 'SPREAD_WIZARD_DO', 'ESCAPE_DO',
-		 'DREAM_EAT', 'TRAP_MAD_DO', 'POSSESSED_DO', 'VAMPIRE_DO', 'OGRE_DO',
-		 'DEATH_NOTE_DO');
+		 'DREAM_EAT', 'TRAP_MAD_DO', 'POSSESSED_DO', 'VAMPIRE_DO', 'STEP_VAMPIRE_DO',
+		 'OGRE_DO', 'DEATH_NOTE_DO');
     }
     foreach ($stack as $action) {
       if (! isset($vote_data[$action])) $vote_data[$action] = array();
@@ -887,12 +887,12 @@ class Vote {
     elseif (DB::$ROOM->IsEvent('new_moon')) { //新月
       $skip = true; //影響範囲に注意
       array_push($stack, 'MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'WIZARD_DO',
-		 'SPREAD_WIZARD_DO', 'CHILD_FOX_DO', 'VAMPIRE_DO', 'FAIRY_DO');
+		 'SPREAD_WIZARD_DO', 'CHILD_FOX_DO', 'VAMPIRE_DO', 'STEP_VAMPIRE_DO', 'FAIRY_DO');
     }
     elseif (DB::$ROOM->IsEvent('no_contact')) { //花曇 (さとり系に注意)
       $skip = true; //影響範囲に注意
       array_push($stack, 'STEP_GUARD_DO', 'REPORTER_DO', 'ASSASSIN_DO', 'MIND_SCANNER_DO',
-		 'ESCAPE_DO', 'TRAP_MAD_DO', 'VAMPIRE_DO', 'OGRE_DO');
+		 'ESCAPE_DO', 'TRAP_MAD_DO', 'VAMPIRE_DO', 'STEP_VAMPIRE_DO', 'OGRE_DO');
     }
     elseif (DB::$ROOM->IsEvent('no_trap')) { //雪明り
       $stack[] = 'TRAP_MAD_DO';
@@ -915,7 +915,7 @@ class Vote {
     //-- 足音レイヤー --//
     if (! DB::$ROOM->IsEvent('no_step')) { //地吹雪は無効
       $step_list = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
-      if (DB::$ROOM->date > 1) $step_list[] = 'STEP_GUARD_DO';
+      if (DB::$ROOM->date > 1) array_push($step_list, 'STEP_GUARD_DO', 'STEP_VAMPIRE_DO');
       foreach ($step_list as $action) { //足音処理
 	foreach ($vote_data[$action] as $id => $target_id) {
 	  RoleManager::LoadMain(DB::$USER->ByID($id))->Step(explode(' ', $target_id));
@@ -1107,6 +1107,13 @@ class Vote {
 	if ($user->IsDead(true)) continue; //直前に死んでいたら無効
 	RoleManager::LoadMain($user)->SetInfect(DB::$USER->ByID($target_id));
       }
+      foreach ($vote_data['STEP_VAMPIRE_DO'] as $id => $target_id) { //文武王の情報収集
+	$user = DB::$USER->ByID($id);
+	if ($user->IsDead(true)) continue; //直前に死んでいたら無効
+	$target = DB::$USER->ByID(array_pop(explode(' ', $target_id)));
+	RoleManager::LoadMain($user)->SetInfect($target);
+      }
+
       foreach (RoleManager::LoadFilter('trap') as $filter) $filter->DelayTrapKill(); //罠死処理
       //Text::p(RoleManager::$get->$role, "Target [{$role}]");
       //Text::p(RoleManager::$get->$name, "Target [{$name}]");
@@ -1421,7 +1428,7 @@ class Vote {
     //今回投票した相手にすでに投票している人数を取得
     $vote_count = 1;
     foreach (DB::$ROOM->vote as $stack) {
-      if (in_array($target->user_no, $stack)) $vote_count++;
+      if (in_array($target->id, $stack)) $vote_count++;
     }
 
     //規定数以上の投票があった / キッカーが身代わり君 / 自己 KICK が有効の場合に処理
@@ -1430,7 +1437,7 @@ class Vote {
       return $vote_count;
     }
     $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
-      sprintf('WHERE room_no = %d AND user_no = %d', DB::$ROOM->id, $target->user_no);
+      sprintf('WHERE room_no = %d AND user_no = %d', DB::$ROOM->id, $target->id);
     DB::Execute($query);
 
     //通知処理
@@ -1522,7 +1529,7 @@ EOF;
     else {
       $user_stack = DB::$USER->rows;
     }
-    $virtual_self = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想投票者を取得
+    $virtual_self = DB::$USER->ByVirtual(DB::$SELF->id); //仮想投票者を取得
 
     self::OutputHeader();
     $str = <<<EOF
@@ -1638,7 +1645,7 @@ EOF;
 	RoleManager::$get->not_submit = RoleManager::$get->not_action;
       }
       $not_submit = strtoupper(RoleManager::$get->not_submit);
-      printf($format, RQ::Get()->post_url, RoleManager::$get->not_action, DB::$SELF->user_no,
+      printf($format, RQ::Get()->post_url, RoleManager::$get->not_action, DB::$SELF->id,
 	     VoteMessage::$$not_submit);
     }
 

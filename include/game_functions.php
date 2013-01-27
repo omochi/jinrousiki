@@ -168,7 +168,7 @@ EOF;
     $result = 'win';
     $class  = null;
     $user   = $id > 0 ? DB::$USER->ByID($id) : DB::$SELF;
-    if ($user->user_no < 1) return $str;
+    if ($user->id < 1) return $str;
 
     $camp = $user->GetCamp(true); //所属陣営を取得
     switch ($winner) {
@@ -336,7 +336,7 @@ class GameHTML {
 	$mouse .= ' onMouseout="this.src=' . "'$path'" . '"';
       }
 
-      if (DB::$ROOM->personal_mode) $live .= sprintf('<br>(%s)', Winner::Generate($user->user_no));
+      if (DB::$ROOM->personal_mode) $live .= sprintf('<br>(%s)', Winner::Generate($user->id));
 
       //ユーザプロフィールと枠線の色を追加
       //Title 内の改行はブラウザ依存あり (Firefox 系は無効)
@@ -510,7 +510,7 @@ EOF;
       if ($left_time < 1 && DB::$SELF->IsLive()) { //超過判定
 	DB::$ROOM->LoadVote(); //投票情報を取得
 	if (DB::$ROOM->IsDay()) { //未投票判定
-	  $novote_flag = ! array_key_exists(DB::$SELF->user_no, DB::$ROOM->vote);
+	  $novote_flag = ! array_key_exists(DB::$SELF->id, DB::$ROOM->vote);
 	}
 	elseif (DB::$ROOM->IsNight()) {
 	  $novote_flag = DB::$SELF->CheckVote(DB::$ROOM->ParseVote()) === false;

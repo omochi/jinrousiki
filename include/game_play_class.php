@@ -197,8 +197,8 @@ class GamePlay {
     DB::$ROOM->LoadVote(); //投票情報を取得
     if (DB::$ROOM->IsDay()) {
       foreach (DB::$USER->rows as $user) { //生存中の未投票者を取得
-	if ($user->IsLive() && ! isset(DB::$ROOM->vote[$user->user_no])) {
-	  $novote_list[] = $user->user_no;
+	if ($user->IsLive() && ! isset(DB::$ROOM->vote[$user->id])) {
+	  $novote_list[] = $user->id;
 	}
       }
     }
@@ -206,7 +206,7 @@ class GamePlay {
       $vote_data = DB::$ROOM->ParseVote(); //投票情報をパース
       //Text::p($vote_data, 'Vote Data');
       foreach (DB::$USER->rows as $user) { //未投票チェック
-	if ($user->CheckVote($vote_data) === false) $novote_list[] = $user->user_no;
+	if ($user->CheckVote($vote_data) === false) $novote_list[] = $user->id;
       }
     }
 
@@ -234,8 +234,7 @@ class GamePlay {
     if (DB::$ROOM->IsRealTime()) { //リアルタイム制
       GameTime::GetRealPass($left_time);
       $spend_time = 0; //会話で時間経過制の方は無効にする
-    }
-    else { //会話で時間経過制
+    } else { //会話で時間経過制
       GameTime::GetTalkPass($left_time); //経過時間の和
       $spend_time = min(4, max(1, floor(strlen($say) / 100))); //経過時間 (範囲は 1 - 4)
     }
@@ -250,7 +249,7 @@ class GamePlay {
     }
 
     //if (DB::$ROOM->IsNight()) { //夜は役職毎に分ける
-    $user = DB::$USER->ByVirtual(DB::$SELF->user_no); //仮想ユーザを取得
+    $user = DB::$USER->ByVirtual(DB::$SELF->id); //仮想ユーザを取得
     if (DB::$ROOM->IsEvent('blind_talk_night')) { //天候：風雨
       $location = 'self_talk';
     }
@@ -388,7 +387,7 @@ EOF;
     }
     elseif (DB::$ROOM->IsBeforegame()) {
       $format = '<a target="_blank" href="user_manager.php%s&user_no=%d">登録情報変更</a>'."\n";
-      printf($format, self::SelectURL(array()), DB::$SELF->user_no);
+      printf($format, self::SelectURL(array()), DB::$SELF->id);
       if (DB::$SELF->IsDummyBoy()) {
 	$format = '<a target="_blank" href="room_manager.php?room_no=%d">村オプション変更</a>'."\n";
 	printf($format, DB::$ROOM->id);
@@ -534,7 +533,7 @@ EOF;
   private function OutputLastWords() {
     if (DB::$ROOM->IsAfterGame()) return false; //ゲーム終了後は表示しない
 
-    $str = UserDB::GetLastWords(DB::$SELF->user_no);
+    $str = UserDB::GetLastWords(DB::$SELF->id);
     if ($str == '') return false;
 
     Text::ConvertLine($str); //改行コードを変換

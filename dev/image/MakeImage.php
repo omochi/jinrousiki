@@ -1019,6 +1019,10 @@ class RoleMessageList {
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|牡丹灯籠|です。|吸血|先に一定確率で_恋色迷彩_を追加してしまいます。\n　恋に狂った亡霊のあなたは、欲望に身を委ね、人々を虜にしてしまいなさい。",
     'type' => 'vampire', 'delimiter' => array('_' => 'liar'));
 
+  public $step_vampire = array(
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|文武王|です。夜の投票時にあなたと投票先の通り道で#足音#が鳴ります。また、_処刑_投票先を一定確率で|感染者|にできます。",
+    'type' => 'vampire', 'delimiter' => array('#' => 'step', '_' => 'vote'));
+
   public $doom_vampire = array(
     'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|冥血鬼|です。#人狼#に襲撃されても死ぬことはありませんが、|吸血|をする際に_死の宣告_を追加してしまいます。\n　#狼#など無視して玩具で遊びましょう。相手はいずれ壊れてしまいますが、代わりはいくらでも用意できるのですから。",
     'type' => 'sacrifice_vampire', 'delimiter' => array('_' => 'chicken'));
@@ -2022,6 +2026,7 @@ class RoleMessageList {
   public $result_incubus_vampire = array('message' => "さんは|青髭公|でした", 'type' => 'result_vampire');
   public $result_succubus_vampire = array('message' => "さんは|飛縁魔|でした", 'type' => 'result_vampire');
   public $result_passion_vampire = array('message' => "さんは|牡丹灯籠|でした", 'type' => 'result_vampire');
+  public $result_step_vampire = array('message' => "さんは|文武王|でした", 'type' => 'result_vampire');
   public $result_doom_vampire = array('message' => "さんは|冥血鬼|でした", 'type' => 'result_vampire');
   public $result_sacrifice_vampire = array('message' => "さんは|吸血公|でした", 'type' => 'result_vampire');
   public $result_soul_vampire = array('message' => "さんは|吸血姫|でした", 'type' => 'result_vampire');
@@ -2295,4 +2300,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));
-$builder->Output('cursed_avenger', array(0,0,0,0,0,0,0,0));
+$builder->Output('step_vampire', array(0.5,0,0,0,0,0,0,0));
