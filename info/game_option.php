@@ -265,8 +265,8 @@ InfoHTML::OutputHeader('ゲームオプション');
 
 <h2 id="special_option">特殊村設定</h2>
 <p>
-<?php InfoHTML::OutputCategory(array('detective', 'liar', 'gentleman', 'deep_sleep', 'blinder',
-'mind_open', 'critical', 'sudden_death', 'perverseness')); ?>
+<?php InfoHTML::OutputCategory(array('detective', 'liar', 'gentleman', 'passion', 'deep_sleep',
+'blinder', 'mind_open', 'critical', 'sudden_death', 'perverseness')); ?>
 </p>
 <p>
 <?php InfoHTML::OutputCategory(array('joker', 'death_note', 'weather', 'festival')); ?>
@@ -303,6 +303,11 @@ InfoHTML::OutputHeader('ゲームオプション');
 <li><?php OptionManager::OutputExplain('gentleman'); ?></li>
 <li><a href="new_role/sub_role.php#gentleman">紳士</a>・<a href="new_role/sub_role.php#lady">淑女</a>の発動率はランダム付加の場合と同じです</li>
 <li><a href="#chaos"><?php OptionManager::OutputCaption('chaos'); ?></a>でランダムに付加される時は個々の性別を参照していません</li>
+</ul>
+
+<h3 id="passion"><?php OptionManager::OutputCaption('passion'); ?> [Ver. 2.2.0 α4～]</h3>
+<ul>
+<li>全ユーザに<a href="new_role/sub_role.php#passion">恋色迷彩</a>がつきます</li>
 </ul>
 
 <h3 id="deep_sleep"><?php OptionManager::OutputCaption('deep_sleep'); ?> [Ver. 1.4.0 β18～]</h3>

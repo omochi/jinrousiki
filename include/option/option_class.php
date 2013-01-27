@@ -4,18 +4,18 @@ class OptionParser {
   public $row;
   public $list = array();
 
-  function __construct($value) {
-    $this->row  = $value;
+  function __construct($data) {
+    $this->row  = $data;
     $this->list = self::Parse($this->row);
   }
 
   //パース
-  static function Parse($value) {
+  static function Parse($data) {
     $list = array();
-    foreach (explode(' ', $value) as $option) {
+    foreach (explode(' ', $data) as $option) {
       if (empty($option)) continue;
-      $items = explode(':', $option);
-      $list[$items[0]] = count($items) > 1 ? array_slice($items, 1) : true;
+      $stack = explode(':', $option);
+      $list[$stack[0]] = count($stack) > 1 ? array_slice($stack, 1) : true;
     }
     return $list;
   }
@@ -37,7 +37,7 @@ class OptionManager {
   //特殊サブ配役リスト
   private static $cast_list = array(
     'decide', 'authority', 'joker', 'deep_sleep', 'blinder', 'mind_open',
-    'perverseness', 'liar', 'gentleman', 'critical', 'sudden_death', 'quiz');
+    'perverseness', 'liar', 'gentleman', 'passion', 'critical', 'sudden_death', 'quiz');
 
   //クラス取得
   static function GetClass($name) {

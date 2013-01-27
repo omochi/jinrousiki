@@ -176,7 +176,7 @@ class RoomManager {
 
       if (! RQ::Get()->perverseness) RoomOption::LoadPost('sudden_death');
       RoomOption::LoadPost(
-        'liar', 'gentleman', 'deep_sleep', 'mind_open', 'blinder', 'critical', 'joker',
+        'liar', 'gentleman', 'passion', 'deep_sleep', 'mind_open', 'blinder', 'critical', 'joker',
 	'death_note', 'detective', 'weather', 'festival', 'change_common_selector',
 	'change_mad_selector', 'change_cupid_selector');
     }

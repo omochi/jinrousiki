@@ -21,9 +21,10 @@ class OptionForm {
     'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf', 'possessed_wolf',
     'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'decide', 'authority',
     'special' => null,
-    'liar', 'gentleman', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open', 'blinder',
-    'critical', 'joker', 'death_note', 'detective', 'weather', 'festival', 'replace_human_selector',
-    'change_common_selector', 'change_mad_selector', 'change_cupid_selector',
+    'liar', 'gentleman', 'passion', 'sudden_death', 'perverseness', 'deep_sleep', 'mind_open',
+    'blinder', 'critical', 'joker', 'death_note', 'detective', 'weather', 'festival',
+    'replace_human_selector', 'change_common_selector', 'change_mad_selector',
+    'change_cupid_selector',
     'special_cast' => null,
     'special_role',
     'chaos' => null,
@@ -90,11 +91,13 @@ EOF;
    <tr class="%s" id="%s_on">
     <td class="title"><label onClick="toggle_option_display('%s', true)">%s</label></td>
     <td onClick="toggle_option_display('%s', true)"><a href="javascript:void(0)">折り畳む</a></td>
-  </tr>%s
+  </tr>
+
    <tr id="%s_off">
     <td class="title"><label onClick="toggle_option_display('%s', false)">%s</label></td>
     <td onClick="toggle_option_display('%s', false)"><a href="javascript:void(0)">展開する</a></td>
-  </tr>%s
+  </tr>
+
 EOF;
     switch ($group) {
     case 'base':
@@ -125,8 +128,8 @@ EOF;
     default:
       return;
     }
-    printf($format, $group, $group, $group, $name, $group, "\n",
-	   $group, $group, $name, $group, "\n");
+    printf($format, $group, $group, $group, $name, $group,
+	   $group, $group, $name, $group);
   }
 
   //テキストボックス生成

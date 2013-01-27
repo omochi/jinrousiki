@@ -45,7 +45,7 @@ class GameOptionConfig {
   static $default_not_open_cast = 'auto_open_cast';
 
   //-- 追加役職設定 --//
-  //必要人数は CastConfig の同名オプション名参照 (例： $poison_enable => CastConfig->poison)
+  //必要人数は CastConfig の同名オプション参照 (例： $poison_enable => CastConfig::$poison)
   static $poison_enable  = true; //埋毒者
   static $default_poison = true;
 
@@ -100,6 +100,9 @@ class GameOptionConfig {
 
   static $gentleman_enable  = true; //紳士・淑女村
   static $default_gentleman = false;
+
+  static $passion_enable  = true; //恋色迷彩村
+  static $default_passion = false;
 
   static $deep_sleep_enable  = true; //静寂村
   static $default_deep_sleep = false;

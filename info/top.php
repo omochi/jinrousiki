@@ -20,9 +20,12 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>新規実装 / 仕様変更</h2>
 <ul>
   <li>クイズ村 GM の表示情報を追加</li>
+  <li>恋色迷彩の変換テーブルを管理者設定に変更</li>
+  <li>「審神者」「山立」仕様変更</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>「恋色迷彩村」オプション実装</li>
+  <li>天候「霜柱」「地吹雪」「月虹」「春一番」「桜吹雪」実装</li>
 </ul>

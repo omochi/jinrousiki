@@ -12,7 +12,7 @@ class RoomOption {
     'settle', 'seal_message', 'open_day', 'necessary_name', 'necessary_trip', 'not_open_cast',
     'auto_open_cast', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
     'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'decide',
-    'authority', 'detective', 'liar', 'gentleman', 'deep_sleep', 'blinder', 'mind_open',
+    'authority', 'detective', 'liar', 'gentleman', 'passion', 'deep_sleep', 'blinder', 'mind_open',
     'sudden_death', 'perverseness', 'critical', 'joker', 'death_note', 'weather', 'festival',
     'replace_human', 'full_mad', 'full_cupid', 'full_quiz', 'full_vampire', 'full_chiroptera',
     'full_mania', 'full_unknown_mania', 'change_common', 'change_hermit_common', 'change_mad',
