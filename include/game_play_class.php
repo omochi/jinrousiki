@@ -72,9 +72,11 @@ class GamePlay {
     //霊界の GM でも突然死タイマーを見れるようにする
     elseif (DB::$ROOM->dead_mode && DB::$ROOM->IsPlaying() && DB::$SELF->IsDummyBoy()) {
       //経過時間を取得
-      DB::$ROOM->IsRealTime() ?
-	GameTime::GetRealPass($left_time) :
+      if (DB::$ROOM->IsRealTime()) {
+	GameTime::GetRealPass($left_time);
+      } else {
 	GameTime::GetTalkPass($left_time, true);
+      }
 
       if ($left_time == 0) DB::$ROOM->SetSuddenDeath(); //最終発言時刻からの差分を取得
     }
@@ -297,6 +299,7 @@ class GamePlay {
   private function OutputHeader() {
     self::SetURL();
     Text::Output('<table class="game-header"><tr>');
+    $blank = 'target="_blank"';
 
     //ゲーム終了後・霊界
     if (DB::$ROOM->IsFinished() || (DB::$ROOM->heaven_mode && DB::$SELF->IsDead())) {
@@ -305,7 +308,7 @@ class GamePlay {
 
       //過去シーンのログへのリンク生成
       echo '<td class="view-option">ログ ';
-      $header = sprintf('<a target="_blank" href="game_log.php%s', self::SelectURL(array()));
+      $header = sprintf('<a %s href="game_log.php%s', $blank, self::SelectURL(array()));
       $format = $header . '&date=%d&scene=%s">%d(%s)</a>'."\n";
 
       printf($format, 0, 'beforegame', 0, '前');
@@ -357,19 +360,19 @@ EOF;
     else { //ゲーム終了後は自動更新しない
       GameHTML::OutputAutoReloadLink(self::GetURL(array('auto_reload')));
 
-      $format  = "[%s\" class=\"option-%s\">音</a>]\n";
+      $format  = '[%s" class="option-%s">音</a>]'.Text::LF;
       $url     = self::GetURL(array('play_sound'));
       $add_url = '&play_sound=on';
       RQ::Get()->play_sound ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
     }
 
     //アイコン表示
-    $format = "[%s\" class=\"option-%s\">アイコン</a>]\n";
+    $format = '[%s" class="option-%s">アイコン</a>]'.Text::LF;
     $url    = self::GetURL(array('icon'));
     RQ::Get()->icon ? printf($format, $url, 'on') : printf($format, $url . '&icon=on', 'off');
 
     if (DB::$ROOM->IsFinished()) { //ユーザ名表示
-      $format = "[%s\" class=\"option-%s\">名前</a>]\n";
+      $format = '[%s" class="option-%s">名前</a>]'.Text::LF;
       $url    = self::GetURL(array('name'));
       RQ::Get()->name ? printf($format, $url, 'on') : printf($format, $url . '&name=on', 'off');
     }
@@ -378,24 +381,29 @@ EOF;
     $url = self::GetURL(array('list_down'));
     echo $url . sprintf("%sリスト</a>\n", RQ::Get()->list_down ? '">↑' : '&list_down=on">↓');
 
+    if (! DB::$ROOM->IsFinished()) { //オプションリンク
+      $format = '<a %s href="room_manager.php?room_no=%d&describe_room=on">OP</a>'.Text::LF;
+      printf($format, $blank, DB::$ROOM->id);
+    }
+
     //別ページリンク
-    $format = '<a target="_blank" href="game_play.php%s">別ページ</a>%s';
-    printf($format, self::SelectURL(array('list_down')), "\n");
+    $format = '<a %s href="game_play.php%s">別ページ</a>'.Text::LF;
+    printf($format, $blank, self::SelectURL(array('list_down')));
 
     if (DB::$ROOM->IsFinished()) {
       GameHTML::OutputLogLink();
     }
     elseif (DB::$ROOM->IsBeforegame()) {
-      $format = '<a target="_blank" href="user_manager.php%s&user_no=%d">登録情報変更</a>'."\n";
-      printf($format, self::SelectURL(array()), DB::$SELF->id);
+      $format = '<a %s href="user_manager.php%s&user_no=%d">登録情報変更</a>'.Text::LF;
+      printf($format, $blank, self::SelectURL(array()), DB::$SELF->id);
       if (DB::$SELF->IsDummyBoy()) {
-	$format = '<a target="_blank" href="room_manager.php?room_no=%d">村オプション変更</a>'."\n";
-	printf($format, DB::$ROOM->id);
+	$format = '<a %s href="room_manager.php?room_no=%d">村オプション変更</a>'.Text::LF;
+	printf($format, $blank, DB::$ROOM->id);
       }
     }
     if (ServerConfig::DEBUG_MODE) {
-      $format = '<a target="_blank" href="game_view.php?room_no=%d">観戦</a>'."\n";
-      printf($format, DB::$ROOM->id);
+      $format = '<a %s href="game_view.php?room_no=%d">観戦</a>'.Text::LF;
+      printf($format, $blank, DB::$ROOM->id);
     }
 
     //音でお知らせ処理
@@ -495,7 +503,7 @@ EOF;
 
     if (! DB::$ROOM->IsPlaying()) return;
 
-    $str = '<div class="system-vote">%s</div>'."\n";
+    $str = '<div class="system-vote">%s</div>'.Text::LF;
     if ($left_time == 0) {
       printf($str, $time_message . Message::$vote_announce);
       if (DB::$ROOM->sudden_death > 0) {
@@ -556,14 +564,12 @@ EOF;
     self::$url_stack['auto_reload'] = $url;
 
     foreach (array('play_sound', 'icon', 'name', 'list_down') as $name) {
-      $url = RQ::Get()->$name ? sprintf('&%s=on', $name) : '';
-      self::$url_stack[$name] = $url;
+      self::$url_stack[$name] = RQ::Get()->$name ? sprintf('&%s=on', $name) : '';
     }
 
     foreach (array('dead', 'heaven') as $name) {
       $mode = $name . '_mode';
-      $url = DB::$ROOM->$mode ? sprintf('&%s=on', $mode) : '';
-      self::$url_stack[$mode] = $url;
+      self::$url_stack[$mode] = DB::$ROOM->$mode ? sprintf('&%s=on', $mode) : '';
     }
   }
 
@@ -579,7 +585,9 @@ EOF;
   //リンク情報取得 (抽出型)
   private function SelectURL(array $list, $header = null) {
     $url = (isset($header) ? $header : '') . self::$url_stack['room'];
-    foreach ($list as $key) $url .= self::$url_stack[$key];
+    foreach ($list as $key) {
+      $url .= self::$url_stack[$key];
+    }
     return $url;
   }
 }

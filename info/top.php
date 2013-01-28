@@ -7,25 +7,24 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.2.0α3アップロード (2013/01/14 (Mon) 02:07) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57871/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.0α4アップロード (2013/01/27 (Sun) 22:01) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/57963/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「審神者」「山立」「響狼」「家鳴」「響狐」実装</li>
-  <li>「足音村」オプション実装</li>
-  <li>固定配役追加モード：P(音鳴村)追加</li>
-  <li>役職システムメッセージ画像のフォントサイズを変更</li>
+  <li>「文武王」実装</li>
+  <li>「審神者」「山立」仕様変更</li>
+  <li>「恋色迷彩村」オプション実装</li>
+  <li>天候「霜柱」「地吹雪」「月虹」「春一番」「桜吹雪」実装</li>
+  <li>恋色迷彩の変換テーブルを管理者設定に変更</li>
+  <li>クイズ村 GM の表示情報を追加</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>クイズ村 GM の表示情報を追加</li>
-  <li>恋色迷彩の変換テーブルを管理者設定に変更</li>
-  <li>「審神者」「山立」仕様変更</li>
+  <li>オプション詳細情報のリンクを追加 (プレイ中限定)</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>「恋色迷彩村」オプション実装</li>
-  <li>天候「霜柱」「地吹雪」「月虹」「春一番」「桜吹雪」実装</li>
+  <li>なし</li>
 </ul>

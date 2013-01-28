@@ -14,6 +14,10 @@ elseif (RQ::Get()->change_room) {
   Loader::LoadFile('session_class', 'user_class');
   RoomManager::Create();
 }
+elseif (RQ::Get()->describe_room) {
+  Loader::LoadFile('chaos_config');
+  RoomManager::OutputDescribe();
+}
 elseif (RQ::Get()->room_no > 0) {
   Loader::LoadFile('session_class', 'user_class', 'option_form_class');
   RoomManager::OutputCreate();

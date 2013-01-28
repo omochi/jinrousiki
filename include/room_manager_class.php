@@ -285,6 +285,28 @@ EOF;
     }
     RoomManagerHTML::OutputCreate();
   }
+
+  //部屋説明を出力
+  static function OutputDescribe() {
+    $title = '村情報表示[エラー]';
+    if (RQ::Get()->room_no < 1) HTML::OutputResult($title, '無効な村番地です');
+    DB::$ROOM = RoomManagerDB::Load();
+    if (DB::$ROOM->id < 1) HTML::OutputResult($title, '無効な村番地です');
+    if (DB::$ROOM->IsFinished()) HTML::OutputResult($title, 'すでにゲーム終了しています');
+
+    HTML::OutputHeader($title, 'info/info', true);
+    $format = <<<EOF
+[%d番地]%s村<br>
+<div>～%s～ %s</div>
+<br>
+
+EOF;
+    $max_user = DB::$ROOM->max_user;
+    $image = RoomOption::Generate(DB::$ROOM->game_option, DB::$ROOM->option_role, $max_user);
+    printf($format, DB::$ROOM->id, DB::$ROOM->name, DB::$ROOM->comment, $image);
+    echo RoomOption::GenerateCaption(DB::$ROOM->game_option, DB::$ROOM->option_role);
+    HTML::OutputFooter();
+  }
 }
 
 //-- データベースアクセス (RoomManager 拡張) --//

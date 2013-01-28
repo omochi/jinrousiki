@@ -80,6 +80,39 @@ class RoomOption {
     return $str;
   }
 
+  //ゲームオプション説明生成
+  static function GenerateCaption($game_option, $option_role = '') {
+    //オプションパース
+    $list = array_merge(OptionParser::Parse($game_option), OptionParser::Parse($option_role));
+
+    $format = '<p><a href="info/game_option.php#%s">%s</a>：';
+    $str = '';
+    foreach (array_intersect(self::$icon_order, array_keys($list)) as $option) {
+      $filter   = OptionManager::GetClass($option);
+      $sentence = sprintf($format, $option, $filter->GetCaption());
+      if (isset(CastConfig::$option) && is_int(CastConfig::$$option)) {
+	$sentence .= sprintf('(%d人～)', CastConfig::$$option);
+      }
+      switch ($option) {
+      case 'real_time':
+        list($day, $night) = $list[$option];
+	$footer = sprintf('[%d：%d]', $day, $night);
+        $sentence .= sprintf('(昼： %d 分　夜： %d 分)', $day, $night);
+	break;
+
+      case 'topping':
+      case 'boost_rate':
+	$type   = $list[$option][0];
+	$item   = $filter->GetItem();
+	$footer = sprintf('[%s]', strtoupper($type));
+	$sentence .= sprintf('(Type%s)', $item[$type]);
+	break;
+      }
+      $str .= $sentence . $filter->GetExplain() . '</p>' . Text::LF;
+    }
+    return $str;
+  }
+
   //ゲームオプション画像出力
   static function Output() {
     extract(RoomDB::GetOption());

@@ -238,6 +238,7 @@ class RequestRoomManager extends RequestBase {
     Text::Encode();
     $this->ParseGetInt('room_no');
     $this->ParsePostOn('create_room', 'change_room');
+    $this->ParseGetOn('describe_room');
   }
 }
 
