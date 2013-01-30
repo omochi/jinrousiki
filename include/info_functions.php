@@ -105,7 +105,7 @@ EOF;
   //カテゴリ別ページ内リンク出力
   static function OutputCategory(array $list) {
     foreach ($list as $name) {
-      printf("<a href=\"#%s\">%s</a>\n", $name, OptionManager::GenerateCaption($name));
+      printf('<a href="#%s">%s</a>'.Text::LF, $name, OptionManager::GenerateCaption($name));
     }
   }
 
@@ -125,7 +125,7 @@ EOF;
     foreach ($role_list as $role) {
       $str .= RoleDataHTML::GenerateMain($role, 'th');
     }
-    $str .= '</tr>'."\n";
+    $str .= '</tr>'.Text::LF;
     echo $header . $str;
 
     //人数毎の配役を表示
@@ -135,7 +135,7 @@ EOF;
       foreach ($role_list as $role) {
 	$tag .= sprintf('<td>%d</td>', isset($value[$role]) ? $value[$role] : 0);
       }
-      printf("<tr>%s</tr>\n", $tag);
+      printf('<tr>%s</tr>'.Text::LF, $tag);
       if ($key == $max) break;
       if ($key % 20 == 0) echo $str;
     }
@@ -146,27 +146,27 @@ EOF;
   static function OutputFestival() {
     $stack  = CastConfig::$festival_role_list;
     $format = '%' . strlen(max(array_keys($stack))) . 's人：';
-    $str    = '<pre>'."\n";
+    $str    = '<pre>'.Text::LF;
     ksort($stack); //人数順に並び替え
     foreach ($stack as $count => $list) {
       $order_stack = array();
       foreach (RoleData::Sort(array_keys($list)) as $role) { //役職順に並び替え
 	$order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
       }
-      $str .= sprintf($format, $count) . implode('　', $order_stack) . "\n";
+      $str .= sprintf($format, $count) . implode('　', $order_stack) . Text::LF;
     }
-    echo $str . '</pre>'."\n";
+    echo $str . '</pre>'.Text::LF;
   }
 
   //オプションリスト表示 (闇鍋モード用)
   static function OutputItem($option, $name, $version) {
-    $format = "<h3 id=\"%s_%s\">%s [%s～]</h3>\n";
+    $format = '<h3 id="%s_%s">%s [%s～]</h3>'.Text::LF;
     printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name], $version);
   }
 
   //個別オプション表示 (闇鍋モード用)
   static function OutputItemList($option, $list) {
-    $format = "<a href=\"#%s_%s\">%s</a>\n";
+    $format = '<a href="#%s_%s">%s</a>'.Text::LF;
     foreach ($list as $name) {
       printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);
     }
@@ -179,20 +179,20 @@ EOF;
   static function OutputSharedRoomList() {
     if (SharedServerConfig::DISABLE) return false;
 
-    $str = HTML::LoadJavaScript('shared_room');
+    $format = <<<EOF
+<div id="server%d"></div>
+<script language="javascript"><!--
+output_shared_room(%d, "server%d");
+--></script>
+
+EOF;
+    $str   = HTML::LoadJavaScript('shared_room');
     $count = 0;
     foreach (SharedServerConfig::$server_list as $server => $array) {
       $count++;
       extract($array);
       if ($disable) continue;
-
-      $str .= <<<EOF
-<div id="server{$count}"></div>
-<script language="javascript"><!--
-output_shared_room({$count}, "server{$count}");
---></script>
-
-EOF;
+      $str .= sprintf($format, $count, $count, $count);
     }
     echo $str;
   }
@@ -248,22 +248,23 @@ EOF;
     }
 
     foreach ($stack as $class => $list) {
-      $str = '<h2>' . $class . "</h2>\n<ul>\n";
+      $str = sprintf("<h2>%s</h2>\n<ul>\n", $class);
       foreach ($list as $name => $url) {
-	$str .= '<li><a href="' . $url . '">' . $name . "</a></li>\n";
+	$str .= sprintf('<li><a target="_blank" href="%s">%s</a></li>'.Text::LF, $url, $name);
       }
       echo $str . "</ul>\n";
     }
 
-    $str = <<<EOF
+    $format = <<<EOF
 <h2>パッケージ情報</h2>
 <ul>
 <li>PHP Ver. %s</li>
 <li>%s %s (Rev. %d)</li>
 <li>LastUpdate: %s</li>
-</ul>%s
+</ul>
+
 EOF;
-    printf($str, PHP_VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::REVISION,
-	   ScriptInfo::LAST_UPDATE, "\n");
+    printf($format, PHP_VERSION, ScriptInfo::PACKAGE, ScriptInfo::VERSION, ScriptInfo::REVISION,
+	   ScriptInfo::LAST_UPDATE);
   }
 }

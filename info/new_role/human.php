@@ -635,7 +635,7 @@ PP ラインの計算を複雑にするために作成してみました。
 <li>生き残った人がいた場合は、霊能結果に「～さんは命を狙われたようです」と表示される。</li>
 <li>生き残っていれば理由は問わない (以下、生存例)。
   <ol>
-    <li><a href="#guard_group">狩人</a>の護衛</a></li>
+    <li><a href="#guard_group">狩人</a>の護衛</li>
     <li><a href="wolf.php#silver_wolf">銀狼</a>などの人狼同士の襲撃</li>
     <li><a href="#doll_master">人形遣い</a>・<a href="fox.php">妖狐</a>・<a href="ogre.php">鬼</a>などの耐性持ちだった</li>
     <li>襲撃者が<a href="wolf.php#sex_wolf">雛狼</a>だった</li>

@@ -648,7 +648,7 @@ Ver. 2.1.0
 </tr>
 <tr>
   <td><a href="fox.php#scarlet_fox">紅狐</a></td>
-  <td><a href="fox.php">妖狐</td>
+  <td><a href="fox.php">妖狐</a></td>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
@@ -675,7 +675,7 @@ Ver. 2.1.0
 </tr>
 <tr>
   <td><a href="fox.php#cute_fox">萌狐</a></td>
-  <td><a href="fox.php">妖狐</td>
+  <td><a href="fox.php">妖狐</a></td>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>村人<br>(呪殺)</td>
   <td>村人</td>
@@ -684,7 +684,7 @@ Ver. 2.1.0
 </tr>
 <tr>
   <td><a href="fox.php#black_fox">黒狐</a></td>
-  <td><a href="fox.php">妖狐</td>
+  <td><a href="fox.php">妖狐</a></td>
   <td><a href="fox.php#fox_group">妖狐系</a></td>
   <td>人狼<br>(呪殺無し)</td>
   <td>妖狐</td>
@@ -1148,7 +1148,7 @@ Ver. 2.1.0
   <td>村人</td>
   <td>村人</td>
   <td class="ability">他の国で言う「奴隷」。<br>勝利条件は「<a href="human.php#doll_master">人形遣い</a>が全員死亡している + 村人陣営の勝利」で、自身の生死は不問。<br>
-    <href="human.php#doll_master">人形遣い</a>が人狼に襲撃されたら代わりに死亡する。</td>
+    <a href="human.php#doll_master">人形遣い</a>が人狼に襲撃されたら代わりに死亡する。</td>
   <td>Ver. 1.4.0 β10</td>
 </tr>
 <tr>

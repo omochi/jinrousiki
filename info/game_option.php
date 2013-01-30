@@ -16,10 +16,11 @@ InfoHTML::OutputHeader('ゲームオプション');
 <h2 id="basic_option">基本設定</h2>
 <p>
 <?php InfoHTML::OutputCategory(array('wish_role', 'real_time', 'wait_morning', 'open_vote',
-'settle', 'seal_message', 'open_day')); ?>
+'settle')); ?>
 </p>
 <p>
-<?php InfoHTML::OutputCategory(array('necessary_name', 'necessary_trip')); ?>
+<?php InfoHTML::OutputCategory(array('seal_message', 'open_day', 'necessary_name',
+'necessary_trip')); ?>
 </p>
 
 <h3 id="wish_role"><?php OptionManager::OutputCaption('wish_role'); ?></h3>
@@ -134,12 +135,12 @@ InfoHTML::OutputHeader('ゲームオプション');
 <ul>
 <li>誰がどの役職なのかゲーム終了まで公開されません</li>
 <li>蘇生能力は有効になります</li>
-<li><a href="spec.php#dummy_boy">身代わり君</a>が<a href="spec.php#revive_refuse">蘇生辞退</a>すると<a href="#auto_open_cast"><?php OptionManager::OutputCaption('auto_open_cast'); ?></a>相当になります。
+<li><a href="spec.php#dummy_boy">身代わり君</a>が<a href="spec.php#revive_refuse">蘇生辞退</a>すると<a href="#auto_open_cast"><?php OptionManager::OutputCaption('auto_open_cast'); ?></a>相当になります</li>
 </ul>
 <h4>Ver. 1.5.0 β14～</h4>
-<pre>
-身代わり君の蘇生辞退で自動公開モード相当に移行。
-</pre>
+<ul>
+<li>身代わり君の蘇生辞退で自動公開モード相当に移行</li>
+</ul>
 
 <h3 id="auto_open_cast"><?php OptionManager::OutputCaption('auto_open_cast'); ?> [Ver. 1.4.0 β3～]</h3>
 <ul>
@@ -147,14 +148,14 @@ InfoHTML::OutputHeader('ゲームオプション');
 <li>非公開中の霊界モードには「隠蔽中」という趣旨のメッセージが画面に表示されます</li>
 </ul>
 <h4>Ver. 1.5.0 β6～</h4>
-<pre>
-非公開中の霊界モードには「隠蔽中」という趣旨のメッセージが画面に表示されます
-</pre>
+<ul>
+<li>非公開中の霊界モードには「隠蔽中」という趣旨のメッセージが画面に表示されます</li>
+</ul>
 
 
 <h2 id="add_role_option">追加役職設定</h2>
 <ul>
-<li>置換元の役職が足りない場合は出現しないことがあります。<br>
+<li>置換元の役職が足りない場合は出現しないことがあります<br>
 (例：村人1の場合、<a href="#poison"><?php OptionManager::OutputCaption('poison'); ?></a>は適用されない)</li>
 </ul>
 <p>
@@ -519,7 +520,7 @@ InfoHTML::OutputHeader('ゲームオプション');
 
 <h4 id="gray_random"><?php OptionManager::OutputCaption('gray_random'); ?> [Ver. 1.4.0 β17～]</h4>
 <ul>
-  <li>配役が基本職のみになります。初期設定は以下です。</li>
+  <li>配役が基本職のみになります。初期設定は以下です</li>
   <ol>
     <li>人狼系 → 人狼</li>
     <li>狂人系 → 狂人</li>
@@ -530,7 +531,7 @@ InfoHTML::OutputHeader('ゲームオプション');
 
 <h4 id="step"><?php OptionManager::OutputCaption('step'); ?> [Ver. 2.2.0 α3～]</h4>
 <ul>
-  <li>配役が<a href="new_role/ability.php#step">足音能力者</a>ベースになります。初期設定は以下です。</li>
+  <li>配役が<a href="new_role/ability.php#step">足音能力者</a>ベースになります。初期設定は以下です</li>
   <ol>
     <li>占い師系 → <a href="new_role/human.php#step_mage">審神者</a></li>
     <li>霊能者系 → 霊能者</li>

@@ -1218,7 +1218,6 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 付加した<a href="duelist.php#shepherd_patron">羊飼い</a>が誰か分かる。
 <a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) 以外の人狼に襲撃されたら<a href="#sheep_wisp">羊皮</a>を付加する。
 </pre>
-</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="duelist.php#shepherd_patron">羊飼い</a>用に実装されたサブ役職です。

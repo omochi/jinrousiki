@@ -325,7 +325,7 @@ PC の時計をサーバと合わせる必要がなくなりました。
   <li><a href="#faq_bug">バグを見つけたのですが</a></li>
   <li><a href="#faq_feature">ゲームの機能に関して要望があるのですが</a></li>
   <li><a href="#faq_talk">発言したときに時々発言できてないときがある</a></li>
-  <li><a href="#faq_mage_cancel">同じ日の夜に占い師が<a href="rule.php#rule_role_fox">妖狐</a>を占い、その占い師を<a href="rule.php#rule_role_wolf">人狼</a>が喰い殺した場合どうなるの？</a></li>
+  <li><a href="#faq_mage_cancel">同じ日の夜に占い師が妖狐を占い、その占い師を人狼が喰い殺した場合どうなるの？</a></li>
   <li><a href="#faq_kick">Kickされたときのユーザ名や村人名は再度同じ村で使用できるの？</a></li>
   <li><a href="#faq_distribution">このスクリプトを勝手に改造して再配布してもいいの？</a></li>
 </ul>
@@ -366,7 +366,7 @@ Mac では一応対策されているつもりです。<br>
 
 <h3 id="faq_bug">バグを見つけたのですが</h3>
 <div>
-<a href="http://sourceforge.jp/projects/jinrousiki/" target="_blank">SorceForge</a> のバグ報告か、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/">ウミガメ<a href="rule.php#rule_role_wolf">人狼</a>専用掲示板</a>の式神研究同好会スレッドにできるだけ詳しくバグの起きた状況とその内容を報告してください。<br>
+<a href="http://sourceforge.jp/projects/jinrousiki/" target="_blank">SorceForge</a> のバグ報告か、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1240771280/" target="_blank">ウミガメ人狼専用掲示板</a>の式神研究同好会スレッドにできるだけ詳しくバグの起きた状況とその内容を報告してください。<br>
 できれば対戦ログも教えていただければ助かります。
 </div>
 
@@ -398,10 +398,10 @@ Mac では一応対策されているつもりです。<br>
 かまいません。<br>
 許可を取る必要もありませんし、報告する義務もありません。<br>
 しかし、植物の背景画像、左上にある文字の入ったタイトル画像は<a href="http://photozou.jp/photo/list/2066445/5445429" target="_blank">天の欠片</a>さんの素材を使用しています。<br>
-この画像をそのまま使う場合は index.php の天の欠片さんへのリンクを削除しないようにお願いします。<br>
+この画像をそのまま使う場合は<a href="copyright.php">謝辞・素材</a>の天の欠片さんへのリンクを削除しないようにお願いします。<br>
 またこの画像の著作権は天の欠片さんの物なので、自分で撮影したとか自分で作ったとか言わないようにしてください。<br>
 Ver. 1.2.0で追加した画像については、<a href="http://azukifont.mints.ne.jp/" target="_blank">あずきふぉんと</a>さんのフォントを利用させていただいています。<br>
-この画像をそのまま使う場合は index.php のあずきふぉんとさんへのリンクを削除しないようにお願いします。<br>
+この画像をそのまま使う場合は<a href="copyright.php">謝辞・素材</a>のあずきふぉんとさんへのリンクを削除しないようにお願いします。<br>
 このシステムには mbstring モジュールに非対応なサーバでも稼動できるように <a href="http://www.matsubarafamily.com/blog/mbemu.php" target="_blank">mbstringエミュレータ</a>が入っています。<br>
 <a href="copyright.php">謝辞・素材</a>の mbstring エミュレータさんへのリンクを削除しないようにお願いします。
 </div>
