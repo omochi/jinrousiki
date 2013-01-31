@@ -57,7 +57,7 @@ class Role_ogre extends Role {
     $count = (int)$this->GetActor()->GetMainRoleTarget();
     $event = $this->GetEvent();
     $rate  = is_null($event) ? ceil(100 * pow($this->GetReduceRate(), $count)) : $event;
-    if (Lottery::Percent($rate)) return; //成功判定
+    if (! Lottery::Percent($rate)) return; //成功判定
     $this->Assassin($user);
 
     if (DB::$ROOM->IsEvent('full_ogre')) return; //成功回数更新処理 (朧月ならスキップ)
