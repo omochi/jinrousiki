@@ -23,6 +23,6 @@ class Role_liar extends Role_passion {
     'おはよう' => 'おやすみ', 'おやすみ' => 'おはよう');
 
   protected function GetConvertSayList() {
-    return Lottery::Percent(GameConfig::LIAR_RATE) ? parent::GetConvertSayList() : null;
+    return Lottery::Percent(GameConfig::LIAR_RATE) ? $this->convert_say_list : null;
   }
 }

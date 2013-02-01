@@ -11,5 +11,8 @@ class Role_passion extends Role {
     $this->SetStack(strtr($this->GetStack('say'), $stack), 'say');
   }
 
-  protected function GetConvertSayList() { return GameConfig::$passion_replace_list; }
+  protected function GetConvertSayList() {
+    $list = $this->role . '_replace_list';
+    return isset(GameConfig::$$list) ? GameConfig::$$list : $this->convert_say_list;
+  }
 }
