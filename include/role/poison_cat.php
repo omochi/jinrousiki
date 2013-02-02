@@ -129,7 +129,7 @@ class Role_poison_cat extends Role {
     if ($user->IsPossessedGroup()) { //憑依能力者対応
       if ($user->revive_flag) return true; //蘇生済みならスキップ
 
-      $virtual = DB::$USER->ByVirtual($user->id);
+      $virtual = $user->GetVirtual();
       if ($user->IsDead()) { //確定死者
 	if (! $user->IsSame($virtual)) { //憑依後に死亡していた場合はリセット処理を行う
 	  $user->ReturnPossessed('possessed_target');

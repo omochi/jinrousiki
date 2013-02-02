@@ -29,7 +29,7 @@ class Role_possessed_wolf extends Role_wolf {
     foreach ($this->GetStack('possessed') as $id => $target_id) {
       $user    = DB::$USER->ByID($id); //憑依者
       $target  = DB::$USER->ByID($target_id); //憑依予定先
-      $virtual = DB::$USER->ByVirtual($user->id); //現在の憑依先
+      $virtual = $user->GetVirtual(); //現在の憑依先
       if (! isset($user->possessed_reset))  $user->possessed_reset  = null;
       if (! isset($user->possessed_cancel)) $user->possessed_cancel = null;
 
@@ -72,7 +72,7 @@ class Role_possessed_wolf extends Role_wolf {
 	  DB::$USER->Kill($target->id, 'POSSESSED_TARGETED'); //憑依先の死亡処理
 	  //憑依先が誰かに憑依しているケースがあるので仮想ユーザで上書きする
 	  //Ver. 1.5.0 β13 の仕様変更でこのケースはなくなったはず
-	  $target = DB::$USER->ByVirtual($target->id);
+	  $target = $target->GetVirtual();
 	}
 	else {
 	  DB::$ROOM->ResultDead($target->handle_name, 'REVIVE_SUCCESS');
@@ -81,7 +81,7 @@ class Role_possessed_wolf extends Role_wolf {
 	$target->AddRole(sprintf('possessed[%d-%d]', $possessed_date, $user->id));
 
 	//憑依処理
-	$user->AddRole(sprintf('possessed[%d-%d]', $possessed_date, $target->id));
+	$user->AddRole(sprintf('possessed_target[%d-%d]', $possessed_date, $target->id));
 	DB::$ROOM->ResultDead($virtual->handle_name, 'POSSESSED');
 	$user->SaveLastWords($virtual->handle_name);
 	$user->Update('last_words', null);

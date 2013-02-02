@@ -30,7 +30,7 @@ class Role_anti_voodoo extends Role {
       }
     }
     //憑依者なら強制送還
-    elseif ($user->IsPossessedGroup() && ! $user->IsSame(DB::$USER->ByVirtual($user->id))) {
+    elseif ($user->IsPossessedGroup() && ! $user->IsSame($user->GetVirtual())) {
       if (! array_key_exists($user->id, $this->GetStack('possessed'))) {
 	$this->AddSuccess($user->id, 'possessed', true); //憑依リストに追加
       }

@@ -151,15 +151,15 @@ class Vote {
     DB::$ROOM->LoadVote(true); //投票情報をロード
     $id = DB::$SELF->id;
     if (isset(DB::$ROOM->vote[$id]) && in_array($target->id, DB::$ROOM->vote[$id])) {
-      VoteHTML::OutputResult($str . "{$target->handle_name} さんへ Kick 投票済み");
+      VoteHTML::OutputResult($str . $target->handle_name . ' さんへ Kick 投票済み');
     }
 
     if (DB::$SELF->Vote('KICK_DO', $target->id)) { //投票処理
-      DB::$ROOM->Talk($target->handle_name, 'KICK_DO', DB::$SELF->uname); //投票しました通知
+      DB::$ROOM->Talk($target->handle_name, 'KICK_DO', DB::$SELF->uname); //投票通知
       $vote_count = self::AggregateKick($target); //集計処理
       DB::Commit();
-      $add_str = '投票完了：%s さん：%d 人目 (Kick するには %d 人以上の投票が必要です)';
-      $str .= sprintf($add_str, $target->handle_name, $vote_count, GameConfig::KICK);
+      $format = '投票完了：%s さん：%d 人目 (Kick するには %d 人以上の投票が必要です)';
+      $str .= sprintf($format, $target->handle_name, $vote_count, GameConfig::KICK);
       VoteHTML::OutputResult($str);
     }
     else {
@@ -201,7 +201,7 @@ class Vote {
 
     //サブ役職の補正
     if (! DB::$ROOM->IsEvent('no_authority')) { //蜃気楼ならスキップ
-      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->id); //仮想投票者をセット
+      RoleManager::$actor = DB::$SELF->GetVirtual(); //仮想投票者をセット
       foreach (RoleManager::Load('vote_do_sub') as $filter) $filter->FilterVoteDo($vote_number);
     }
 
@@ -632,7 +632,7 @@ class Vote {
 	if (! $vote_target->IsPoison()) break; //毒能力の発動判定
 
 	//薬師系の解毒判定 (夢毒者は対象外)
-	RoleManager::$actor = DB::$USER->ByVirtual($vote_target->id); //投票データは仮想ユーザ
+	RoleManager::$actor = $vote_target->GetVirtual(); //投票データは仮想ユーザ
 	$role = 'alchemy_pharmacist'; //錬金術師
 	RoleManager::$actor->detox = false;
 	RoleManager::$actor->$role = false;
@@ -1151,9 +1151,7 @@ class Vote {
       $role = 'death_selected';
       foreach (DB::$USER->rows as $user) {
 	if ($user->IsDead(true)) continue;
-	if (DB::$USER->ByVirtual($user->id)->IsDoomRole($role)) {
-	  DB::$USER->Kill($user->id, 'PRIEST_RETURNED');
-	}
+	if ($user->GetVirtual()->IsDoomRole($role)) DB::$USER->Kill($user->id, 'PRIEST_RETURNED');
       }
 
       $role = 'reverse_assassin'; //反魂師の暗殺処理
@@ -1529,7 +1527,7 @@ EOF;
     else {
       $user_stack = DB::$USER->rows;
     }
-    $virtual_self = DB::$USER->ByVirtual(DB::$SELF->id); //仮想投票者を取得
+    $virtual_self = DB::$SELF->GetVirtual(); //仮想投票者を取得
 
     self::OutputHeader();
     $str = <<<EOF

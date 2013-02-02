@@ -188,7 +188,8 @@ class TalkBuilder {
   public $flag;
 
   function __construct($class, $id = null) {
-    $this->actor = DB::$USER->ByVirtual(DB::$SELF->id); //仮想ユーザを取得
+    $this->actor = DB::$SELF->GetVirtual(); //仮想ユーザを取得
+
     //観戦モード判定
     if ((is_null($this->actor->live) || ! DB::$ROOM->IsOpenCast()) && ! DB::$ROOM->IsFinished()) {
       //本人視点が変化するタイプに仮想役職をセットする

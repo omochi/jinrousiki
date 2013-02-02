@@ -33,7 +33,7 @@ class Role_reverse_assassin extends Role_assassin {
       if ($user->IsPossessedGroup()) { //憑依能力者対応
 	if ($user->revive_flag) continue; //蘇生済みならスキップ
 
-	$virtual = DB::$USER->ByVirtual($user->id);
+	$virtual = $user->GetVirtual();
 	if (! $user->IsSame($virtual)) { //憑依中ならリセット
 	  $user->ReturnPossessed('possessed_target'); //本人
 	  $virtual->ReturnPossessed($role); //憑依先

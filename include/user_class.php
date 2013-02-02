@@ -69,13 +69,16 @@ class User {
     return UserDB::GetVote($this->id, $type, $not_type);
   }
 
+  //仮想ユーザ取得
+  public function GetVirtual() { return DB::$USER->ByVirtual($this->id); }
+
   //ユーザ ID 取得
   public function GetID($role = null) {
     return isset($role) ? sprintf('%s[%d]', $role, $this->id) : $this->id;
   }
 
   //HN 取得
-  public function GetName() { return DB::$USER->ByVirtual($this->id)->handle_name; }
+  public function GetName() { return $this->GetVirtual()->handle_name; }
 
   //役職取得
   public function GetRole() {
@@ -343,7 +346,9 @@ class User {
 
     //常時反射
     if ($this->IsRole('reflect_guard', 'detective_common', 'cursed_fox', 'soul_vampire') ||
-       $this->IsSiriusWolf(false) || $this->IsChallengeLovers()) return true;
+	$this->IsSiriusWolf(false) || $this->IsChallengeLovers()) {
+      return true;
+    }
 
     //確率反射
     if ($this->IsRole('cursed_brownie')) {

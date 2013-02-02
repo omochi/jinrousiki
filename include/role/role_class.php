@@ -872,7 +872,7 @@ class RoleTalk {
     if ($say == '') return null; //リロード時なら処理スキップ
     //文字数・行数チェック
     if (strlen($say) > GameConfig::LIMIT_SAY ||
-	substr_count($say, "\n") >= GameConfig::LIMIT_SAY_LINE) {
+	substr_count($say, Text::LF) >= GameConfig::LIMIT_SAY_LINE) {
       $say = '';
       return false;
     }
@@ -884,7 +884,7 @@ class RoleTalk {
     //if (DB::$SELF->IsDead()) return false; //テスト用
 
     RoleManager::$get->say = $say;
-    RoleManager::$actor = ($virtual = DB::$USER->ByVirtual(DB::$SELF->id)); //仮想ユーザを取得
+    RoleManager::$actor = ($virtual = DB::$SELF->GetVirtual()); //仮想ユーザを取得
     do { //発言置換処理
       foreach (RoleManager::Load('say_convert_virtual') as $filter) {
 	if ($filter->ConvertSay()) break 2;
@@ -913,7 +913,7 @@ class RoleTalk {
     //声の大きさを決定
     $voice = RQ::Get()->font_type;
     if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
-      RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->id);
+      RoleManager::$actor = DB::$SELF->GetVirtual();
       foreach (RoleManager::Load('voice') as $filter) $filter->FilterVoice($voice, $say);
     }
 
@@ -949,7 +949,7 @@ class RoleHTML {
     foreach (RoleManager::Load('display_real') as $filter) $filter->OutputAbility();
 
     //-- ここからは憑依先の役職を表示 --//
-    RoleManager::$actor = DB::$USER->ByVirtual(DB::$SELF->id);
+    RoleManager::$actor = DB::$SELF->GetVirtual();
     foreach (RoleManager::Load('display_virtual') as $filter) $filter->OutputAbility();
 
     //-- これ以降はサブ役職非公開オプションの影響を受ける --//

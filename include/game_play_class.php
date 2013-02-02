@@ -251,7 +251,7 @@ class GamePlay {
     }
 
     //if (DB::$ROOM->IsNight()) { //夜は役職毎に分ける
-    $user = DB::$USER->ByVirtual(DB::$SELF->id); //仮想ユーザを取得
+    $user = DB::$SELF->GetVirtual(); //仮想ユーザを取得
     if (DB::$ROOM->IsEvent('blind_talk_night')) { //天候：風雨
       $location = 'self_talk';
     }

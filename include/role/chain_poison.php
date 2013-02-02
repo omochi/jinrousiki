@@ -12,7 +12,8 @@ class Role_chain_poison extends Role {
 
   //毒処理
   function Poison(User $user) {
-    RoleManager::$actor = DB::$USER->ByVirtual($user->id); //解毒判定
+    RoleManager::$actor = $user->GetVirtual(); //解毒判定
+
     RoleManager::$actor->detox = false;
     foreach (RoleManager::LoadFilter('detox') as $filter) $filter->Detox();
     if (RoleManager::$actor->detox) return;
@@ -42,7 +43,8 @@ class Role_chain_poison extends Role {
 	DB::$USER->Kill($id, 'POISON_DEAD'); //死亡処理
 
 	if (! $target->IsRole($this->role)) continue; //連鎖判定
-	RoleManager::$actor = DB::$USER->ByVirtual($target->id); //解毒判定
+	RoleManager::$actor = $target->GetVirtual(); //解毒判定
+
 	RoleManager::$actor->detox = false;
 	foreach (RoleManager::LoadFilter('detox') as $filter) $filter->Detox();
 	if (! RoleManager::$actor->detox) $count++;

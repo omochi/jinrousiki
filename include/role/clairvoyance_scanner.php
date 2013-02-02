@@ -29,7 +29,7 @@ class Role_clairvoyance_scanner extends Role_mind_scanner {
 	continue;
       }
       $actor_id     = $this->GetID();
-      $target_name  = DB::$USER->ByVirtual($user->id)->handle_name;
+      $target_name  = $user->GetName();
       $target_stack = $vote_stack[$user->id];
 
       if ($user->IsRole('barrier_wizard')) { //結界師
