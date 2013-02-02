@@ -11,7 +11,7 @@ class UserManager {
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
     if ($user_no > 0) $url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
     $back_url = sprintf('<br><a href="%s">戻る</a>', $url); //バックリンク
-    if (GameConfig::TRIP && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
+    if (GameConfig::TRIP && $trip != '') $uname .= Text::Trip('#' . $trip); //トリップ変換
 
     //記入漏れチェック
     $title = '村人登録 [入力エラー]';

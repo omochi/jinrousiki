@@ -406,7 +406,7 @@ class GameHTML {
     $str = '';
     foreach ($stack as $list) {
       extract($list);
-      Text::ConvertLine($message);
+      Text::Line($message);
       $str .= <<<EOF
 <tr>
 <td class="lastwords-title">{$handle_name}<span>さんの遺言</span></td>
@@ -565,22 +565,19 @@ EOF;
   //プレイヤー一覧出力
   static function OutputPlayer() { echo self::GeneratePlayer(); }
 
-  //前日の死亡メッセージ出力
+  //死亡メッセージ出力
   static function OutputDead() {
-    if (is_null($str = self::GenerateDead())) return false;
-    echo $str;
+    Text::OutputExists(self::GenerateDead());
   }
 
   //遺言出力
   static function OutputLastWords($shift = false) {
-    if (is_null($str = self::GenerateLastWords($shift))) return false;
-    echo $str;
+    Text::OutputExists(self::GenerateLastWords($shift));
   }
 
   //投票結果出力
   static function OutputVote() {
-    if (is_null($str = self::GenerateVote())) return false;
-    echo $str;
+    Text::OutputExists(self::GenerateVote());
   }
 
   //再投票メッセージ出力
@@ -714,7 +711,7 @@ EOF;
   //天候メッセージ生成
   private function GenerateWeather() {
     if (! isset(DB::$ROOM->event->weather) ||
-	(! DB::$ROOM->test_mode  && DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
+	(! DB::$ROOM->test_mode && DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
       return '';
     }
     $format  = '<div class="weather">今日の天候は<span>%s</span>です (%s)</div>';

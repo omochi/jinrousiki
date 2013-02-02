@@ -16,12 +16,12 @@ class Talk {
 
     $is_open = DB::$ROOM->IsOpenCast(); //霊界公開判定
     $builder = new TalkBuilder('talk');
-    foreach (TalkDB::Get(true) as $talk) {
+    foreach (TalkDB::Get(true) as $talk) { //速度を取るため sprintf() を使わない
       $user = DB::$USER->ByUname($talk->uname); //ユーザを取得
 
-      $symbol = sprintf('<font color="%s">◆</font>', $user->color);
+      $symbol = '<font color="' . $user->color . '">◆</font>';
       $handle_name = $user->handle_name;
-      if ($is_open) $handle_name .= sprintf('<span>(%s)</span>', $talk->uname); //HN 追加処理
+      if ($is_open) $handle_name .= '<span>(' . $talk->uname . ')</span>'; //HN 追加処理
 
       $builder->AddRaw($symbol, $handle_name, $talk->sentence, $talk->font_type);
     }
@@ -56,8 +56,7 @@ class TalkParser {
     case 'system':
       switch ($this->action) {
       case 'MORNING':
-	$this->sentence = sprintf('%s %s %s',
-				  Message::$morning_header, $sentence, Message::$morning_footer);
+	$this->sentence = Message::$morning_header . $sentence . Message::$morning_footer;
 	return;
 
       case 'NIGHT':
@@ -75,7 +74,7 @@ class TalkParser {
       $action = strtolower($this->action);
       switch ($this->action) { //大文字小文字をきちんと区別してマッチングする
       case 'OBJECTION':
-	$this->sentence = ' ' . Message::$objection;
+	$this->sentence .= Message::$objection;
 	return;
 
       case 'GAMESTART_DO':
@@ -137,44 +136,44 @@ class TalkParser {
 
       case 'POISON_CAT_NOT_DO':
 	$this->class = 'revive-do';
-	$this->sentence = ' ' . Message::$revive_not_do;
+	$this->sentence .= Message::$revive_not_do;
 	return;
 
       case 'ASSASSIN_NOT_DO':
 	$this->class = 'assassin-do';
-	$this->sentence = ' ' . Message::$assassin_not_do;
+	$this->sentence .= Message::$assassin_not_do;
 	return;
 
       case 'STEP_NOT_DO':
 	$this->class = 'step-do';
-	$this->sentence = ' ' . Message::$step_not_do;
+	$this->sentence .= Message::$step_not_do;
 	return;
 
       case 'TRAP_MAD_NOT_DO':
 	$this->class = 'wolf-eat';
-	$this->sentence = ' ' . Message::$trap_not_do;
+	$this->sentence .= Message::$trap_not_do;
 	return;
 
       case 'POSSESSED_NOT_DO':
 	$this->class = 'wolf-eat';
-	$this->sentence = ' ' . Message::$possessed_not_do;
+	$this->sentence .= Message::$possessed_not_do;
 	return;
 
       case 'OGRE_NOT_DO':
 	$this->class = 'ogre-do';
-	$this->sentence = ' ' . Message::$ogre_not_do;
+	$this->sentence .= Message::$ogre_not_do;
 	return;
 
       case 'DEATH_NOTE_NOT_DO':
 	$this->class = 'death-note-do';
-	$this->sentence = ' ' . Message::$death_note_not_do;
+	$this->sentence .= Message::$death_note_not_do;
 	return;
 
       default:
 	$this->class = strtr($action, '_', '-');
 	break;
       }
-      $this->sentence = sprintf(' は %s %s', $this->sentence, Message::$$action);
+      $this->sentence = ' は ' . $this->sentence . Message::$$action;
       return;
     }
   }
@@ -220,6 +219,7 @@ class TalkBuilder {
     /*
       $uname は必ず $talk から取得すること。
       DB::$USER にはシステムユーザー 'system' が存在しないため、$actor は常に null になっている。
+      速度を取るため sprintf() を使わないこと
     */
     $actor = DB::$USER->ByUname($talk->uname);
     $real  = $actor;
@@ -247,7 +247,7 @@ class TalkBuilder {
     }
     else {
       $color  = isset($talk->color) ? $talk->color : $actor->color;
-      $symbol = sprintf('<font color="%s">◆</font>', $color);
+      $symbol = '<font color="' . $color . '">◆</font>';
       $name   = isset($talk->handle_name) ? $talk->handle_name : $actor->handle_name;
     }
 
@@ -264,7 +264,7 @@ class TalkBuilder {
     case 'system': //システムメッセージ
       $str = $talk->sentence;
       if (isset($talk->time)) {
-	$str .= sprintf(' <span class="date-time">%s</span>', $talk->date_time);
+	$str .= ' <span class="date-time">' . $talk->date_time . '</span>';
       }
 
       if (! isset($talk->action)) return $this->AddSystem($str); //標準
@@ -289,7 +289,7 @@ class TalkBuilder {
       $str = sprintf('◆%s　%s', $real_user->handle_name, $talk->sentence);
       if (GameConfig::QUOTE_TALK) $str = sprintf('「%s」', $str);
       if (isset($talk->time)) {
-	$str .= sprintf(' <span class="date-time">%s</span>', $talk->date_time);
+	$str .= ' <span class="date-time">' . $talk->date_time . '</span>';
       }
       return $this->AddSystem($str, 'dummy-boy');
     }
@@ -346,23 +346,32 @@ class TalkBuilder {
 	  break;
 	}
 	$str = $talk->sentence; //改行を入れるため再セット
-	if (isset($talk->time)) $name .= sprintf('<br><span>%s</span>', $talk->date_time);
+	if (isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
 	if (RQ::Get()->icon) $symbol = Icon::GetUserIcon($actor) . $symbol;
 	return $this->AddRaw($symbol, $name, $str, $voice, '', $class);
       }
       else {
 	$mind_read = false; //特殊発言透過判定
 	RoleManager::$actor = $actor;
-	foreach (RoleManager::Load('mind_read') as $filter) $mind_read |= $filter->IsMindRead();
-
-	RoleManager::$actor = $this->actor;
-	foreach (RoleManager::Load('mind_read_active') as $filter) {
-	  $mind_read |= $filter->IsMindReadActive($actor);
+	foreach (RoleManager::Load('mind_read') as $filter) {
+	  $mind_read |= $filter->IsMindRead();
+	  if ($mind_read) break;
 	}
 
-	RoleManager::$actor = $real_user;
-	foreach (RoleManager::Load('mind_read_possessed') as $filter) {
-	  $mind_read |= $filter->IsMindReadPossessed($actor);
+	if (! $mind_read) {
+	  RoleManager::$actor = $this->actor;
+	  foreach (RoleManager::Load('mind_read_active') as $filter) {
+	    $mind_read |= $filter->IsMindReadActive($actor);
+	    if ($mind_read) break;
+	  }
+	}
+
+	if (! $mind_read) {
+	  RoleManager::$actor = $real_user;
+	  foreach (RoleManager::Load('mind_read_possessed') as $filter) {
+	    $mind_read |= $filter->IsMindReadPossessed($actor);
+	    if ($mind_read) break;
+	  }
 	}
 
 	RoleManager::$actor = $actor;
@@ -424,7 +433,7 @@ class TalkBuilder {
 
     case 'heaven':
       if (! $this->flag->open_talk) return false;
-      if (isset($talk->time)) $name .= sprintf('<br><span>%s</span>', $talk->date_time);
+      if (isset($talk->time)) $name .= '<br><span>' . $talk->date_time . '</span>';
       return $this->AddRaw($symbol, $name, $talk->sentence, $talk->font_type, $talk->scene);
 
     default:
@@ -470,7 +479,7 @@ class TalkBuilder {
     if ($row_class  != '') $row_class  = ' ' . $row_class;
     if ($user_class != '') $user_class = ' ' . $user_class;
     if ($say_class  != '') $say_class  = ' ' . $say_class;
-    Text::ConvertLine($str);
+    Text::Line($str);
     if (GameConfig::QUOTE_TALK) $str = '「' . $str . '」';
 
     $this->cache .= <<<EOF
@@ -507,13 +516,13 @@ EOF;
     //発言フィルタ処理
     foreach ($this->filter as $filter) $filter->FilterTalk($user, $name, $voice, $str);
     if (RQ::Get()->icon && $name != '') $symbol = Icon::GetUserIcon($user) . $symbol;
-    if (isset($talk->date_time)) $name .= "<br><span>{$talk->date_time}</span>";
+    if (isset($talk->date_time)) $name .= '<br><span>' . $talk->date_time . '</span>';
     return $this->AddRaw($symbol, $name, $str, $voice);
   }
 
   //システムユーザ発言
   function AddSystem($str, $class = 'system-user') {
-    Text::ConvertLine($str);
+    Text::Line($str);
     $this->cache .= <<<EOF
 <tr>
 <td class="{$class}" colspan="2">{$str}</td>
@@ -548,7 +557,7 @@ EOF;
   //役職情報ロード
   private function LoadFilter() {
     RoleManager::$actor = $this->actor;
-    if (! isset(RoleManager::$actor->virtual_live)) RoleManager::$actor->virtual_live = false;
+    RoleManager::$actor->virtual_live |= false;
     $this->filter = RoleManager::Load('talk');
     RoleManager::$get->viewer  = RoleManager::$actor;
     RoleManager::$get->builder = $this;

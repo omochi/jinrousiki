@@ -250,7 +250,7 @@ class RequestLogin extends RequestBase {
     $this->ParsePostOn('login_manually');
     $this->ParsePostStr('password');
     $this->ParsePostData('trip');
-    $this->ParsePost('ConvertTrip', 'uname');
+    $this->ParsePost('Trip', 'uname');
   }
 }
 
@@ -268,7 +268,7 @@ class RequestUserManager extends RequestBaseIcon {
     $this->GetIconData();
     Text::Escape($this->profile, false);
     if ($this->entry) {
-      $this->ParsePost('ConvertTrip', 'uname', 'handle_name');
+      $this->ParsePost('Trip', 'uname', 'handle_name');
     } else {
       $this->ParsePostStr('uname', 'trip', 'handle_name');
     }

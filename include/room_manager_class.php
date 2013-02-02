@@ -66,9 +66,7 @@ class RoomManager {
       }
       DB::$ROOM->ParseOption(true);
     }
-
-    //デバッグモード時は村作成制限をスキップ
-    if (! ServerConfig::DEBUG_MODE && ! RQ::Get()->change_room) {
+    elseif (! ServerConfig::DEBUG_MODE) { //デバッグモード時は村作成制限をスキップ
       //ブラックリストチェック
       if (Security::CheckBlackList() || Security::CheckEstablishBlackList()) {
 	HTML::OutputResult('村作成 [制限事項]', '村立て制限ホストです。');
@@ -109,7 +107,7 @@ class RoomManager {
     if (RQ::Get()->real_time) { //制限時間チェック
       $day   = RQ::Get()->real_time_day;
       $night = RQ::Get()->real_time_night;
-      if ($day <= 0 || 99 < $day || $night <= 0 || 99 < $night) {
+      if ($day < 1 || 99 < $day || $night < 1 || 99 < $night) {
 	RoomManagerHTML::OutputResult('time');
       }
       RoomOption::SetOption(RoomOption::GAME_OPTION, sprintf('real_time:%d:%d', $day, $night));

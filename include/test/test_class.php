@@ -288,7 +288,7 @@ class TripTest {
 
 EOF;
     if (DevHTML::IsExecute()) {
-      RQ::Get()->ParsePost('ConvertTrip', 'trip');
+      RQ::Get()->ParsePost('Trip', 'trip');
       Text::p(RQ::Get()->trip, '変換結果');
     }
     HTML::OutputFooter();

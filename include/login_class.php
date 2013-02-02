@@ -32,7 +32,7 @@ class Login {
     if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList()) return false;
 
     extract(RQ::ToArray()); //引数を展開
-    if (GameConfig::TRIP && $trip != '') $uname .= Text::ConvertTrip('#' . $trip); //トリップ変換
+    if (GameConfig::TRIP && $trip != '') $uname .= Text::Trip('#' . $trip); //トリップ変換
     if ($uname == '' || $password == '') return false;
 
     $crypt = Text::Crypt($password);

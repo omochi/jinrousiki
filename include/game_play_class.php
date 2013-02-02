@@ -544,7 +544,7 @@ EOF;
     $str = UserDB::GetLastWords(DB::$SELF->id);
     if ($str == '') return false;
 
-    Text::ConvertLine($str); //改行コードを変換
+    Text::Line($str); //改行コードを変換
     if ($str == '') return false;
 
     echo <<<EOF

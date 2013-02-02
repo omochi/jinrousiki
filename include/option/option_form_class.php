@@ -145,7 +145,7 @@ EOF;
   private function GenerateCheckbox(CheckRoomOptionItem $item) {
     $footer = isset($item->footer) ? $item->footer : sprintf('(%s)', $item->GetExplain());
     return sprintf(self::CHECKBOX, $item->type, $item->name, $item->form_name, $item->form_value,
-		   $item->value ? ' checked' : '', Text::ConvertLine($footer));
+		   $item->value ? ' checked' : '', Text::Line($footer));
   }
 
   //チェックボックス生成 (リアルタイム制専用)
@@ -158,7 +158,7 @@ EOF;
       $night = TimeConfig::DEFAULT_NIGHT;
     }
 
-    $footer = sprintf(self::REALTIME, Text::ConvertLine($item->GetExplain()),
+    $footer = sprintf(self::REALTIME, Text::Line($item->GetExplain()),
 		      $item->name,  $day, $item->name, $night);
     return sprintf(self::CHECKBOX, 'checkbox', $item->name, $item->name, $item->form_value,
 		   $item->value ? ' checked' : '', $footer);
@@ -172,7 +172,7 @@ EOF;
       if (! is_string($code)) $code = $label;
       $str .= sprintf(self::SELECTOR, $code, $code == $item->value ? ' selected' : '', $label);
     }
-    $explain = Text::ConvertLine($item->GetExplain());
+    $explain = Text::Line($item->GetExplain());
     $format = <<<EOF
 <select id="%s" name="%s"%s>
 <optgroup label="%s">

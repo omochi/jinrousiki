@@ -5,26 +5,15 @@ class Text {
   const LF = "\n";
   const TR = "</tr>\n<tr>";
 
-  //テキスト出力
+  //出力
   static function Output($str = '', $line = false) {
     echo $str . ($line ? self::BR : '') . self::LF;
   }
 
-  //改行タグ付きテキスト出力 (デバッグ用)
-  static function d($str = '') { self::Output($str, true); }
-
-  //変数表示関数 (デバッグ用)
-  static function p($data, $name = null) {
-    $str = is_null($name) ? '' : $name . ': ';
-    $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
-    self::d($str);
-  }
-
-  //変数ダンプ (デバッグ用)
-  static function v($data, $name = null) {
-    if (! is_null($name)) echo $name . ': ';
-    var_dump($data);
-    self::d();
+  //出力 (NULL 対応版)
+  static function OutputExists($str) {
+    if (is_null($str)) return null;
+    echo $str;
   }
 
   //暗号化
@@ -42,7 +31,7 @@ class Text {
     テストてすと＃テストてすと#   => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
     テストてすと＃テストてすと＃  => テストてすと ◆rtfFl6edK5fK (テストてすと◆XuUGgmt7XI)
   */
-  static function ConvertTrip($str) {
+  static function Trip($str) {
     if (GameConfig::TRIP) {
       if (get_magic_quotes_gpc()) $str = stripslashes($str); // \ を自動でつける処理系対策
       //トリップ関連のキーワードを置換
@@ -121,8 +110,26 @@ class Text {
   }
 
   //改行コードを <br> に変換する (PHP5.3 以下の nl2br() だと <br /> 固定なので HTML 4.01 だと不向き)
-  static function ConvertLine(&$str) {
+  static function Line(&$str) {
     return $str = str_replace(self::LF, self::BR, $str);
+  }
+
+  /* デバッグ用 */
+  //改行タグ付きテキスト出力
+  static function d($str = '') { self::Output($str, true); }
+
+  //データ表示
+  static function p($data, $name = null) {
+    $str = is_null($name) ? '' : $name . ': ';
+    $str .= (is_array($data) || is_object($data)) ? print_r($data, true) : $data;
+    self::d($str);
+  }
+
+  //データダンプ
+  static function v($data, $name = null) {
+    if (! is_null($name)) echo $name . ': ';
+    var_dump($data);
+    self::d();
   }
 }
 

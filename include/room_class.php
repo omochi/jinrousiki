@@ -263,8 +263,8 @@ class Room {
       if (is_null($location)) $location = 'system';
     }
     if ($this->test_mode) {
-      $str = "Talk: {$uname}: {$scene}: {$location}: {$action}: {$font_type}";
-      Text::p(Text::ConvertLine($sentence), $str);
+      $str = sprintf('Talk: %s: %s: %s: %s: %s', $uname, $scene, $location, $action, $font_type);
+      Text::p(Text::Line($sentence), $str);
       return true;
     }
 
@@ -304,8 +304,8 @@ class Room {
   //発言登録 (ゲーム開始前専用)
   function TalkBeforeGame($sentence, $uname, $handle_name, $color, $font_type = null) {
     if ($this->test_mode) {
-      $str = "Talk: {$uname}: {$handle_name}: {$color}: {$font_type}";
-      Text::p(Text::ConvertLine($sentence), $str);
+      $str = sprintf('Talk: %s: %s: %s: %s', $uname, $handle_name, $color, $font_type);
+      Text::p(Text::Line($sentence), $str);
       return true;
     }
 
