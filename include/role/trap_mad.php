@@ -13,7 +13,7 @@ class Role_trap_mad extends Role {
   public $trap_result = 'trapped';
 
   function OutputAction() {
-    if ($this->IsVoteTrap()) {
+    if (! $this->IgnoreTrap()) {
       RoleHTML::OutputVote('wolf-eat', $this->submit, $this->action, $this->not_action);
     }
   }
