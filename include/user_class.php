@@ -29,7 +29,7 @@ class User {
 
     //展開用の正規表現をセット
     $regex_partner = '/([^\[]+)\[([^\]]+)\]/'; //恋人型 (role[id])
-    $regex_status  = '/([^-]+)-(.+)/';         //憑狼型 (role[date-id])
+    $regex_status  = '/([^-]+)-(.+)/';         //憑依型 (role[date-id])
 
     //展開処理
     $role_list = array();
@@ -60,7 +60,7 @@ class User {
   public function ChangePlayer($id) {
     if (! isset($this->role_id) || $this->role_id == $id) return false;
     $this->role_id = $id;
-    $this->Parse(DB::$USER->player->roles[$id]);
+    $this->Parse(DB::$USER->player->role_list[$id]);
     return true;
   }
 
@@ -210,6 +210,9 @@ class User {
   //同一陣営判定
   public function IsCamp($camp, $win = false) { return $this->GetCamp($win) == $camp; }
 
+  //同一役職系判定
+  public function IsMainGroup($group) { return $this->DistinguishRoleGroup() == $group; }
+
   //拡張判定
   public function IsPartner($type, $target) {
     if (is_null($partner_list = $this->GetPartner($type))) return false;
@@ -242,12 +245,12 @@ class User {
 
   //共有者系判定
   public function IsCommon($talk = false) {
-    return $this->IsRoleGroup('common') && ! ($talk && $this->IsRole('dummy_common'));
+    return $this->IsMainGroup('common') && ! ($talk && $this->IsRole('dummy_common'));
   }
 
   //人狼系判定
   public function IsWolf($talk = false) {
-    return $this->IsRoleGroup('wolf') && ! ($talk && $this->IsLonely());
+    return $this->IsMainGroup('wolf') && ! ($talk && $this->IsLonely());
   }
 
   //覚醒天狼判定
@@ -264,26 +267,23 @@ class User {
 
   //妖狐陣営判定
   public function IsFox($talk = false) {
-    return $this->IsRoleGroup('fox') && ! ($talk && ($this->IsChildFox() || $this->IsLonely()));
+    return $this->IsCamp('fox') && ! ($talk && ($this->IsChildFox() || $this->IsLonely()));
   }
 
   //子狐系判定
   public function IsChildFox($vote = false) {
-    $stack = array('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
-    if (! $vote) {
-      array_push($stack, 'monk_fox', 'miasma_fox', 'howl_fox', 'vindictive_fox', 'critical_fox');
+    if ($vote) {
+      return $this->IsRole('child_fox', 'sex_fox', 'stargazer_fox', 'jammer_fox');
+    } else {
+      return $this->IsMainGroup('child_fox');
     }
-    return $this->IsRole($stack);
   }
 
   //鬼陣営判定
-  public function IsOgre() { return $this->IsRoleGroup('ogre', 'yaksa'); }
+  public function IsOgre() { return $this->IsCamp('ogre'); }
 
   //鵺系判定
-  public function IsUnknownMania() {
-    return $this->IsRole('unknown_mania', 'wirepuller_mania', 'fire_mania', 'sacrifice_mania',
-			 'resurrect_mania', 'revive_mania');
-  }
+  public function IsUnknownMania() { return $this->IsMainGroup('unknown_mania'); }
 
   //恋人判定
   public function IsLovers() { return $this->IsRole('lovers'); }
@@ -329,15 +329,15 @@ class User {
 
   //蘇生能力者判定
   public function IsReviveGroup($active = false) {
-    return ($this->IsRoleGroup('cat') || $this->IsRole('revive_medium', 'revive_fox')) &&
+    return ($this->IsMainGroup('poison_cat') || $this->IsRole('revive_medium', 'revive_fox')) &&
       ! ($active && ! $this->IsActive());
   }
 
   //蘇生制限判定
   public function IsReviveLimited() {
-    return $this->IsRoleGroup('cat', 'revive') || $this->IsLovers() || $this->IsDrop() ||
+    return $this->IsReviveGroup() || $this->IsRoleGroup('revive') || $this->IsLovers() ||
       $this->IsRole('detective_common', 'scarlet_vampire', 'resurrect_mania') ||
-      (isset($this->possessed_reset) && $this->possessed_reset);
+      $this->IsDrop() || (isset($this->possessed_reset) && $this->possessed_reset);
   }
 
   //暗殺反射判定
@@ -416,18 +416,19 @@ class User {
 
   //精神鑑定
   public function DistinguishLiar() {
-    return $this->IsOgre() ? 'ogre' :
-      ((($this->IsRoleGroup('mad', 'dummy') || $this->IsRole('suspect', 'unconscious')) &&
-	! $this->IsRole('swindle_mad')) ? 'psycho_mage_liar' : 'psycho_mage_normal');
+    if ($this->IsOgre()) return 'ogre';
+    return ($this->IsMainGroup('mad') && ! $this->IsRole('swindle_mad')) ||
+      $this->IsRoleGroup('dummy') || $this->IsRole('suspect', 'unconscious')
+      ? 'psycho_mage_liar' : 'psycho_mage_normal';
   }
 
   //霊能鑑定
   public function DistinguishNecromancer($reverse = false) {
     if ($this->IsOgre()) return 'ogre';
-    if ($this->IsRoleGroup('vampire') || $this->IsRole('cute_chiroptera')) return 'chiroptera';
+    if ($this->IsMainGroup('vampire') || $this->IsRole('cute_chiroptera')) return 'chiroptera';
     if ($this->IsChildFox()) return 'child_fox';
     if ($this->IsRole('white_fox', 'black_fox', 'mist_fox', 'phantom_fox', 'sacrifice_fox',
-		     'possessed_fox', 'cursed_fox')) {
+		      'possessed_fox', 'cursed_fox')) {
       return 'fox';
     }
     if ($this->IsRole('boss_wolf', 'mist_wolf', 'phantom_wolf', 'cursed_wolf', 'possessed_wolf')) {
@@ -558,24 +559,19 @@ EOF;
       Text::p($value, sprintf('Change [%s] (%s)', $item, $this->uname));
       return true;
     }
-    $value  = is_null($value) ? 'NULL' : "'{$value}'";
-    $format = 'UPDATE user_entry SET %s = %s WHERE room_no = %d AND user_no = %d';
-    return DB::FetchBool(sprintf($format, $item, $value, $this->room_no, $this->id));
+    $set = sprintf('%s = %s', $item, is_null($value) ? 'NULL' : "'{$value}'");
+    return UserDB::Update($set, array(), $this->id);
   }
 
   //更新処理
   public function UpdateList(array $list) {
-    $query = 'UPDATE user_entry SET ';
-    $stack = array();
+    $stack     = array();
     $set_stack = array();
     foreach ($list as $key => $value) {
       $set_stack[] = sprintf('%s = ?', $key);
       $stack[] = $value;
     }
-    $query .= implode(',', $set_stack) . ' WHERE room_no = ? AND user_no = ?';
-    array_push($stack, $this->room_no, $this->id);
-    DB::Prepare($query, $stack);
-    return DB::FetchBool();
+    return UserDB::Update(implode(',', $set_stack), $stack, $this->id);
   }
 
   //ID 更新処理 (KICK 後処理用)
@@ -584,8 +580,7 @@ EOF;
       Text::p(sprintf('%d -> %d: %s', $this->id, $id, $this->uname), 'Change ID');
       return;
     }
-    $format = "UPDATE user_entry SET user_no = %d WHERE room_no = %d AND uname = '%s'";
-    return DB::FetchBool(sprintf($format, $id, $this->room_no, $this->uname));
+    return UserDB::UpdateID($id, $this->uname);
   }
 
   //player 更新処理
@@ -1039,8 +1034,8 @@ class UserData {
 
   //player の復元 (ログ処理用)
   public function ResetPlayer() {
-    if (! isset($this->player->users)) return;
-    foreach ($this->player->users as $id => $stack) {
+    if (! isset($this->player->user_list)) return;
+    foreach ($this->player->user_list as $id => $stack) {
       $this->ByID($id)->ChangePlayer(max($stack));
     }
   }
@@ -1216,6 +1211,21 @@ SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?
 EOF;
     DB::Prepare($query, array(RQ::Get()->room_no, 'live', Security::GetIP()));
     return DB::Count() > 0;
+  }
+
+  //更新処理 (汎用)
+  static function Update($set, array $list, $id) {
+    $query = sprintf('UPDATE user_entry SET %s WHERE room_no = ? AND user_no = ?', $set);
+    array_push($list, DB::$ROOM->id, $id);
+    DB::Prepare($query, $list);
+    return DB::FetchBool();
+  }
+
+  //更新処理 (ID 専用)
+  static function UpdateID($id, $uname) {
+    $query = 'UPDATE user_entry SET user_no = ? WHERE room_no = ? AND uname = ?';
+    DB::Prepare($query, array($id, DB::$ROOM->id, $uname));
+    return DB::FetchBool();
   }
 
   //-- vote --//

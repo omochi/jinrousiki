@@ -36,7 +36,7 @@ class DB {
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
       self::$instance = $pdo;
-      self::Execute(sprintf('SET NAMES %s', DatabaseConfig::ENCODE));
+      self::Execute('SET NAMES ' . DatabaseConfig::ENCODE);
       return self::$instance;
     }
     catch (PDOException $e) {

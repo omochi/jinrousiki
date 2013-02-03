@@ -1061,7 +1061,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 夜の発言が<a href="human.php#mind_scanner">さとり</a>に見られてしまう。
 </pre>
 <ol>
-<li>2 日目の朝から表示されて、その夜以降から効力が適用される。</li>
+<li>2 日目から表示されて、その夜以降から効力が適用される。</li>
 <li>夜の発言に常時「～の独り言」が付く。</li>
 <li>誰に見られているのかは分からない。</li>
 <li>死亡した<a href="human.php#mind_scanner">さとり</a>は自分の<a href="#mind_read">サトラレ</a>の発言を見ることができなくなる。</li>
@@ -1086,7 +1086,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 夜の発言が参加者全員に見られてしまう。
 </pre>
 <ol>
-<li>初日の夜から表示されるが、効力が適用されるのは 2 日目の夜以降。</li>
+<li>1 日目の夜から表示されるが、効力が適用されるのは 2 日目の夜以降。</li>
 <li>夜の発言に常時「～の独り言」が付く。</li>
 </ol>
 <h5>Ver. 1.4.0 β7～</h5>
@@ -1111,7 +1111,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 特定の人の夜の発言を見ることができる。
 </pre>
 <ol>
-<li>2 日目の朝から表示されて、その夜以降から効力が適用される。</li>
+<li>2 日目から表示されて、その夜以降から効力が適用される。</li>
 <li>誰の発言を見ているのか分かる。</li>
 </ol>
 </pre>
@@ -1342,7 +1342,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 <h4>[配役制限] 役職付加専用</h4>
 <h4>[耐性] 人狼襲撃：無効 / 暗殺：反射</h4>
 <pre>
-4 日目夜までは以下の耐性を持つ。
+4 日目までは以下の耐性を持つ。
 </pre>
 <ol>
 <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
@@ -1361,7 +1361,8 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#resist_poison">毒耐性能力者</a>
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>
+<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#resist_poison">毒耐性能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

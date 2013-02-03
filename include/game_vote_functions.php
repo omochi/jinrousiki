@@ -512,7 +512,7 @@ class Vote {
   static function AggregateDay() {
     //-- 投票処理実行判定 --//
     if (! DB::$ROOM->test_mode) self::CheckSituation('VOTE_KILL'); //コマンドチェック
-    $user_list = DB::$USER->GetLivingUsers(); //生きているユーザを取得
+    $user_list = DB::$USER->GetLivingUsers(); //生存者を取得
     if (DB::$ROOM->LoadVote() != count($user_list)) return false; //投票数と照合
 
     //-- 初期化処理 --//
@@ -774,8 +774,8 @@ class Vote {
 
       if (DB::$ROOM->IsEvent('frostbite')) { //-- 雪の処理 --//
 	$stack = array();
-	foreach ($user_list as $uname) {
-	  $user = DB::$USER->ByRealUname($uname);
+	foreach ($user_list as $id => $uname) {
+	  $user = DB::$USER->ByID($id);
 	  if ($user->IsLive(true) && ! $user->IsAvoid(true)) $stack[] = $user->id;
 	}
 	//Text::p($stack, 'Target [frostbite]');
@@ -783,10 +783,10 @@ class Vote {
       }
       elseif (DB::$ROOM->IsEvent('psycho_infected')) { //-- 濃霧の処理 --//
 	$stack = array();
-	foreach ($user_list as $uname) {
-	  $user = DB::$USER->ByRealUname($uname);
-	  if ($user->IsLive(true) && ! $user->IsAvoid(true) && ! $user->IsRole('psycho_infected') &&
-	      ! $user->IsCamp('vampire')) {
+	foreach ($user_list as $id => $uname) {
+	  $user = DB::$USER->ByID($id);
+	  if ($user->IsLive(true) && ! $user->IsAvoid(true) &&
+	      ! $user->IsRole('psycho_infected') && ! $user->IsCamp('vampire')) {
 	    $stack[] = $user->id;
 	  }
 	}
@@ -914,9 +914,9 @@ class Vote {
 
     //-- 足音レイヤー --//
     if (! DB::$ROOM->IsEvent('no_step')) { //地吹雪は無効
-      $step_list = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
-      if (DB::$ROOM->date > 1) array_push($step_list, 'STEP_GUARD_DO', 'STEP_VAMPIRE_DO');
-      foreach ($step_list as $action) { //足音処理
+      $stack = array('STEP_MAGE_DO', 'STEP_WOLF_EAT', 'STEP_DO');
+      if (DB::$ROOM->date > 1) array_push($stack, 'STEP_GUARD_DO', 'STEP_VAMPIRE_DO');
+      foreach ($stack as $action) { //足音処理
 	foreach ($vote_data[$action] as $id => $target_id) {
 	  RoleManager::LoadMain(DB::$USER->ByID($id))->Step(explode(' ', $target_id));
 	}
@@ -1013,73 +1013,8 @@ class Vote {
       //Text::p(RoleManager::$get->escaper, 'Target [escaper]');
     }
 
-    do { //-- 人狼の襲撃成功判定 --//
-      $wolf_target->wolf_eat    = false;
-      $wolf_target->wolf_killed = false;
-      if ($skip || DB::$ROOM->IsQuiz()) break; //スキップモード・クイズ村仕様
-
-      if (! $voted_wolf->IsSiriusWolf(false)) { //罠判定 (覚醒天狼は無効)
-	foreach (RoleManager::LoadFilter('trap') as $filter) {
-	  if ($filter->TrapStack($voted_wolf, $wolf_target->id)) break 2;
-	}
-      }
-      RoleManager::$get->voter = $voted_wolf;
-
-      //逃亡者の巻き添え判定
-      foreach (array_keys(RoleManager::$get->escaper, $wolf_target->id) as $id) {
-	DB::$USER->Kill($id, 'WOLF_KILLED'); //死亡処理
-      }
-
-      //護衛判定
-      if (DB::$ROOM->date > 1 && ! $voted_wolf->IsSiriusWolf() &&
-	  RoleManager::GetClass('guard')->Guard($wolf_target)) {
-	//Text::p(RoleManager::$get->guard_success, 'GuardSuccess');
-	RoleManager::LoadMain($voted_wolf)->GuardCounter();
-	break;
-      }
-
-      $wolf_filter = RoleManager::LoadMain($voted_wolf);
-      if (! $wolf_target->IsDummyBoy()) { //特殊能力者判定 (身代わり君は対象外)
-	if (! $voted_wolf->IsSiriusWolf()) { //特殊襲撃失敗判定 (サブの判定が先/完全覚醒天狼は無効)
-	  RoleManager::$actor = $wolf_target;
-	  foreach (RoleManager::Load('wolf_eat_resist') as $filter) {
-	    if ($filter->WolfEatResist()) break 2;
-	  }
-	  //確率無効タイプ (鬼陣営)
-	  if ($wolf_target->IsOgre() && RoleManager::LoadMain($wolf_target)->WolfEatResist()) break;
-	}
-	if (DB::$ROOM->date > 1 && $wolf_target->IsRoleGroup('escaper')) break; //逃亡者系判定
-	if ($wolf_filter->WolfEatSkip($wolf_target)) break; //人狼襲撃失敗判定
-	if (! $voted_wolf->IsSiriusWolf()) { //特殊能力者の処理 (完全覚醒天狼は無効)
-	  RoleManager::$actor = $wolf_target; //人狼襲撃得票カウンター + 身代わり能力者処理
-	  foreach (RoleManager::Load('wolf_eat_reaction') as $filter) {
-	    if ($filter->WolfEatReaction()) break 2;
-	  }
-	  if ($wolf_filter->WolfEatAction($wolf_target)) break; //人狼襲撃能力処理
-
-	  RoleManager::$actor = $wolf_target;  //人狼襲撃カウンター処理
-	  foreach (RoleManager::Load('wolf_eat_counter') as $filter) {
-	    $filter->WolfEatCounter($voted_wolf);
-	  }
-	}
-      }
-
-      //襲撃処理
-      $wolf_filter->WolfKill($wolf_target);
-      $wolf_target->wolf_eat    = true;
-      $wolf_target->wolf_killed = true;
-
-      if ($wolf_target->IsPoison() && ! $voted_wolf->IsSiriusWolf()) { //毒死判定
-	$poison_target = $wolf_filter->GetPoisonEatTarget(); //対象選出
-	if ($poison_target->IsChallengeLovers()) break; //難題なら無効
-
-	RoleManager::$actor = $wolf_target; //襲撃毒死回避判定
-	foreach (RoleManager::Load('avoid_poison_eat') as $filter) {
-	  if ($filter->AvoidPoisonEat($poison_target)) break 2;
-	}
-	RoleManager::LoadMain($poison_target)->PoisonDead(); //毒死処理
-      }
-    } while (false);
+    //-- 人狼の襲撃成功判定 --//
+    RoleManager::GetClass('wolf')->WolfEat($skip);
     //Text::p(RoleManager::$get->possessed, 'Possessed [wolf]');
 
     if (DB::$ROOM->date > 1) {

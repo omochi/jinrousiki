@@ -94,8 +94,87 @@ class Role_wolf extends Role {
     return null;
   }
 
+  //人狼襲撃処理
+  final function WolfEat($skip) {
+    $target = $this->GetWolfTarget();
+    $target->wolf_eat    = false;
+    $target->wolf_killed = false;
+    if ($skip || DB::$ROOM->IsQuiz()) return; //スキップモード・クイズ村仕様
+
+    $actor = $this->GetWolfVoter();
+    if (! $actor->IsSiriusWolf(false)) { //罠判定 (覚醒天狼は無効)
+      foreach (RoleManager::LoadFilter('trap') as $filter) {
+	if ($filter->TrapStack($actor, $target->id)) return;
+      }
+    }
+    RoleManager::$get->voter = $actor;
+
+    //逃亡者の巻き添え判定
+    foreach (array_keys(RoleManager::$get->escaper, $target->id) as $id) {
+      DB::$USER->Kill($id, 'WOLF_KILLED'); //死亡処理
+    }
+
+    //護衛判定
+    if (DB::$ROOM->date > 1 && ! $actor->IsSiriusWolf() &&
+	RoleManager::GetClass('guard')->Guard($target)) {
+      //Text::p(RoleManager::$get->guard_success, 'GuardSuccess');
+      RoleManager::LoadMain($actor)->GuardCounter();
+      return;
+    }
+    if ($this->IgnoreWolfEat()) return; //襲撃耐性判定
+
+    //襲撃処理
+    $wolf_filter = RoleManager::LoadMain($actor);
+    $wolf_filter->WolfKill($target);
+    $target->wolf_eat    = true;
+    $target->wolf_killed = true;
+    if (! $target->IsPoison() || $actor->IsSiriusWolf()) return; //毒死判定
+
+    $poison_target = $wolf_filter->GetPoisonEatTarget(); //対象選出
+    if ($poison_target->IsChallengeLovers()) return; //難題なら無効
+
+    RoleManager::$actor = $target; //襲撃毒死回避判定
+    foreach (RoleManager::Load('avoid_poison_eat') as $filter) {
+      if ($filter->AvoidPoisonEat($poison_target)) return;
+    }
+    RoleManager::LoadMain($poison_target)->PoisonDead(); //毒死処理
+  }
+
   //護衛カウンター
   function GuardCounter() {}
+
+  //人狼襲撃耐性判定
+  final function IgnoreWolfEat() {
+    $target = $this->GetWolfTarget();
+    if ($target->IsDummyBoy()) return false; //身代わり君は対象外
+
+    $actor = $this->GetWolfVoter();
+    if (! $actor->IsSiriusWolf()) { //特殊襲撃失敗判定 (サブの判定が先/完全覚醒天狼は無効)
+      RoleManager::$actor = $target;
+      foreach (RoleManager::Load('wolf_eat_resist') as $filter) {
+	if ($filter->WolfEatResist()) return true;
+      }
+      //確率無効タイプ (鬼陣営)
+      if ($target->IsOgre() && RoleManager::LoadMain($target)->WolfEatResist()) return true;
+    }
+    if (DB::$ROOM->date > 1 && $target->IsMainGroup('escaper')) return true; //逃亡者系判定
+
+    $wolf_filter = RoleManager::LoadMain($actor);
+    if ($wolf_filter->WolfEatSkip($target)) return true; //人狼襲撃失敗判定
+    if ($actor->IsSiriusWolf()) return false; //特殊能力者の処理 (完全覚醒天狼は無効)
+
+    RoleManager::$actor = $target; //人狼襲撃得票カウンター + 身代わり能力者処理
+    foreach (RoleManager::Load('wolf_eat_reaction') as $filter) {
+      if ($filter->WolfEatReaction()) return true;
+    }
+    if ($wolf_filter->WolfEatAction($target)) return true; //人狼襲撃能力処理
+
+    RoleManager::$actor = $target;  //人狼襲撃カウンター処理
+    foreach (RoleManager::Load('wolf_eat_counter') as $filter) {
+      $filter->WolfEatCounter($actor);
+    }
+    return false;
+  }
 
   //人狼襲撃失敗判定
   function WolfEatSkip(User $user) {

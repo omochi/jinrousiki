@@ -15,7 +15,9 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 
 <h2 id="partner">仲間表示</h2>
 <ol>
-<li>全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かる。</li>
+<li><a href="#silver_fox">銀狐</a>・<a href="#critical_fox">寿羊弧</a>以外の全ての妖狐は<a href="#silver_fox">銀狐</a>以外の<a href="#fox_group">妖狐系</a>・<a href="#child_fox_group">子狐系</a>が誰か分かる。</li>
+<li><a href="#silver_fox">銀狐</a>は仲間が一切表示されない。</li>
+<li><a href="#critical_fox">寿羊弧</a>は<a href="#fox_group">妖狐系</a>が表示されない。</li>
 <li><a href="#fox_group">妖狐系</a>と<a href="#child_fox_group">子狐系</a>は別枠で表示される (<a href="wolf.php">人狼陣営</a>における<a href="wolf.php#wolf_group">人狼系</a>と<a href="wolf.php#whisper_mad">囁き狂人</a>相当)。<br>
 
 </li>

@@ -1033,6 +1033,12 @@ class RoleData {
     return $class;
   }
 
+  //メイン役職判定
+  static function IsMain($role) { return array_key_exists($role, self::$main_role_list); }
+
+  //役職グループ判定
+  static function IsGroup($role, $group) { return self::GetGroup($role) == $group; }
+
   //役職名のソート
   static function Sort(array $list) {
     return array_intersect(array_keys(self::$main_role_list), $list);

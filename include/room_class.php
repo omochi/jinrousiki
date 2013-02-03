@@ -576,8 +576,8 @@ EOF;
     $result = new StdClass();
     foreach (DB::FetchAssoc() as $stack) {
       extract($stack);
-      $result->roles[$id] = $role;
-      $result->users[$user_no][] = $id;
+      $result->role_list[$id] = $role;
+      $result->user_list[$user_no][] = $id;
       $result->timeline[$date][$scene][] = $id;
     }
     //Text::p($result, 'Player');
