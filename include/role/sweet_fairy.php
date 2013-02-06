@@ -9,7 +9,7 @@ class Role_sweet_fairy extends Role_fairy {
   public $action = 'CUPID_DO';
   public $submit = 'fairy_do';
 
-  function IsVote() { return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->IsDate(1); }
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 

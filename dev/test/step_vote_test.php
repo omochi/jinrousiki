@@ -144,7 +144,7 @@ DB::$ROOM->scene = 'night';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 
 DevUser::Load();
-if (DB::$ROOM->date == 1) {
+if (DB::$ROOM->IsDate(1)) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 #DB::$USER->ByID(9)->live = 'live';

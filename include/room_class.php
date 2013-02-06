@@ -232,6 +232,9 @@ class Room {
   //ゲーム終了判定
   function IsFinished() { return $this->status == 'finished'; }
 
+  //当日判定
+  function IsDate($date) { return $this->date == $date; }
+
   //特殊イベント判定
   function IsEvent($type) {
     if (! isset($this->event)) $this->event = new StdClass();
@@ -440,9 +443,13 @@ class Room {
   }
 
   //村のタイトルタグを生成
-  function GenerateTitleTag() {
-    return '<td class="room"><span>' . $this->name . '村</span>　[' . $this->id .
-      '番地]<br>～' . $this->comment . '～</td>'."\n";
+  function GenerateTitleTag($log = false) {
+    if ($log) {
+      $format = '%s村 [%d番地]<br>～%s～';
+    } else {
+      $format = '<td class="room"><span>%s村</span>　[%d番地]<br>～%s～</td>' . Text::LF;
+    }
+    return sprintf($format, $this->name, $this->id, $this->comment);
   }
 }
 
@@ -614,7 +621,7 @@ EOF;
     if (! self::UpdateVoteCount()) return false;
 
     //即処理されるタイプの投票イベントはリセット対象外なので投票回数をスライドさせておく
-    if (DB::$ROOM->date != 1) return true;
+    if (! DB::$ROOM->IsDate(1)) return true;
     $query = <<<EOF
 UPDATE vote SET vote_count = vote_count + 1 WHERE room_no = ? AND date = ? AND type IN (?, ?)
 EOF;
@@ -633,7 +640,7 @@ EOF;
       array_push($list, 'VOTE_KILL', DB::$ROOM->revote_count);
     }
     elseif (DB::$ROOM->IsNight()) {
-      if (DB::$ROOM->date == 1) {
+      if (DB::$ROOM->IsDate(1)) {
 	$query .= ' AND type NOT IN (?, ?)';
 	array_push($list, 'CUPID_DO', 'DUELIST_DO');
       } else {

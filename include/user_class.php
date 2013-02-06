@@ -922,12 +922,12 @@ class UserData {
       }
       elseif ($user->IsRole('evoke_scanner')) {
 	if ($user->IsLive()) {
-	  if (DB::$ROOM->date == 1) return false;
+	  if (DB::$ROOM->IsDate(1)) return false;
 	  $evoke_scanner[] = $user->id;
 	}
       }
       elseif ($user->IsRole('soul_mania', 'dummy_mania')) {
-	if (DB::$ROOM->date == 1 || ! is_null($user->GetMainRoleTarget())) return false;
+	if (DB::$ROOM->IsDate(1) || ! is_null($user->GetMainRoleTarget())) return false;
       }
     }
     return count(array_intersect($evoke_scanner, $mind_evoke)) < 1;

@@ -113,21 +113,25 @@ class OldLogHTML {
       DB::$ROOM->status = 'playing';
       DB::$ROOM->scene  = 'day';
     }
-    $title  = sprintf(self::TITLE, DB::$ROOM->id, DB::$ROOM->name, $base_title);
-    $option = RoomOption::GenerateImage(DB::$ROOM->game_option->row, DB::$ROOM->option_role->row);
-    $player = GameHTML::GeneratePlayer();
-    $log    = RQ::Get()->heaven_only ? self::LayoutHeaven() : self::Layout();
-    $link = self::DATE_BEFORE;
-    for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $link .= sprintf(self::DATE_LINK, $i, $i);
-    $link .= self::DATE_AFTER;
-    $str = DB::$ROOM->GenerateTitleTag();
-    return HTML::GenerateHeader($title, 'old_log', true) . <<<EOF
-<a href="old_log.php">←戻る</a><br>
-{$str}<br>
-{$option}<br>
-{$link}<br>
-{$player}{$log}
-EOF;
+
+    $title = sprintf(self::TITLE, DB::$ROOM->id, DB::$ROOM->name, $base_title);
+    $br = Text::BR . Text::LF;
+
+    $str  = HTML::GenerateHeader($title, 'old_log', true);
+    $str .= '<a href="old_log.php">←戻る</a>';
+    $str .= $br;
+    $str .= DB::$ROOM->GenerateTitleTag(true);
+    $str .= $br;
+    $str .= RoomOption::GenerateImage(DB::$ROOM->game_option->row, DB::$ROOM->option_role->row);
+    $str .= $br;
+    $str .= self::DATE_BEFORE;
+    for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= sprintf(self::DATE_LINK, $i, $i);
+    $str .= self::DATE_AFTER;
+    $str .= $br;
+    $str .= GameHTML::GeneratePlayer();
+    if (RQ::Get()->role_list) $str .= self::GenerateRoleLink();
+    $str .= RQ::Get()->heaven_only ? self::GenerateHeavenLog() : self::GenerateLog();
+    return $str;
   }
 
   //過去ログ一覧生成
@@ -140,7 +144,7 @@ EOF;
     }
 
     //ページリンクデータの生成
-    $is_reverse = empty(RQ::Get()->reverse) ? OldLogConfig::REVERSE : (RQ::Get()->reverse == 'on');
+    $is_reverse = empty(RQ::Get()->reverse) ? OldLogConfig::REVERSE : RQ::Get()->reverse == 'on';
     if (RQ::Get()->generate_index) {
       $max = RQ::Get()->max_room_no;
       if (is_int($max) && $max > 0 && $room_count > $max) $room_count = $max;
@@ -151,7 +155,7 @@ EOF;
     else {
       $builder = new PageLinkBuilder('old_log', RQ::Get()->page, $room_count);
       $builder->set_reverse = $is_reverse;
-      $builder->AddOption('reverse', $is_reverse     ? 'on' : 'off');
+      $builder->AddOption('reverse', $is_reverse      ? 'on' : 'off');
       $builder->AddOption('watch',   RQ::Get()->watch ? 'on' : 'off');
       $db_no = RQ::Get()->db_no;
       if (is_int($db_no) && $db_no > 0) $builder->AddOption('db_no', $db_no);
@@ -160,9 +164,7 @@ EOF;
     $back_url = RQ::Get()->generate_index ? '../' : './';
     $img_url  = RQ::Get()->generate_index ? '../' : '';
 
-    $str = HTML::GenerateHeader($title, 'old_log_list') . <<<EOF
-</head>
-<body>
+    $str = HTML::GenerateHeader($title, 'old_log_list', true) . <<<EOF
 <p><a href="{$back_url}">←戻る</a></p>
 <img src="{$img_url}img/old_log_title.jpg"><br>
 <div>
@@ -260,8 +262,8 @@ EOF;
   //過去ログ一覧表示
   static function OutputList($page) { echo self::GenerateList($page); }
 
-  //通常のログ表示順を表現します。
-  private function Layout() {
+  //通常ログ出力
+  private function GenerateLog() {
     if (RQ::Get()->reverse_log) {
       $str = self::GenerateTalk(0, 'beforegame');
       for ($i = 1; $i <= DB::$ROOM->last_date; $i++) {
@@ -279,8 +281,8 @@ EOF;
     return $str;
   }
 
-  //霊界のみのログ表示順を表現します。
-  private function LayoutHeaven() {
+  //霊界ログ出力
+  private function GenerateHeavenLog() {
     $str = '';
     if (RQ::Get()->reverse_log) {
       for ($i = 1; $i <= DB::$ROOM->last_date; $i++) {
@@ -296,11 +298,11 @@ EOF;
   }
 
   //指定の日付の会話ログを生成
-  private function GenerateTalk($set_date, $set_scene) {
+  private function GenerateTalk($date, $scene) {
     $flag_border_game = false;
-    switch ($set_scene) { //シーンに合わせたデータをセット
+    switch ($scene) { //シーンに合わせたデータをセット
     case 'beforegame':
-      $table_class = $set_scene;
+      $table_class = $scene;
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
 	DB::$USER->ResetRoleList();
 	unset(DB::$ROOM->event);
@@ -309,7 +311,7 @@ EOF;
       break;
 
     case 'aftergame':
-      $table_class = $set_scene;
+      $table_class = $scene;
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
 	DB::$USER->ResetRoleList();
 	unset(DB::$ROOM->event);
@@ -318,12 +320,12 @@ EOF;
       break;
 
     case 'heaven_only':
-      $table_class = RQ::Get()->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
+      $table_class = RQ::Get()->reverse_log && $date != 1 ? 'day' : 'night'; //2日目以降は昼から
       break;
 
     default:
       $flag_border_game = true;
-      $table_class = RQ::Get()->reverse_log && $set_date != 1 ? 'day' : 'night'; //2日目以降は昼から
+      $table_class = RQ::Get()->reverse_log && $date != 1 ? 'day' : 'night'; //2日目以降は昼から
       if (DB::$ROOM->watch_mode || DB::$ROOM->single_view_mode) {
 	DB::$USER->ResetRoleList();
 	DB::$USER->SetEvent(true);
@@ -341,31 +343,31 @@ EOF;
     //出力
     $str = '';
     if ($flag_border_game && ! RQ::Get()->reverse_log) {
-      DB::$ROOM->date  = $set_date + 1;
+      DB::$ROOM->date  = $date + 1;
       DB::$ROOM->scene = 'day';
       $str .= GameHTML::GenerateLastWords() . GameHTML::GenerateDead(); //死亡者を出力
     }
-    DB::$ROOM->date  = $set_date;
+    DB::$ROOM->date  = $date;
     DB::$ROOM->scene = $table_class;
-    if ($set_scene != 'heaven_only') DB::$ROOM->SetWeather();
+    if ($scene != 'heaven_only') DB::$ROOM->SetWeather();
 
     $id = DB::$ROOM->IsPlaying() ? 'date' . DB::$ROOM->date : DB::$ROOM->scene;
     $builder = new TalkBuilder('talk ' . $table_class, $id);
     if (RQ::Get()->reverse_log) $builder->GenerateTimeStamp();
     //if (DB::$ROOM->watch_mode) $builder->AddSystem(DB::$ROOM->date . print_r(DB::$ROOM->event, true));
 
-    foreach (TalkDB::GetLog($set_date, $set_scene) as $talk) {
+    foreach (TalkDB::GetLog($date, $scene) as $talk) {
       switch ($talk->scene) {
       case 'day':
 	if (DB::$ROOM->IsDay() || $talk->location == 'dummy_boy') break;
-	$str .= $builder->Refresh() . self::GenerateSceneChange($set_date);
+	$str .= $builder->Refresh() . self::GenerateSceneChange($date);
 	DB::$ROOM->scene = $talk->scene;
 	$builder->Begin('talk ' . $talk->scene);
 	break;
 
       case 'night':
 	if (DB::$ROOM->IsNight() || $talk->location == 'dummy_boy') break;
-	$str .= $builder->Refresh() . self::GenerateSceneChange($set_date);
+	$str .= $builder->Refresh() . self::GenerateSceneChange($date);
 	DB::$ROOM->scene = $talk->scene;
 	$builder->Begin('talk ' . $talk->scene);
 	break;
@@ -378,9 +380,9 @@ EOF;
 
     if ($flag_border_game && RQ::Get()->reverse_log) {
       //突然死で勝敗が決定したケース
-      if ($set_date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= GameHTML::GenerateVote();
+      if ($date == DB::$ROOM->last_date && DB::$ROOM->IsDay()) $str .= GameHTML::GenerateVote();
 
-      DB::$ROOM->date  = $set_date + 1;
+      DB::$ROOM->date  = $date + 1;
       DB::$ROOM->scene = 'day';
       $str .= GameHTML::GenerateDead() . GameHTML::GenerateLastWords(); //遺言を出力
     }
@@ -388,10 +390,10 @@ EOF;
   }
 
   //シーン切り替え処理
-  private function GenerateSceneChange($set_date) {
+  private function GenerateSceneChange($date) {
     $str = '';
     if (RQ::Get()->heaven_only) return $str;
-    DB::$ROOM->date = $set_date;
+    DB::$ROOM->date = $date;
     if (RQ::Get()->reverse_log) {
       DB::$ROOM->scene = 'night';
       $str .= GameHTML::GenerateVote() . GameHTML::GenerateDead();
@@ -399,5 +401,37 @@ EOF;
       $str .= GameHTML::GenerateDead() . GameHTML::GenerateVote();
     }
     return $str;
+  }
+
+  //役職リンク生成
+  private function GenerateRoleLink() {
+    $stack = array();
+    foreach (DB::$USER->role as $role => $list) {
+      $stack[] = $role;
+    }
+
+    $str_stack  = array();
+    $role_stack = array();
+    foreach (array_intersect(array_keys(RoleData::$main_role_list), $stack) as $role) {
+      if (! isset($camp)) $camp = RoleData::GetCamp($role);
+      if ($camp != RoleData::GetCamp($role) || count($role_stack) > 9) {
+	$str_stack[] = implode(' / ', $role_stack);
+	$role_stack = array();
+	$camp = RoleData::GetCamp($role);
+      }
+      $role_stack[] = RoleDataHTML::GenerateMain($role) . count(DB::$USER->role[$role]);
+    }
+    $str_stack[] = implode(' / ', $role_stack);
+
+    $role_stack = array();
+    foreach (array_intersect(array_keys(RoleData::$sub_role_list), $stack) as $role) {
+      if (count($role_stack) > 9) {
+	$str_stack[] = implode(' / ', $role_stack);
+	$role_stack = array();
+      }
+      $role_stack[] = RoleDataHTML::GenerateSub($role) . count(DB::$USER->role[$role]);
+    }
+    $str_stack[] = implode(' / ', $role_stack);
+    return implode(Text::BR . Text::LF, $str_stack);
   }
 }

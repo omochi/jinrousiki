@@ -6,6 +6,6 @@
 */
 class Role_downer_luck extends Role {
   function FilterVotePoll(&$count) {
-    $count += DB::$ROOM->date == 2 ? -4 : 2;
+    $count += DB::$ROOM->IsDate(2) ? -4 : 2;
   }
 }

@@ -381,7 +381,7 @@ class GameHTML {
 
     //ログ閲覧モード以外なら二つ前も死亡者メッセージ表示
     if (DB::$ROOM->date < 2 || DB::$ROOM->log_mode || DB::$ROOM->test_mode ||
-	(DB::$ROOM->date == 2 && DB::$ROOM->Isday())) {
+	(DB::$ROOM->IsDate(2) && DB::$ROOM->Isday())) {
       return $str;
     }
     $str .= '<hr>'; //死者が無いときに境界線を入れない仕様にする場合はクエリの結果をチェックする

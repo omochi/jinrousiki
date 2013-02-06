@@ -12,7 +12,7 @@ class Role_widow_priest extends Role_priest {
   protected function GetOutputRole() { return null; }
 
   protected function SetPriest() {
-    if (DB::$ROOM->date == 1 && DB::$ROOM->IsDummyBoy()) parent::SetPriest();
+    if (DB::$ROOM->IsDate(1) && DB::$ROOM->IsDummyBoy()) parent::SetPriest();
     return false;
   }
 

@@ -11,7 +11,7 @@ class Role_mirror_fairy extends Role_fairy {
   public $submit = 'fairy_do';
   public $event_day = 'vote_duel';
 
-  function IsVote() { return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->IsDate(1); }
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 

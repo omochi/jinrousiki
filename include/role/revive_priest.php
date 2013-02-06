@@ -10,14 +10,14 @@ class Role_revive_priest extends Role_priest {
 
   function Priest(StdClass $role_flag) {
     $data = $this->GetStack('priest');
-    if (DB::$ROOM->date != 4 && ! isset($data->crisis) && $data->count['wolf'] != 1 &&
+    if (! DB::$ROOM->IsDate(4) && ! isset($data->crisis) && $data->count['wolf'] != 1 &&
 	count(DB::$USER->rows) < $data->count['total'] * 2) {
       return false;
     }
 
     foreach ($role_flag->{$this->role} as $id) {
       $user = DB::$USER->ByID($id);
-      if ($user->IsLovers() || (DB::$ROOM->date >= 4 && $user->IsLive(true))) {
+      if ($user->IsLovers() || (DB::$ROOM->date > 3 && $user->IsLive(true))) {
 	$user->LostAbility();
       }
       elseif ($user->IsDead(true)) {

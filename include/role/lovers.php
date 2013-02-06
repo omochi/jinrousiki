@@ -14,7 +14,7 @@ class Role_lovers extends Role {
       //夢求愛者・悲恋対応
       if ($user->IsPartner($this->role, $target) ||
 	  $this->GetActor()->IsPartner('dummy_chiroptera', $user->id) ||
-	  (DB::$ROOM->date == 1 && $user->IsPartner('sweet_status', $target))) {
+	  (DB::$ROOM->IsDate(1) && $user->IsPartner('sweet_status', $target))) {
 	$stack[] = $user->GetName(); //憑依追跡
       }
     }

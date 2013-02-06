@@ -88,7 +88,7 @@ class GamePlay {
     if (! DB::$ROOM->heaven_mode) {
       if (! RQ::Get()->list_down) GameHTML::OutputPlayer();
       RoleHTML::OutputAbility();
-      if (DB::$ROOM->IsDay() && DB::$SELF->IsLive() && DB::$ROOM->date != 1) { //処刑投票メッセージ
+      if (DB::$ROOM->date > 1 && DB::$ROOM->IsDay() && DB::$SELF->IsLive()) { //処刑投票メッセージ
 	if (is_null(DB::$SELF->target_no)) {
 	  $str  = self::NOT_VOTE;
 	  $vote = sprintf(self::VOTE_DO, Message::$ability_vote);
@@ -143,7 +143,7 @@ class GamePlay {
     }
 
     //オープニングなら即座に夜に移行する
-    if (DB::$ROOM->date == 1 && DB::$ROOM->IsOption('open_day') && DB::$ROOM->IsDay()) {
+    if (DB::$ROOM->IsDate(1) && DB::$ROOM->IsDay() && DB::$ROOM->IsOption('open_day')) {
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制はここでロック開始
 	if (! DB::Transaction()) return false;
 

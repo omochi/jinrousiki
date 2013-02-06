@@ -5,7 +5,7 @@
 */
 class Role_sweet_status extends Role {
   protected function OutputImage() {
-    if (DB::$ROOM->date == 2) parent::OutputImage();
+    if (DB::$ROOM->IsDate(2)) parent::OutputImage();
   }
 
   protected function OutputPartner() {
@@ -16,7 +16,7 @@ class Role_sweet_status extends Role {
       if ($this->IsActor($user)) continue;
       //夢求愛者対応
       if ($actor->IsPartner('dummy_chiroptera', $user->id) ||
-	  (DB::$ROOM->date == 1 && $user->IsPartner($this->role, $actor->partner_list))) {
+	  (DB::$ROOM->IsDate(1) && $user->IsPartner($this->role, $actor->partner_list))) {
 	$stack[] = $user->GetName(); //憑依追跡
       }
     }

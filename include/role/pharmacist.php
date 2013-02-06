@@ -31,7 +31,7 @@ class Role_pharmacist extends Role {
     if (! $user->IsRoleGroup('poison') || $user->IsRole('dummy_poison')) return 'nothing';
     if ($user->IsRole('strong_poison')) return 'strong'; //強毒者
     if ($user->IsRole('incubate_poison')) {
-      return DB::$ROOM->date >= 5 ? 'strong' : 'nothing'; //潜毒者
+      return DB::$ROOM->date > 4 ? 'strong' : 'nothing'; //潜毒者
     }
     if ($user->IsRole('poison_guard', 'guide_poison', 'chain_poison', 'poison_jealousy')) {
       return 'limited'; //騎士・誘毒者・連毒者・毒橋姫

@@ -24,7 +24,7 @@ class Role_mind_scanner extends Role {
     RoleHTML::OutputVote('mind-scanner-do', 'mind_scanner_do', $this->action);
   }
 
-  function IsVote() { return parent::IsVote() && DB::$ROOM->date == 1; }
+  function IsVote() { return parent::IsVote() && DB::$ROOM->IsDate(1); }
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 

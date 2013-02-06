@@ -31,7 +31,7 @@ class GameLog {
 
     default:
       if (DB::$ROOM->date < RQ::Get()->date ||
-	  (DB::$ROOM->date == RQ::Get()->date &&
+	  (DB::$ROOM->IsDate(RQ::Get()->date) &&
 	   (DB::$ROOM->IsDay() || DB::$ROOM->scene == RQ::Get()->scene))) { //「未来」判定
 	HTML::OutputResult($title, $title . '：無効なシーンです');
       }

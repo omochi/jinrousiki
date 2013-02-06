@@ -1274,6 +1274,15 @@ class RoleDataHTML {
     return sprintf(self::TAG, $tag, RoleData::GetCSS($role), $name, $tag);
   }
 
+  //タグ生成 (メイン役職専用)
+  static function GenerateSub($role, $tag = 'span') {
+    $name = RoleData::$sub_role_list[$role];
+    foreach (RoleData::$sub_role_group_list as $css => $list) {
+      if (in_array($role, $list)) break;
+    }
+    return sprintf(self::TAG, $tag, $css, $name, $tag);
+  }
+
   //役職説明ページへのリンク生成
   static function GenerateLink($role) {
     if (array_key_exists($role, RoleData::$sub_role_list)) {

@@ -9,10 +9,10 @@ class Role_incubate_poison extends Role_poison {
   public $ability = 'muster_ability';
 
   function OutputResult() {
-    if (DB::$ROOM->date > 4) RoleHTML::OutputAbilityResult($this->ability, null);
+    if ($this->IsPoison()) RoleHTML::OutputAbilityResult($this->ability, null);
   }
 
-  function IsPoison() { return DB::$ROOM->date >= 5; }
+  function IsPoison() { return DB::$ROOM->date > 4; }
 
   function IsPoisonTarget(User $user) { return $user->IsRoleGroup('wolf', 'fox'); }
 }

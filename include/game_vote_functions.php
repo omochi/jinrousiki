@@ -13,7 +13,7 @@ class Vote {
 	集計処理は実施されないので、ここではそのまま投票させておく。
 	逆にスキップ判定を実施した場合、初日投票能力者が詰む。
       */
-      //if (DB::$ROOM->date == 1) VoteHTML::OutputResult('夜：初日は暗殺できません');
+      //if (DB::$ROOM->IsDate(1)) VoteHTML::OutputResult('夜：初日は暗殺できません');
       if (DB::$ROOM->test_mode ||
 	  ! self::CheckSelfVoteNight('DEATH_NOTE_DO', 'DEATH_NOTE_NOT_DO')) {
 	$filter = RoleManager::LoadMain(new User('mage')); //上記のバグ対策用 (本来は assassin 相当)
@@ -848,7 +848,7 @@ class Vote {
     $stack = array('MAGE_DO', 'STEP_MAGE_DO', 'VOODOO_KILLER_DO', 'MIND_SCANNER_DO', 'WOLF_EAT',
 		   'STEP_WOLF_EAT', 'SILENT_WOLF_EAT', 'JAMMER_MAD_DO', 'VOODOO_MAD_DO', 'STEP_DO',
 		   'VOODOO_FOX_DO', 'CHILD_FOX_DO', 'FAIRY_DO');
-    if (DB::$ROOM->date == 1) {
+    if (DB::$ROOM->IsDate(1)) {
       $stack[] = 'MANIA_DO';
     }
     else {
@@ -1180,7 +1180,7 @@ class Vote {
     foreach (RoleManager::$get->$role as $id => $flag) DB::$USER->ByID($id)->LostAbility();
     unset(RoleManager::$get->$role, $mage_list);
 
-    if (DB::$ROOM->date == 1) {
+    if (DB::$ROOM->IsDate(1)) {
       //-- コピーレイヤー --//
       foreach ($vote_data['MIND_SCANNER_DO'] as $id => $target_id) { //さとり系の処理
 	$user = DB::$USER->ByID($id);
@@ -1447,7 +1447,7 @@ EOF;
   //昼の投票ページを出力する
   static function OutputDay() {
     self::CheckScene(); //投票シーンチェック
-    if (DB::$ROOM->date == 1) self::OutputResult('処刑：初日は投票不要です');
+    if (DB::$ROOM->IsDate(1)) self::OutputResult('処刑：初日は投票不要です');
 
     //投票済みチェック
     if (! DB::$ROOM->test_mode && UserDB::IsVoteKill()) self::OutputResult('処刑：投票済み');

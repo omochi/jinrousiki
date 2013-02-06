@@ -451,7 +451,7 @@ class TalkBuilder {
       break;
 
     case 'night':
-      if (DB::$ROOM->date != 1) return false;
+      if (! DB::$ROOM->IsDate(1)) return false;
       $type     = 'start_datetime'; //ゲーム開始時刻
       $sentence = 'ゲーム開始';
       break;

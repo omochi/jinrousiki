@@ -44,7 +44,7 @@ class Role_soul_mania extends Role_mania {
     'patron'		=> 'sacrifice_patron');
 
   protected function OutputResult() {
-    if (DB::$ROOM->date == 2) $this->OutputAbilityResult($this->result);
+    if (DB::$ROOM->IsDate(2)) $this->OutputAbilityResult($this->result);
   }
 
   protected function GetManiaRole(User $user) { return $user->DistinguishRoleGroup(); }

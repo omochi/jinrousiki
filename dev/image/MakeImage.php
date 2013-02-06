@@ -60,19 +60,19 @@ class MessageImageBuilder {
   }
 
   function LoadDelimiter($delimiter, $colors) {
-    if(! is_array($colors)) $colors = $this->color_list[$colors];
+    if (! is_array($colors)) $colors = $this->color_list[$colors];
     return new Delimiter($delimiter, $colors['R'], $colors['G'], $colors['B']);
   }
 
   function AddDelimiter(array $list) {
-    foreach($list['delimiter'] as $delimiter => $colors){
+    foreach ($list['delimiter'] as $delimiter => $colors) {
       $this->generator->AddDelimiter($this->LoadDelimiter($delimiter, $colors));
     }
   }
 
   function SetDelimiter(array $list) {
-    if(isset($list['type'])) $this->SetDelimiter($this->list->{$list['type']});
-    if(is_null($list['delimiter'])) $list['delimiter'] = array();
+    if (isset($list['type'])) $this->SetDelimiter($this->list->{$list['type']});
+    if (is_null($list['delimiter'])) $list['delimiter'] = array();
     $this->AddDelimiter($list);
   }
 
@@ -97,7 +97,7 @@ class MessageImageBuilder {
 
   //まとめて画像ファイル生成
   function OutputAll() {
-    foreach($this->list as $name => $list){
+    foreach ($this->list as $name => $list) {
       $image = $this->Generate($name);
       imagegif($image, "./test/{$name}.gif"); //出力先ディレクトリのパーミッションに注意
       imagedestroy($image);

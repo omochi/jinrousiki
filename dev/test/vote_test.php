@@ -34,7 +34,7 @@ DevUser::Initialize(25);
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
-RQ::GetTest()->test_users[2]->role = 'wolf authority';
+RQ::GetTest()->test_users[2]->role = 'resist_wolf authority lost_ability';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
@@ -46,7 +46,7 @@ RQ::GetTest()->test_users[4]->live = 'live';
 RQ::GetTest()->test_users[5]->role = 'soul_mage febris[6]';
 RQ::GetTest()->test_users[5]->live = 'live';
 
-RQ::GetTest()->test_users[6]->role = 'eclipse_medium mind_friend[21] possessed[4-15]';
+RQ::GetTest()->test_users[6]->role = 'eclipse_medium mind_friend[21] possessed[4-15] febris[6]';
 RQ::GetTest()->test_users[6]->live = 'dead';
 
 RQ::GetTest()->test_users[7]->role = 'step_guard lovers[16]';
@@ -67,10 +67,10 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'fox death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'voodoo_killer lady';
+RQ::GetTest()->test_users[13]->role = 'trap_mad lady';
 RQ::GetTest()->test_users[13]->live = 'live';
 
-RQ::GetTest()->test_users[14]->role = 'jammer_fox death_warrant[6]';
+RQ::GetTest()->test_users[14]->role = 'blue_fox death_warrant[6]';
 RQ::GetTest()->test_users[14]->live = 'live';
 
 RQ::GetTest()->test_users[15]->role = 'possessed_fox possessed_target[4-6] lost_ability';
@@ -89,7 +89,7 @@ RQ::GetTest()->test_users[18]->live = 'live';
 RQ::GetTest()->test_users[19]->role = 'light_fairy psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
-RQ::GetTest()->test_users[20]->role = 'soul_vampire mind_presage[23] disfavor';
+RQ::GetTest()->test_users[20]->role = 'sacrifice_vampire mind_presage[23] disfavor';
 RQ::GetTest()->test_users[20]->live = 'live';
 
 RQ::GetTest()->test_users[21]->role = 'resurrect_mania[6] mind_friend[21]';
@@ -98,13 +98,13 @@ RQ::GetTest()->test_users[21]->live = 'live';
 RQ::GetTest()->test_users[22]->role = 'psycho_escaper reduce_voter';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'cursed_angel deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'poison deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
-RQ::GetTest()->test_users[25]->role = 'revive_ogre disfavor';
+RQ::GetTest()->test_users[25]->role = 'yaksa disfavor';
 RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -198,7 +198,7 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    array('user_no' => 2,	'target_no' => 10,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2,	'target_no' => 23,	'type' => 'WOLF_EAT'),
     //array('user_no' => 3,	'target_no' => 9,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     //array('user_no' => 4, 	'target_no' => '9 14 19 18 3',	'type' => 'STEP_MAGE_DO'),
@@ -229,13 +229,13 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 13,	'target_no' => null,	'type' => 'POSSESSED_NOT_DO'),
     //array('user_no' => 13,	'target_no' => 6,	'type' => 'POISON_CAT_DO'),
     //array('user_no' => 13,	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    //array('user_no' => 13,	'target_no' => 13,	'type' => 'TRAP_MAD_DO'),
+    array('user_no' => 13,	'target_no' => 13,	'type' => 'TRAP_MAD_DO'),
     //array('user_no' => 13,	'target_no' => null,	'type' => 'TRAP_MAD_NOT_DO'),
-    array('user_no' => 13,	'target_no' => 11,	'type' => 'VOODOO_KILLER_DO'),
+    //array('user_no' => 13,	'target_no' => 11,	'type' => 'VOODOO_KILLER_DO'),
     //array('user_no' => 13,	'target_no' => '12 13 14',	'type' => 'STEP_DO'),
     //array('user_no' => 14,	'target_no' => 18,	'type' => 'CHILD_FOX_DO'),
     //array('user_no' => 14,	'target_no' => 13,	'type' => 'VOODOO_KILLER_DO'),
-    array('user_no' => 14,	'target_no' => 5,	'type' => 'JAMMER_MAD_DO'),
+    //array('user_no' => 14,	'target_no' => 5,	'type' => 'JAMMER_MAD_DO'),
     array('user_no' => 16,	'target_no' => '11 6 1 2 3 4 5',	'type' => 'STEP_MAGE_DO'),
     //array('user_no' => 17,	'target_no' => 22,	'type' => 'FAIRY_DO'),
     //array('user_no' => 18,	'target_no' => 20,	'type' => 'VOODOO_FOX_DO'),
@@ -246,7 +246,7 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 19,	'target_no' => '3 7 23',	'type' => 'SPREAD_WIZARD_DO'),
     array('user_no' => 20,	'target_no' => 3,	'type' => 'VAMPIRE_DO'),
     //array('user_no' => 21,	'target_no' => 5,	'type' => 'CHILD_FOX_DO'),
-    array('user_no' => 22,	'target_no' => 3,	'type' => 'ESCAPE_DO'),
+    array('user_no' => 22,	'target_no' => 23,	'type' => 'ESCAPE_DO'),
     //array('user_no' => 22,	'target_no' => 13,	'type' => 'FAIRY_DO'),
     //array('user_no' => 22,	'target_no' => 22,	'type' => 'TRAP_MAD_DO'),
     //array('user_no' => 22,	'target_no' => 24,	'type' => 'OGRE_DO'),
@@ -263,7 +263,7 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 24,	'target_no' => '3 9',	'type' => 'SPREAD_WIZARD_DO'),
     //array('user_no' => 24,	'target_no' => 12,	'type' => 'SPREAD_WIZARD_DO'),
     //array('user_no' => 25,	'target_no' => 22,	'type' => 'TRAP_MAD_DO'),
-    array('user_no' => 25,	'target_no' => 9,	'type' => 'OGRE_DO'),
+    array('user_no' => 25,	'target_no' => 2,	'type' => 'OGRE_DO'),
     //array('user_no' => 25,	'target_no' => null,	'type' => 'OGRE_NOT_DO'),
   );
 }
@@ -276,7 +276,7 @@ RQ::GetTest()->system_message = array(
 	     #'VOTE_DUEL' => array(8),
 	     'WEATHER' => array(44),
 	     ),
-  6 => array('WEATHER' => array(55)),
+  6 => array('WEATHER' => array(33)),
   //7 => array('WEATHER' => array(59)),
   8 => array('WEATHER' => array(33)
 	     )
@@ -298,7 +298,7 @@ DB::$ROOM->scene = 'night';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 
 DevUser::Load();
-if (DB::$ROOM->date == 1) {
+if (DB::$ROOM->IsDate(1)) {
   foreach (DB::$USER->rows as $user) $user->live = 'live'; //初日用
 }
 DB::$USER->SetEvent(); //天候テスト用

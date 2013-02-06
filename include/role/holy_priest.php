@@ -7,11 +7,11 @@
 RoleManager::LoadFile('priest');
 class Role_holy_priest extends Role_priest {
   protected function GetOutputRole() {
-    return DB::$ROOM->date == 5 ? $this->role : null;
+    return DB::$ROOM->IsDate(5) ? $this->role : null;
   }
 
   protected function SetPriest() {
-    if (DB::$ROOM->date == 4) parent::SetPriest();
+    if (DB::$ROOM->IsDate(4)) parent::SetPriest();
     return false;
   }
 

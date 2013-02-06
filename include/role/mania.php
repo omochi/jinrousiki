@@ -15,7 +15,7 @@ class Role_mania extends Role {
     RoleHTML::OutputVote('mania-do', 'mania_do', $this->action);
   }
 
-  function IsVote() { return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->IsDate(1); }
 
   function GetIgnoreMessage() { return '初日以外は投票できません'; }
 

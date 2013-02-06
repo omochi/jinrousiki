@@ -29,7 +29,7 @@ class Role_dummy_chiroptera extends Role {
 
   function OutputAction() { $this->filter->OutputAction(); }
 
-  function IsVote() { return DB::$ROOM->date == 1; }
+  function IsVote() { return DB::$ROOM->IsDate(1); }
 
   function IsFinishVote(array $list) { return $this->filter->IsFinishVote($list); }
 

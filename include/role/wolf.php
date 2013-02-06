@@ -41,7 +41,7 @@ class Role_wolf extends Role {
 
   //身代わり君襲撃固定判定
   final function IsDummyBoy() {
-    return DB::$ROOM->IsQuiz() || (DB::$ROOM->IsDummyBoy() && DB::$ROOM->date == 1);
+    return DB::$ROOM->IsQuiz() || (DB::$ROOM->IsDummyBoy() && DB::$ROOM->IsDate(1));
   }
 
   function IsVoteCheckboxChecked(User $user) { return $this->IsDummyBoy() && $user->IsDummyBoy(); }
@@ -85,10 +85,11 @@ class Role_wolf extends Role {
 
   function IgnoreVoteNight(User $user, $live) {
     if (! is_null($str = parent::IgnoreVoteNight($user, $live))) return $str;
-    //クイズ村は GM 以外無効
-    if (DB::$ROOM->IsQuiz() && ! $user->IsDummyBoy()) return 'クイズ村では GM 以外に投票できません';
-    if (DB::$ROOM->IsDummyBoy() && DB::$ROOM->date == 1 && ! $user->IsDummyBoy()) { //身代わり君判定
-      return '身代わり君使用の場合は、身代わり君以外に投票できません';
+    if (! $user->IsDummyBoy()) { //身代わり君判定
+      if (DB::$ROOM->IsQuiz()) return 'クイズ村では GM 以外に投票できません'; //クイズ村
+      if (DB::$ROOM->IsDummyBoy() && DB::$ROOM->IsDate(1)) { //身代わり君
+	return '身代わり君使用の場合は、身代わり君以外に投票できません';
+      }
     }
     if (! $this->IsWolfEatTarget($user->id)) return '狼同士には投票できません'; //仲間狼判定
     return null;

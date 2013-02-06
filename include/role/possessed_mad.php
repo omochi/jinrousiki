@@ -83,6 +83,6 @@ class Role_possessed_mad extends Role {
   //追加能力発動判定
   private function IsAbility() {
     $list = $this->GetActor()->GetPartner('possessed_target', true);
-    return count($list) > 0 && min(array_keys($list)) + 1 < DB::$ROOM->date;
+    return count($list) > 0 && DB::$ROOM->date > min(array_keys($list)) + 1;
   }
 }
