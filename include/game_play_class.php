@@ -425,12 +425,12 @@ EOF;
 
       //「異議」あり
       $cookie = explode(',', JinroCookie::$objection); //クッキーの値を配列に格納する
-      if (count($cookie) > 0) {
-	$stack = JinroCookie::$objection_list;
-	$count = count($stack);
+      $stack  = JinroCookie::$objection_list;
+      $count  = count($stack);
+      if (count($cookie) == $count) {
 	for ($i = 0; $i < $count; $i++) { //差分を計算 (index は 0 から)
 	  //差分があれば性別を確認して音を鳴らす
-	  if (is_int($cookie[$i]) && $stack[$i] > $cookie[$i]) {
+	  if (isset($cookie[$i]) && $stack[$i] > $cookie[$i]) {
 	    Sound::Output('objection_' . DB::$USER->ByID($i + 1)->sex);
 	  }
 	}
