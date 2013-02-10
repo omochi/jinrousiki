@@ -10,13 +10,14 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#anti_assassin">暗殺耐性</a>
 <a href="#mage">占い</a>
 <a href="#phantom">占い妨害</a>
+<a href="#ogre">鬼</a>
 <a href="#wisp">鬼火</a>
 <a href="#guard_hunt">狩り</a>
 <a href="#guard">護衛</a>
 <a href="#guard_limit">護衛制限</a>
-<a href="#doom">死の宣告</a>
 </p>
 <p>
+<a href="#doom">死の宣告</a>
 <a href="#decide">処刑者決定</a>
 <a href="#vote_action">処刑投票</a>
 <a href="#vote_reaction">処刑得票</a>
@@ -26,9 +27,9 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#psycho">精神</a>
 <a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
-<a href="#revive_limit">蘇生制限</a>
 </p>
 <p>
+<a href="#revive_limit">蘇生制限</a>
 <a href="#same">同一表示</a>
 <a href="#frostbite">凍傷</a>
 <a href="#authority">投票数変化</a>
@@ -38,9 +39,9 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#resist_poison">毒耐性</a>
 <a href="#partner">仲間情報妨害</a>
 <a href="#febris">熱病</a>
-<a href="#cursed_group">呪い</a>
 </p>
 <p>
+<a href="#cursed_group">呪い</a>
 <a href="#talk_convert">発言変換</a>
 <a href="#possessed">憑依</a>
 <a href="#possessed_limit">憑依制限</a>
@@ -50,6 +51,8 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#soul">役職鑑定</a>
 <a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
+</p>
+<p>
 <a href="#necromancer">霊能</a>
 <a href="#trap">罠</a>
 </p>
@@ -107,6 +110,32 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h3 id="phantom_reactive">受動型</h3>
 <pre>
 <a href="human.php#phantom_doll">倫敦人形</a>・<a href="wolf.php#phantom_wolf">幻狼</a>・<a href="fox.php#phantom_fox">幻狐</a>
+</pre>
+
+<h2 id="ogre">鬼陣営分類</h2>
+<h3 id="ogre_human">村人陣営勝利型</h3>
+<pre>
+<a href="ogre.php#cow_ogre">牛頭鬼</a>・<a href="ogre.php#horse_ogre">馬頭鬼</a>・<a href="ogre.php#west_ogre">金鬼</a>・<a href="ogre.php#east_ogre">風鬼</a>・<a href="ogre.php#north_ogre">水鬼</a>・<a href="ogre.php#south_ogre">隠行鬼</a>・<a href="ogre.php#betray_yaksa">夜叉丸</a>
+</pre>
+<h3 id="ogre_anti_human">非村人陣営勝利型</h3>
+<pre>
+<a href="ogre.php#sacrifice_ogre">酒呑童子</a>・<a href="ogre.php#hariti_yaksa">鬼子母神</a>・<a href="ogre.php#vajra_yaksa">金剛夜叉</a>
+</pre>
+<h3 id="ogre_anti_wolf">対人狼陣営型</h3>
+<pre>
+<a href="ogre.php#orange_ogre">前鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="ogre.php#yaksa">夜叉</a>
+</pre>
+<h3 id="ogre_anti_fox">対妖狐陣営型</h3>
+<pre>
+<a href="ogre.php#indigo_ogre">前鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="ogre.php#hariti_yaksa">鬼子母神</a>
+</pre>
+<h3 id="ogre_sex">対性別型</h3>
+<pre>
+<a href="ogre.php#incubus_ogre">般若</a>・<a href="ogre.php#succubus_yaksa">荼枳尼天</a>
+</pre>
+<h3 id="ogre_direction">四方型</h3>
+<pre>
+<a href="ogre.php#west_ogre">金鬼</a>・<a href="ogre.php#east_ogre">風鬼</a>・<a href="ogre.php#north_ogre">水鬼</a>・<a href="ogre.php#south_ogre">隠行鬼</a>
 </pre>
 
 <h2 id="wisp">鬼火付加能力者</h2>
@@ -280,7 +309,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="resist_poison">毒耐性能力者</h2>
 <pre>
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="quiz.php#quiz">出題者</a>・<a href="vampire.php#poison_vampire">百々爺</a>・<a href="sub_role.php#challenge_lovers">難題</a>
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="quiz.php#quiz">出題者</a>・<a href="vampire.php#poison_vampire">百々爺</a>・<a href="ogre.php#horse_ogre">馬頭鬼</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 
 <h2 id="partner">仲間情報妨害能力者</h2>

@@ -26,5 +26,6 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>牛頭鬼：鬼系の一種で、勝利条件は「自分自身の生存 + 暗殺者系の全滅 + 村人陣営の勝利」</li>
+  <li>馬頭鬼：鬼系の一種で、勝利条件は「自分自身の生存 + 毒能力者の全滅 + 村人陣営の勝利」</li>
 </ul>

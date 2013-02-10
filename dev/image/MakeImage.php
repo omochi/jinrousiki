@@ -1020,7 +1020,7 @@ class RoleMessageList {
     'type' => 'vampire', 'delimiter' => array('_' => 'liar'));
 
   public $step_vampire = array(
-    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|文武王|です。夜の投票時にあなたと投票先の通り道で#足音#が鳴ります。また、_処刑_投票先を一定確率で|感染者|にできます。",
+    'message' => "[役割] [|吸血鬼|陣営] [|吸血鬼|系]\n　あなたは|文武王|です。夜の投票時にあなたと投票先の通り道で#足音#が鳴ります。また、_処刑_投票先を一定確率で|感染者|にできます。\n　夜は陽気な足取りで襲撃し、昼は蚊を操り密かに血啜る吸血王。多様な手段で配下を増やし、村の支配を永遠の物へと変えるのだ！",
     'type' => 'vampire', 'delimiter' => array('#' => 'step', '_' => 'vote'));
 
   public $doom_vampire = array(
@@ -1146,6 +1146,14 @@ class RoleMessageList {
   public $indigo_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|後鬼|です。あなた自身の生存と#妖狐陣営#の全滅が勝利条件になります。理水の力で、滅びと邪を招く妖なる#狐#を抹殺するのです！",
     'type' => 'ogre', 'delimiter' => array('#' => 'fox'));
+
+  public $cow_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|牛頭鬼|です。あなた自身の生存と#暗殺者系#の全滅、_村人陣営_の勝利が勝利条件になります。\n　衆生の罪を罰する獄卒であるあなたは、殺生戒を犯す全ての罪人を亡者として地獄に落とすのです。",
+    'type' => 'ogre', 'delimiter' => array('#' => 'assassin', '_' => 'human'));
+
+  public $horse_ogre = array(
+    'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|馬頭鬼|です。あなた自身の生存と#毒能力者#の全滅、_村人陣営_の勝利が勝利条件になります。\n　衆生の罪を罰する獄卒であるあなたは、不浄に染まる全ての罪人を亡者として地獄に落とすのです。",
+    'type' => 'ogre', 'delimiter' => array('#' => 'poison', '_' => 'human'));
 
   public $poison_ogre = array(
     'message' => "[役割] [|鬼|陣営] [|鬼|系]\n　あなたは|榊鬼|、#毒#を持っています。_出題者陣営_の勝利、またはあなた自身の生存が勝利条件です。\n　あなたは人々と謎掛けを愉しみ、そして、人々を愉しませる_出題者_たちと共に生きる|鬼|なのです。",
@@ -2059,6 +2067,8 @@ class RoleMessageList {
   public $result_ogre = array('message' => "さんは|鬼|でした", 'delimiter' => array('|' => 'ogre'));
   public $result_orange_ogre = array('message' => "さんは|前鬼|でした", 'type' => 'result_ogre');
   public $result_indigo_ogre = array('message' => "さんは|後鬼|でした", 'type' => 'result_ogre');
+  public $result_cow_ogre = array('message' => "さんは|牛頭鬼|でした", 'type' => 'result_ogre');
+  public $result_horse_ogre = array('message' => "さんは|馬頭鬼|でした", 'type' => 'result_ogre');
   public $result_poison_ogre = array('message' => "さんは|榊鬼|でした", 'type' => 'result_ogre');
   public $result_west_ogre = array('message' => "さんは|金鬼|でした", 'type' => 'result_ogre');
   public $result_east_ogre = array('message' => "さんは|風鬼|でした", 'type' => 'result_ogre');
@@ -2300,4 +2310,6 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));
-$builder->Output('step_vampire', array(0.5,0,0,0,0,0,0,0));
+#$builder->Output('step_vampire', array(0.5,0,0,0,0,0,0,0));
+#$builder->Output('cow_ogre', array(0.8,0,0.8,0,0,0,0,0));
+$builder->Output('horse_ogre', array(0.8,0,0.8,0,0,0,0,0));

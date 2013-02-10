@@ -104,6 +104,7 @@ Ver. 2.1.0
 Ver. 2.2.0
 <a href="#ver220a3">α3</a>
 <a href="#ver220a4">α4</a>
+<a href="#ver220a5">α5</a>
 </p>
 
 <p>
@@ -3078,6 +3079,24 @@ Ver. 2.1.0
   <td>蝙蝠</td>
   <td class="ability">夜の投票時に自分と投票先の間で足音が鳴る特殊な吸血鬼。<br>また、処刑投票先を一定確率自分の感染者にすることができる。</td>
   <td>Ver. 2.2.0 α4</td>
+</tr>
+<tr id="ver220a5">
+  <td><a href="ogre.php#cow_ogre">牛頭鬼</a></td>
+  <td><a href="ogre.php">鬼</a></td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#assassin_group">暗殺者系</a>の全滅 + 村人陣営の勝利」。</td>
+  <td>Ver. 2.2.0 α5</td>
+</tr>
+<tr>
+  <td><a href="ogre.php#horse_ogre">馬頭鬼</a></td>
+  <td><a href="ogre.php">鬼</a></td>
+  <td><a href="ogre.php#ogre_group">鬼系</a></td>
+  <td>鬼</td>
+  <td>鬼</td>
+  <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="ability.php#poison">毒能力者</a>の全滅 + 村人陣営の勝利」。</td>
+  <td>Ver. 2.2.0 α5</td>
 </tr>
 </table>
 

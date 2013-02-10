@@ -405,7 +405,7 @@ class User {
 
   //毒回避判定
   public function IsAvoidPoison() {
-    return $this->IsRole('poison_vampire') || $this->IsAvoid(true);
+    return $this->IsRole('poison_vampire', 'horse_ogre') || $this->IsAvoid(true);
   }
 
   //所属陣営判別 (ラッパー)

@@ -104,7 +104,7 @@ RQ::GetTest()->test_users[23]->live = 'live';
 RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
-RQ::GetTest()->test_users[25]->role = 'yaksa disfavor';
+RQ::GetTest()->test_users[25]->role = 'horse_ogre disfavor';
 RQ::GetTest()->test_users[25]->live = 'live';
 RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 
@@ -209,7 +209,7 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 8,	'target_no' => 15,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9,	'target_no' => 3,	'type' => 'POISON_CAT_DO'),
     //array('user_no' => 9,	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 10,	'target_no' => 9,	'type' => 'ASSASSIN_DO'),
+    array('user_no' => 10,	'target_no' => 25,	'type' => 'ASSASSIN_DO'),
     //array('user_no' => 10,	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
     //array('user_no' => 10,	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
     //array('user_no' => 10,	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
@@ -269,7 +269,7 @@ if ($set_date == 1) { //初日用
 }
 
 //-- 仮想システムメッセージをセット --//
-RQ::GetTest()->winner = 'wolf';
+RQ::GetTest()->winner = 'human'; #'wolf';
 RQ::GetTest()->system_message = array(
   //-- 仮想イベントをセット --//
   4 => array(#'EVENT'   => array('blinder'),
@@ -288,6 +288,7 @@ RQ::Set('say', '');
 RQ::Get()->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
+Lottery::d();
 DB::Connect(); //DB接続 (必要なときだけ設定する)
 DevRoom::Load();
 DB::$ROOM->date = $set_date;
