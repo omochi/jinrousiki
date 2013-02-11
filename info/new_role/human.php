@@ -384,8 +384,8 @@ PP ラインの計算を複雑にするために作成してみました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 占い妨害：有効 / 呪い：無効</h4>
 <pre>
 「嘘つき」を探し出す特殊な占い師。
-<a href="wolf.php#mad_group">狂人系</a>・<a href="ability.php#dummy">夢系</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>を占うと「嘘をついている」と判定される。
-<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
+<a href="wolf.php#mad_group">狂人系</a>(<a href="wolf.php#swindle_mad">因幡兎</a>を除く)・<a href="ability.php#dummy">夢能力者</a>・<a href="#suspect">不審者</a>・<a href="#unconscious">無意識</a>は「嘘をついている」と判定される。
+<a href="ogre.php">鬼陣営</a>は「鬼」と判定される。
 それ以外は「正常である」と判定される。
 </pre>
 <h4>関連役職</h4>
@@ -404,8 +404,8 @@ PP ラインの計算を複雑にするために作成してみました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：無し / 占い妨害：有効 / 呪い：無効</h4>
 <pre>
 性別を判別する特殊な占い師。
-<a href="chiroptera.php">蝙蝠陣営</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>・<a href="sub_role.php#gold_wisp">松明丸</a>を占った場合は「蝙蝠」と判定される。
-<a href="ogre.php">鬼陣営</a>を占った場合は「鬼」と判定される。
+<a href="chiroptera.php">蝙蝠陣営</a>・<a href="wolf.php#gold_wolf">金狼</a>・<a href="fox.php#gold_fox">金狐</a>・<a href="sub_role.php#gold_wisp">松明丸</a>は「蝙蝠」と判定される。
+<a href="ogre.php">鬼陣営</a>は「鬼」と判定される。
 </pre>
 <h4>関連役職</h4>
 <pre>

@@ -724,7 +724,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#emperor_wolf">帝狼</a>・<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>
+<a href="wolf.php#emperor_wolf">帝狼</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_action">処刑投票能力者</a>・<a href="ability.php#luck">得票数変化能力者</a>・<a href="ability.php#ogre_anti_fox">鬼陣営/対妖狐陣営型</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

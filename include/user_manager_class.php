@@ -220,7 +220,6 @@ class UserManagerDB {
 //-- HTML 生成クラス (UserManager 拡張) --//
 class UserManagerHTML {
   const PATH = 'img/entry_user';
-  const URL  = 'user_manager.php?room_no=%d';
   const UNAME_INPUT = '<td><input type="text" id="uname" name="uname" size="30" maxlength="30" value="%s"></td>';
   const UNAME_EXPLAIN_HEADER = '普段は表示されず、他のユーザ名がわかるのは';
   const UNAME_EXPLAIN_FOOTER = '死亡したときとゲーム終了後のみです';
@@ -263,7 +262,7 @@ EOF;
 <tr><td class="number">～%s～ [%d 番地]</td></tr>
 
 EOF;
-    $url = sprintf(self::URL, DB::$ROOM->id);
+    $url = sprintf('user_manager.php?room_no=%d', DB::$ROOM->id);
     if (RQ::Get()->user_no > 0) $url .= sprintf('&user_no=%d', RQ::Get()->user_no);
 
     printf($format,
@@ -442,7 +441,7 @@ EOF;
       return sprintf($format, self::PATH, RQ::Get()->uname, $str);
     }
     elseif (GameConfig::TRIP) { //トリップ対応
-      $format .= self::UNAME_INPUT . "\n" . <<<EOF
+      $format .= self::UNAME_INPUT . Text::LF . <<<EOF
 <td><label for="trip">＃</label> <input type="text" id="trip" name="trip" size="15" maxlength="15" value="%s"></td>
 </tr>
 <tr>
@@ -461,11 +460,11 @@ EOF;
       return sprintf($format, self::PATH, RQ::Get()->uname, RQ::Get()->trip, $str);
     }
     else {
-      $format .= self::UNAME_INPUT . "\n" . <<<EOF
+      $format .= self::UNAME_INPUT . Text::LF . <<<EOF
 <td class="explain">%s(<span>トリップ使用不可</span>)</td>
 </tr>
 EOF;
-      $str = self::UNAME_EXPLAIN_HEADER . '<br>' . self::UNAME_EXPLAIN_FOOTER;
+      $str = self::UNAME_EXPLAIN_HEADER . Text::BR . self::UNAME_EXPLAIN_FOOTER;
       return sprintf($format, self::PATH, RQ::Get()->uname, $str);
     }
   }

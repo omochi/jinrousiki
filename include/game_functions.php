@@ -448,7 +448,7 @@ EOF;
     if (RQ::Get()->list_down)  $url_header .= '&list_down=on';
 
     $title = ServerConfig::TITLE . ' [プレイ]';
-    $anchor_header = '<br>'."\n";
+    $anchor_header = Text::BR . Text::LF;
     /*
       Mac に JavaScript でエラーを吐くブラウザがあった当時のコード
       現在の Safari・Firefox では不要なので false でスキップしておく

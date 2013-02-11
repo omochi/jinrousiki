@@ -127,7 +127,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </pre>
 <h3 id="ogre_anti_fox">対妖狐陣営型</h3>
 <pre>
-<a href="ogre.php#indigo_ogre">前鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="ogre.php#hariti_yaksa">鬼子母神</a>
+<a href="ogre.php#indigo_ogre">後鬼</a>・<a href="ogre.php#wise_ogre">夜行鬼</a>・<a href="ogre.php#hariti_yaksa">鬼子母神</a>
 </pre>
 <h3 id="ogre_sex">対性別型</h3>
 <pre>

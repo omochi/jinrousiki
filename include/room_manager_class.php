@@ -502,7 +502,7 @@ EOF;
 
     case 'busy':
       $error = "データベースサーバが混雑しています。<br>\n時間を置いて再度登録してください。";
-      HTML::OutputResult('村作成 [データベースエラー]', $error);
+      HTML::OutputResult('村作成 [データベースエラー]', $erroe);
       break;
     }
   }

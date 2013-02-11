@@ -1082,7 +1082,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#critical_fox">寿羊狐</a>・<a href="ogre.php#orange_ogre">前鬼</a>・<a href="mania.php#dummy_mania">夢語部</a>
+<a href="fox.php#critical_fox">寿羊狐</a>・<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#ogre_anti_wolf">鬼陣営/対人狼陣営型</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

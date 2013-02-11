@@ -232,24 +232,24 @@ EOF;
     if (count($stack) < 1) return;
     rsort($stack);
 
-    $str = '<table id="download">'."\n".'<caption>アップロードされたファイル</caption>';
+    $str = '<table id="download">'.Text::LF.'<caption>アップロードされたファイル</caption>';
     $str .= self::GetCaption();
     foreach ($stack as $file) {
-      $str .= '<tr>'."\n";
+      $str .= '<tr>'.Text::LF;
       if ($html = file_get_contents('html/' . $file)) {
 	$str .= $html;
       } else {
-	$str .= '<td colspan="6">読み込み失敗: ' . $file . '</td>'."\n";
+	$str .= '<td colspan="6">読み込み失敗: ' . $file . '</td>'.Text::LF;
       }
-      $str .= '<tr>'."\n";
+      $str .= '<tr>'.Text::LF;
     }
-    echo $str . '</table>'."\n";
+    echo $str . '</table>'.Text::LF;
   }
 
   //結果出力
   private static function OutputResult($body) {
     HTML::OutputHeader('ファイルアップロード処理', 'src', true);
-    echo $body . '<br><br>' . "\n" . '<a href="./">←戻る</a>'."\n";
+    echo $body . '<br><br>' . Text::LF . '<a href="./">←戻る</a>'.Text::LF;
     HTML::OutputFooter(true);
   }
 }

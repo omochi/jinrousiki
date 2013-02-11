@@ -5,6 +5,12 @@ class Text {
   const LF = "\n";
   const TR = "</tr>\n<tr>";
 
+  //結合
+  static function Concat($stack) {
+    $stack = func_get_args();
+    return implode(self::BR . self::LF, $stack);
+  }
+
   //出力
   static function Output($str = '', $line = false) {
     echo $str . ($line ? self::BR : '') . self::LF;

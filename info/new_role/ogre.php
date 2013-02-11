@@ -31,7 +31,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 <ol>
 <li>暗殺カテゴリに属し、<a href="human.php#assassin_spec">暗殺の仕様</a>が適用されます。</li>
 <li>「人攫いする / しない」を必ず投票する必要があります。</li>
-<li>攫われた人の死亡メッセージは人狼の襲撃と同じで、死因は「鬼に攫われた」です。</li>
+<li>攫われた人の死亡メッセージは人狼の襲撃と同じで、<a href="../spec.php#dead">死因</a>は「鬼に攫われた」です。</li>
 <li>人攫いの種類にかかわらず、<a href="ability.php#trap">罠</a>は有効です。</li>
 <li>人攫いが成立するたびに成功率が低下 (下限は 1%) します (例：100% → 20% → 4% → 1%)。</li>
 <li><a href="#yaksa_group">夜叉系</a>は人攫いが成立する対象が個々で限定されています。</li>
@@ -86,7 +86,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#ogre">鬼</a>・<a href="ability.php#ogre_anti_wolf">鬼陣営/対人狼陣営型</a>
+<a href="wolf.php#emperor_wolf">帝狼</a>・<a href="#ogre">鬼</a>・<a href="ability.php#ogre_anti_wolf">鬼陣営/対人狼陣営型</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -233,7 +233,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 <pre>
 <a href="#west_ogre">金鬼</a>の対下側バージョンです。
 隠行鬼は火鬼と言われることもあり、火気を南と見立てています。
-四鬼系は互いの位置によって敵にも味方にもなるのが厄介なところですね。
+四鬼は互いの位置によって敵にも味方にもなるのが厄介なところですね。
 </pre>
 
 <h3 id="incubus_ogre">般若 (占い結果：鬼 / 霊能結果：鬼) [Ver. 1.4.0 β19～]</h3>
@@ -262,7 +262,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="fox.php#critical_fox">寿羊狐</a>・<a href="#ogre">鬼</a>・<a href="ability.php#ogre_anti_wolf">鬼陣営/対人狼陣営型</a>・<a href="ability.php#ogre_anti_fox">鬼陣営/対妖狐陣営型</a>
+<a href="wolf.php#wise_wolf">賢狼</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="#ogre">鬼</a>・<a href="ability.php#ogre_anti_wolf">鬼陣営/対人狼陣営型</a>・<a href="ability.php#ogre_anti_fox">鬼陣営/対妖狐陣営型</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -458,7 +458,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#ogre_anti_human">鬼陣営/非村人陣営勝利型</a>
+<a href="human.php#attempt_necromancer">蟲姫</a>・<a href="ability.php#ogre_anti_human">鬼陣営/非村人陣営勝利型</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
