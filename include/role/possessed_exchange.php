@@ -18,6 +18,6 @@ class Role_possessed_exchange extends Role {
       $target = $this->GetActor()->handle_name;
       $footer = 'possessed_target';
     }
-    RoleHTML::OutputAbilityResult($header, $target, $footer) :
+    RoleHTML::OutputAbilityResult($header, $target, $footer);
   }
 }

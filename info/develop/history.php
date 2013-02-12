@@ -12,6 +12,7 @@ Ver. 2.2.0
 <a href="#ver220a2">α2</a>
 <a href="#ver220a3">α3</a>
 <a href="#ver220a4">α4</a>
+<a href="#ver220a5">α5</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -20,6 +21,12 @@ Ver. 2.2.0
 <a href="history_2.0.php">2.0</a>
 <a href="history_2.1.php">2.1</a>
 </p>
+
+<h2 id="ver220a5">Ver. 2.2.0 α5 (Rev. 752) : 2013/02/12 (Tue) 00:13</h2>
+<ul>
+<li>「牛頭鬼」「馬頭鬼」実装</li>
+<li>オプション詳細情報のリンクを追加 (プレイ中限定)</li>
+</ul>
 
 <h2 id="ver220a4">Ver. 2.2.0 α4 (Rev. 737) : 2013/01/27 (Sun) 22:01</h2>
 <ul>
