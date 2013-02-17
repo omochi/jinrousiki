@@ -117,7 +117,7 @@ class GamePlay {
   }
 
   //ゲーム停滞のチェック
-  private function CheckSilence() {
+  private static function CheckSilence() {
     if (! DB::$ROOM->IsPlaying()) return true; //スキップ判定
 
     //経過時間を取得
@@ -224,7 +224,7 @@ class GamePlay {
   }
 
   //発言
-  private function Talk($say) {
+  private static function Talk($say) {
     if (! DB::$ROOM->IsPlaying()) { //ゲーム開始前後
       return RoleTalk::Save($say, DB::$ROOM->scene, null, 0, true);
     }
@@ -276,7 +276,7 @@ class GamePlay {
   }
 
   //遺言登録
-  private function SaveLastWords($say) {
+  private static function SaveLastWords($say) {
     //スキップ判定
     if (DB::$ROOM->IsFinished() || (GameConfig::LIMIT_LAST_WORDS && DB::$ROOM->IsPlaying())) {
       return false;
@@ -296,7 +296,7 @@ class GamePlay {
   }
 
   //ヘッダ出力
-  private function OutputHeader() {
+  private static function OutputHeader() {
     self::SetURL();
     Text::Output('<table class="game-header"><tr>');
     $blank = 'target="_blank"';
@@ -538,7 +538,7 @@ EOF;
   }
 
   //自分の遺言出力
-  private function OutputLastWords() {
+  private static function OutputLastWords() {
     if (DB::$ROOM->IsAfterGame()) return false; //ゲーム終了後は表示しない
 
     $str = UserDB::GetLastWords(DB::$SELF->id);
@@ -557,7 +557,7 @@ EOF;
   }
 
   //リンク情報収集
-  private function SetURL() {
+  private static function SetURL() {
     self::$url_stack['room'] = '?room_no=' . DB::$ROOM->id;
 
     $url = RQ::Get()->auto_reload > 0 ? '&auto_reload=' . RQ::Get()->auto_reload : '';
@@ -574,7 +574,7 @@ EOF;
   }
 
   //リンク情報取得 (差分型)
-  private function GetURL(array $list, $header = null) {
+  private static function GetURL(array $list, $header = null) {
     $url = is_null($header) ? '<a target="_top" href="game_frame.php' : $header;
     foreach (array_diff(array_keys(self::$url_stack), $list) as $key) {
       $url .= self::$url_stack[$key];
@@ -583,7 +583,7 @@ EOF;
   }
 
   //リンク情報取得 (抽出型)
-  private function SelectURL(array $list, $header = null) {
+  private static function SelectURL(array $list, $header = null) {
     $url = (isset($header) ? $header : '') . self::$url_stack['room'];
     foreach ($list as $key) {
       $url .= self::$url_stack[$key];

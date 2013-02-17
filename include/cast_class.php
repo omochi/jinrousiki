@@ -399,7 +399,7 @@ class Cast {
   }
 
   //身代わり君の配役対象外役職リスト取得
-  private function GetDummyBoyRoleList() {
+  private static function GetDummyBoyRoleList() {
     $stack = CastConfig::$disable_dummy_boy_role_list; //サーバ個別設定を取得
     array_push($stack, 'wolf', 'fox'); //常時対象外の役職を追加
 
@@ -410,7 +410,7 @@ class Cast {
   }
 
   //配役フィルタリング処理
-  private function FilterRole($count, array $filter) {
+  private static function FilterRole($count, array $filter) {
     $stack = array();
     foreach (CastConfig::$role_list[$count] as $key => $value) {
       $role = 'human';

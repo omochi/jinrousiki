@@ -262,7 +262,7 @@ class DB {
   }
 
   //データベース接続エラー出力 ($header, $exit は Connect() 参照)
-  private function Output($header, $exit, $title, $type) {
+  private static function Output($header, $exit, $title, $type) {
     $title .= '接続失敗';
     $str = $title . ': ' . $type;
     if ($header) {

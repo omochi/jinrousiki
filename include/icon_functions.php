@@ -183,7 +183,7 @@ EOF;
   }
 
   //アイコン編集フォーム出力
-  private function OutputEdit($icon_no) {
+  private static function OutputEdit($icon_no) {
     $stack = IconDB::Get($icon_no);
     if (count($stack) < 1) return;
 
@@ -234,7 +234,7 @@ EOF;
   }
 
   //アイコン情報を収集して表示する
-  private function OutputConcrete($base_url = 'icon_view') {
+  private static function OutputConcrete($base_url = 'icon_view') {
     //-- ヘッダ出力 --//
     $url_option    = array();
     $query_stack   = array();
@@ -363,7 +363,7 @@ EOF;
   }
 
   //検索項目とタイトル、検索条件のセットから選択肢を抽出し、表示する
-  private function OutputByType($type, $caption) {
+  private static function OutputByType($type, $caption) {
     $format = <<<EOF
 <td>
 <label for="%s[]">%s</label><br>
@@ -389,7 +389,7 @@ EOF;
   }
 
   //アイコン詳細画面 (IconView 用)
-  private function OutputDetailForIconView(array $icon_list, $cell_width) {
+  private static function OutputDetailForIconView(array $icon_list, $cell_width) {
     extract($icon_list);
     $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
@@ -423,7 +423,7 @@ EOF;
   }
 
   //アイコン詳細画面 (UserEntry 用)
-  private function OutputDetailForUserEntry(array $icon_list, $cell_width) {
+  private static function OutputDetailForUserEntry(array $icon_list, $cell_width) {
     extract($icon_list);
     $location      = Icon::GetFile($icon_filename);
     $wrapper_width = $icon_width + 6;
@@ -437,7 +437,7 @@ EOF;
   }
 
   //ページ送り用のリンクタグを出力する (PageLinkBuilder と統合できるかも)
-  private function OutputPageLink(StdClass $CONFIG) {
+  private static function OutputPageLink(StdClass $CONFIG) {
     $page_count = ceil($CONFIG->count / $CONFIG->view);
     $start_page = $CONFIG->current== 'all' ? 1 : $CONFIG->current;
     if ($page_count - $CONFIG->current < $CONFIG->page) {
@@ -480,7 +480,7 @@ EOF;
   }
 
   //ページ送り用のリンクタグを作成する
-  private function GeneratePageLink(StdClass $CONFIG, $page, $title = null) {
+  private static function GeneratePageLink(StdClass $CONFIG, $page, $title = null) {
     if ($page == $CONFIG->current) return sprintf('[%s]', $page);
     $option = (isset($CONFIG->page_type) ? $CONFIG->page_type : 'page') . '=' . $page;
     $list   = $CONFIG->option;

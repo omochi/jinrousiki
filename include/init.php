@@ -136,7 +136,7 @@ class Loader {
   static function IsLoaded($file) { return in_array($file, self::$file); }
 
   //ファイルパス取得
-  private function GetPath($name) {
+  private static function GetPath($name) {
     switch ($name) {
     case 'copyright_config':
     case 'version':
@@ -206,7 +206,7 @@ class Loader {
   }
 
   //依存解決処理
-  private function LoadDependence($name) {
+  private static function LoadDependence($name) {
     if (array_key_exists($name, self::$depend_file))  self::LoadFile(self::$depend_file[$name]);
     if (array_key_exists($name, self::$depend_class)) self::LoadClass(self::$depend_class[$name]);
   }

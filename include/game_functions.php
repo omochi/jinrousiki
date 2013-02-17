@@ -56,7 +56,7 @@ EOF;
   }
 
   //JavaScript の Date() オブジェクト作成コードを生成する
-  private function GetJavaScriptDate($time) {
+  private static function GetJavaScriptDate($time) {
     $stack = explode(',', Time::GetDate('Y,m,j,G,i,s', $time));
     $stack[1]--;  //JavaScript の Date() の Month は 0 からスタートする
     return sprintf('new Date(%s)', implode(',', $stack));
@@ -615,13 +615,13 @@ EOF;
   }
 
   //指定した日付の投票結果をロードして ParseVote() に渡す
-  private function LoadVote($date) {
+  private static function LoadVote($date) {
     if (DB::$ROOM->personal_mode) return null; //スキップ判定
     return self::ParseVote(SystemMessageDB::GetVote($date), $date);
   }
 
   //死亡メッセージパース
-  private function ParseDead($name, $type, $result) {
+  private static function ParseDead($name, $type, $result) {
     if (isset($name)) $name .= ' ';
     $base   = true;
     $class  = null;
@@ -709,7 +709,7 @@ EOF;
   }
 
   //天候メッセージ生成
-  private function GenerateWeather() {
+  private static function GenerateWeather() {
     if (! isset(DB::$ROOM->event->weather) ||
 	(! DB::$ROOM->test_mode && DB::$ROOM->log_mode && DB::$ROOM->IsNight())) {
       return '';

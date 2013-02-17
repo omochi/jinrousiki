@@ -42,13 +42,13 @@ class OptionForm {
     }
     if (count(self::$javascript) > 0) {
       echo "<script type=\"text/javascript\">\n<!--\n";
-      foreach (self::$javascript as $code) echo $code . "\n";
+      foreach (self::$javascript as $code) Text::Output($code);
       echo "//-->\n</script>\n";
     }
   }
 
   //生成 (振り分け処理用)
-  private function Generate($name, $class) {
+  private static function Generate($name, $class) {
     $item = OptionManager::GetClass($name);
     if (! $item->enable || ! isset($item->type)) return;
     switch ($item->type) {
@@ -78,13 +78,14 @@ class OptionForm {
    <tr%s>
     <td class="title"><label for="%s">%s：</label></td>
     <td>%s</td>
-  </tr>%s
+  </tr>
+
 EOF;
-    printf($format, $class, $item->name, $item->GetCaption(), $str, "\n");
+    printf($format, $class, $item->name, $item->GetCaption(), $str);
   }
 
   //境界線生成
-  private function GenerateSeparator($group) {
+  private static function GenerateSeparator($group) {
     print(self::SEPARATOR);
     if (OptionManager::$change) return;
     $format = <<<EOF
@@ -133,7 +134,7 @@ EOF;
   }
 
   //テキストボックス生成
-  private function GenerateTextbox(TextRoomOptionItem $item) {
+  private static function GenerateTextbox(TextRoomOptionItem $item) {
     $size = sprintf('%s_input', $item->name);
     $str  = $item->GetExplain();
     if (OptionManager::$change) $value = DB::$ROOM->{array_pop(explode('_', $item->name))};
@@ -142,14 +143,14 @@ EOF;
   }
 
   //チェックボックス生成
-  private function GenerateCheckbox(CheckRoomOptionItem $item) {
+  private static function GenerateCheckbox(CheckRoomOptionItem $item) {
     $footer = isset($item->footer) ? $item->footer : sprintf('(%s)', $item->GetExplain());
     return sprintf(self::CHECKBOX, $item->type, $item->name, $item->form_name, $item->form_value,
 		   $item->value ? ' checked' : '', Text::Line($footer));
   }
 
   //チェックボックス生成 (リアルタイム制専用)
-  private function GenerateRealtime(Option_real_time $item) {
+  private static function GenerateRealtime(Option_real_time $item) {
     if (OptionManager::$change) {
       $day   = DB::$ROOM->game_option->list[$item->name][0];
       $night = DB::$ROOM->game_option->list[$item->name][1];
@@ -165,7 +166,7 @@ EOF;
   }
 
   //セレクタ生成
-  private function GenerateSelector(SelectorRoomOptionItem $item) {
+  private static function GenerateSelector(SelectorRoomOptionItem $item) {
     $str = '';
     foreach ($item->GetItem() as $code => $child) {
       $label = $child instanceof RoomOptionItem ? $child->GetCaption() : $child;
@@ -186,7 +187,7 @@ EOF;
   }
 
   //グループ生成
-  private function GenerateGroup(RoomOptionItem $item) {
+  private static function GenerateGroup(RoomOptionItem $item) {
     $str  = '';
     foreach ($item->GetItem() as $child) {
       $type = $child->type;

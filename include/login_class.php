@@ -27,7 +27,7 @@ class Login {
     セッションを失った場合、ユーザ名とパスワードでログインする
     ログイン成功/失敗を true/false で返す
   */
-  private function LoginManually() {
+  private static function LoginManually() {
     //ブラックリストチェック
     if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList()) return false;
 
@@ -41,7 +41,7 @@ class Login {
   }
 
   //結果出力関数
-  private function Output($title, $jump, $body = null) {
+  private static function Output($title, $jump, $body = null) {
     if (is_null($body)) $body = $title;
     if (is_null($jump)) {
       $url = '';

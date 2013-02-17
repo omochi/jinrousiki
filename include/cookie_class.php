@@ -45,7 +45,7 @@ class JinroCookie {
   }
 
   //データロード
-  private function Load() {
+  private static function Load() {
     self::$scene      = @$_COOKIE['scene'];
     self::$objection  = @$_COOKIE['objection'];
     self::$vote_count = @(int)$_COOKIE['vote_count'];

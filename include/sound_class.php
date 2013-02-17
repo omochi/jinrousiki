@@ -31,7 +31,7 @@ EOF;
   }
 
   //フォーマット変換
-  private function Convert($format, $type) {
+  private static function Convert($format, $type) {
     $path = sprintf(self::PATH_FORMAT, JINRO_ROOT, SoundConfig::PATH, SoundConfig::$$type,
 		    SoundConfig::EXTENSION);
 

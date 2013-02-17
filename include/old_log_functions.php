@@ -263,7 +263,7 @@ EOF;
   static function OutputList($page) { echo self::GenerateList($page); }
 
   //通常ログ出力
-  private function GenerateLog() {
+  private static function GenerateLog() {
     if (RQ::Get()->reverse_log) {
       $str = self::GenerateTalk(0, 'beforegame');
       for ($i = 1; $i <= DB::$ROOM->last_date; $i++) {
@@ -282,7 +282,7 @@ EOF;
   }
 
   //霊界ログ出力
-  private function GenerateHeavenLog() {
+  private static function GenerateHeavenLog() {
     $str = '';
     if (RQ::Get()->reverse_log) {
       for ($i = 1; $i <= DB::$ROOM->last_date; $i++) {
@@ -298,7 +298,7 @@ EOF;
   }
 
   //指定の日付の会話ログを生成
-  private function GenerateTalk($date, $scene) {
+  private static function GenerateTalk($date, $scene) {
     $flag_border_game = false;
     switch ($scene) { //シーンに合わせたデータをセット
     case 'beforegame':
@@ -390,7 +390,7 @@ EOF;
   }
 
   //シーン切り替え処理
-  private function GenerateSceneChange($date) {
+  private static function GenerateSceneChange($date) {
     $str = '';
     if (RQ::Get()->heaven_only) return $str;
     DB::$ROOM->date = $date;
@@ -404,7 +404,7 @@ EOF;
   }
 
   //役職リンク生成
-  private function GenerateRoleLink() {
+  private static function GenerateRoleLink() {
     $stack = array();
     foreach (DB::$USER->role as $role => $list) {
       $stack[] = $role;

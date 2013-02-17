@@ -73,12 +73,12 @@ class Session {
   }
 
   //ID セット
-  private function SetID() {
+  private static function SetID() {
     return self::$id = session_id();
   }
 
   //DB に登録されているセッション ID と被らないようにする
-  private function GetUniq() {
+  private static function GetUniq() {
     do {
       self::Reset();
     } while (SessionDB::Exists());
@@ -86,7 +86,7 @@ class Session {
   }
 
   //エラー出力
-  private function Output() {
+  private static function Output() {
     $title = 'セッション認証エラー';
     $body  = $title . '：<a href="./" target="_top">トップページ</a>からログインしなおしてください';
     HTML::OutputResult($title, $body);

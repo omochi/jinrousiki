@@ -88,10 +88,10 @@ class OptionManager {
   }
 
   //ファイルパス取得
-  private function GetPath($name) { return sprintf(self::PATH, JINRO_INC, $name); }
+  private static function GetPath($name) { return sprintf(self::PATH, JINRO_INC, $name); }
 
   //クラスロード
-  private function LoadClass($name) {
+  private static function LoadClass($name) {
     if (! isset(self::$class[$name])) {
       $class_name = 'Option_' . $name;
       self::$class[$name] = new $class_name();

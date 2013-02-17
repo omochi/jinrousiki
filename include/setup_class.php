@@ -10,7 +10,7 @@ class SetupDB {
   }
 
   //データベース作成
-  private function CreateDatabase() {
+  private static function CreateDatabase() {
     $name   = DatabaseConfig::NAME;
     $result = DB::FetchBool(sprintf('CREATE DATABASE %s DEFAULT CHARSET utf8', $name));
     printf("データベース作成: %s: %s<br>\n", $name, $result ? '成功' : '失敗');
@@ -18,20 +18,20 @@ class SetupDB {
   }
 
   //テーブル作成
-  private function CreateTable($table, $query) {
+  private static function CreateTable($table, $query) {
     $result = DB::FetchBool(sprintf('CREATE TABLE %s(%s) ENGINE = InnoDB', $table, $query));
     printf("テーブル作成: %s: %s<br>\n", $table, $result ? '成功' : '失敗');
   }
 
   //インデックス再生成
-  private function CreateIndex($table, $index, $value) {
+  private static function CreateIndex($table, $index, $value) {
     $query  = 'ALTER TABLE %s DROP INDEX %s, ADD INDEX %s (%s)';
     $result = DB::FetchBool(sprintf($query, $table, $index, $index, $value));
     printf("インデックス再生成: %s (%s): %s <br>\n", $index, $table, $result ? '成功' : '失敗');
   }
 
   //必要なテーブルがあるか確認する
-  private function CheckTable() {
+  private static function CheckTable() {
     $revision = ServerConfig::REVISION; //前回のパッケージのリビジョン番号を取得
     if ($revision >= ScriptInfo::REVISION) {
       echo '初期設定はすでに完了しています';
