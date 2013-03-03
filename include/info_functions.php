@@ -165,7 +165,7 @@ EOF;
   }
 
   //個別オプション表示 (闇鍋モード用)
-  static function OutputItemList($option, $list) {
+  static function OutputItemList($option, array $list) {
     $format = '<a href="#%s_%s">%s</a>'.Text::LF;
     foreach ($list as $name) {
       printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);

@@ -1264,7 +1264,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="wolf.php#fire_wolf">火狼</a>
+<a href="wolf.php#fire_wolf">火狼</a>・<a href="wolf.php#fire_mad">煙々羅</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

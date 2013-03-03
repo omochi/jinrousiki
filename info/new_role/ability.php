@@ -140,7 +140,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="wisp">鬼火付加能力者</h2>
 <pre>
-<a href="wolf.php#fire_wolf">火狼</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="mania.php#fire_mania">青行灯</a>
+<a href="wolf.php#fire_wolf">火狼</a>・<a href="wolf.php#fire_mad">煙々羅</a>・<a href="fox.php#spell_fox">宙狐</a>・<a href="mania.php#fire_mania">青行灯</a>
 </pre>
 
 <h2 id="guard_hunt">狩り対象者</h2>
@@ -177,7 +177,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="vote_action">処刑投票能力者</h2>
 <pre>
-<a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#purple_wolf">紫狼</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#purple_fox">紫狐</a>・<a href="fox.php#critical_fox">寿羊狐</a>
+<a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#purple_wolf">紫狼</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#purple_fox">紫狐</a>・<a href="fox.php#critical_fox">寿羊狐</a>
 <a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="vampire.php#step_vampire">文武王</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>)
 </pre>
@@ -190,7 +190,8 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h2 id="sudden_death">ショック死発動能力者</h2>
 <h3 id="sudden_death_direct">直接型</h3>
 <pre>
-<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#eclipse_medium">蝕巫女</a>・<a href="human.php#jealousy">橋姫</a>・<a href="human.php#thunder_brownie">雷公</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="lovers.php#cursed_angel">堕天使</a>
+<a href="human.php#bacchus_medium">神主</a>・<a href="human.php#seal_medium">封印師</a>・<a href="human.php#eclipse_medium">蝕巫女</a>・<a href="human.php#jealousy">橋姫</a>・<a href="human.php#thunder_brownie">雷公</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="wolf.php#follow_mad">舟幽霊</a>
+<a href="lovers.php#cursed_angel">堕天使</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>・<a href="duelist.php#sea_duelist">海御前</a>
 <a href="sub_role.php#chicken_group">小心者系</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 <h3 id="sudden_death_indirect">間接型</h3>
@@ -275,7 +276,8 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h2 id="authority">投票数変化能力者</h2>
 <h3 id="authority_direct">直接型</h3>
 <pre>
-<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#eccentricer">傾奇者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#critical_common">暴君</a>・<a href="wolf.php#ascetic_wolf">印狼</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#elder_fox">古狐</a>・<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
+<a href="human.php#elder">長老</a>・<a href="human.php#scripter">執筆者</a>・<a href="human.php#eccentricer">傾奇者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#critical_common">暴君</a>・<a href="wolf.php#ascetic_wolf">印狼</a>・<a href="wolf.php#elder_wolf">古狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#elder_fox">古狐</a>
+<a href="chiroptera.php#elder_chiroptera">古蝙蝠</a>・<a href="duelist.php#critical_duelist">剣闘士</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>
 <a href="sub_role.php#panelist">解答者</a>・<a href="sub_role.php#authority_group">権力者系</a>
 </pre>
 <h3 id="authority_indirect">間接型</h3>
@@ -292,7 +294,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h2 id="luck">得票数変化能力者</h2>
 <h3 id="luck_direct">直接型</h3>
 <pre>
-<a href="human.php#critical_common">暴君</a>・<a href="duelist.php#critical_patron">ひんな神</a>・<a href="sub_role.php#wirepuller_luck">入道</a>・<a href="sub_role.php#upper_luck_group">雑草魂系</a>
+<a href="human.php#critical_common">暴君</a>・<a href="duelist.php#cowboy_duelist">無鉄砲者</a>・<a href="duelist.php#critical_patron">ひんな神</a>・<a href="sub_role.php#wirepuller_luck">入道</a>・<a href="sub_role.php#upper_luck_group">雑草魂系</a>
 </pre>
 <h3 id="luck_indirect">間接型</h3>
 <pre>

@@ -574,11 +574,11 @@ class Vote {
     $vote_message_list = $stack;
     //Text::p($vote_message_list, 'VoteMessage');
 
-    //-- 反逆者の処理 --//
+    //-- 投票数補正処理 --//
     //Text::p($vote_count_list, 'VoteCount');
     if (! DB::$ROOM->IsEvent('no_authority')) { //蜃気楼ならスキップ
-      foreach (RoleManager::LoadFilter('rebel') as $filter) {
-	$filter->Rebel($vote_message_list, $vote_count_list);
+      foreach (RoleManager::LoadFilter('vote_correct') as $filter) {
+	$filter->VoteCorrect($vote_message_list, $vote_count_list);
       }
     }
 
@@ -610,7 +610,7 @@ class Vote {
     else { //決定能力者判定
       RoleManager::$get->vote_possible = $stack;
       foreach (RoleManager::LoadFilter('vote_kill') as $filter) $filter->DecideVoteKill();
-      if (DB::$ROOM->IsOption('settle') && RoleManager::$get->vote_kill_uname == '') {
+      if (RoleManager::$get->vote_kill_uname == '' && DB::$ROOM->IsOption('settle')) { //決着村
 	RoleManager::$get->vote_kill_uname = Lottery::Get(RoleManager::$get->vote_possible);
       }
     }
@@ -1339,7 +1339,7 @@ class Vote {
   }
 
   //投票コマンドチェック
-  private function CheckSituation($applay_situation) {
+  private static function CheckSituation($applay_situation) {
     if (is_array($applay_situation)) {
       if (in_array(RQ::Get()->situation, $applay_situation)) return true;
     }
@@ -1350,12 +1350,12 @@ class Vote {
   }
 
   //夜の自分の投票済みチェック
-  private function CheckSelfVoteNight($situation, $not_situation = '') {
+  private static function CheckSelfVoteNight($situation, $not_situation = '') {
     return count(DB::$SELF->LoadVote($situation, $not_situation)) > 0;
   }
 
   //Kick 投票の集計処理 ($target : 対象 HN, 返り値 : 対象 HN の投票合計数)
-  private function AggregateKick(User $target) {
+  private static function AggregateKick(User $target) {
     self::CheckSituation('KICK_DO'); //コマンドチェック
 
     //今回投票した相手にすでに投票している人数を取得
@@ -1382,7 +1382,7 @@ class Vote {
   }
 
   //ランダムメッセージを挿入する
-  private function InsertRandomMessage() {
+  private static function InsertRandomMessage() {
     if (GameConfig::RANDOM_MESSAGE) DB::$ROOM->Talk(Lottery::Get(Message::$random_message_list));
   }
 }
@@ -1641,15 +1641,17 @@ EOF;
   }
 
   //シーンの一致チェック
-  private function CheckScene() {
+  private static function CheckScene() {
     if (! DB::$SELF->CheckScene()) self::OutputResult('戻ってリロードしてください');
   }
 
   //結果生成
-  private function GenerateResult($str) { return sprintf(self::RESULT, $str, RQ::Get()->back_url); }
+  private static function GenerateResult($str) {
+    return sprintf(self::RESULT, $str, RQ::Get()->back_url);
+  }
 
   //ヘッダ出力
-  private function OutputHeader() {
+  private static function OutputHeader() {
     HTML::OutputHeader(ServerConfig::TITLE . ' [投票]', 'game');
     HTML::OutputCSS(sprintf('%s/game_vote', JINRO_CSS));
     Text::Output('<link rel="stylesheet" id="scene">');

@@ -105,6 +105,7 @@ Ver. 2.2.0
 <a href="#ver220a3">α3</a>
 <a href="#ver220a4">α4</a>
 <a href="#ver220a5">α5</a>
+<a href="#ver220a6">α6</a>
 </p>
 
 <p>
@@ -2486,7 +2487,7 @@ Ver. 2.1.0
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
   <td>村人</td>
   <td>村人</td>
-  <td class="ability">自分撃ち固定で、<a href="sub_role.php#reduce_voter">無精者</a>相当の能力を持つ劣化決闘者。</td>
+  <td class="ability">自分撃ち固定で、<a href="sub_role.php#reduce_voter">無精者</a>相当の能力を持つ特殊な決闘者<br>自分と<a href="sub_role.php#rival">宿敵</a>との処刑投票次第で得票数変化やショック死が発生する。。</td>
   <td>Ver. 1.5.0 β6</td>
 </tr>
 <tr>
@@ -3097,6 +3098,24 @@ Ver. 2.1.0
   <td>鬼</td>
   <td class="ability">鬼系の一種で、勝利条件は「自分自身の生存 + <a href="ability.php#poison">毒能力者</a>の全滅 + 村人陣営の勝利」。</td>
   <td>Ver. 2.2.0 α5</td>
+</tr>
+<tr id="ver220a6">
+  <td><a href="duelist.php#sea_duelist">海御前</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#duelist_group">決闘者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">自分撃ち固定で、<a href="sub_role.php#rival">宿敵</a>に投票するとショック死する劣化決闘者。</td>
+  <td>Ver. 2.2.0 α6</td>
+</tr>
+<tr>
+  <td><a href="wolf.php#fire_mad">煙々羅</a></td>
+  <td><a href="wolf.php">人狼</a></td>
+  <td><a href="wolf.php#mad_group">狂人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability">処刑投票に<a href="sub_role.php#black_wisp">天火</a>を付加する特殊な狂人。</td>
+  <td>Ver. 2.2.0 α6</td>
 </tr>
 </table>
 

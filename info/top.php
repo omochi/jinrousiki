@@ -17,7 +17,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>なし</li>
+  <li>固定配役追加モード：Q(雛村)追加</li>
+  <li>無鉄砲者：宿敵同士の投票次第でショック死する仕様に変更</li>
+  <li>海御前：宿敵に投票するとショック死する決闘者</li>
+  <li>煙々羅：処刑投票に天火を付加する特殊な狂人</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

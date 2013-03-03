@@ -116,7 +116,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 <h4>[耐性] 人狼襲撃：無効 (30%) / 暗殺：反射 (45%)</h4>
 <h4>[人攫い能力] タイプ：暗殺 / 成功率低下：1/5</h4>
 <pre>
-鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#assassin_group">暗殺者系</a> + 村人陣営の勝利」。
+鬼系の一種で、勝利条件は「自分自身の生存 + <a href="human.php#assassin_group">暗殺者系</a>の全滅 + 村人陣営の勝利」。
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -124,7 +124,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#horse_ogre">馬頭鬼</a>でセットで語られることが多い地獄の獄卒です。
+<a href="#horse_ogre">馬頭鬼</a>とセットで語られることが多い地獄の獄卒です。
 全滅対象の関係で対暗殺性能が高めに設定されています。
 </pre>
 
@@ -141,7 +141,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
-<a href="#cow_ogre">牛頭鬼</a>でセットで語られることが多い地獄の獄卒です。
+<a href="#cow_ogre">牛頭鬼</a>とセットで語られることが多い地獄の獄卒です。
 全滅対象の関係で毒耐性を獲得しています。
 </pre>
 

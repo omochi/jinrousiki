@@ -1942,7 +1942,7 @@ Ver. 1.4.0 β9 からは吊られた時のみ<a href="wolf.php#dream_eater_mad">
 </pre>
 <ol>
 <li>解毒能力は<a href="#pharmacist">薬師</a>と同じ。</li>
-<li>抑制できるのは<a href="sub_role.php">サブ役職</a> (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外。</li>
+<li>抑制できるのは<a href="sub_role.php">サブ役職</a> (例：<a href="sub_role.php#chicken_group">小心者系</a>) のみで、<a href="ability.php#sudden_death">メイン役職</a>によるものは対象外 (<a href="../spec.php#vote_day">例外</a>あり)。</li>
 <li>解毒・ショック死抑制に成功すると次の日に「治療成功」という趣旨のメッセージが表示される。</li>
 <li>何の「治療」に成功したのか (毒やショック死の種類など) は表示されない。</li>
 <li>再投票時には発動せず、処刑されたら解毒・ショック死抑制能力無効。</li>

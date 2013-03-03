@@ -2,11 +2,11 @@
 /*
   ◆反逆者 (rebel)
   ○仕様
-  ・処刑投票：権力者と同じ人に投票すると権力者 -2 / 反逆者 -1
+  ・処刑投票補正：権力者と同じ人に投票すると権力者 -2 / 反逆者 -1
 */
 RoleManager::LoadFile('authority');
 class Role_rebel extends Role_authority {
-  function Rebel(array &$message_list, array &$count_list) {
+  function VoteCorrect(array &$message_list, array &$count_list) {
     //能力発動判定
     $role   = 'authority';
     $self   = $this->GetStack();

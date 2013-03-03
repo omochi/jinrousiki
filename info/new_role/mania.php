@@ -485,8 +485,8 @@ CO するべきかどうかは、コピーした役職次第です。
 </tr>
 <tr>
   <td><a href="duelist.php#duelist_group">決闘者系</a></td>
-  <td><a href="duelist.php#cowboy_duelist">無鉄砲者</a></td>
-  <td>Ver. 1.5.0 β6～</td>
+  <td><a href="duelist.php#sea_duelist">海御前</a></td>
+  <td>Ver. 2.2.0 α6～</td>
 </tr>
 <tr>
   <td><a href="duelist.php#avenger_group">復讐者系</a></td>

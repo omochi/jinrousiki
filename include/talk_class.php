@@ -693,10 +693,10 @@ class TalkDB {
   //発言取得 (直近限定)
   static function GetRecent() {
     $query = <<<EOF
-SELECT user_no AS id, sentence FROM talk WHERE room_no = ? AND date = ? AND scene = ?
+SELECT uname, sentence FROM talk WHERE room_no = ? AND date = ? AND scene = ? AND uname != ?
 ORDER BY id DESC LIMIT 5
 EOF;
-    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene));
+    DB::Prepare($query, array(DB::$ROOM->id, DB::$ROOM->date, DB::$ROOM->scene, 'dummy_boy'));
     return DB::FetchAssoc();
   }
 

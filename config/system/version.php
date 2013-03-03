@@ -1,10 +1,10 @@
 <?php
 class ScriptInfo {
   //パッケージのバージョン
-  const VERSION = 'Ver. 2.2.0 alpha5';
+  const VERSION = 'Ver. 2.2.0 alpha6';
 
   //パッケージの最終更新日
-  const LAST_UPDATE = '2013/02/12 (Tue) 00:13';
+  const LAST_UPDATE = '2013/02/20 (Wed) 00:19';
 
   //パッケージ化した時の Revision
   const REVISION = 752;

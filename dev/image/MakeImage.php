@@ -774,6 +774,10 @@ class RoleMessageList {
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|釣瓶落とし|です。#処刑#投票先が死ななかった場合は_痛恨_にさせることができます。\n　あなたは村の意思に逆らうときに真の力が目覚めます。あなたの意思で村を覆せるのです。",
     'type' => 'amaze_mad', 'delimiter' => array('_' => 'luck'));
 
+  public $fire_mad = array(
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|煙々羅|です。一定日数おきに、#処刑#投票先が死ななかった場合は_天火_にさせることができます。\n　揺らめく煙はあなた自身。あなたの存在が、村人から心の余裕を奪い、真実を煙に巻くのです。",
+    'type' => 'amaze_mad', 'delimiter' => array('_' => 'wisp'));
+
   public $follow_mad = array(
     'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|舟幽霊|です。#処刑#投票先が_ショック死_した場合はさらに誰か一人を_ショック死_させることができます。\n　不条理な死は怨念を招き、溺れる死者は死者をも掴む。あなたの導きと殺意で村人を海に引きずり込むのです！",
     'type' => 'miasma_mad');
@@ -1239,6 +1243,10 @@ class RoleMessageList {
     'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|剣闘士|です。初日の夜に自分と誰か一人を|宿敵|同士にします。また、稀に#処刑#_投票数_が +100 されます。\n　心の内に|宿敵|を定め、其処に隙有らば己が必殺剣をもって倒し、そして勝利と言う名の栄光と自由を掴むのです！",
     'type' => 'duelist', 'delimiter' => array('#' => 'vote', '_' => 'authority'));
 
+  public $cowboy_duelist = array(
+    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|無鉄砲者|、#処刑#_投票数_が -1 されます。初日の夜に自分と誰か一人を|宿敵|同士にし、互いの#処刑#投票次第で^ショック死^します。\n　たとえどれほど不利だろうとも、諦めなければ女神は微笑む！さぁ立ち上がれ、話術と折れぬ思いを武器に、憎き敵を討ち果たすのだ！",
+    'type' => 'critical_duelist', 'delimiter' => array('^' => 'chicken'));
+
   public $triangle_duelist = array(
     'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|舞首|です。初日の夜に誰か三人を|宿敵|同士にしてしまいます。現世で生前の決着をつける為に彼らには犠牲になってもらいましょう。",
     'type' => 'duelist');
@@ -1247,9 +1255,9 @@ class RoleMessageList {
     'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|黒幕|です。初日の夜に誰か二人を|宿敵|同士にして、さらに#死の宣告#を与えてしまいます。\n　宿命に踊らされる二人の物語を、影から演出してやりましょう。舞台の幕が切れる、その時まで。",
     'type' => 'duelist', 'delimiter' => array('#' => 'chicken'));
 
-  public $cowboy_duelist = array(
-    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|無鉄砲者|です。初日の夜に自分と誰か一人を|宿敵|同士にします。また、#処刑#_投票数_が -1 されてしまいます。\n　どれほど力に差があろうとも、挑む心は止められはしない！話術と折れぬ思いを武器に、憎き敵を討ち果たすのです！",
-    'type' => 'critical_duelist');
+  public $sea_duelist = array(
+    'message' => "[役割] [|決闘者|陣営] [|決闘者|系]\n　あなたは|海御前|です。初日の夜に自分と誰か一人を|宿敵|同士にします。また、|宿敵|に_処刑_投票すると^ショック死^してしまいます。\n　あなたの敵は強大で、直接勝つ事は叶わないでしょう。周りの人間をうまく支配し、憎き|宿敵|を仄暗い海へ引き摺り込むのです。",
+    'type' => 'cowboy_duelist');
 
   public $avenger = array(
     'message' => "[役割] [|決闘者|陣営] [|復讐者|系]\n　あなたは|復讐者|です。初日の夜に村の人口の四分の一の|仇敵|を選び、全て倒すことが勝利条件になります。\n　復讐するは我にあり。そのため、そのためだけに生き続ける。たとえ待ち受けるものが地獄だとしても……",
@@ -1972,6 +1980,7 @@ class RoleMessageList {
   public $result_agitate_mad = array('message' => "さんは|扇動者|でした", 'type' => 'result_mad');
   public $result_miasma_mad = array('message' => "さんは|土蜘蛛|でした", 'type' => 'result_mad');
   public $result_critical_mad = array('message' => "さんは|釣瓶落とし|でした", 'type' => 'result_mad');
+  public $result_fire_mad = array('message' => "さんは|煙々羅|でした", 'type' => 'result_mad');
   public $result_follow_mad = array('message' => "さんは|舟幽霊|でした", 'type' => 'result_mad');
   public $result_therian_mad = array('message' => "さんは|獣人|でした", 'type' => 'result_mad');
   public $result_revive_mad = array('message' => "さんは|尸解仙|でした", 'type' => 'result_mad');
@@ -2090,9 +2099,10 @@ class RoleMessageList {
   public $result_duelist = array('message' => "さんは|決闘者|でした", 'delimiter' => array('|' => 'duelist'));
   public $result_valkyrja_duelist = array('message' => "さんは|戦乙女|でした", 'type' => 'duelist');
   public $result_critical_duelist = array('message' => "さんは|剣闘士|でした", 'type' => 'duelist');
+  public $result_cowboy_duelist = array('message' => "さんは|無鉄砲者|でした", 'type' => 'duelist');
   public $result_triangle_duelist = array('message' => "さんは|舞首|でした", 'type' => 'duelist');
   public $result_doom_duelist = array('message' => "さんは|黒幕|でした", 'type' => 'duelist');
-  public $result_cowboy_duelist = array('message' => "さんは|無鉄砲者|でした", 'type' => 'duelist');
+  public $result_sea_duelist = array('message' => "さんは|海御前|でした", 'type' => 'duelist');
   public $result_avenger = array('message' => "さんは|復讐者|でした", 'type' => 'duelist');
   public $result_poison_avenger = array('message' => "さんは|山わろ|でした", 'type' => 'result_avenger');
   public $result_cursed_avenger = array('message' => "さんは|がしゃどくろ|でした", 'type' => 'result_avenger');
@@ -2310,6 +2320,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));
-#$builder->Output('step_vampire', array(0.5,0,0,0,0,0,0,0));
-#$builder->Output('cow_ogre', array(0.8,0,0.8,0,0,0,0,0));
-$builder->Output('horse_ogre', array(0.8,0,0.8,0,0,0,0,0));
+$builder->Output('fire_mad', array(0.5,0,0,0,-0.5,0,0,0,0.5));

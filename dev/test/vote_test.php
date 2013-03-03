@@ -89,19 +89,19 @@ RQ::GetTest()->test_users[18]->live = 'live';
 RQ::GetTest()->test_users[19]->role = 'light_fairy psycho_infected';
 RQ::GetTest()->test_users[19]->live = 'live';
 
-RQ::GetTest()->test_users[20]->role = 'sacrifice_vampire mind_presage[23] disfavor';
+RQ::GetTest()->test_users[20]->role = 'sacrifice_vampire downer_luck disfavor';
 RQ::GetTest()->test_users[20]->live = 'live';
 
 RQ::GetTest()->test_users[21]->role = 'resurrect_mania[6] mind_friend[21]';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->role = 'psycho_escaper reduce_voter';
+RQ::GetTest()->test_users[22]->role = 'fire_mad';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'poison deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'sea_duelist deep_sleep rival[23]';
 RQ::GetTest()->test_users[23]->live = 'live';
 
-RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20]';
+RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20] rival[23]';
 RQ::GetTest()->test_users[24]->live = 'live';
 
 RQ::GetTest()->test_users[25]->role = 'horse_ogre disfavor';
@@ -112,7 +112,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 DevUser::Complement();
 
 //-- 仮想投票データをセット --//
-$set_date = 6;
+$set_date = 7;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -139,9 +139,9 @@ RQ::GetTest()->vote_target_day = array(
   array('id' => 19, 'target_no' => 22),
   array('id' => 20, 'target_no' => 22),
   array('id' => 21, 'target_no' => 18),
-  array('id' => 22, 'target_no' => 25),
-  array('id' => 23, 'target_no' => 14),
-  array('id' => 24, 'target_no' => 25),
+  array('id' => 22, 'target_no' => 18),
+  array('id' => 23, 'target_no' => 20),
+  array('id' => 24, 'target_no' => 22),
   //array('id' => 25, 'target_no' =>  3),
   array('id' => 25, 'target_no' => 12),
 );
@@ -288,13 +288,12 @@ RQ::Set('say', '');
 RQ::Get()->font_type = 'weak'; 'normal';
 
 //-- データ収集 --//
-Lottery::d();
 DB::Connect(); //DB接続 (必要なときだけ設定する)
 DevRoom::Load();
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-#DB::$ROOM->scene = 'day';
-DB::$ROOM->scene = 'night';
+DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 
@@ -452,12 +451,28 @@ do {
   }
   //var_dump(DB::$USER->IsOpenCast());
 } while(false);
+
+/* 配役情報 */
+//Loader::LoadFile('chaos_config');
+//$count = 0;
+//foreach (ChaosConfig::$chaos_hyper_random_role_list as $role => $rate) {
+//  #if (RoleData::GetCamp($role) == 'fairy') $count += $rate;
+//  if (RoleData::IsGroup($role, 'fairy')) $count += $rate;
+//}
+//Text::p($count);
+//Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));
+//Text::p(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
+//Text::p(ChaosConfig::$role_group_rate_list);
+
+/* 天候情報 */
 //Text::p(Lottery::ToProbability(GameConfig::$weather_list));
-//InsertLog();
+
+/* デバッグ情報 */
 //Text::p(RoleManager::$file);
 //Text::p(array_keys(RoleManager::$class));
 //Text::p(DB::$USER->role);
 //Text::p(Loader::$file);
+//InsertLog();
 
 //DB::Connect(); DB::d();
 //Text::p($stack);

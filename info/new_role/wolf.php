@@ -1106,17 +1106,20 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <a href="#step_mad">家鳴</a>
 <a href="#dream_eater_mad">獏</a>
 <a href="#possessed_mad">犬神</a>
-<a href="#trap_mad">罠師</a>
 </p>
 <p>
+<a href="#trap_mad">罠師</a>
 <a href="#snow_trap_mad">雪女</a>
 <a href="#corpse_courier_mad">火車</a>
 <a href="#amaze_mad">傘化け</a>
 <a href="#agitate_mad">扇動者</a>
 <a href="#miasma_mad">土蜘蛛</a>
 <a href="#critical_mad">釣瓶落とし</a>
+<a href="#fire_mad">煙々羅</a>
 <a href="#follow_mad">舟幽霊</a>
 <a href="#therian_mad">獣人</a>
+</p>
+<p>
 <a href="#revive_mad">尸解仙</a>
 <a href="#immolate_mad">殉教者</a>
 </p>
@@ -1400,7 +1403,7 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#necromancer_group">霊能者系</a>・<a href="human.php#philosophy_wizard">賢者</a>・<a href="#amaze_mad">傘化け</a>
+<a href="human.php#necromancer_group">霊能者系</a>・<a href="human.php#philosophy_wizard">賢者</a>・<a href="#amaze_mad">傘化け</a>・<a href="ability.php#vote_action">処刑投票能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1431,6 +1434,10 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <h5>Ver. 1.4.0 β21～</h5>
 <pre>
 能力が発動すると死亡者メッセージ欄に「傘化けの能力で隠蔽された」と表示される。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#vote_action">処刑投票能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1514,6 +1521,27 @@ PP 圏内まで持ち込んだ時に真価を発揮します。
 <pre>
 <a href="#miasma_mad">土蜘蛛</a>の<a href="sub_role.php#critical_luck">痛恨</a>バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1246414115/932" target="_top">新役職考案スレ(932)</a> が原型です。
 存在が発覚しにくいですが、発動は確率依存なのが難点です。
+</pre>
+
+<h3 id="fire_mad">煙々羅 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α6～]</h3>
+<h4>[耐性] 狩り：有効</h4>
+<pre>
+処刑投票先に<a href="sub_role.php#black_wisp">天火</a>を付加する特殊な狂人。
+</pre>
+<ol>
+<li>発動は 3 の倍数の昼。</li>
+<li><a href="../spec.php#vote_day">判定</a>は処刑者決定後で、自分が毒やショック死で死亡した場合でも有効。</li>
+<li>対象が死亡していた場合は無効 (例：処刑・毒死)。</li>
+<li>自分が処刑された場合は無効。</li>
+</ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#wisp">鬼火付加能力者</a>・<a href="ability.php#vote_action">処刑投票能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#miasma_mad">土蜘蛛</a>の<a href="sub_role.php#black_wisp">天火</a>バージョンです。
+占い周辺の推理への影響や騙りを制限するために発動機会を抑えています。
 </pre>
 
 <h3 id="follow_mad">舟幽霊 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 α5～]</h3>

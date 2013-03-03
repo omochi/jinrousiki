@@ -19,7 +19,7 @@ class RoleTest {
   const BOX   = '<input type="checkbox" id="%s" name="%s" value="on"><label for="%s">%s</label>';
 
   //出力
-  function Output() {
+  static function Output() {
     DevHTML::OutputFormHeader('配役テストツール', 'role_test.php');
     self::OutputForm();
     if (DevHTML::IsExecute()) self::Execute();
@@ -138,8 +138,8 @@ class RoleTest {
 
     //普通村向けオプション
     $option_stack = array(
-			  'gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
-			  'possessed_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective');
+      'gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
+      'possessed_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective');
     RQ::Get()->Parse('post', 'IsOn', $option_stack);
     foreach ($option_stack as $option) {
       if (RQ::Get()->$option) $stack->option_role[] = $option;
@@ -158,17 +158,21 @@ class RoleTest {
 
 //-- 裏・闇鍋モードテスト --//
 class ChaosVersoTest {
+  //出力
   static function Output() {
     DevHTML::OutputFormHeader('裏・闇鍋モード配役テスト', 'chaos_verso.php');
     Text::Output('</form>');
-    if (DevHTML::IsExecute()) {
-      RQ::InitTestRoom();
-      $stack = new StdClass();
-      $stack->game_option = array('chaos_verso');
-      $stack->option_role = array();
-      DevRoom::Cast($stack);
-    }
+    if (DevHTML::IsExecute()) self::Execute();
     HTML::OutputFooter(true);
+  }
+
+  //実行
+  private static function Execute() {
+    RQ::InitTestRoom();
+    $stack = new StdClass();
+    $stack->game_option = array('chaos_verso');
+    $stack->option_role = array();
+    DevRoom::Cast($stack);
   }
 }
 
@@ -180,6 +184,13 @@ class NameTest {
   static function Output() {
     DevHTML::LoadRequest();
     HTML::OutputHeader('役職名表示', 'test/name', true);
+    $stack = self::OutputForm();
+    if (DevHTML::IsExecute()) self::Execute($stack);
+    HTML::OutputFooter();
+  }
+
+  //フォーム出力
+  private static function OutputForm() {
     echo <<<EOF
 <form method="post" action="name_test.php">
 <input type="hidden" name="execute" value="on">
@@ -190,7 +201,7 @@ EOF;
 
     $stack = new StdClass();
     foreach (array_keys(RoleData::$main_role_list) as $role) { //役職データ収集
-      $stack->group[RoleData::GetGroup($role)][] = $role;
+      $stack->group[RoleData::GetGroup($role)][]     = $role;
       $stack->camp[RoleData::GetCamp($role, true)][] = $role;
     }
     $count = 0;
@@ -204,12 +215,12 @@ EOF;
       }
     }
     Text::Output('</form>');
-    if (DevHTML::IsExecute()) self::Execute($stack);
-    HTML::OutputFooter();
+
+    return $stack;
   }
 
   //実行
-  private function Execute(StdClass $role_data) {
+  private static function Execute(StdClass $role_data) {
     RQ::Get()->ParsePostData('type');
     list($role, $type) = explode('-', RQ::Get()->type);
     switch ($type) {
@@ -232,13 +243,19 @@ EOF;
 //-- 異議ありテスト --//
 class ObjectionTest {
   const URL   = 'objection_test.php';
-  const RESET = '<p><a href="%s">リセット</a></p>%s<table>%s';
+  const RESET = '<p><a href="%s">リセット</a></p>';
 
   //出力
   static function Output() {
     DevHTML::LoadRequest();
     HTML::OutputHeader('異議ありテスト', null, true);
-    printf(self::RESET, self::URL, "\n", "\n");
+    $stack = self::OutputForm();
+    if (DevHTML::IsExecute()) self::Execute($stack);
+    HTML::OutputFooter();
+  }
+
+  //フォーム出力
+  private static function OutputForm() {
     $form = <<<EOF
 <tr><td class="objection"><form method="post" action="%s">
 <input type="hidden" name="execute" value="on">
@@ -257,14 +274,18 @@ EOF;
       'alert'            => '未投票警告',
       'objection_male'   => '異議あり(男)',
       'objection_female' => '異議あり(女)');
+
+    printf(self::RESET, self::URL);
+    Text::Output();
+    Text::Output('<table>');
     foreach ($stack as $key => $value) printf($form, self::URL, $key, $image, $value);
     Text::Output('</table>');
-    if (DevHTML::IsExecute()) self::Execute($stack);
-    HTML::OutputFooter();
+
+    return $stack;
   }
 
   //実行
-  private function Execute(array $stack) {
+  private static function Execute(array $stack) {
     $id = 'set_objection';
     RQ::Get()->ParsePostData($id);
     $key = RQ::Get()->$id;
@@ -277,9 +298,17 @@ EOF;
 
 //-- トリップテスト --//
 class TripTest {
+  //出力
   static function Output() {
     DevHTML::LoadRequest();
     HTML::OutputHeader('トリップテスト', null, true);
+    self::OutputForm();
+    if (DevHTML::IsExecute()) self::Execute();
+    HTML::OutputFooter();
+  }
+
+  //フォーム出力
+  private static function OutputForm() {
     echo <<<EOF
 <form method="post" action="trip_test.php">
 <input type="hidden" name="execute" value="on">
@@ -287,19 +316,28 @@ class TripTest {
 </form>
 
 EOF;
-    if (DevHTML::IsExecute()) {
-      RQ::Get()->ParsePost('Trip', 'trip');
-      Text::p(RQ::Get()->trip, '変換結果');
-    }
-    HTML::OutputFooter();
+  }
+
+  //実行
+  private static function Execute() {
+    RQ::Get()->ParsePost('Trip', 'trip');
+    Text::p(RQ::Get()->trip, '変換結果');
   }
 }
 
 //-- Twitter 投稿テスト --//
 class TwitterTest {
+  //出力
   static function Output() {
     DevHTML::LoadRequest();
     HTML::OutputHeader('Twitter 投稿テスト', null, true);
+    self::OutputForm();
+    if (DevHTML::IsExecute()) self::Execute();
+    HTML::OutputFooter();
+  }
+
+  //フォーム出力
+  private static function OutputForm() {
     echo <<<EOF
 <form method="post" action="twitter_test.php">
 <input type="hidden" name="execute" value="on">
@@ -312,14 +350,15 @@ class TwitterTest {
 </form>
 
 EOF;
-    if (DevHTML::IsExecute()) {
-      RQ::Get()->ParsePostInt('number');
-      RQ::Get()->ParsePostData('name', 'comment');
-      if (JinroTwitter::Send(RQ::Get()->number, RQ::Get()->name, RQ::Get()->comment)) {
-	Text::d('Twitter 投稿成功');
-      }
+  }
+
+  //実行
+  private static function Execute() {
+    RQ::Get()->ParsePostInt('number');
+    RQ::Get()->ParsePostData('name', 'comment');
+    if (JinroTwitter::Send(RQ::Get()->number, RQ::Get()->name, RQ::Get()->comment)) {
+      Text::d('Twitter 投稿成功');
     }
-    HTML::OutputFooter();
   }
 }
 
@@ -388,9 +427,6 @@ class VoteTest {
     Loader::LoadFile('chaos_config');
 
     HTML::OutputHeader('投票テスト', 'game_play', true);
-    //Text::p(Lottery::ToProbability(ChaosConfig::$chaos_hyper_random_role_list));
-    //Text::p(array_sum(ChaosConfig::$chaos_hyper_random_role_list));
-    //Text::p(ChaosConfig::$role_group_rate_list);
     Text::Output('<table border="1" cellspacing="0">');
     echo '<tr><th>人口</th>';
     foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
@@ -456,7 +492,7 @@ class VoteTest {
   }
 }
 
-//投票テスト
+//足音投票テスト
 class StepVoteTest {
   static function Output() {
     Loader::LoadFile('vote_message');

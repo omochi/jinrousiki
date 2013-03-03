@@ -62,20 +62,20 @@ class RoleManager {
   static function SetClass($role) { return self::LoadFile($role) && self::LoadClass($role); }
 
   //クラスのロード済み判定
-  private function IsClass($role) {
+  private static function IsClass($role) {
     return array_key_exists($role, self::$class) && is_object(self::$class[$role]);
   }
 
   //ファイルパス取得
-  private function GetPath($name) { return sprintf(self::PATH, JINRO_INC, $name); }
+  private static function GetPath($name) { return sprintf(self::PATH, JINRO_INC, $name); }
 
   //役職リスト取得
-  private function GetList($type) {
+  private static function GetList($type) {
     return $type == 'main_role' ? array(self::$actor->GetMainRole(true)) : RoleFilterData::$$type;
   }
 
   //役職リストに応じたクラスリスト取得
-  private function GetFilter(array $list) {
+  private static function GetFilter(array $list) {
     $stack = array();
     foreach ($list as $role) { //順番依存があるので配列関数を使わないで処理する
       if (self::IsClass($role)) $stack[] = self::$class[$role];
@@ -84,7 +84,7 @@ class RoleManager {
   }
 
   //クラスロード
-  private function LoadClass($role) {
+  private static function LoadClass($role) {
     if (is_null($role)) return false;
     if (! self::IsClass($role)) {
       $class_name = 'Role_' . $role;
@@ -198,12 +198,13 @@ class RoleFilterData {
     'centaurus_pharmacist', 'jealousy', 'divorce_jealousy', 'miasma_jealousy', 'critical_jealousy',
     'thunder_brownie', 'harvest_brownie', 'maple_brownie', 'cursed_brownie',  'disguise_wolf',
     'purple_wolf', 'snow_wolf', 'corpse_courier_mad', 'amaze_mad', 'agitate_mad', 'miasma_mad',
-    'critical_mad', 'follow_mad', 'purple_fox', 'snow_fox', 'critical_fox', 'sweet_cupid',
-    'snow_cupid', 'quiz', 'step_vampire', 'cursed_avenger', 'critical_avenger', 'impatience',
-    'decide', 'plague', 'counter_decide', 'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
+    'critical_mad', 'fire_mad', 'follow_mad', 'purple_fox', 'snow_fox', 'critical_fox',
+    'sweet_cupid', 'snow_cupid', 'quiz', 'step_vampire', 'cowboy_duelist', 'sea_duelist',
+    'cursed_avenger', 'critical_avenger', 'impatience', 'decide', 'plague', 'counter_decide',
+    'dropout', 'good_luck', 'bad_luck', 'authority', 'rebel');
 
-  //反逆者判定
-  static $rebel = array('rebel');
+  //処刑投票補正能力者
+  static $vote_correct = array('cowboy_duelist', 'rebel');
 
   //処刑者決定 (順番依存あり)
   static $vote_kill = array('decide', 'bad_luck', 'counter_decide', 'dropout', 'impatience',
@@ -221,10 +222,10 @@ class RoleFilterData {
 
   //処刑投票能力処理 (順番依存あり)
   static $vote_action = array(
-    'seal_medium', 'bacchus_medium', 'centaurus_pharmacist', 'spell_common', 'miasma_jealousy',
-    'critical_jealousy', 'corpse_courier_mad', 'amaze_mad', 'miasma_mad', 'critical_mad',
-    'critical_fox', 'critical_avenger', 'purple_wolf', 'purple_fox', 'cursed_avenger',
-    'sweet_cupid', 'snow_cupid', 'step_vampire', 'disguise_wolf');
+    'seal_medium', 'bacchus_medium', 'cowboy_duelist', 'sea_duelist', 'centaurus_pharmacist',
+    'spell_common', 'miasma_jealousy', 'critical_jealousy', 'corpse_courier_mad', 'amaze_mad',
+    'miasma_mad', 'fire_mad', 'critical_mad', 'critical_fox', 'critical_avenger', 'purple_wolf',
+    'purple_fox', 'cursed_avenger', 'sweet_cupid', 'snow_cupid', 'step_vampire', 'disguise_wolf');
 
   //霊能
   static $necromancer = array(
