@@ -1346,14 +1346,18 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <ol>
 <li><a href="wolf.php#wolf_group">人狼</a>の襲撃無効</li>
-<li>毒・<a href="human.php#brownie">座敷童子</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力の対象外</li>
+<li><a href="ability.php#poison">毒</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="ability.php#vote_kill_counter_solo">処刑者カウンター能力者 (個別型)</a> の能力の対象外</li>
+<li><a href="human.php#cursed_brownie">祟神</a>・<a href="ability.php#vote_action_luck">処刑投票能力者 (得票数変化型)</a>・<a href="ability.php#febris_active">熱病能力者 (能動型)</a> の能力無効</li>
 <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-<li><a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>の能力無効</li>
 <li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
 </ol>
 <pre>
 5 日目以降は恋人の相方と同じ人に投票しないとショック死する。
 複数の恋人がいる場合は誰か一人と同じならショック死しない。
+</pre>
+<h5>Ver. 2.2.0 α7～</h5>
+<pre>
+<a href="human.php#miasma_jealousy">蛇姫</a>の能力無効
 </pre>
 <h5>Ver. 1.4.0 β13～</h5>
 <pre>
@@ -1361,8 +1365,7 @@ LW が<a href="#strong_voice">大声</a>・<a href="#strong_voice">小声</a>だ
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="lovers.php#moon_cupid">かぐや姫</a>
-<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#resist_poison">毒耐性能力者</a>
+<a href="lovers.php#moon_cupid">かぐや姫</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>・<a href="ability.php#special_resist">特殊耐性能力者</a>・<a href="ability.php#resist_poison">毒耐性能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

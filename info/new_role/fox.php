@@ -657,11 +657,11 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 <h4>[耐性] 人狼襲撃：死亡 + 熱病 / 処刑：熱病</h4>
 <pre>
 処刑されるか人狼に襲撃されたら<a href="sub_role.php#febris">熱病</a>を付加する子狐。
-処刑された場合は投票した人からランダムで一人 (妖狐陣営を除く)、
+処刑された場合は投票した人からランダムで一人、
 人狼に襲撃された場合は襲撃した人狼に付加する。
 </pre>
 <ol>
-<li>処刑時は<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・妖狐陣営・<a href="sub_role.php#challenge_lovers">難題</a>は能力の対象外。</li>
+<li>処刑時は妖狐陣営・<a href="ability.php#special_resist">特殊耐性能力者</a>は能力の対象外。</li>
 <li>人狼襲撃時は<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) には無効。</li>
 <li>対象者が誰もいなかった場合は不発となる。</li>
 </ol>
@@ -671,7 +671,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#febris">熱病能力者</a>
+<a href="ability.php#vote_kill_counter">処刑者カウンター能力者</a>・<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

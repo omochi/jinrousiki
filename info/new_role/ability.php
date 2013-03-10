@@ -18,6 +18,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </p>
 <p>
 <a href="#doom">死の宣告</a>
+<a href="#vote_kill_counter">処刑者カウンター</a>
 <a href="#decide">処刑者決定</a>
 <a href="#vote_action">処刑投票</a>
 <a href="#vote_reaction">処刑得票</a>
@@ -26,21 +27,22 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#resist_wolf">人狼襲撃耐性</a>
 <a href="#psycho">精神</a>
 <a href="#sex">性別</a>
-<a href="#revive">蘇生</a>
 </p>
 <p>
+<a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
 <a href="#same">同一表示</a>
 <a href="#frostbite">凍傷</a>
 <a href="#authority">投票数変化</a>
 <a href="#stargazer">投票能力</a>
 <a href="#luck">得票数変化</a>
+<a href="#special_resist">特殊耐性</a>
 <a href="#poison">毒</a>
 <a href="#resist_poison">毒耐性</a>
-<a href="#partner">仲間情報妨害</a>
-<a href="#febris">熱病</a>
 </p>
 <p>
+<a href="#partner">仲間情報妨害</a>
+<a href="#febris">熱病</a>
 <a href="#cursed_group">呪い</a>
 <a href="#talk_convert">発言変換</a>
 <a href="#possessed">憑依</a>
@@ -49,10 +51,10 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#disguise">変化</a>
 <a href="#sacrifice">身代わり</a>
 <a href="#soul">役職鑑定</a>
-<a href="#last_words_limit">遺言制限</a>
-<a href="#dummy">夢</a>
 </p>
 <p>
+<a href="#last_words_limit">遺言制限</a>
+<a href="#dummy">夢</a>
 <a href="#necromancer">霊能</a>
 <a href="#trap">罠</a>
 </p>
@@ -170,16 +172,44 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>
 </pre>
 
+<h2 id="vote_kill_counter">処刑者カウンター能力者</h2>
+<h3 id="vote_kill_counter_solo">個別型</h3>
+<pre>
+<a href="human.php#brownie">座敷童子</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>
+</pre>
+<h3 id="vote_kill_counter_event">イベント型</h3>
+<pre>
+<a href="human.php#sun_brownie">八咫烏</a>・<a href="chiroptera.php#mirror_fairy">鏡妖精</a>
+</pre>
+
 <h2 id="decide">処刑者決定能力者</h2>
 <pre>
 <a href="human.php#saint">聖女</a>・<a href="human.php#executor">執行者</a>・<a href="wolf.php#agitate_mad">扇動者</a>・<a href="quiz.php#quiz">出題者</a>・<a href="sub_role.php#decide_group">決定者系</a>
 </pre>
 
 <h2 id="vote_action">処刑投票能力者</h2>
+<h3 id="vote_action_chicken">小心者系付加型</h3>
 <pre>
-<a href="human.php#spell_common">葛の葉</a>・<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#purple_wolf">紫狼</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#purple_fox">紫狐</a>・<a href="fox.php#critical_fox">寿羊狐</a>
-<a href="lovers.php#sweet_cupid">弁財天</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="vampire.php#step_vampire">文武王</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
-<a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="lovers.php#sweet_cupid">弁財天</a>)
+<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>
+<a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>)
+</pre>
+<h3 id="vote_action_luck">得票数変化型</h3>
+<pre>
+<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="human.php#philosophy_wizard">賢者</a>(<a href="wolf.php#critical_mad">釣瓶落とし</a>)
+</pre>
+<h3 id="vote_action_talk">会話妨害型</h3>
+<pre>
+<a href="human.php#spell_common">葛の葉</a>・<a href="lovers.php#sweet_cupid">弁財天</a>
+<a href="human.php#philosophy_wizard">賢者</a>(<a href="lovers.php#sweet_cupid">弁財天</a>)
+</pre>
+<h3 id="vote_action_self">自己付加型</h3>
+<pre>
+<a href="human.php#critical_jealousy">人魚</a>・<a href="wolf.php#purple_wolf">紫狼</a>・<a href="fox.php#purple_fox">紫狐</a>
+</pre>
+<h3 id="vote_action_special">特殊型</h3>
+<pre>
+<a href="wolf.php#disguise_wolf">朔狼</a>・<a href="wolf.php#corpse_courier_mad">火車</a>・<a href="wolf.php#amaze_mad">傘化け</a>・<a href="vampire.php#step_vampire">文武王</a>
 </pre>
 
 <h2 id="vote_reaction">処刑得票能力者</h2>
@@ -301,6 +331,11 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="human.php#critical_jealousy">人魚</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="human.php#maple_brownie">紅葉神</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="wolf.php#critical_mad">釣瓶落とし</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="fox.php#critical_fox">寿羊狐</a>(<a href="sub_role.php#critical_luck">痛恨</a>)・<a href="duelist.php#critical_avenger">狂骨</a>(<a href="sub_role.php#critical_luck">痛恨</a>)
 <a href="duelist.php#critical_patron">ひんな神</a>(<a href="sub_role.php#occupied_luck">ひんな持ち</a>)・<a href="mania.php#wirepuller_mania">黒衣</a>(<a href="sub_role.php#wirepuller_luck">入道</a>)
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="wolf.php#critical_mad">釣瓶落とし</a>)
+</pre>
+
+<h2 id="special_resist">特殊耐性能力者</h2>
+<pre>
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a> (耐性期間中)
 </pre>
 
 <h2 id="poison">毒能力者</h2>

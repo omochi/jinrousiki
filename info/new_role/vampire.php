@@ -43,7 +43,7 @@ InfoHTML::OutputRoleHeader('吸血鬼陣営');
 </li>
 <li>吸血鬼が吸血鬼を襲撃すると吸血死が発生します。相互襲撃の場合は相討ちとなります。</li>
 <li><a href="#incubus_vampire">青髭公</a>・<a href="#succubus_vampire">飛縁魔</a>は一定の条件で襲撃先を吸血死させます。<br>
-  <a href="human.php#detective_common">探偵</a>・<a href="wolf.php#sirius_wolf">天狼</a> (覚醒状態)・<a href="sub_role.php#challenge_lovers">難題</a>を対象にした場合は発生しません。
+  <a href="ability.php#special_resist">特殊耐性能力者</a>を対象にした場合は発生しません。
 </li>
 <li><a href="#doom_vampire">冥血鬼</a>は吸血鬼の襲撃を無効化します。</li>
 <li><a href="#soul_vampire">吸血姫</a>は吸血鬼の襲撃を反射し、襲撃した吸血鬼が吸血死します。<br>

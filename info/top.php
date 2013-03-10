@@ -7,20 +7,18 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.2.0α5アップロード (2013/02/12 (Tue) 00:13) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/58102/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.0α6アップロード (2013/03/04 (Mon) 00:47) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/58266/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「牛頭鬼」「馬頭鬼」実装</li>
-  <li>オプション詳細情報のリンクを追加 (プレイ中限定)</li>
+  <li>固定配役追加モード：Q(雛村)追加</li>
+  <li>「無鉄砲者」の仕様変更</li>
+  <li>「海御前」「煙々羅」実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>固定配役追加モード：Q(雛村)追加</li>
-  <li>無鉄砲者：宿敵同士の投票次第でショック死する仕様に変更</li>
-  <li>海御前：宿敵に投票するとショック死する決闘者</li>
-  <li>煙々羅：処刑投票に天火を付加する特殊な狂人</li>
+  <li>「蛇姫」仕様変更</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

@@ -51,12 +51,12 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 <ol>
 <li>初日の夜に「<a href="sub_role.php#rival">宿敵</a>」を二人作ります (人数は例外あり)。</li>
 <li>勝利条件は「自分の作った宿敵が一人だけ生存すること」で、自身の生死は不問です。</li>
-<li>自分以外を宿敵の対象に選ぶことができる (<a href="../rule.php#system_vote">他人撃ち</a>) 人数の制限は<a href="lovers.php">恋人陣営</a>と同じで、<br>
-  明記されていなければ自分撃ち固定制限はありません。
+<li>自分以外を宿敵の対象に選ぶことができる (<a href="../rule.php#system_vote">他人撃ち</a>) 人数の制限は<a href="lovers.php">恋人陣営</a>と同じです。
 </li>
 </ol>
 
 <h3 id="duelist">決闘者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：有り</h4>
 <pre>
 決闘者陣営の<a href="mania.php#basic_mania">基本種</a>。
 自分撃ち固定で、<a href="sub_role.php#rival">宿敵</a>の相手に自分を対象にした<a href="sub_role.php#mind_receiver">受信者</a>が付く。
@@ -72,8 +72,9 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 </pre>
 
 <h3 id="valkyrja_duelist">戦乙女 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：無し</h4>
 <pre>
-自分撃ち固定制限がない、決闘者系の標準種。
+決闘者系の標準種。
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -82,6 +83,7 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 </pre>
 
 <h3 id="critical_duelist">剣闘士 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β4～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：有り</h4>
 <pre>
 自分撃ち固定で、<a href="sub_role.php#critical_voter">会心</a>相当 (<a href="../weather.php#weather_critical">烈日</a>は無効) の能力を持つ上位決闘者。
 </pre>
@@ -96,6 +98,7 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 </pre>
 
 <h3 id="cowboy_duelist">無鉄砲者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：有り</h4>
 <pre>
 自分撃ち固定で、<a href="sub_role.php#reduce_voter">無精者</a>相当の能力を持つ特殊な決闘者。
 自分と<a href="sub_role.php#rival">宿敵</a>との処刑投票次第で得票数変化やショック死が発生する。
@@ -127,6 +130,7 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 </pre>
 
 <h3 id="triangle_duelist">舞首 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β1～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：無し</h4>
 <pre>
 <a href="sub_role.php#rival">宿敵</a>を三人作る特殊な決闘者。
 </pre>
@@ -138,6 +142,7 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 </pre>
 
 <h3 id="doom_duelist">黒幕 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β3～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：無し / 付加：死の宣告</h4>
 <pre>
 <a href="sub_role.php#rival">宿敵</a>に加えて、<a href="sub_role.php#death_warrant">死の宣告</a> (7日目昼) を付加する特殊な決闘者。
 </pre>
@@ -153,6 +158,7 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 </pre>
 
 <h3 id="sea_duelist">海御前 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α6～]</h3>
+<h4>[宿敵作成能力] 自分撃ち固定：有り</h4>
 <pre>
 自分撃ち固定で、<a href="sub_role.php#rival">宿敵</a>に投票するとショック死する劣化決闘者。
 </pre>

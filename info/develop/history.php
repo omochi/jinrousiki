@@ -13,6 +13,7 @@ Ver. 2.2.0
 <a href="#ver220a3">α3</a>
 <a href="#ver220a4">α4</a>
 <a href="#ver220a5">α5</a>
+<a href="#ver220a6">α6</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -21,6 +22,14 @@ Ver. 2.2.0
 <a href="history_2.0.php">2.0</a>
 <a href="history_2.1.php">2.1</a>
 </p>
+
+
+<h2 id="ver220a6">Ver. 2.2.0 α6 (Rev. 759) : 2013/03/04 (Mon) 00:47</h2>
+<ul>
+<li>固定配役追加モード：Q(雛村)追加</li>
+<li>「無鉄砲者」の仕様変更</li>
+<li>「海御前」「煙々羅」実装</li>
+</ul>
 
 <h2 id="ver220a5">Ver. 2.2.0 α5 (Rev. 752) : 2013/02/12 (Tue) 00:13</h2>
 <ul>

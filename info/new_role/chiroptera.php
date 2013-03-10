@@ -457,7 +457,7 @@ PP 要員に組み込まれることの多い蝙蝠陣営の花形と言える�
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#dummy_mania">夢語部</a>
+<a href="mania.php#dummy_mania">夢語部</a>・<a href="ability.php#vote_kill_counter">処刑者カウンター能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

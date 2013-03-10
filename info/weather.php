@@ -702,7 +702,7 @@ Ver. 2.2.0
 <h3 id="weather_frostbite">雪 [Ver. 1.5.0 α4～]</h3>
 <ul>
   <li>処刑者決定後、ランダムで生存者の誰か一人に<a href="new_role/sub_role.php#frostbite">凍傷</a>が付加されます。</li>
-  <li><a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
+  <li><a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/ability.php#special_resist">特殊耐性能力者</a>は対象外です。</li>
 </ul>
 
 <h3 id="weather_corpse_courier_mad">砂塵嵐 [Ver. 1.5.0 α8～]</h3>
@@ -721,8 +721,8 @@ Ver. 2.2.0
 <ul>
   <li>処刑投票結果が出るたびにランダムで誰か一人が落雷でショック死します。</li>
   <li>死因は「落雷を受けたようです」で、<a href="new_role/sub_role.php">サブ役職</a>によるショック死より優先されます。</li>
-  <li><a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
   <li>対象者に投票した<a href="new_role/ability.php#anti_sudden_death">ショック死抑制能力者</a>の能力は有効です。</li>
+  <li><a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/ability.php#special_resist">特殊耐性能力者</a>は対象外です。</li>
 </ul>
 
 <h3 id="weather_no_sudden_death">凪 [Ver. 1.5.0 α3～]</h3>
@@ -912,8 +912,8 @@ Ver. 2.2.0
 <h3 id="weather_psycho_infected">濃霧 [Ver. 1.5.0 α8～]</h3>
 <ul>
   <li>処刑者決定後、ランダムで生存者の誰か一人に<a href="new_role/sub_role.php#psycho_infected">洗脳者</a>が付加されます。</li>
-  <li><a href="new_role/vampire.php">吸血鬼陣営</a> (<a href="new_role/mania.php">神話マニア陣営</a>によるコピー者も含む)・<a href="new_role/sub_role.php#psycho_infected">洗脳者</a>・<br>
-    <a href="new_role/human.php#detective_common">探偵</a>・<a href="new_role/wolf.php#sirius_wolf">天狼</a> (完全覚醒状態)・<a href="new_role/quiz.php#quiz">出題者</a>・<a href="new_role/sub_role.php#challenge_lovers">難題</a> (耐性期間中) は対象外です。</li>
+  <li><a href="new_role/vampire.php">吸血鬼陣営</a> (<a href="new_role/mania.php">神話マニア陣営</a>によるコピー者も含む)・<a href="new_role/sub_role.php#psycho_infected">洗脳者</a>・<a href="new_role/quiz.php#quiz">出題者</a><br>
+      <a href="new_role/ability.php#special_resist">特殊耐性能力者</a>は対象外です。</li>
 </ul>
 
 <h3 id="weather_no_last_words">涙雨 [Ver. 1.5.0 α3～]</h3>

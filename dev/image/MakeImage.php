@@ -775,7 +775,7 @@ class RoleMessageList {
     'type' => 'amaze_mad', 'delimiter' => array('_' => 'luck'));
 
   public $fire_mad = array(
-    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|煙々羅|です。一定日数おきに、#処刑#投票先が死ななかった場合は_天火_にさせることができます。\n　揺らめく煙はあなた自身。あなたの存在が、村人から心の余裕を奪い、真実を煙に巻くのです。",
+    'message' => "[役割] [|人狼|陣営] [|狂人|系]\n　あなたは|煙々羅|です。一定日数おきに、#処刑#投票先が死ななかった場合は_天火_にさせることができます。\n　揺らめく煙はあなた自身。あなたの存在が、村人から心の余裕を奪い、真実をその煙で覆い隠すのです。",
     'type' => 'amaze_mad', 'delimiter' => array('_' => 'wisp'));
 
   public $follow_mad = array(
@@ -2320,4 +2320,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));
-$builder->Output('fire_mad', array(0.5,0,0,0,-0.5,0,0,0,0.5));
+$builder->Output('fire_mad', array(0.5,0,0,0,-0.5,0,0.3,1,0.5,0.3));
