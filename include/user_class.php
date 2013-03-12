@@ -210,6 +210,9 @@ class User {
   //同一陣営判定
   public function IsCamp($camp, $win = false) { return $this->GetCamp($win) == $camp; }
 
+  //同一陣営判定 (メイン役職限定)
+  public function IsMainCamp($camp) { return $this->DistinguishCamp() == $camp; }
+
   //同一役職系判定
   public function IsMainGroup($group) { return $this->DistinguishRoleGroup() == $group; }
 
@@ -267,7 +270,7 @@ class User {
 
   //妖狐陣営判定
   public function IsFox($talk = false) {
-    return $this->IsCamp('fox') && ! ($talk && ($this->IsChildFox() || $this->IsLonely()));
+    return $this->IsMainCamp('fox') && ! ($talk && ($this->IsChildFox() || $this->IsLonely()));
   }
 
   //子狐系判定
@@ -280,7 +283,7 @@ class User {
   }
 
   //鬼陣営判定
-  public function IsOgre() { return $this->IsCamp('ogre'); }
+  public function IsOgre() { return $this->IsMainCamp('ogre'); }
 
   //鵺系判定
   public function IsUnknownMania() { return $this->IsMainGroup('unknown_mania'); }
@@ -393,7 +396,7 @@ class User {
   public function IsLastWordsLimited($save = false) {
     $stack = array('reporter', 'soul_assassin', 'evoke_scanner', 'no_last_words');
     if ($save) $stack[] = 'possessed_exchange';
-    return $this->IsRoleGroup('escaper') || $this->IsRole($stack);
+    return $this->IsMainGroup('escaper') || $this->IsRole($stack);
   }
 
   //特殊耐性判定
