@@ -5,26 +5,12 @@ class SharedServerConfig {
 
   //表示する他のサーバのリスト
   static public $server_list = array(
-    'cirno' => array('name' => 'チルノ鯖',
-		     'url' => 'http://www12.atpages.jp/cirno/',
-		     'encode' => 'UTF-8',
-		     'separator' => '<!-- atpages banner tag -->',
-		     'footer' => '</a><br>',
-		     'disable' => false),
-
     'kaguya' => array('name' => '輝夜鯖',
 		      'url' => 'http://www42.atpages.jp/houraisankaguya/',
 		      'encode' => 'UTF-8',
 		      'separator' => '<!-- atpages banner tag -->',
 		      'footer' => '</a><br>',
 		      'disable' => false),
-
-    'youmu' => array('name' => '妖夢鯖',
-		     'url' => 'http://www23.atpages.jp/youmu/',
-		     'encode' => 'UTF-8',
-		     'separator' => '<!-- atpages banner tag -->',
-		     'footer' => '</a><br>',
-		     'disable' => false),
 
     'eva' => array('name' => 'Eva 鯖',
 		   'url' => 'http://jinrou.kuroienogu.net/',
@@ -40,26 +26,12 @@ class SharedServerConfig {
 		     'footer' => '',
 		     'disable' => false),
 
-    'sakuya' => array('name' => '咲夜鯖',
-		      'url' => 'http://www7.atpages.jp/izayoi398/',
-		      'encode' => 'EUC-JP',
-		      'separator' => '<!-- atpages banner tag -->',
-		      'footer' => '</div></small></a><br>',
-		      'disable' => false),
-
     'momiji' => array('name' => '椛鯖',
 		     'url' => 'http://tm010.luna.ddns.vc/',
 		     'encode' => 'UTF-8',
 		     'separator' => '',
 		     'footer' => '',
 		     'disable' => false),
-
-    'sasugasister' => array('name' => '流石妹者鯖',
-			    'url' => 'http://www21.atpages.jp/sasugasister/',
-			    'encode' => 'UTF-8',
-			    'separator' => '<!-- atpages banner tag -->',
-			    'footer' => '</div></small></a><br>',
-			    'disable' => true),
 
     'suisei' => array('name' => '翠星石鯖',
 		      'url' => 'http://alicegame.dip.jp/suisei/',
@@ -109,13 +81,6 @@ class SharedServerConfig {
 		      'separator' => '',
 		      'footer' => '',
 		      'disable' => false),
-
-    'kotori' => array('name' => '小鳥鯖',
-		      'url' => 'http://kiterew.tv/jinro/',
-		      'encode' => 'UTF-8',
-		      'separator' => '',
-		      'footer' => '',
-		      'disable' => true),
 
     'inaba' => array('name' => '因幡鯖',
 		     'url' => 'http://jinro.usamimi.info/',
