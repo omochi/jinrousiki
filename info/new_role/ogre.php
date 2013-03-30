@@ -22,7 +22,7 @@ InfoHTML::OutputRoleHeader('鬼陣営');
 <li><a href="sub_role.php#lovers">恋人</a>は<a href="lovers.php">恋人陣営</a>と判定します (例：恋人の人狼は人狼陣営とはカウントしない)。</li>
 <li>2 日目以降の夜に村人一人を攫う (<a href="human.php#assassin_spec">暗殺</a>の一種) ことができます。</li>
 <li><a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) 以外の人狼に襲撃されても一定確率で無効化します (襲撃は失敗扱い)。</li>
-<li><a href="human.php#assassin_spec">暗殺</a>を一定確率で反射します。</li>
+<li><a href="human.php#assassin_spec">暗殺</a>を一定確率で反射します (<a href="ability.php#anti_assassin">暗殺耐性能力者</a>)。</li>
 <li>生存カウントは村人です。</li>
 <li><a href="human.php#psycho_mage">精神鑑定士</a>・<a href="human.php#sex_mage">ひよこ鑑定士</a>の判定は「鬼」です。</li>
 </ol>

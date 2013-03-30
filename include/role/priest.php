@@ -88,7 +88,8 @@ class Role_priest extends Role {
 	$data->count['sub_role'] += count($dummy_user->role_list) - 1;
       }
 
-      if (in_array('dummy_priest', $data->list) && $user->IsRoleGroup('dummy', 'fairy')) {
+      if (in_array('dummy_priest', $data->list) &&
+	  ($user->IsRoleGroup('dummy') || $user->IsMainGroup('fairy'))) {
 	$data->count['dream']++;
       }
     }

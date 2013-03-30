@@ -98,16 +98,16 @@ class RoleManager {
 class RoleFilterData {
   //常時表示サブ役職 (本体 / 順番依存あり)
   static $display_real = array(
-    'copied', 'copied_trick', 'copied_basic', 'copied_soul', 'copied_teller', 'lost_ability',
-    'muster_ability', 'lovers', 'sweet_status', 'challenge_lovers', 'possessed_exchange', 'joker',
-    'rival', 'death_note');
+    'copied', 'copied_trick', 'copied_basic', 'copied_nymph', 'copied_soul', 'copied_teller',
+    'lost_ability', 'muster_ability', 'lovers', 'sweet_status', 'challenge_lovers',
+    'possessed_exchange', 'joker', 'rival', 'death_note');
 
   //常時表示サブ役職 (仮想 / 順番依存あり)
   static $display_virtual = array(
     'death_selected', 'febris', 'frostbite', 'death_warrant', 'day_voter', 'wirepuller_luck',
     'occupied_luck', 'mind_open', 'mind_read', 'mind_evoke', 'mind_lonely', 'mind_receiver',
     'mind_friend', 'mind_sympathy', 'mind_sheep', 'mind_presage', 'wisp', 'black_wisp',
-    'spell_wisp', 'foughten_wisp', 'gold_wisp', 'sheep_wisp');
+    'spell_wisp', 'foughten_wisp', 'gold_wisp', 'sheep_wisp', 'aspirator');
 
   //非表示サブ役職 (呼び出し抑制用)
   static $display_none = array(
@@ -123,9 +123,9 @@ class RoleFilterData {
     'mind_sympathy', 'mind_evoke', 'mind_presage', 'mind_lonely', 'mind_sheep', 'sheep_wisp',
     'lovers', 'challenge_lovers', 'possessed_exchange', 'joker', 'rival', 'enemy', 'supported',
     'death_note', 'death_selected', 'possessed_target', 'possessed', 'infected', 'psycho_infected',
-    'bad_status', 'sweet_status', 'protected', 'lost_ability', 'muster_ability', 'changed_disguise',
-    'changed_therian', 'changed_vindictive', 'copied', 'copied_trick', 'copied_basic',
-    'copied_soul', 'copied_teller');
+    'bad_status', 'sweet_status', 'protected', 'aspirator', 'lost_ability', 'muster_ability',
+    'changed_disguise', 'changed_therian', 'changed_vindictive', 'copied', 'copied_trick',
+    'copied_basic', 'copied_nymph', 'copied_soul', 'copied_teller');
 
   //発言表示
   static $talk = array('blinder', 'earplug', 'speaker');

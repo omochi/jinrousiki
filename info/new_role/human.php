@@ -1291,7 +1291,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#bacchus_medium">神主</a>
+<a href="#bacchus_medium">神主</a>・<a href="ability.php#anti_assassin">暗殺耐性能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1487,8 +1487,8 @@ PP ラインの計算を複雑にするために作成してみました。
 様々な特殊耐性を持つ上位共有者。
 </pre>
 <ol>
-<li><a href="ability.php#poison">毒</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="ability.php#vote_kill_counter_solo">処刑者カウンター能力者 (個別型)</a> の能力の対象外</li>
-<li><a href="#cursed_brownie">祟神</a>・<a href="ability.php#vote_action_luck">処刑投票能力者 (得票数変化型)</a>・<a href="ability.php#febris_active">熱病能力者 (能動型)</a> の能力無効</li>
+<li><a href="ability.php#poison">毒</a>・<a href="wolf.php#follow_mad">舟幽霊</a>・<a href="ability.php#vote_kill_counter_solo">処刑カウンター能力者(個別型)</a> の能力の対象外</li>
+<li><a href="#cursed_brownie">祟神</a>・<a href="ability.php#vote_action_luck">処刑投票能力者(得票数変化型)</a>・<a href="ability.php#febris_active">熱病能力者(能動型)</a> の能力無効</li>
 <li><a href="#assassin_spec">暗殺反射</a></li>
 <li><a href="#revive_rule">蘇生</a>不可</li>
 <li>憑依無効</li>
@@ -1500,7 +1500,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </pre>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>
-<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依対象外 (<a href="wolf.php#possessed_wolf">憑狼</a>と揃えました)。
+<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>の憑依能力無効
 </pre>
 <h4>関連役職</h4>
 <pre>
@@ -1563,7 +1563,7 @@ PP ラインの計算を複雑にするために作成してみました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#sudden_death">ショック死発動能力者</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2348,7 +2348,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="#reporter">ブン屋</a>
+<a href="#reporter">ブン屋</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2617,7 +2617,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_kill_counter">処刑者カウンター能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#febris">熱病能力者</a>
+<a href="ability.php#vote_kill_counter">処刑カウンター能力者</a>・<a href="ability.php#authority">投票数変化能力者</a>・<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2745,7 +2745,7 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="ability.php#anti_assassin">暗殺耐性能力者</a>・<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_reaction">処刑得票能力者</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2758,11 +2758,16 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 座敷童子の亜種で、人狼に襲撃されたら次の日を全員<a href="sub_role.php#mind_open">公開者</a> (白夜) に、
 処刑されたら次の日の昼を全員<a href="sub_role.php#blinder">目隠し</a> (宵闇) にする。
-身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) による襲撃の場合は無効。
+</pre>
+<h5>Ver. 2.0.0 α3～</h5>
+<pre>
+襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。
+<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合でも有効になる仕様に変更。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="chiroptera.php#light_fairy">光妖精</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>・<a href="ability.php#vote_kill_counter">処刑者カウンター能力者</a>
+<a href="chiroptera.php#light_fairy">光妖精</a>・<a href="chiroptera.php#dark_fairy">闇妖精</a>・<a href="ability.php#vote_kill_counter">処刑カウンター能力者</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -2775,11 +2780,16 @@ Ver. 1.4.0 α23 からは常時遠吠えを見えなくしました。
 <pre>
 人狼に襲撃されたら次の日の夜を飛ばしてしまう、座敷童子の亜種。
 能力が発動した場合は、専用のメッセージが表示される。
-身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合は無効。
+身代わり君か、<a href="wolf.php#hungry_wolf">餓狼</a>・<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) による襲撃の場合は無効。
+</pre>
+<h5>Ver. 2.0.0 α3～</h5>
+<pre>
+襲撃者が<a href="wolf.php#sirius_wolf">天狼</a> (完全覚醒状態) だった場合は無効。
+<a href="wolf.php#possessed_wolf">憑狼</a>による襲撃の場合でも有効になる仕様に変更。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#soul_mania">覚醒者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -3046,7 +3056,7 @@ MVP の賞品としてプレゼントしたものです。
 <li>勝利条件は「<a href="#doll_master">人形遣い</a>が全員死亡している＋村人陣営の勝利」で、自身の生死は不問。</li>
 <li><a href="#doll_master">人形遣い</a>が出現しなかった場合の勝利条件は通常の村人陣営相当になる。</li>
 <li><a href="#doll_master">人形遣い</a>が誰か分かる。</li>
-<li><a href="#doll_master">人形遣い</a>の枠に<a href="#puppet_mage">傀儡師</a>・<a href="#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+<li><a href="#doll_master">人形遣い</a>の枠に<a href="#puppet_mage">傀儡師</a>・<a href="ability.php#partner_scarlet">仲間情報妨害能力者 (混入型)</a> も混ざって表示される。</li>
 <li><a href="#doll_master">人形遣い</a>が<a href="wolf.php#wolf_group">人狼</a>に襲撃されたら身代わりで死亡する。</li>
 <li>特に注釈がない場合、「人形」は<a href="#doll_master">人形遣い</a>を除いた上海人形系を指す。</li>
 </ol>
@@ -3118,7 +3128,7 @@ MVP の賞品としてプレゼントしたものです。
 </ol>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_kill_counter">処刑者カウンター能力者</a>
+<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#vote_kill_counter">処刑カウンター能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

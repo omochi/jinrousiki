@@ -15,7 +15,7 @@ class Role_sharp_wolf extends Role_wolf {
   }
 
   function WolfEatAction(User $user) {
-    if (! $user->IsRoleGroup('mad') && ! $user->IsPoison()) return false;
+    if (! $user->IsMainGroup('mad') && ! $user->IsPoison()) return false;
     if (DB::$ROOM->IsOption('seal_message')) return true;
     $id = $this->GetWolfVoter()->id;
     DB::$ROOM->ResultAbility($this->result, 'wolf_avoid', $user->GetName(), $id);

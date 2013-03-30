@@ -246,7 +246,7 @@ InfoHTML::OutputRoleHeader('吸血鬼陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#soul">役職鑑定能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#anti_assassin">暗殺耐性能力者</a>・<a href="ability.php#soul">役職鑑定能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -1299,6 +1299,10 @@ class RoleMessageList {
     'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|羊飼い|です。初日の夜に村の人口の六分の一を|受援者|にできますが、さらに^羊^を与えてしまいます。\n　慈愛を食み生きる愛しい^羊^達、^羊^達を命に代えても恐ろしい#人狼#の牙から守り切り、生の道へと導くのです。",
     'type' => 'sacrifice_patron', 'delimiter' => array('^' => 'mind'));
 
+  public $plumage_patron = array(
+    'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|鬼車鳥|です。初日の夜に誰か一人を|受援者|にし、さらに#吸毒者#を与えます。",
+    'type' => 'patron', 'delimiter' => array('#' => 'poison'));
+
   public $critical_patron = array(
     'message' => "[役割] [|決闘者|陣営] [|後援者|系]\n　あなたは|ひんな神|です。初日の夜に誰か一人を|受援者|にし、さらに#ひんな持ち#を与えます。また、稀に_処刑_#得票数#が +100 されます。\n　死人の土から造られて、あなたは望まぬ願いを叶え続けるだろう。願いの対価を刺し与え、時は来たぞと硬い地の下に還るでしょう。",
     'type' => 'patron', 'delimiter' => array('#' => 'luck', '_' => 'vote'));
@@ -1314,6 +1318,11 @@ class RoleMessageList {
   public $basic_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|求道者|です。初日の夜に指定した人のメイン役職の基本種に変化します。\n　夢にも惑わされず、蝕にも侵されず、ただひたすらに己の本分を全うするのです！",
     'type' => 'mania');
+
+  public $scarlet_mania = array(
+    'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|紅天女|です。_人狼_からは#無意識#に、^妖狐^からは^子狐^に、:人形:からは:人形遣い:に見えています。",
+    'type' => 'mania',
+    'delimiter' => array('#' => 'human', '_' => 'wolf', '^' => 'fox', ':' => 'doll'));
 
   public $soul_mania = array(
     'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|覚醒者|です。初日の夜に指定した人と関連した能力に後日、目覚める事になります。\n　数日間、自らの内でその能力を育み、より強き力を持ったものとして新たに君臨するのです！",
@@ -1659,6 +1668,10 @@ class RoleMessageList {
   public $death_selected = array(
     'message' => "　あなたは|オシラ遊び|の生贄に選ばれたので今夜死亡します。",
     'delimiter' => array('|' => 'assassin'));
+
+  public $aspirator = array(
+    'message' => "　あなたは|吸毒者|です。#処刑#時に発動する|毒|に優先的に中ってしまいます。",
+    'delimiter' => array('|' => 'poison', '#' => 'vote'));
 
   public $lost_ability = array('message' => "　あなたは能力を失いました。");
 
@@ -2113,10 +2126,12 @@ class RoleMessageList {
   public $result_soul_patron = array('message' => "さんは|家神|でした", 'type' => 'result_patron');
   public $result_sacrifice_patron = array('message' => "さんは|身代わり地蔵|でした", 'type' => 'result_patron');
   public $result_shepherd_patron = array('message' => "さんは|羊飼い|でした", 'type' => 'result_patron');
+  public $result_plumage_patron = array('message' => "さんは|鬼車鳥|でした", 'type' => 'result_patron');
   public $result_critical_patron = array('message' => "さんは|ひんな神|でした", 'type' => 'result_patron');
   public $result_mania = array('message' => "さんは|神話マニア|でした", 'delimiter' => array('|' => 'mania'));
   public $result_trick_mania = array('message' => "さんは|奇術師|でした", 'type' => 'result_mania');
   public $result_basic_mania = array('message' => "さんは|求道者|でした", 'type' => 'result_mania');
+  public $result_scarlet_mania = array('message' => "さんは|紅天女|でした", 'type' => 'result_mania');
   public $result_soul_mania = array('message' => "さんは|覚醒者|でした", 'type' => 'result_mania');
   public $result_dummy_mania = array('message' => "さんは|夢語部|でした", 'type' => 'result_mania');
   public $result_unknown_mania = array('message' => "さんは|鵺|でした", 'type' => 'result_mania');
@@ -2320,4 +2335,5 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));
-$builder->Output('fire_mad', array(0.5,0,0,0,-0.5,0,0.3,1,0.5,0.3));
+#$builder->Output('scarlet_mania');
+$builder->Output('plumage_patron', array(0,0,0,0,0.5));

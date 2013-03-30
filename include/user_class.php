@@ -214,7 +214,10 @@ class User {
   public function IsMainCamp($camp) { return $this->DistinguishCamp() == $camp; }
 
   //同一役職系判定
-  public function IsMainGroup($group) { return $this->DistinguishRoleGroup() == $group; }
+  public function IsMainGroup($group) {
+    $stack = func_get_args();
+    return in_array($this->DistinguishRoleGroup(), $stack);
+  }
 
   //拡張判定
   public function IsPartner($type, $target) {
@@ -408,8 +411,11 @@ class User {
 
   //毒回避判定
   public function IsAvoidPoison() {
-    return $this->IsRole('poison_vampire', 'horse_ogre') || $this->IsAvoid(true);
+    return $this->IsRole('poison_vampire', 'horse_ogre', 'plumage_patron') || $this->IsAvoid(true);
   }
+
+  //人外カウント判定
+  public function IsInhuman() { return $this->IsWolf() || $this->IsFox(); }
 
   //所属陣営判別 (ラッパー)
   public function DistinguishCamp() { return RoleData::GetCamp($this->main_role); }

@@ -38,6 +38,7 @@ InfoHTML::OutputRoleHeader('神話マニア陣営');
 <a href="#mania">神話マニア</a>
 <a href="#trick_mania">奇術師</a>
 <a href="#basic_mania">求道者</a>
+<a href="#scarlet_mania">紅天女</a>
 <a href="#soul_mania">覚醒者</a>
 <a href="#dummy_mania">夢語部</a>
 </p>
@@ -122,6 +123,23 @@ CO するべきかどうかは、コピーした役職次第です。
 <pre>
 <a href="#trick_mania">奇術師</a>の逆バージョンです。
 コピー先の正確な役職は分からないので騙りに使いやすいと思います。
+</pre>
+
+<h3 id="scarlet_mania">紅天女 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α7～]</h3>
+<pre>
+<a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な神話マニア。
+コピー能力は<a href="#mania">神話マニア</a>と同じ。
+役職が変化すると<a href="sub_role.php#copied_nymph">元紅天女</a>がつく。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#partner_scarlet">仲間情報妨害能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="wolf.php#scarlet_wolf">紅狼</a>の神話マニアバージョンです。
+変化後には見えなくなるので、特定の役職に紅天女である事を
+察知されてしまうことになります。
 </pre>
 
 <h3 id="soul_mania">覚醒者 (占い結果：村人 / 霊能結果：村人) [Ver. 1.4.0 β11～]</h3>
@@ -699,7 +717,7 @@ CO するべきかどうかは、コピーした役職次第です。
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#revive">蘇生能力者</a>
+<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>・<a href="ability.php#revive">蘇生能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

@@ -324,10 +324,12 @@ class RoleData {
     'soul_patron'           => '家神',
     'sacrifice_patron'      => '身代わり地蔵',
     'shepherd_patron'       => '羊飼い',
+    'plumage_patron'        => '鬼車鳥',
     'critical_patron'       => 'ひんな神',
     'mania'                 => '神話マニア',
     'trick_mania'           => '奇術師',
     'basic_mania'           => '求道者',
+    'scarlet_mania'         => '紅天女',
     'soul_mania'            => '覚醒者',
     'dummy_mania'           => '夢語部',
     'unknown_mania'         => '鵺',
@@ -438,6 +440,7 @@ class RoleData {
     'possessed_target'   => '憑依者',
     'possessed'          => '憑依',
     'protected'          => '庇護者',
+    'aspirator'          => '吸毒者',
     'lost_ability'       => '能力喪失',
     'muster_ability'     => '能力発現',
     'changed_disguise'   => '元朔狼',
@@ -446,6 +449,7 @@ class RoleData {
     'copied'             => '元神話マニア',
     'copied_trick'       => '元奇術師',
     'copied_basic'       => '元求道者',
+    'copied_nymph'       => '元紅天女',
     'copied_soul'        => '元覚醒者',
     'copied_teller'      => '元夢語部');
 
@@ -770,10 +774,12 @@ class RoleData {
     'soul_patron'           => '家',
     'sacrifice_patron'      => '地蔵',
     'shepherd_patron'       => '羊飼',
+    'plumage_patron'        => '鬼車',
     'critical_patron'       => '雛神',
     'mania'                 => 'マ',
     'trick_mania'           => '奇',
     'basic_mania'           => '求道',
+    'scarlet_mania'         => '天女',
     'soul_mania'            => '覚醒',
     'dummy_mania'           => '夢語',
     'unknown_mania'         => '鵺',
@@ -880,6 +886,7 @@ class RoleData {
     'possessed_target'      => '憑',
     'possessed'             => '被憑',
     'protected'             => '庇',
+    'aspirator'             => '吸毒',
     'lost_ability'          => '失',
     'muster_ability'        => '発',
     'changed_disguise'      => '元朔',
@@ -888,49 +895,47 @@ class RoleData {
     'copied'                => '元マ',
     'copied_trick'          => '元奇',
     'copied_basic'          => '元求',
+    'copied_nymph'          => '元紅',
     'copied_soul'           => '元覚',
     'copied_teller'         => '元語');
 
   //メイン役職のグループリスト (役職 => 所属グループ)
   //このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
   static public $main_role_group_list = array(
-    'wolf' => 'wolf',
-    'mad'  => 'mad',
-    'child_fox' => 'child_fox', 'sex_fox'        => 'child_fox', 'stargazer_fox' => 'child_fox',
-    'monk_fox'  => 'child_fox', 'jammer_fox'     => 'child_fox', 'miasma_fox'    => 'child_fox',
-    'howl_fox'  => 'child_fox', 'vindictive_fox' => 'child_fox', 'critical_fox'  => 'child_fox',
-    'fox'       => 'fox',
-    'cupid' => 'cupid',
-    'angel' => 'angel',
-    'quiz' => 'quiz',
-    'vampire' => 'vampire',
-    'chiroptera' => 'chiroptera',
-    'fairy'      => 'fairy',
-    'ogre'  => 'ogre',
-    'yaksa' => 'yaksa',
-    'duelist' => 'duelist',
-    'avenger' => 'avenger',
-    'patron'  => 'patron',
-    'mage'        => 'mage', 'voodoo_killer' => 'mage',
-    'necromancer' => 'necromancer',
-    'medium'      => 'medium',
-    'jealousy'    => 'jealousy',
-    'priest'      => 'priest',
-    'guard'       => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard',
-    'common'      => 'common',
-    'cat'         => 'poison_cat',
-    'pharmacist'  => 'pharmacist',
-    'assassin'    => 'assassin',
-    'scanner'     => 'mind_scanner',
-    'brownie'     => 'brownie',
-    'wizard'      => 'wizard',
-    'doll'        => 'doll',
-    'escaper'     => 'escaper',
-    'poison'      => 'poison',
+     //鵺系
     'unknown_mania'   => 'unknown_mania', 'wirepuller_mania' => 'unknown_mania',
     'fire_mania'      => 'unknown_mania', 'sacrifice_mania'  => 'unknown_mania',
     'resurrect_mania' => 'unknown_mania', 'revive_mania'     => 'unknown_mania',
-    'mania' => 'mania');
+    'mania' => 'mania', //マニア系
+    'chiroptera' => 'chiroptera', 'fairy' => 'fairy', //蝙蝠陣営
+    'ogre' => 'ogre', 'yaksa' => 'yaksa', //鬼陣営
+    'duelist' => 'duelist', 'avenger' => 'avenger', 'patron'  => 'patron', //決闘者陣営
+    'cupid' => 'cupid', 'angel' => 'angel', //恋人陣営
+    'quiz' => 'quiz', //出題者陣営
+    'vampire' => 'vampire', //吸血鬼陣営
+    //子狐系
+    'child_fox' => 'child_fox', 'sex_fox'        => 'child_fox', 'stargazer_fox' => 'child_fox',
+    'monk_fox'  => 'child_fox', 'jammer_fox'     => 'child_fox', 'miasma_fox'    => 'child_fox',
+    'howl_fox'  => 'child_fox', 'vindictive_fox' => 'child_fox', 'critical_fox'  => 'child_fox',
+    'fox' => 'fox', //妖狐系
+    'wolf' => 'wolf', 'mad' => 'mad', //人狼陣営
+    'necromancer' => 'necromancer', //霊能者系
+    'medium'      => 'medium', //巫女系
+    'jealousy'    => 'jealousy', //橋姫系
+    'priest'      => 'priest', //司祭系
+    'guard'       => 'guard', 'anti_vooedoo' => 'guard', 'reporter' => 'guard', //狩人系
+    'common'      => 'common', //共有者系
+    'pharmacist'  => 'pharmacist', //薬師系
+    'assassin'    => 'assassin', //暗殺者系
+    'scanner'     => 'mind_scanner', //さとり系
+    'brownie'     => 'brownie', //座敷童子系
+    'wizard'      => 'wizard', //魔法使い系
+    'doll'        => 'doll', //上海人形系
+    'escaper'     => 'escaper', //逃亡者系
+    'mage'        => 'mage', 'voodoo_killer' => 'mage', //占い師系
+    'cat'         => 'poison_cat', //猫又系
+    'poison'      => 'poison' //埋毒者系
+  );
 
   //サブ役職のグループリスト (CSS のクラス名 => 所属役職)
   //このリストの表示順に PlayerList の役職が表示される
@@ -963,10 +968,11 @@ class RoleData {
     'assassin'     => array('death_note', 'death_selected'),
     'chiroptera'   => array('bad_status', 'sweet_status'),
     'guard'        => array('protected'),
+    'poison'       => array('aspirator'),
     'human'        => array('lost_ability', 'muster_ability'),
     'wolf'         => array('possessed_target', 'possessed', 'changed_disguise', 'changed_therian'),
     'fox'          => array('changed_vindictive'),
-    'mania'        => array('copied', 'copied_trick', 'copied_basic', 'copied_soul',
+    'mania'        => array('copied', 'copied_trick', 'copied_basic', 'copied_nymph', 'copied_soul',
 			    'copied_teller'));
 
   //-- 関数 --//

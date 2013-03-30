@@ -92,7 +92,8 @@ class Role_mage extends Role {
 
     //特殊役職判定
     if ($user->IsOgre()) return 'ogre';
-    if ($user->IsRoleGroup('vampire', 'mist') || $user->IsRole('boss_chiroptera')) {
+    if ($user->IsMainGroup('vampire') || $user->IsRoleGroup('mist') ||
+	$user->IsRole('boss_chiroptera')) {
       return 'chiroptera';
     }
 

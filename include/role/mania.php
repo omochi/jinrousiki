@@ -25,8 +25,11 @@ class Role_mania extends Role {
     $role  = $this->GetRole($user);
     $this->CopyAction($user, $role);
 
-    $this->delay_copy || $this->camp_copy ? $actor->AddMainRole($user->id) :
+    if ($this->delay_copy || $this->camp_copy) {
+      $actor->AddMainRole($user->id);
+    } else {
       $actor->ReplaceRole($this->role, $role);
+    }
     if (! $this->delay_copy) $actor->AddRole($this->GetCopiedRole());
     if (! $this->camp_copy) {
       DB::$ROOM->ResultAbility($this->result, $role, $user->handle_name, $actor->id);

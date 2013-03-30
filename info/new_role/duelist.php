@@ -302,6 +302,7 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 <a href="#soul_patron">家神</a>
 <a href="#sacrifice_patron">身代わり地蔵</a>
 <a href="#shepherd_patron">羊飼い</a>
+<a href="#plumage_patron">鬼車鳥</a>
 <a href="#critical_patron">ひんな神</a>
 </p>
 
@@ -365,6 +366,23 @@ InfoHTML::OutputRoleHeader('決闘者陣営');
 <pre>
 「<a href="sub_role.php#supported">受援者</a>を複数持てる代りに人狼から狙われやすい後援者」がコンセプトです。
 お互いを認識できる点をどう活かすかがポイントです。
+</pre>
+
+<h3 id="plumage_patron">鬼車鳥 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α7～]</h3>
+<h4>[耐性] 毒：対象外</h4>
+<pre>
+<a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#aspirator">吸毒者</a>を付加する特殊な後援者。
+毒耐性を持つ。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#resist_poison">毒耐性能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+<a href="#sacrifice_patron">身代わり地蔵</a>の毒耐性バージョンです。「きしゃどり」と読みます。
+ただし、<a href="sub_role.php#aspirator">吸毒者</a>のアイディアを活かすために作成したので、能力的には
+勝利の枷となっています。
 </pre>
 
 <h3 id="critical_patron">ひんな神 (占い結果：村人 / 霊能結果：村人) [Ver. 1.5.0 β6～]</h3>

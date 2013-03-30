@@ -46,7 +46,7 @@ class Role_ogre extends Role {
     foreach (RoleManager::LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
       if ($filter->GuardAssassin($user->id)) return;
     }
-    if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //無効判定
+    if ($user->IsDead(true) || $user->IsMainGroup('escaper')) return; //無効判定
     if ($user->IsReflectAssassin()) { //反射判定
       $this->AddSuccess($this->GetID(), 'ogre');
       return;

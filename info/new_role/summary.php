@@ -106,6 +106,7 @@ Ver. 2.2.0
 <a href="#ver220a4">α4</a>
 <a href="#ver220a5">α5</a>
 <a href="#ver220a6">α6</a>
+<a href="#ver220a7">α7</a>
 </p>
 
 <p>
@@ -149,7 +150,9 @@ Ver. 1.5.0
 <a href="#sub_ver150b14">β14</a><br>
 Ver. 2.1.0
 <a href="#sub_ver210a3">α3</a>
-<a href="#sub_ver210a6">α6</a>
+<a href="#sub_ver210a6">α6</a><br>
+Ver. 2.2.0
+<a href="#sub_ver220a7">α7</a>
 </p>
 
 <table id="main_role">
@@ -3117,6 +3120,24 @@ Ver. 2.1.0
   <td class="ability">処刑投票に<a href="sub_role.php#black_wisp">天火</a>を付加する特殊な狂人。</td>
   <td>Ver. 2.2.0 α6</td>
 </tr>
+<tr id="ver220a7">
+  <td><a href="mania.php#scarlet_mania">紅天女</a></td>
+  <td><a href="mania.php">神話マニア</a></td>
+  <td><a href="mania.php#mania_group">神話マニア系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#partner">人狼</a>から<a href="human.php#unconscious">無意識</a>に、<a href="fox.php#partner">妖狐陣営</a>から<a href="fox.php#child_fox_group">子狐</a>に、<a href="human.php#doll_rule">人形</a>から<a href="human.php#doll_master">人形遣い</a>に見える特殊な神話マニア。</td>
+  <td>Ver. 2.2.0 α7</td>
+</tr>
+<tr>
+  <td><a href="duelist.php#plumage_patron">鬼車鳥</a></td>
+  <td><a href="duelist.php">決闘者</a></td>
+  <td><a href="duelist.php#patron_group">後援者系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#aspirator">吸毒者</a>を付加する特殊な後援者。</td>
+  <td>Ver. 2.2.0 α7</td>
+</tr>
 </table>
 
 <table id="sub_role">
@@ -3863,6 +3884,20 @@ Ver. 2.1.0
     <td>無し</td>
     <td class="ability"><a href="fox.php#fox">妖狐</a>に変化した後の<a href="fox.php#vindictive_fox">昼狐</a>に付加される。</td>
     <td>Ver. 2.1.0 α6</td>
+  </tr>
+  <tr id="sub_ver220a7">
+    <td><a href="sub_role.php#copied_nymph">元紅天女</a></td>
+    <td><a href="sub_role.php#copied_group">元神話マニア系</a></td>
+    <td>無し</td>
+    <td class="ability">コピー後の<a href="mania.php#scarlet_mania">紅天女</a>に付加される。</td>
+    <td>Ver. 2.2.0 α7</td>
+  </tr>
+  <tr>
+    <td><a href="sub_role.php#aspirator">吸毒者</a></td>
+    <td><a href="sub_role.php#other_group">その他</a></td>
+    <td>無し</td>
+    <td class="ability">処刑時の毒中り候補になった場合、優先的に中る。</td>
+    <td>Ver. 2.2.0 α7</td>
   </tr>
 </table>
 

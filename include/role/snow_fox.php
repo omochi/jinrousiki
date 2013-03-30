@@ -15,7 +15,7 @@ class Role_snow_fox extends Role_fox {
     foreach (array_keys($this->GetStack()) as $uname) {
       if ($this->IsVoted($uname)) continue;
       foreach ($this->GetVotedUname($uname) as $voted_uname) {
-	if (DB::$USER->ByRealUname($voted_uname)->IsRoleGroup('mad')) {
+	if (DB::$USER->ByRealUname($voted_uname)->IsMainGroup('mad')) {
 	  DB::$USER->ByRealUname($uname)->AddDoom(1, 'frostbite');
 	}
       }

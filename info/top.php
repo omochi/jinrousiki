@@ -23,5 +23,8 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>紅天女：狼から無意識に、妖狐陣営から子狐に、人形から人形遣いに見える特殊な神話マニア</li>
+  <li>鬼車鳥：受援者に吸毒者を付加する特殊な後援者</li>
+  <li>元紅天女：コピー後の紅天女に付加される</li>
+  <li>吸毒者：処刑時の毒中り候補になった場合、優先的に中る</li>
 </ul>

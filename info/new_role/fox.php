@@ -23,7 +23,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </li>
 <li><a href="#fox_group">妖狐系</a>は「深遠なる妖狐の智を持つ同胞は以下の人たちです」と表示され、<a href="#talk">念話</a>ができる。</li>
 <li><a href="#child_fox_group">子狐系</a>は「妖狐に与する仲間は以下の人たちです」と表示され、<br>
-同じ枠に<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。</li>
+同じ枠に<a href="#scarlet_fox">紅狐</a>以外の<a href="ability.php#partner_scarlet">仲間情報妨害能力者 (混入型)</a> も混ざって表示される。</li>
 <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなり、仲間リストからも消える (<a href="#silver_fox">銀狐</a>と同じ)。</li>
 <li><a href="#possessed_fox">憑狐</a>が憑依すると仲間表示が憑依先の名前に変更される。</li>
 </ol>
@@ -454,7 +454,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
+<a href="mania.php#soul_mania">覚醒者</a>・<a href="ability.php#anti_assassin">暗殺耐性能力者</a>・<a href="ability.php#cursed_group">呪い能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -671,7 +671,7 @@ InfoHTML::OutputRoleHeader('妖狐陣営');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="ability.php#vote_kill_counter">処刑者カウンター能力者</a>・<a href="ability.php#febris">熱病能力者</a>
+<a href="ability.php#vote_kill_counter">処刑カウンター能力者</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>・<a href="ability.php#febris">熱病能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

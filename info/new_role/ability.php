@@ -18,17 +18,18 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </p>
 <p>
 <a href="#doom">死の宣告</a>
-<a href="#vote_kill_counter">処刑者カウンター</a>
+<a href="#vote_kill_counter">処刑カウンター</a>
 <a href="#decide">処刑者決定</a>
 <a href="#vote_action">処刑投票</a>
 <a href="#vote_reaction">処刑得票</a>
 <a href="#sudden_death">ショック死</a>
 <a href="#anti_sudden_death">ショック死抑制</a>
+<a href="#wolf_kill_counter">人狼襲撃カウンター</a>
 <a href="#resist_wolf">人狼襲撃耐性</a>
 <a href="#psycho">精神</a>
-<a href="#sex">性別</a>
 </p>
 <p>
+<a href="#sex">性別</a>
 <a href="#revive">蘇生</a>
 <a href="#revive_limit">蘇生制限</a>
 <a href="#same">同一表示</a>
@@ -38,9 +39,9 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#luck">得票数変化</a>
 <a href="#special_resist">特殊耐性</a>
 <a href="#poison">毒</a>
-<a href="#resist_poison">毒耐性</a>
 </p>
 <p>
+<a href="#resist_poison">毒耐性</a>
 <a href="#partner">仲間情報妨害</a>
 <a href="#febris">熱病</a>
 <a href="#cursed_group">呪い</a>
@@ -50,9 +51,9 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="#seal">封印</a>
 <a href="#disguise">変化</a>
 <a href="#sacrifice">身代わり</a>
-<a href="#soul">役職鑑定</a>
 </p>
 <p>
+<a href="#soul">役職鑑定</a>
 <a href="#last_words_limit">遺言制限</a>
 <a href="#dummy">夢</a>
 <a href="#necromancer">霊能</a>
@@ -172,7 +173,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#doom_doll">蓬莱人形</a>
 </pre>
 
-<h2 id="vote_kill_counter">処刑者カウンター能力者</h2>
+<h2 id="vote_kill_counter">処刑カウンター能力者</h2>
 <h3 id="vote_kill_counter_solo">個別型</h3>
 <pre>
 <a href="human.php#brownie">座敷童子</a>・<a href="human.php#doom_doll">蓬莱人形</a>・<a href="fox.php#miasma_fox">蟲狐</a>
@@ -234,6 +235,11 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <pre>
 <a href="human.php#cure_pharmacist">河童</a>・<a href="human.php#revive_pharmacist">仙人</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#cure_pharmacist">河童</a>)
+</pre>
+
+<h2 id="wolf_kill_counter">人狼襲撃カウンター能力者</h2>
+<pre>
+<a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="human.php#sun_brownie">八咫烏</a>・<a href="human.php#history_brownie">白澤</a>・<a href="fox.php#miasma_fox">蟲狐</a>・<a href="mania.php#revive_mania">五徳猫</a>・<a href="sub_role.php#mind_sheep">羊</a>
 </pre>
 
 <h2 id="resist_wolf">人狼襲撃耐性能力者</h2>
@@ -346,7 +352,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="resist_poison">毒耐性能力者</h2>
 <pre>
-<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="quiz.php#quiz">出題者</a>・<a href="vampire.php#poison_vampire">百々爺</a>・<a href="ogre.php#horse_ogre">馬頭鬼</a>・<a href="sub_role.php#challenge_lovers">難題</a>
+<a href="human.php#detective_common">探偵</a>・<a href="wolf.php#resist_wolf">抗毒狼</a>・<a href="wolf.php#sirius_wolf">天狼</a>・<a href="quiz.php#quiz">出題者</a>・<a href="vampire.php#poison_vampire">百々爺</a>・<a href="ogre.php#horse_ogre">馬頭鬼</a>・<a href="duelist.php#plumage_patron">鬼車鳥</a>・<a href="sub_role.php#challenge_lovers">難題</a>
 </pre>
 
 <h2 id="partner">仲間情報妨害能力者</h2>
@@ -356,7 +362,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </pre>
 <h3 id="partner_scarlet">混入型 (紅系)</h3>
 <pre>
-<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>
+<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="wolf.php#scarlet_wolf">紅狼</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>・<a href="mania.php#scarlet_mania">紅天女</a>
 </pre>
 
 <h2 id="febris">熱病能力者</h2>

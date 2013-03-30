@@ -20,7 +20,7 @@ InfoHTML::OutputRoleHeader('人狼陣営');
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼と<a href="#fanatic_mad">狂信者</a>・<a href="#whisper_mad">囁き狂人</a>は<a href="#silver_wolf">銀狼</a>以外の仲間の人狼が誰か分かる。</li>
   <li><a href="#silver_wolf">銀狼</a>以外の全ての人狼は<a href="#whisper_mad">囁き狂人</a>が誰か分かる。</li>
   <li><a href="human.php#unconscious">無意識</a>は<a href="#silver_wolf">銀狼</a>も含めた全ての人狼から分かる。<br>
-  ただし、<a href="human.php#scarlet_doll">和蘭人形</a>・<a href="fox.php#scarlet_fox">紅狐</a>・<a href="lovers.php#scarlet_angel">紅天使</a>・<a href="vampire.php#scarlet_vampire">屍鬼</a>・<a href="chiroptera.php#scarlet_chiroptera">紅蝙蝠</a>も混ざって表示される。
+  ただし、<a href="#scarlet_wolf">紅狼</a>以外の<a href="ability.php#partner_scarlet">仲間情報妨害能力者 (混入型)</a> も混ざって表示される。
   </li>
   <li><a href="sub_role.php#mind_lonely">はぐれ者</a>になると仲間が分からなくなる (<a href="#silver_wolf">銀狼</a>と同じ)。</li>
 </ol>
@@ -966,15 +966,14 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
   <li>狼が残り二人になると、以下の能力を持つ (覚醒状態)。</li>
   <ol>
     <li><a href="human.php#assassin_spec">暗殺反射</a></li>
-    <li><a href="ability.php#trap_night">罠 (夜投票型)</a> 無効</li>
+    <li><a href="ability.php#trap_night">罠(夜投票型)</a> 無効</li>
   </ol>
   <li>狼が残り一人になると、さらに以下の能力を持つ (完全覚醒状態)。</li>
   <ol>
-    <li><a href="ability.php#poison">毒</a>・<a href="#follow_mad">舟幽霊</a>・<a href="ability.php#vote_kill_counter_solo">処刑者カウンター能力者 (個別型)</a> の能力の対象外 (処刑時)</li>
-    <li><a href="human.php#cursed_brownie">祟神</a>・<a href="ability.php#vote_action_luck">処刑投票能力者 (得票数変化型)</a>・<a href="ability.php#febris_active">熱病能力者 (能動型)</a> の能力無効 (処刑時)</li>
+    <li><a href="ability.php#poison">毒</a>・<a href="#follow_mad">舟幽霊</a>・<a href="ability.php#vote_kill_counter_solo">処刑カウンター能力者(個別型)</a> の能力の対象外 (処刑時)</li>
+    <li><a href="human.php#cursed_brownie">祟神</a>・<a href="ability.php#vote_action_luck">処刑投票能力者(得票数変化型)</a>・<a href="ability.php#febris_active">熱病能力者(能動型)</a> の能力無効 (処刑時)</li>
     <li><a href="ability.php#guard">護衛能力者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a> (<a href="human.php#escaper_group">逃亡者系</a>・<a href="fox.php#fox_group">妖狐系</a>を除く)・<a href="ability.php#sacrifice">身代わり能力者</a>の能力無効</li>
-    <li><a href="ability.php#poison">毒</a>・<a href="human.php#cursed_brownie">祟神</a>・<a href="fox.php#miasma_fox">蟲狐</a>の能力無効 (襲撃時)</li>
-    <li><a href="human.php#ghost_common">亡霊嬢</a>・<a href="human.php#presage_scanner">件</a>・<a href="mania.php#revive_mania">五徳猫</a>・<a href="sub_role.php#mind_sheep">羊</a>・<a href="ability.php#revive_self">自己蘇生能力者</a>の能力無効</li>
+    <li><a href="ability.php#poison">毒</a>・<a href="ability.php#wolf_kill_counter">人狼襲撃カウンター能力者</a>・<a href="ability.php#revive_self">自己蘇生能力者</a>の能力無効 (襲撃時)</li>
     <li><a href="vampire.php#vampire_do">吸血死</a>無効</li>
     <li><a href="#boss_wolf">白狼</a>化 (占い結果が「村人」になる)。ただし、<a href="human.php#soul_mage">魂の占い師</a>は騙せない。</li>
   </ol>
@@ -982,6 +981,10 @@ C に「受託結果：B は A に襲撃されました。」と表示される�
 <h5>Ver. 2.2.0 α7～</h5>
 <pre>
 <a href="human.php#miasma_jealousy">蛇姫</a>の能力無効
+</pre>
+<h5>Ver. 2.0.0 α3～</h5>
+<pre>
+<a href="human.php#sun_brownie">八咫烏</a>・<a href="human.php#history_brownie">白澤</a>の能力無効 (襲撃時)
 </pre>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>

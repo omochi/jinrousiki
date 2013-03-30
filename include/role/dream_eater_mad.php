@@ -30,6 +30,8 @@ class Role_dream_eater_mad extends Role {
     }
 
     //夢食い判定 (夢系能力者・妖精系)
-    if ($user->IsRoleGroup('dummy', 'fairy')) DB::$USER->Kill($user->id, 'DREAM_KILLED');
+    if ($user->IsRoleGroup('dummy') || $user->IsMainGroup('fairy')) {
+      DB::$USER->Kill($user->id, 'DREAM_KILLED');
+    }
   }
 }

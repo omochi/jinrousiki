@@ -24,7 +24,7 @@ class Role_pierrot_wizard extends Role_wizard {
     foreach (RoleManager::LoadFilter('guard_assassin') as $filter) { //対暗殺護衛判定
       if ($filter->GuardAssassin($user->id)) return;
     }
-    if ($user->IsRoleGroup('escaper')) return; //逃亡者は無効
+    if ($user->IsMainGroup('escaper')) return; //逃亡者は無効
     if ($user->IsReflectAssassin()) { //反射判定
       $this->AddSuccess($actor->id, 'assassin');
       return;

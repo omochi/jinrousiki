@@ -89,7 +89,7 @@ class Winner {
       }
     }
     if (count($living_id_list) == 1) {
-      $vampire = DB::$USER->ByID(array_shift($living_id_list))->IsRoleGroup('vampire');
+      $vampire = DB::$USER->ByID(array_shift($living_id_list))->IsMainGroup('vampire');
     }
     else {
       foreach ($infected_list as $id => $stack) {

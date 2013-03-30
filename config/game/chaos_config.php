@@ -543,21 +543,23 @@ class ChaosConfig {
     'revive_avenger'        =>   6,
     'cute_avenger'          =>  10,
     'patron'                =>  12,
-    'soul_patron'           =>  10,
-    'sacrifice_patron'      =>   8,
-    'shepherd_patron'       =>  10,
+    'soul_patron'           =>   7,
+    'sacrifice_patron'      =>   6,
+    'shepherd_patron'       =>   8,
+    'plumage_patron'        =>   7,
     'critical_patron'       =>  10,
-    'mania'                 =>  80,
+    'mania'                 =>  65,
     'trick_mania'           =>  20,
     'basic_mania'           =>  20,
+    'scarlet_mania'         =>  15,
     'soul_mania'            =>  10,
     'dummy_mania'           =>  10,
-    'unknown_mania'         =>  10,
-    'wirepuller_mania'      =>  10,
-    'fire_mania'            =>  10,
-    'sacrifice_mania'       =>  10,
-    'resurrect_mania'       =>  10,
-    'revive_mania'          =>  10);
+    'unknown_mania'         =>  12,
+    'wirepuller_mania'      =>   8,
+    'fire_mania'            =>   8,
+    'sacrifice_mania'       =>   6,
+    'resurrect_mania'       =>   8,
+    'revive_mania'          =>   8);
 
   //裏・闇鍋
   static $chaos_verso_random_role_list = array(
@@ -583,17 +585,18 @@ class ChaosConfig {
 
   //超・闇鍋
   static $chaos_hyper_replace_human_role_list = array(
-    'mania'            => 20,
+    'mania'            => 15,
     'trick_mania'      => 12,
     'basic_mania'      => 12,
-    'soul_mania'       =>  9,
-    'dummy_mania'      =>  7,
-    'unknown_mania'    => 10,
-    'wirepuller_mania' =>  6,
-    'fire_mania'       =>  6,
-    'sacrifice_mania'  =>  6,
-    'resurrect_mania'  =>  6,
-    'revive_mania'     =>  6);
+    'scarlet_mania'    =>  9,
+    'soul_mania'       =>  7,
+    'dummy_mania'      =>  5,
+    'unknown_mania'    => 15,
+    'wirepuller_mania' =>  5,
+    'fire_mania'       =>  5,
+    'sacrifice_mania'  =>  5,
+    'resurrect_mania'  =>  5,
+    'revive_mania'     =>  5);
 
   //-- 出現補正値 --//
   static $min_wolf_rate  = 10; //人狼の最小出現比 (総人口 / N)
@@ -793,10 +796,11 @@ class ChaosConfig {
 			 'critical_avenger' =>  3,
 			 'revive_avenger'   =>  3,
 			 'cute_avenger'     =>  3,
-			 'patron'           => 10,
+			 'patron'           =>  8,
 			 'soul_patron'      =>  4,
 			 'sacrifice_patron' =>  4,
-			 'shepherd_patron'  =>  6,
+			 'shepherd_patron'  =>  4,
+			 'plumage_patron'   =>  4,
 			 'critical_patron'  =>  6)),
 		 'count' => array(1)),
     'k' => array('random' => array(
@@ -883,9 +887,8 @@ class ChaosConfig {
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   static $boost_rate_list = array(
-    'a' => array('fire_mad'       =>  9,
-		 'cowboy_duelist' => 10,
-		 'sea_duelist'    => 15),
+    'a' => array('plumage_patron' => 17,
+		 'scarlet_mania'  => 10),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'eccentricer'       => 0,
@@ -1021,6 +1024,7 @@ class ChaosConfig {
 		 'soul_patron'        =>  0,
 		 'sacrifice_patron'   =>  0,
 		 'shepherd_patron'    =>  0,
+		 'plumage_patron'     =>  0,
 		 'critical_patron'    =>  0),
     'g' => array('jealousy'          =>  0,
 		 'divorce_jealousy'  =>  0,
@@ -1068,7 +1072,8 @@ class ChaosConfig {
 		 'poison_chiroptera'    => 0,
 		 'horse_ogre'           => 0,
 		 'poison_ogre'          => 0,
-		 'poison_avenger'       => 0)
+		 'poison_avenger'       => 0,
+		 'plumage_patron'       => 0)
 			       );
 
   //サブ役職制限：EASYモード

@@ -81,7 +81,7 @@ class Role_step_vampire extends Role_vampire {
       if ($user->IsDead(true)) continue;
 
       //吸血鬼判定
-      if ($user->IsRoleGroup('vampire') ||
+      if ($user->IsMainGroup('vampire') ||
 	  ($user->IsRole('soul_mania', 'dummy_mania') && $user->IsCamp('vampire'))) {
 	continue;
       }

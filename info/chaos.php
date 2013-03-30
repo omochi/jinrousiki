@@ -804,7 +804,7 @@ InfoHTML::OutputHeader('闇鍋モード');
 
 <?php InfoHTML::OutputItem('boost_rate', 'h', 'Ver. 2.1.0 α5'); ?>
 <pre>
-<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/ogre.php#horse_ogre">馬頭鬼</a>・<a href="new_role/human.php#pharmacist">薬師系</a>・<a href="new_role/ability.php#poison">毒能力者</a>の出現率が 0 になります。
+<a href="new_role/wolf.php#resist_wolf">抗毒狼</a>・<a href="new_role/ogre.php#horse_ogre">馬頭鬼</a>・<a href="new_role/duelist.php#plumage_patron">鬼車鳥</a>・<a href="new_role/human.php#pharmacist">薬師系</a>・<a href="new_role/ability.php#poison">毒能力者</a>の出現率が 0 になります。
 </pre>
 
 <h2 id="chaos_open_cast"><?php OptionManager::OutputCaption('chaos_open_cast'); ?> [Ver. 1.4.0 α14～]</h2>

@@ -34,8 +34,11 @@ class Role_patron extends Role_valkyrja_duelist {
   }
 
   protected function AddDuelistRole(User $user) {
-    if (isset($this->patron_role)) $user->AddRole($this->GetActor()->GetID($this->patron_role));
+    if (isset($this->patron_role)) $user->AddRole($this->GetPatronRole());
   }
+
+  //後援者追加役職取得
+  protected function GetPatronRole() { return $this->GetActor()->GetID($this->patron_role); }
 
   function Win($winner) {
     $actor = $this->GetActor();

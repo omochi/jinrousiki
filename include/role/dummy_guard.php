@@ -58,6 +58,6 @@ class Role_dummy_guard extends Role_guard {
   }
 
   protected function IsHunt(User $user) {
-    return $user->IsRole('dream_eater_mad') || $user->IsRoleGroup('fairy');
+    return $user->IsRole('dream_eater_mad') || $user->IsMainGroup('fairy');
   }
 }

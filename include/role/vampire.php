@@ -46,10 +46,10 @@ class Role_vampire extends Role {
       $this->SetInfectTarget($id);
     }
     if (RoleManager::GetClass('guard')->Guard($user, true)) return; //護衛判定
-    if ($user->IsDead(true) || $user->IsRoleGroup('escaper')) return; //スキップ判定
+    if ($user->IsDead(true) || $user->IsMainGroup('escaper')) return; //スキップ判定
 
     //吸血リスト登録
-    if ($user->IsRoleGroup('vampire')) {
+    if ($user->IsMainGroup('vampire')) {
       RoleManager::LoadMain($user)->InfectVampire($actor); //吸血鬼襲撃
     }
     elseif ($user->IsRole('soul_mania', 'dummy_mania') && $user->IsCamp('vampire')) {

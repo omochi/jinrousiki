@@ -2,7 +2,7 @@
 /*
   ◆潜毒者 (incubate_poison)
   ○仕様
-  ・毒：5日目以降 / 人狼系 + 妖狐陣営
+  ・毒：5日目以降 / 人外カウント
 */
 RoleManager::LoadFile('poison');
 class Role_incubate_poison extends Role_poison {
@@ -14,5 +14,5 @@ class Role_incubate_poison extends Role_poison {
 
   function IsPoison() { return DB::$ROOM->date > 4; }
 
-  function IsPoisonTarget(User $user) { return $user->IsRoleGroup('wolf', 'fox'); }
+  function IsPoisonTarget(User $user) { return $user->IsInhuman(); }
 }

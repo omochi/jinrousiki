@@ -70,7 +70,7 @@ class Role_guard extends Role {
     return $user->IsRole(
       'step_mage', 'emissary_necromancer', 'reporter', 'detective_common', 'sacrifice_common',
       'spell_common', 'clairvoyance_scanner', 'soul_wizard', 'barrier_wizard', 'pierrot_wizard',
-      'doll_master') || $user->IsRoleGroup('assassin') ||
+      'doll_master') || $user->IsMainGroup('assassin') ||
       ($user->IsRoleGroup('priest') &&
        ! $user->IsRole('crisis_priest', 'widow_priest', 'revive_priest'));
   }
@@ -101,7 +101,7 @@ class Role_guard extends Role {
       'soul_vampire', 'poison_chiroptera', 'cursed_chiroptera', 'boss_chiroptera', 'cursed_avenger',
       'critical_avenger') ||
       ($user->IsRole('possessed_fox') && count($user->GetPartner('possessed_target', true)) < 1) ||
-      ($user->IsRoleGroup('mad') &&
+      ($user->IsMainGroup('mad') &&
        ! $user->IsRole('mad', 'fanatic_mad', 'whisper_mad', 'swindle_mad', 'step_mad',
 		       'therian_mad', 'revive_mad', 'immolate_mad'));
   }
