@@ -22,7 +22,10 @@ class DB {
     $exit   : エラー処理          [true: exit を返す / false で終了]
   */
   private function __construct($id = null, $header = false, $exit = true) {
-    //error_reporting(E_ALL);
+    if (DatabaseConfig::DISABLE) {
+      return self::Output($header, $exit, 'MySQL サーバ', '接続不可設定になっています');
+    }
+
     //データベース名設定
     $name = isset($id) ? @DatabaseConfig::$name_list[is_int($id) ? $id - 1 : $id] : null;
     if (is_null($name)) $name = DatabaseConfig::NAME;

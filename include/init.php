@@ -1,5 +1,11 @@
 <?php
-//error_reporting(E_ALL);
+//-- エラー表示設定 --//
+define('JINRO_DISPLAY_ERROR', false); //デバッグ用
+if (JINRO_DISPLAY_ERROR) {
+  ini_set('display_errors', 'On');
+  error_reporting(E_ALL);
+}
+
 //-- 定数を定義 --//
 /*
   ServerConfig::SITE_ROOT を使って CSS や画像等をロードする仕様にすると
@@ -214,6 +220,11 @@ class Loader {
 
 //-- 初期化処理 --//
 Loader::LoadFile('database_class', 'server_config');
+
+if (ServerConfig::DISPLAY_ERROR) { //エラー表示設定
+  ini_set('display_errors', 'On');
+  error_reporting(E_ALL);
+}
 
 //mbstring 非対応の場合、エミュレータを使用する
 if (! extension_loaded('mbstring')) Loader::LoadFile('mb-emulator');

@@ -10,6 +10,7 @@ class DatabaseConfig {
   #const PASSWORD = 'xxxxxxxx';	//パスワード
   const PASSWORD = 'satorituri';
   const ENCODE   = 'utf8';	//文字コード
+  const DISABLE  = false;	// true にすると DB 接続をしません
 
   //サブデータベースのリスト (サーバによってはサブのデータベースを作れないので注意)
   /*

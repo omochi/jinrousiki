@@ -26,10 +26,11 @@ class ServerConfig {
   const ROOM_PASSWORD = null;
 
   /* モード設定 */
-  #const DEBUG_MODE  = false;	//デバッグモード (開発テスト用)
-  const DEBUG_MODE  = true;
-  const DRY_RUN     = false;	//村作成スキップ (開発テスト用)
-  const SECRET_ROOM = false;	//村情報非表示モード (開発テスト用)
+  #const DEBUG_MODE   = false;	//デバッグモード (開発テスト用)
+  const DEBUG_MODE    = true;
+  const DRY_RUN       = false;	//村作成スキップ (開発テスト用)
+  const SECRET_ROOM   = false;	//村情報非表示モード (開発テスト用)
+  const DISPLAY_ERROR = false;	//エラー強制表示設定 (開発テスト用)
 
   //村作成禁止 (true にすると村の作成画面が表示されず、村を作成できなくなります)
   const DISABLE_ESTABLISH = false;
