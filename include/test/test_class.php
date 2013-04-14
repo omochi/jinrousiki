@@ -79,8 +79,9 @@ class RoleTest {
       'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐', 'cupid' => 'QP',
       'medium' => '巫女', 'mania' => 'マニア', 'detective' => '探偵', 'festival' => 'お祭り',
       'limit_off' => 'リミッタオフ');
+    $count = 0;
     foreach ($stack as $option => $name) {
-      if (++$i % 14 == 0) Text::d();
+      if (++$count % 14 == 0) Text::d();
       $id = 'option_' . $option;
       Text::Output(sprintf(self::BOX, $id, $option, $id, $name));
     }

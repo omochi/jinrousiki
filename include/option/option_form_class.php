@@ -135,9 +135,9 @@ EOF;
 
   //テキストボックス生成
   private static function GenerateTextbox(TextRoomOptionItem $item) {
-    $size = sprintf('%s_input', $item->name);
-    $str  = $item->GetExplain();
-    if (OptionManager::$change) $value = DB::$ROOM->{array_pop(explode('_', $item->name))};
+    $size  = sprintf('%s_input', $item->name);
+    $str   = $item->GetExplain();
+    $value = OptionManager::$change ? DB::$ROOM->{array_pop(explode('_', $item->name))} : null;
     return sprintf(self::TEXTBOX, $item->type, $item->name, $item->name, RoomConfig::$$size,
 		   $value, isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '');
   }
@@ -181,7 +181,9 @@ EOF;
 </select>
 <span class="explain">(%s)</span>
 EOF;
-    if (! OptionManager::$change && isset($item->javascript)) self::$javascript[] = $item->javascript;
+    if (! OptionManager::$change && isset($item->javascript)) {
+      self::$javascript[] = $item->javascript;
+    }
     return sprintf($format, $item->name, $item->form_name, $item->on_change, $item->label,
 		   $str, $explain);
   }
