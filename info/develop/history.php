@@ -14,6 +14,7 @@ Ver. 2.2.0
 <a href="#ver220a4">α4</a>
 <a href="#ver220a5">α5</a>
 <a href="#ver220a6">α6</a>
+<a href="#ver220a7">α7</a>
 </p>
 <p>
 <a href="history_1.3.php">～ 1.3</a>
@@ -23,6 +24,13 @@ Ver. 2.2.0
 <a href="history_2.1.php">2.1</a>
 </p>
 
+
+<h2 id="ver220a7">Ver. 2.2.0 α7 (Rev. 769) : 2013/04/14 (Sun) 19:15</h2>
+<ul>
+<li>「蛇姫」の仕様変更</li>
+<li>「紅天女」「鬼車鳥」実装</li>
+<li>サブ役職「元紅天女」「吸毒者」実装</li>
+</ul>
 
 <h2 id="ver220a6">Ver. 2.2.0 α6 (Rev. 759) : 2013/03/04 (Mon) 00:47</h2>
 <ul>

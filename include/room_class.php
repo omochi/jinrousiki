@@ -245,7 +245,7 @@ class Room {
   function SetWeather() {
     if ($this->watch_mode || $this->single_view_mode) {
       $this->LoadWeather();
-      if (WeatherData::Exists($this->event->weather)) {
+      if (isset($this->event) && WeatherData::Exists($this->event->weather)) {
 	$this->event->{WeatherData::GetEvent($this->event->weather)} = true;
       }
     }

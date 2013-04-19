@@ -1,13 +1,13 @@
 <?php
 class ScriptInfo {
   //パッケージのバージョン
-  const VERSION = 'Ver. 2.2.0 alpha7';
+  const VERSION = 'Ver. 2.2.0 alpha8';
 
   //パッケージの最終更新日
-  const LAST_UPDATE = '2013/03/08 (Fri) 01:44';
+  const LAST_UPDATE = '2013/04/15 (Mon) 01:06';
 
   //パッケージ化した時の Revision
-  const REVISION = 759;
+  const REVISION = 769;
 
   //パッケージ名
   const PACKAGE = '<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式</a>';

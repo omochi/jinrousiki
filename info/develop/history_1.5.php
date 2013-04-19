@@ -12,6 +12,7 @@ Ver. 1.5.x<br>
 <a href="#ver153">3</a>
 <a href="#ver154">4</a>
 <a href="#ver155">5</a>
+<a href="#ver156">6</a>
 </p>
 <p>
 Ver. 1.5.0<br>
@@ -47,6 +48,11 @@ Ver. 1.5.0<br>
 <a href="#ver150a8">α8</a>
 <a href="#ver150a9">α9</a>
 </p>
+
+<h2 id="ver156">Ver. 1.5.6 (Rev. 734) : 2013/04/16 (Tue) 00:48</h2>
+<ul>
+<li>憑依関連のバグ修正ほか</li>
+</ul>
 
 <h2 id="ver155">Ver. 1.5.5 (Rev. 688) : 2012/12/23 (Sun) 17:00</h2>
 <ul>

@@ -685,13 +685,16 @@ Ver. 2.2.0
 <h3 id="weather_critical">烈日 [Ver. 1.5.0 α2～]</h3>
 <ul>
   <li><a href="new_role/sub_role.php#critical_voter">会心</a>・<a href="new_role/sub_role.php#critical_luck">痛恨</a>の発動率が 100% になります。</li>
-  <li>メイン役職による補正は無効です (例：<a href="new_role/duelist.php#critical_duelist">剣闘士</a>・<a href="new_role/duelist.php#critical_patron">ひんな神</a>)。</li>
+  <li>メイン役職による補正は無効です (例：<a href="new_role/duelist.php#critical_duelist">剣闘士</a>・<a href="new_role/duelist.php#critical_patron">ひんな神</a>)。<br>
+    → <a href="new_role/ability.php#authority">投票数変化能力者</a>・<a href="new_role/ability.php#luck">得票数変化能力者</a>
+  </li>
 </ul>
 
 <h3 id="weather_no_authority">蜃気楼 [Ver. 1.5.0 α8～]</h3>
 <ul>
   <li><a href="new_role/sub_role.php">サブ役職</a>による投票数/得票数補正が無効化されます。</li>
-  <li>メイン役職による補正は有効です (例：<a href="new_role/human.php#elder">長老</a>・<a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/duelist.php#critical_patron">ひんな神</a>)。</li>
+  <li>メイン役職による補正は有効です (例：<a href="new_role/human.php#elder">長老</a>・<a href="new_role/human.php#brownie">座敷童子</a>・<a href="new_role/duelist.php#critical_patron">ひんな神</a>)。<br>
+    → <a href="new_role/ability.php#authority">投票数変化能力者</a>・<a href="new_role/ability.php#luck">得票数変化能力者</a>
 </ul>
 
 <h3 id="weather_alchemy_pharmacist">梅雨 [Ver. 1.5.0 α4～]</h3>
@@ -904,7 +907,7 @@ Ver. 2.2.0
 
 <h3 id="weather_no_dream">熱帯夜 [Ver. 1.5.0 α3～]</h3>
 <ul>
-  <li><a href="spec.php#vote_night">夢系能力者</a>の夜の投票と一部の<a href="new_role/ability.php#dummy">夢系能力者</a>の能力が無効化されます。</li>
+  <li><a href="spec.php#vote_night">夢系能力者</a>の夜の投票と一部の<a href="new_role/ability.php#dummy">夢能力者</a>の能力が無効化されます。</li>
   <li>対象となるのは<a href="new_role/human.php#dummy_mage">夢見人</a>・<a href="new_role/human.php#dummy_necromancer">夢枕人</a>・<a href="new_role/human.php#dummy_priest">夢司祭</a>・<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>です。</li>
   <li>無効化される能力者も投票自体は必要です (集計処理をする際になかったことにされます)。</li>
 </ul>

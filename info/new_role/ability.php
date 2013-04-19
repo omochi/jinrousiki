@@ -153,7 +153,7 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 
 <h2 id="guard">護衛能力者</h2>
 <pre>
-<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#barrier_wizard">結界師</a>
+<a href="human.php#guard">狩人</a>・<a href="human.php#hunter_guard">猟師</a>・<a href="human.php#blind_guard">夜雀</a>・<a href="human.php#gatekeeper_guard">門番</a>・<a href="human.php#step_guard">山立</a>・<a href="human.php#reflect_guard">侍</a>・<a href="human.php#poison_guard">騎士</a>・<a href="human.php#fend_guard">忍者</a>・<a href="human.php#elder_guard">老兵</a>・<a href="human.php#barrier_wizard">結界師</a>
 <a href="human.php#wizard">魔法使い</a>(<a href="human.php#guard">狩人</a>)・<a href="human.php#soul_wizard">八卦見</a>(<a href="human.php#poison_guard">騎士</a>)
 </pre>
 
@@ -191,12 +191,12 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 <h2 id="vote_action">処刑投票能力者</h2>
 <h3 id="vote_action_chicken">小心者系付加型</h3>
 <pre>
-<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>
+<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>・<a href="lovers.php#snow_cupid">寒戸婆</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="human.php#miasma_jealousy">蛇姫</a>・<a href="wolf.php#miasma_mad">土蜘蛛</a>)
 </pre>
 <h3 id="vote_action_luck">得票数変化型</h3>
 <pre>
-<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="duelist.php#cursed_avenger">がしゃどくろ</a>・<a href="duelist.php#critical_avenger">狂骨</a>
+<a href="wolf.php#critical_mad">釣瓶落とし</a>・<a href="fox.php#critical_fox">寿羊狐</a>・<a href="duelist.php#critical_avenger">狂骨</a>
 <a href="human.php#philosophy_wizard">賢者</a>(<a href="wolf.php#critical_mad">釣瓶落とし</a>)
 </pre>
 <h3 id="vote_action_talk">会話妨害型</h3>
@@ -394,7 +394,11 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </pre>
 <h3 id="talk_convert_indirect">間接型</h3>
 <pre>
-<a href="human.php#divorce_jealousy">縁切地蔵</a>・<a href="vampire.php#passion_vampire">牡丹灯籠</a>・<a href="chiroptera.php#spring_fairy">春妖精</a>・<a href="chiroptera.php#summer_fairy">夏妖精</a>・<a href="chiroptera.php#autumn_fairy">秋妖精</a>・<a href="chiroptera.php#winter_fairy">冬妖精</a>・<a href="chiroptera.php#greater_fairy">大妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#sun_fairy">日妖精</a>
+<a href="human.php#spell_common">葛の葉</a>(<a href="sub_role.php#cute_camouflage">魔が言</a>)・<a href="human.php#divorce_jealousy">縁切地蔵</a>(<a href="sub_role.php#confession">告白</a>)・<a href="vampire.php#passion_vampire">牡丹灯籠</a>(<a href="sub_role.php#passion">恋色迷彩</a>)
+</pre>
+<h3 id="talk_convert_fairy">悪戯型</h3>
+<pre>
+<a href="chiroptera.php#fairy">妖精</a>・<a href="chiroptera.php#spring_fairy">春妖精</a>・<a href="chiroptera.php#summer_fairy">夏妖精</a>・<a href="chiroptera.php#autumn_fairy">秋妖精</a>・<a href="chiroptera.php#winter_fairy">冬妖精</a>・<a href="chiroptera.php#greater_fairy">大妖精</a>・<a href="chiroptera.php#grass_fairy">草妖精</a>・<a href="chiroptera.php#sun_fairy">日妖精</a>
 </pre>
 <h3 id="talk_convert_cute">遠吠え置換型 (萌系)</h3>
 <pre>

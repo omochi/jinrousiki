@@ -1320,7 +1320,7 @@ class RoleMessageList {
     'type' => 'mania');
 
   public $scarlet_mania = array(
-    'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|紅天女|です。_人狼_からは#無意識#に、^妖狐^からは^子狐^に、:人形:からは:人形遣い:に見えています。",
+    'message' => "[役割] [|神話マニア|陣営] [|神話マニア|系]\n　あなたは|紅天女|です。_人狼_からは#無意識#に、^妖狐^からは^子狐^に、:人形:からは:人形遣い:に見えています。\n　観衆たちはあなたに注目するでしょう。恐ろしいほどの演技力でもって、彼らを最後まで欺くのです。",
     'type' => 'mania',
     'delimiter' => array('#' => 'human', '_' => 'wolf', '^' => 'fox', ':' => 'doll'));
 
@@ -2335,5 +2335,4 @@ $builder = new MessageImageBuilder('RoleMessageList');
 #$builder->Output('poison'); //128
 //あなたは埋毒者です。人狼に襲われた場合は人狼の中から、処刑された場合は生きている村の人たちの中からランダムで一人道連れにします。
 #$builder->Output('step_wolf', array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5));
-#$builder->Output('scarlet_mania');
 $builder->Output('plumage_patron', array(0,0,0,0,0.5));
