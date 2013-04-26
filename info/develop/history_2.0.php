@@ -12,6 +12,7 @@ Ver. 2.0.x<br>
 <a href="#ver203">3</a>
 <a href="#ver204">4</a>
 <a href="#ver205">5</a>
+<a href="#ver206">6</a>
 </p>
 <p>
 Ver. 2.0.0<br>
@@ -27,6 +28,11 @@ Ver. 2.0.0<br>
 <a href="#ver200a6">α6</a>
 <a href="#ver200b1">β1</a>
 </p>
+
+<h2 id="ver206">Ver. 2.0.6 (Rev. 771) : 2013/04/23 (Tue) 00:25</h2>
+<ul>
+<li>ログ表示関連のバグ修正</li>
+</ul>
 
 <h2 id="ver205">Ver. 2.0.5 (Rev. 689) : 2012/12/23 (Sun) 18:25</h2>
 <ul>
