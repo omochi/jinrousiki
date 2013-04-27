@@ -923,7 +923,7 @@ class RoleData {
     'medium'      => 'medium', //巫女系
     'jealousy'    => 'jealousy', //橋姫系
     'priest'      => 'priest', //司祭系
-    'guard'       => 'guard', 'anti_vooedoo' => 'guard', 'reporter' => 'guard', //狩人系
+    'guard'       => 'guard', 'anti_voodoo' => 'guard', 'reporter' => 'guard', //狩人系
     'common'      => 'common', //共有者系
     'pharmacist'  => 'pharmacist', //薬師系
     'assassin'    => 'assassin', //暗殺者系
