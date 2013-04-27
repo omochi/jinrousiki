@@ -256,7 +256,7 @@ EOF;
       return;
     }
 
-    OptionManager::$change = is_object('RQ') ? RQ::Get()->room_no > 0 : false;
+    OptionManager::$change = RQ::Get()->room_no > 0;
     if (OptionManager::$change) {
       Session::Certify();
       $title = 'オプション変更';
