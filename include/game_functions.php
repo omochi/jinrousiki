@@ -49,7 +49,7 @@ EOF;
 	   $end_date, self::GetJavaScriptDate(DB::$ROOM->system_time),
 	   $end_date, self::GetJavaScriptDate(DB::$ROOM->scene_start_time),
 	   isset($type) ? 'true' : 'false',
-	   isset($type) && class_exists(Sound) ? Sound::Generate($type) : '',
+	   isset($type) && class_exists('Sound') ? Sound::Generate($type) : '',
 	   $flag ? 'true' : 'false',
 	   TimeConfig::ALERT_DISTANCE,
 	   '//--></script>'."\n");

@@ -56,6 +56,13 @@
   color: #FFFAFA;
   font-weight: bold;
 }
+.system-sudden-death {
+  margin-bottom: 3px;
+  padding: 7px;
+  background-color: #1010A0;
+  color: #66DDFF;
+  font-weight: bold;
+}
 /* OutputGameHeader() */
 .game-header {
   width: 100%;

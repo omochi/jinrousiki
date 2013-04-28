@@ -503,9 +503,9 @@ EOF;
 
     if (! DB::$ROOM->IsPlaying()) return;
 
-    $str = '<div class="system-vote">%s</div>'.Text::LF;
+    $format = '<div class="system-vote">%s</div>'.Text::LF;
     if ($left_time == 0) {
-      printf($str, $time_message . Message::$vote_announce);
+      printf($format, $time_message . Message::$vote_announce);
       if (DB::$ROOM->sudden_death > 0) {
 	$time = Time::Convert(DB::$ROOM->sudden_death);
 	if (DB::$ROOM->IsDay()) {
@@ -518,22 +518,23 @@ EOF;
 	else {
 	  $voted = '';
 	}
-	printf("%s%s%s<br>\n", Message::$sudden_death_time, $time, $voted);
+	$time_format = '<div class="system-sudden-death">%s%s%s</div>'.Text::LF;
+	printf($time_format, Message::$sudden_death_time, $time, $voted);
       }
     }
     elseif (DB::$ROOM->IsEvent('wait_morning')) {
-      printf($str, Message::$wait_morning);
+      printf($format, Message::$wait_morning);
     }
     elseif (DB::$SELF->IsDummyBoy()) {
       $count = 0;
       foreach (DB::$USER->rows as $user) {
 	if (count($user->target_no) > 0) $count++;
       }
-      printf('投票済み：%d人' . Text::BR . Text::LF, $count);
+      printf('<div class="system-sudden-death">投票済み：%d人</div>'.Text::LF, $count);
     }
 
     if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()) {
-      printf($str, Message::$close_cast);
+      printf($format, Message::$close_cast);
     }
   }
 
