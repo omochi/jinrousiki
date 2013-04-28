@@ -368,8 +368,8 @@ class RequestOldLog extends RequestBase {
     if ($this->room_no > 0) {
       $this->is_room = true;
       $this->ParseGetInt('user_no');
-      $this->ParseGetOn('reverse_log', 'heaven_talk', 'heaven_only', 'add_role',
-			'personal_result', 'time', 'icon', 'role_list');
+      $this->ParseGetOn('reverse_log', 'heaven_talk', 'heaven_only', 'add_role', 'time', 'icon',
+			'wolf_sight', 'personal_result', 'role_list');
     }
     else {
       $this->ParseGetData('reverse');

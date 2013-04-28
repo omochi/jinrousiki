@@ -581,6 +581,7 @@ EOF;
     $this->flag->sweet_ringing  = $this->flag->sweet_ringing && DB::$ROOM->date > 1;
     $this->flag->common_whisper = ! DB::$SELF->IsRole('dummy_common') && ! $this->flag->deep_sleep;
     $this->flag->wolf_howl      = ! DB::$SELF->IsRole('mind_scanner') && ! $this->flag->deep_sleep;
+    if (DB::$ROOM->watch_mode) $this->flag->wolf |= RQ::Get()->wolf_sight; //狼視点モード
 
     //発言完全公開フラグ
     /*

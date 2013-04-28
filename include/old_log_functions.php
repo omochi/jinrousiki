@@ -178,11 +178,11 @@ class OldLogHTML {
 EOF;
 
     //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
-    $current_time = Time::Get(); // 現在時刻の取得
+    $current_time = Time::Get();
     foreach (RoomDataDB::GetFinished($is_reverse) as $room_no) {
       $ROOM = RoomDataDB::LoadFinished($room_no);
 
-      $dead      = $ROOM->date == 0 ? ' vanish' : ''; //廃村の場合、色を灰色にする
+      $dead      = $ROOM->date == 0 ? ' vanish' : ''; //廃村判定
       $establish = $ROOM->establish_datetime == '' ? '' :
 	Time::ConvertTimeStamp($ROOM->establish_datetime);
       if (RQ::Get()->generate_index) {

@@ -330,6 +330,8 @@ EOF;
     $str = <<<EOF
 {$header} <a target="_top" href="{$url}"{$footer}>正</a>
 <a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
+<a target="_top" href="{$url}&wolf_sight=on"{$footer}>正&amp;狼</a>
+<a target="_top" href="{$url}&wolf_sight=on&reverse_log=on"{$footer}>逆&amp;狼</a>
 EOF;
     return $str;
   }
