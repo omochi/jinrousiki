@@ -231,9 +231,10 @@ class DB {
     }
 
     foreach (array('profile', 'role', 'session_id', 'last_words') as $value) {
-      if (is_null($$value)) continue;
-      $items  .= ", {$value}";
-      $values .= ", '{$$value}'";
+      if (isset($$value)) {
+	$items  .= ", {$value}";
+	$values .= ", '{$$value}'";
+      }
     }
     return self::Insert('user_entry', $items, $values);
   }

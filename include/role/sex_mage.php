@@ -15,7 +15,7 @@ class Role_sex_mage extends Role_psycho_mage {
     } elseif ($user->IsMainCamp('chiroptera') || $user->IsRoleGroup('gold')) {
       return 'chiroptera';
     } else {
-      'sex_' . $user->sex;
+      return 'sex_' . $user->sex;
     }
   }
 }

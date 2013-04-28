@@ -4,6 +4,7 @@ class User {
   public $id;
   public $user_no; //一時互換用
   public $uname;
+  public $role;
   public $main_role;
   public $live;
   public $role_list    = array();

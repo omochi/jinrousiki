@@ -29,9 +29,9 @@ class UserManager {
     //文字数制限チェック
     $format = '%sは%d文字まで' . $back_url;
     $limit_list = array(
-      array('str' => $uname,        'name' => 'ユーザ名',     'config' => GameConfig::LIMIT_UNAME),
-      array('str' => $handle_uname, 'name' => '村人の名前',   'config' => GameConfig::LIMIT_UNAME),
-      array('str' => $profile,      'name' => 'プロフィール', 'config' => GameConfig::LIMIT_PROFILE)
+      array('str' => $uname,       'name' => 'ユーザ名',     'config' => GameConfig::LIMIT_UNAME),
+      array('str' => $handle_name, 'name' => '村人の名前',   'config' => GameConfig::LIMIT_UNAME),
+      array('str' => $profile,     'name' => 'プロフィール', 'config' => GameConfig::LIMIT_PROFILE)
 			);
     foreach ($limit_list as $limit) {
       if (strlen($limit['str']) > $limit['config']) {

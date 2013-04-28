@@ -3895,7 +3895,7 @@ Ver. 2.2.0
   <tr>
     <td><a href="sub_role.php#aspirator">吸毒者</a></td>
     <td><a href="sub_role.php#other_group">その他</a></td>
-    <td>無し</td>
+    <td>強制</td>
     <td class="ability">処刑時の毒中り候補になった場合、優先的に中る。</td>
     <td>Ver. 2.2.0 α7</td>
   </tr>

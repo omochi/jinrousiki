@@ -292,7 +292,7 @@ EOF;
     if (DB::$ROOM->id < 1) HTML::OutputResult($title, '無効な村番地です');
     if (DB::$ROOM->IsFinished()) HTML::OutputResult($title, 'すでにゲーム終了しています');
 
-    HTML::OutputHeader($title, 'info/info', true);
+    HTML::OutputHeader('村情報表示', 'info/info', true);
     $format = <<<EOF
 [%d番地]%s村<br>
 <div>～%s～ %s</div>
