@@ -211,10 +211,10 @@ EOF;
     $caution   = UserIcon::GetCaution();
     $file_size = UserIconConfig::FILE;
     echo <<<EOF
-<a href="./">←戻る</a><br>
-<img class="title" src="img/icon_upload_title.jpg" title="アイコン登録" alt="アイコン登録"><br>
+<div class="link"><a href="./">←TOP</a></div>
+<img class="title" src="img/icon_upload_title.jpg" title="アイコン登録" alt="アイコン登録">
 <table align="center">
-<tr><td class="link"><a href="icon_view.php">→アイコン一覧</a></td><tr>
+<tr><td class="link"><a href="icon_view.php">→アイコン一覧</a></td></tr>
 <tr><td class="caution">＊あらかじめ指定する大きさ ({$size}) にリサイズしてからアップロードしてください。{$caution}</td></tr>
 <tr><td>
 <fieldset><legend>アイコン指定 (jpg / gif / png 形式で登録して下さい。{$file})</legend>

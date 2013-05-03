@@ -164,7 +164,7 @@ class IconHTML {
     if ($url == 'icon_view') {
       if (RQ::Get()->icon_no > 0) {
 	echo <<<EOF
-<div class="link"><a href="icon_view.php">→アイコン一覧に戻る</a></div>
+<div class="link"><a href="icon_view.php">←アイコン一覧に戻る</a></div>
 <fieldset><legend>アイコン設定の変更</legend>
 
 EOF;
@@ -306,15 +306,7 @@ EOF;
     }
     elseif (isset(RQ::Get()->room_no)) {
       $method = 'OutputDetailForUserEntry';
-      echo <<<EOF
-<table>
-<caption>
-あなたのアイコンを選択して下さい。
-</caption>
-<thead>
-<tr>
-
-EOF;
+      Text::Output('<thead><tr>');
     }
     else {
       $method = null;
@@ -398,10 +390,11 @@ EOF;
     if ($disable > 0) $icon_name = sprintf('<s>%s</s>', $icon_name);
     echo <<<EOF
 <td class="icon-details">
-<label for="icon_{$icon_no}">
 <a href="{$edit_url}" class="icon_wrapper" style="width:{$wrapper_width}px">
 <img alt="{$icon_name}" src="{$location}" width="{$icon_width}" height="{$icon_height}" style="border:3px solid {$color};">
 </a>
+</td>
+<td class="icon-details">
 <ul style="width:{$info_width}px;">
 <li><a href="{$edit_url}">No. {$icon_no}</a></li>
 <li><a href="{$edit_url}">{$icon_name}</a></li>
@@ -416,7 +409,6 @@ EOF;
     echo $data;
     echo <<<EOF
 </ul>
-</label>
 </td>
 
 EOF;

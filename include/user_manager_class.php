@@ -399,11 +399,12 @@ EOF;
 <tr><td>
 <fieldset><legend><img src="%s/icon.gif" alt="アイコン"></legend>
 <table class="icon">
-<tr><td colspan="5">
+<caption>あなたのアイコンを選択して下さい</caption>
+<tr><td colspan="4">
 <input id="fix_number" type="radio" name="icon_no"%s><label for="fix_number">手入力</label>
 <input type="text" name="icon_no" size="10px" value="%s">(半角英数で入力してください)
 </td></tr>
-<tr><td colspan="5">
+<tr><td colspan="4">
 
 EOF;
     if (isset(RQ::Get()->icon_no) && RQ::Get()->icon_no > (RQ::Get()->user_no > 0 ? -1 : 0)) {
@@ -417,7 +418,7 @@ EOF;
     printf($format, self::PATH, $checked, $icon_no);
     IconHTML::Output('user_manager');
     echo <<<EOF
-</tr></table>
+</td></tr></table>
 </fieldset>
 </td></tr>
 EOF;
