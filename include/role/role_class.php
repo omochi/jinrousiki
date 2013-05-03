@@ -564,6 +564,7 @@ abstract class Role {
       $header = 'clairvoyance_result_header';
       $footer = 'clairvoyance_result_footer';
       $limit  = true;
+      $uniq   = true;
       break;
 
     case 'SEX_WOLF_RESULT':
@@ -656,9 +657,12 @@ abstract class Role {
       break;
 
     case 'reporter':
+      if ($uniq) $stack = array();
       foreach ($result_list as $result) {
+	if ($uniq && in_array($result['target'], $stack)) continue;
 	$target = $result['target'] . ' さんは ' . $result['result'];
 	RoleHTML::OutputAbilityResult($header, $target, $footer);
+	if ($uniq) $stack[] = $result['target'];
       }
       break;
 

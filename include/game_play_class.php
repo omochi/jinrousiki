@@ -36,7 +36,7 @@ class GamePlay {
 
     //「異議」ありセット判定
     if (RQ::Get()->set_objection && DB::$SELF->objection < GameConfig::OBJECTION &&
-	(DB::$ROOM->IsBeforeGame() || (DB::$SELF->IsLive() && DB::$ROOM->IsDay()))) {
+	(DB::$ROOM->IsBeforeGame() || (DB::$ROOM->IsDay() && DB::$SELF->IsLive()))) {
       DB::$SELF->objection++;
       DB::$SELF->Update('objection', DB::$SELF->objection);
       DB::$ROOM->Talk('', 'OBJECTION', DB::$SELF->uname);
@@ -104,7 +104,7 @@ class GamePlay {
 	GameHTML::OutputQuizVote();
       }
     }
-    (DB::$SELF->IsDead() && DB::$ROOM->heaven_mode) ? Talk::OutputHeaven() : Talk::Output();
+    (DB::$ROOM->heaven_mode && DB::$SELF->IsDead()) ? Talk::OutputHeaven() : Talk::Output();
 
     if (! DB::$ROOM->heaven_mode) {
       GameHTML::OutputLastWords();
