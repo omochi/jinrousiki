@@ -3,15 +3,20 @@
 class UserManager {
   //ユーザ登録
   static function Entry() {
-    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList()) { //ブラックリストチェック
-      HTML::OutputResult('村人登録 [入村制限]', '入村制限ホストです。');
-    }
-
     extract(RQ::ToArray()); //引数を展開
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
     if ($user_no > 0) $url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
     $back_url = sprintf('<br><a href="%s">戻る</a>', $url); //バックリンク
-    if (GameConfig::TRIP && $trip != '') $uname .= Text::Trip('#' . $trip); //トリップ変換
+    if (GameConfig::TRIP && $trip != '') {
+      $trip = Text::Trip('#' . $trip); //トリップ変換
+      $uname .= $trip;
+    } else {
+      $trip = ''; //ブラックリストチェック用にトリップを初期化
+    }
+
+    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList($trip)) { //ブラックリストチェック
+      HTML::OutputResult('村人登録 [入村制限]', '入村制限ホストです。');
+    }
 
     //記入漏れチェック
     $title = '村人登録 [入力エラー]';

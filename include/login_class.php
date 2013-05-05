@@ -28,12 +28,17 @@ class Login {
     ログイン成功/失敗を true/false で返す
   */
   private static function LoginManually() {
-    //ブラックリストチェック
-    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList()) return false;
-
     extract(RQ::ToArray()); //引数を展開
-    if (GameConfig::TRIP && $trip != '') $uname .= Text::Trip('#' . $trip); //トリップ変換
+    if (GameConfig::TRIP && $trip != '') {
+      $trip = Text::Trip('#' . $trip); //トリップ変換
+      $uname .= $trip
+    } else {
+      $trip = ''; //ブラックリストチェック用にトリップを初期化
+    }
     if ($uname == '' || $password == '') return false;
+
+    //ブラックリストチェック
+    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList($trip)) return false;
 
     $crypt = Text::Crypt($password);
     //$crypt = $password; //デバッグ用

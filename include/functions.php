@@ -157,7 +157,11 @@ class Security {
   }
 
   //ブラックリストチェック
-  static function CheckBlackList() {
+  static function CheckBlackList($trip = '') {
+    if (GameConfig::TRIP && $trip != '' && in_array($trip, RoomConfig::$white_list_trip)) {
+      return false;
+    }
+
     $addr = self::GetIP();
     $host = gethostbyaddr($addr);
     foreach (array('white' => false, 'black' => true) as $type => $flag) {
