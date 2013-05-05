@@ -68,7 +68,7 @@ class RoomManager {
     }
     elseif (! ServerConfig::DEBUG_MODE) { //デバッグモード時は村作成制限をスキップ
       //ブラックリストチェック
-      if (Security::CheckBlackList() || Security::CheckEstablishBlackList()) {
+      if (Security::IsEstablishBlackList()) {
 	HTML::OutputResult('村作成 [制限事項]', '村立て制限ホストです。');
       }
 

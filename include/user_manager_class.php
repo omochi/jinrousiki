@@ -14,7 +14,8 @@ class UserManager {
       $trip = ''; //ブラックリストチェック用にトリップを初期化
     }
 
-    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList($trip)) { //ブラックリストチェック
+    //ブラックリストチェック
+    if (! ServerConfig::DEBUG_MODE && Security::IsLoginBlackList($trip)) {
       HTML::OutputResult('村人登録 [入村制限]', '入村制限ホストです。');
     }
 

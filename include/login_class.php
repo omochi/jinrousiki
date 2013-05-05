@@ -38,7 +38,7 @@ class Login {
     if ($uname == '' || $password == '') return false;
 
     //ブラックリストチェック
-    if (! ServerConfig::DEBUG_MODE && Security::CheckBlackList($trip)) return false;
+    if (! ServerConfig::DEBUG_MODE && Security::IsLoginBlackList($trip)) return false;
 
     $crypt = Text::Crypt($password);
     //$crypt = $password; //デバッグ用

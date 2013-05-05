@@ -156,36 +156,17 @@ class Security {
     return strncmp(@$_SERVER['HTTP_REFERER'], $url, strlen($url)) != 0;
   }
 
-  //ブラックリストチェック
-  static function CheckBlackList($trip = '') {
+  //ブラックリストチェック (ログイン用)
+  static function IsLoginBlackList($trip = '') {
     if (GameConfig::TRIP && $trip != '' && in_array($trip, RoomConfig::$white_list_trip)) {
       return false;
     }
-
-    $addr = self::GetIP();
-    $host = gethostbyaddr($addr);
-    foreach (array('white' => false, 'black' => true) as $type => $flag) {
-      foreach (RoomConfig::${$type . '_list_ip'} as $ip) {
-	if (strpos($addr, $ip) === 0) return $flag;
-      }
-      $list = RoomConfig::${$type . '_list_host'};
-      if (isset($list) && preg_match($list, $host)) return $flag;
-    }
-    return false;
+    return self::IsBlackList();
   }
 
-  //ブラックリストチェック (村立て限定)
-  static function CheckEstablishBlackList() {
-    $addr = self::GetIP();
-    $host = gethostbyaddr($addr);
-    foreach (array('white' => false, 'black' => true) as $type => $flag) {
-      foreach (RoomConfig::${'establish_' . $type . '_list_ip'} as $ip) {
-	if (strpos($addr, $ip) === 0) return $flag;
-      }
-      $list = RoomConfig::${'establish_' . $type . '_list_host'};
-      if (isset($list) && preg_match($list, $host)) return $flag;
-    }
-    return false;
+  //ブラックリストチェック (村立て用)
+  static function IsEstablishBlackList() {
+    return self::IsLoginBlackList || self::IsBlackList('establish_');
   }
 
   /**
@@ -213,6 +194,20 @@ class Security {
 	  if (2.2250738585072011e-307 === floatval("{$matches[1]}e{$exp}")) return true;
 	}
       }
+    }
+    return false;
+  }
+
+  //ブラックリスト判定
+  private static function IsBlackList($prefix = '') {
+    $addr = self::GetIP();
+    $host = gethostbyaddr($addr);
+    foreach (array('white' => false, 'black' => true) as $type => $flag) {
+      foreach (RoomConfig::${$prefix . $type . '_list_ip'} as $ip) {
+	if (strpos($addr, $ip) === 0) return $flag;
+      }
+      $list = RoomConfig::${$prefix . $type . '_list_host'};
+      if (isset($list) && preg_match($list, $host)) return $flag;
     }
     return false;
   }
