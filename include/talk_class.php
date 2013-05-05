@@ -1,12 +1,17 @@
 <?php
 //-- 発言処理クラス --//
 class Talk {
-  //会話出力
-  static function Output() {
+  //会話情報取得
+  static function Get() {
     $builder = new TalkBuilder('talk');
     foreach (TalkDB::Get() as $talk) $builder->Generate($talk);
     $builder->GenerateTimeStamp();
-    $builder->Output();
+    return $builder;
+  }
+
+  //会話出力
+  static function Output() {
+    return self::Get()->Output();
   }
 
   //霊界の会話出力

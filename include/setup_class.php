@@ -213,6 +213,15 @@ EOF;
       }
     }
 
+    $table = 'document_cache';
+    if (! in_array($table, $table_list)) {
+      $query = <<<EOF
+name TEXT NOT NULL, content BLOB, expire INT NOT NULL, PRIMARY KEY (name(255)),
+INDEX document_cache_index(expire)
+EOF;
+      self::CreateTable($table, $query);
+    }
+
     $query = sprintf('GRANT ALL ON %s.* TO %s', DatabaseConfig::NAME, DatabaseConfig::USER);
     DB::FetchBool($query, true);
     echo "初期設定の処理が終了しました<br>\n";

@@ -233,7 +233,12 @@ EOF;
     JinroTwitter::Send($room_no, RQ::Get()->room_name, RQ::Get()->room_comment); //Twitter 投稿
     //JinroRSS::Update(); //RSS更新 //テスト中
 
-    DB::Commit();
+    if (GameConfig::CACHE) {
+      Loader::LoadFile('cache_class');
+      DocumentCacheDB::Clean(GameConfig::CACHE_EXCEED); //コミットも内部で行う
+    } else {
+      DB::Commit();
+    }
 
     $format = '%s 村を作成しました。トップページに飛びます。' .
       '切り替わらないなら <a href="%s">ここ</a> 。';
