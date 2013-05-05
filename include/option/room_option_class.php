@@ -116,7 +116,7 @@ class RoomOption {
   //ゲームオプション画像出力
   static function Output() {
     extract(RoomDB::GetOption());
-    $format = '<div class="game-option">ゲームオプション：%s</div>'.Text::LF;
+    $format = '<div class="game-option">ゲームオプション：%s</div>' . Text::LF;
     printf($format, self::Generate($game_option, $option_role, $max_user));
   }
 }

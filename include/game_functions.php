@@ -29,8 +29,8 @@ class GameTime {
     return Time::Convert($full_time * $base_left_time * 60 * 60 / $base_time);
   }
 
-  //リアルタイム表示に使う JavaScript の変数を出力
-  static function OutputTimer($end_time, $type = null, $flag = false) {
+  //リアルタイム表示に使う JavaScript の変数を生成
+  static function GenerateTimer($end_time, $type = null, $flag = false) {
     $end_date = self::GetJavaScriptDate($end_time);
     $format = <<<EOF
 <script language="JavaScript"><!--
@@ -43,16 +43,22 @@ var countdown_flag = %s;
 var alert_distance = %d;
 %s
 EOF;
-    HTML::OutputJavaScript('output_realtime');
-    printf($format,
-	   DB::$ROOM->IsDay() ? '日没' : '夜明け',
-	   $end_date, self::GetJavaScriptDate(DB::$ROOM->system_time),
-	   $end_date, self::GetJavaScriptDate(DB::$ROOM->scene_start_time),
-	   isset($type) ? 'true' : 'false',
-	   isset($type) && class_exists('Sound') ? Sound::Generate($type) : '',
-	   $flag ? 'true' : 'false',
-	   TimeConfig::ALERT_DISTANCE,
-	   '//--></script>'."\n");
+    $str  = HTML::LoadJavaScript('output_realtime');
+    $str .= sprintf($format,
+		    DB::$ROOM->IsDay() ? '日没' : '夜明け',
+		    $end_date, self::GetJavaScriptDate(DB::$ROOM->system_time),
+		    $end_date, self::GetJavaScriptDate(DB::$ROOM->scene_start_time),
+		    isset($type) ? 'true' : 'false',
+		    isset($type) && class_exists('Sound') ? Sound::Generate($type) : '',
+		    $flag ? 'true' : 'false',
+		    TimeConfig::ALERT_DISTANCE,
+		    '//--></script>' . Text::LF);
+    return $str;
+  }
+
+  //リアルタイム表示に使う JavaScript の変数を出力
+  static function OutputTimer($end_time, $type = null, $flag = false) {
+    echo self::GenerateTimer($end_time, $type, $flag);
   }
 
   //JavaScript の Date() オブジェクト作成コードを生成する
@@ -275,6 +281,37 @@ class GameHTML {
       $str .= implode(Text::LF, $stack);
     }
     return $str;
+  }
+
+  //自動リロードリンク生成
+  static function GenerateAutoReloadLink($url) {
+    $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::Get()->auto_reload > 0 ? '手動' : '【手動】');
+    foreach (GameConfig::$auto_reload_list as $time) {
+      $name  = $time . '秒';
+      $value = RQ::Get()->auto_reload == $time ? sprintf('【%s】', $name) : $name;
+      $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
+    }
+    return $str . ')' . Text::LF;
+  }
+
+  //ログへのリンク生成
+  static function GenerateLogLink() {
+    $url    = 'old_log.php?room_no=' . DB::$ROOM->id;
+    $br     = Text::BR . Text::LF;
+    $header = DB::$ROOM->view_mode ? '[ログ]' : '[全体ログ]';
+    $str    = HTML::GenerateLogLink($url, true, $br . $header);
+
+    $header = '[役職表示ログ]';
+    return  $str . HTML::GenerateLogLink($url . '&add_role=on', false, $br . $header);
+  }
+
+  //日付と生存者の人数を生成
+  static function GenerateTimeTable() {
+    $str = '<table class="time-table"><tr>' . Text::LF; //ヘッダ
+
+    if (DB::$ROOM->IsBeforeGame()) return $str; //ゲームが始まっていなければスキップ
+    $format = '<td> %d 日目<span>(生存者 %d 人)</span></td>' . Text::LF;
+    return $str . sprintf($format, DB::$ROOM->date, count(DB::$USER->GetLivingUsers()));
   }
 
   //プレイヤー一覧生成
@@ -535,32 +572,13 @@ EOF;
   }
 
   //自動更新リンク出力
-  static function OutputAutoReloadLink($url) {
-    $str = sprintf('[自動更新](%s">%s</a>', $url, RQ::Get()->auto_reload > 0 ? '手動' : '【手動】');
-    foreach (GameConfig::$auto_reload_list as $time) {
-      $name  = $time . '秒';
-      $value = RQ::Get()->auto_reload == $time ? sprintf('【%s】', $name) : $name;
-      $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
-    }
-    Text::Output($str . ')');
-  }
+  static function OutputAutoReloadLink($url) { echo self::GenerateAutoReloadLink($url); }
 
   //ログへのリンク出力
-  static function OutputLogLink() {
-    $url    = 'old_log.php?room_no=' . DB::$ROOM->id;
-    $header = "<br>\n" . (DB::$ROOM->view_mode ? '[ログ]' : '[全体ログ]');
-    echo HTML::GenerateLogLink($url, true, $header) .
-      HTML::GenerateLogLink($url . '&add_role=on', false, "<br>\n[役職表示ログ]");
-  }
+  static function OutputLogLink() { echo self::GenerateLogLink(); }
 
   //日付と生存者の人数を出力
-  static function OutputTimeTable() {
-    Text::Output('<table class="time-table"><tr>'); //ヘッダを表示
-
-    if (DB::$ROOM->IsBeforeGame()) return false; //ゲームが始まっていなければスキップ
-    $str = '<td> %d 日目<span>(生存者 %d 人)</span></td>' . Text::LF;
-    printf($str, DB::$ROOM->date, count(DB::$USER->GetLivingUsers()));
-  }
+  static function OutputTimeTable() { echo self::GenerateTimeTable(); }
 
   //プレイヤー一覧出力
   static function OutputPlayer() { echo self::GeneratePlayer(); }

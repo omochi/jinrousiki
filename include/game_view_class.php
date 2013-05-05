@@ -1,10 +1,7 @@
 <?php
 //-- 観戦画面出力クラス --//
 class GameView {
-  const AUTO_RELOAD = "<meta http-equiv=\"Refresh\" content=\"%d\">\n";
-  const BODY = '<body onLoad="output_realtime();">';
-  const URL_HEADER  = '<a href="game_view.php?room_no=%d';
-
+  //出力
   static function Output() {
     //-- データ収集 --//
     DB::Connect();
@@ -25,35 +22,68 @@ class GameView {
     DB::$SELF = new User();
 
     //-- 出力 --//
-    HTML::OutputHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
+    self::OutputHeader();
+    self::OutputLink();
+    self::OutputLoginForm();
+
+    if (! DB::$ROOM->IsFinished()) RoomOption::Output(); //ゲームオプション
+    self::OutputTimeTable();
+
+    GameHTML::OutputPlayer();
+    if (DB::$ROOM->IsFinished()) Winner::Output();
+    if (DB::$ROOM->IsPlaying())  GameHTML::OutputRevote();
+    Talk::Output();
+    GameHTML::OutputLastWords();
+    GameHTML::OutputDead();
+    GameHTML::OutputVote();
+    HTML::OutputFooter();
+  }
+
+  //ヘッダ出力
+  private static function OutputHeader() {
+    $str = HTML::GenerateHeader(ServerConfig::TITLE . '[観戦]', 'game_view');
     if (GameConfig::AUTO_RELOAD && RQ::Get()->auto_reload > 0) { //自動更新
-      printf(self::AUTO_RELOAD, RQ::Get()->auto_reload);
+      $str .= sprintf('<meta http-equiv="Refresh" content="%d">', RQ::Get()->auto_reload);
+      $str .= Text::LF;
     }
-    echo DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
+    $str .= DB::$ROOM->GenerateCSS(); //シーンに合わせた文字色と背景色 CSS をロード
+    $str .= '</head>' . Text::LF;
 
-    //ヘッダ
-    $header = <<<EOF
-</head>
-%s
-<table id="game_top" class="login"><tr>
-%s<td class="login-link">
+    if (DB::$ROOM->IsPlaying() && DB::$ROOM->IsRealTime()) {
+      $str .= '<body onLoad="output_realtime();">';
+    } else {
+      $str .= '<body>';
+    }
 
-EOF;
-    $body = DB::$ROOM->IsPlaying() && DB::$ROOM->IsRealTime() ? self::BODY : '<body>';
-    printf($header, $body, DB::$ROOM->GenerateTitleTag());
+    Text::Output($str);
+  }
+
+  //リンク出力
+  private static function OutputLink() {
+    //タイトル
+    $str  = '<table id="game_top" class="login"><tr>' . Text::LF;
+    $str .= DB::$ROOM->GenerateTitleTag();
+    $str .= '<td class="login-link">' . Text::LF;
 
     //更新
-    $url = sprintf(self::URL_HEADER, RQ::Get()->room_no);
-    $auto_reload = RQ::Get()->auto_reload > 0 ? '&auto_reload=' . RQ::Get()->auto_reload : '';
-    printf('%s%s">[更新]</a>'."\n", $url, $auto_reload);
-    if (GameConfig::AUTO_RELOAD) GameHTML::OutputAutoReloadLink($url); //自動更新設定
+    $url  = sprintf('<a href="game_view.php?room_no=%d', RQ::Get()->room_no);
+    $str .= $url;
+    if (RQ::Get()->auto_reload > 0) $str .= sprintf('&auto_reload=%d', RQ::Get()->auto_reload);
+    $str .= '">[更新]</a>' . Text::LF;
+    if (GameConfig::AUTO_RELOAD) $str .= GameHTML::GenerateAutoReloadLink($url); //自動更新設定
 
-    printf('%s" target="_blank">別ページ</a>'."\n".'<a href="./">[戻る]</a>', $url); //別ページ
-    if (DB::$ROOM->IsFinished()) GameHTML::OutputLogLink(); //ログ
+    //別ページ
+    $str .= sprintf('%s" target="_blank">別ページ</a>', $url);
+    $str .= Text::LF;
+    $str .= '<a href="./">[戻る]</a>';
+    if (DB::$ROOM->IsFinished()) $str .= GameHTML::GenerateLogLink(); //ログ
 
-    //ログインフォーム
-    $login_form = <<<EOF
-</td></tr></table>
+    Text::Output($str . '</td></tr></table>');
+  }
+
+  //ログインフォーム出力
+  private static function OutputLoginForm() {
+    $format = <<<EOF
 <table class="login"><tr>
 <td><form method="post" action="login.php?room_no=%d">
 <label for="uname">ユーザ名</label><input type="text" id="uname" name="uname" size="20" value="">%s
@@ -71,7 +101,7 @@ EOF;
     } else {
       $trip = '';
     }
-    printf($login_form, DB::$ROOM->id, $trip);
+    $str = sprintf($format, DB::$ROOM->id, $trip);
 
     if (DB::$ROOM->IsBeforeGame()) { //登録画面リンク
       $user_entry = <<<EOF
@@ -80,11 +110,15 @@ EOF;
 </td>
 
 EOF;
-      printf($user_entry, DB::$ROOM->id);
+      $str .= sprintf($user_entry, DB::$ROOM->id);
     }
-    Text::Output('</tr></table>');
-    if (! DB::$ROOM->IsFinished()) RoomOption::Output(); //ゲームオプション
-    GameHTML::OutputTimeTable(); //経過日数と生存人数
+
+    Text::Output($str . '</tr></table>');
+  }
+
+  //タイムテーブル出力
+  private static function OutputTimeTable() {
+    $str = GameHTML::GenerateTimeTable(); //経過日数と生存人数
 
     switch (DB::$ROOM->scene) {
     case 'day':
@@ -98,35 +132,31 @@ EOF;
 
     if (DB::$ROOM->IsPlaying()) {
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制
-	GameTime::OutputTimer(GameTime::GetRealPass($left_time));
-	echo '<td class="real-time"><form name="realtime_form">'."\n";
-	echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
-	echo '</form></td>'."\n";
+	$str .= GameTime::GenerateTimer(GameTime::GetRealPass($left_time));
+	$str .= '<td class="real-time"><form name="realtime_form">' . Text::LF;
+	$str .= '<input type="text" name="output_realtime" size="60" readonly>' . Text::LF;
+	$str .= '</form></td>' . Text::LF;
       }
       else { //会話で時間経過制
 	$left_talk_time = GameTime::GetTalkPass($left_time);
-	if ($left_talk_time) printf('<td>%s%s</td>'."\n", $time_message, $left_talk_time);
+	if ($left_talk_time) {
+	  $format = '<td>%s%s</td>' . Text::LF;
+	  $str .= sprintf($format, $time_message, $left_talk_time);
+	}
       }
     }
-    Text::Output('</tr></table>');
+    $str .= '</tr></table>' . Text::LF;
 
     if (DB::$ROOM->IsPlaying()) {
-      $format = '<div class="system-vote">%s</div>'."\n";
+      $format = '<div class="system-vote">%s</div>' . Text::LF;
       if ($left_time == 0) {
-	printf($format, $time_message . Message::$vote_announce);
+	$str .= sprintf($format, $time_message . Message::$vote_announce);
       }
       elseif (DB::$ROOM->IsEvent('wait_morning')) {
-	printf($format, Message::$wait_morning);
+	$str .= sprintf($format, Message::$wait_morning);
       }
     }
 
-    GameHTML::OutputPlayer();
-    if (DB::$ROOM->IsFinished()) Winner::Output();
-    if (DB::$ROOM->IsPlaying())  GameHTML::OutputRevote();
-    Talk::Output();
-    GameHTML::OutputLastWords();
-    GameHTML::OutputDead();
-    GameHTML::OutputVote();
-    HTML::OutputFooter();
+    echo $str;
   }
 }
