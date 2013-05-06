@@ -55,6 +55,7 @@ InfoHTML::OutputRoleHeader('村人陣営');
 <a href="#elder">長老</a>
 <a href="#scripter">執筆者</a>
 <a href="#eccentricer">傾奇者</a>
+<a href="#tough">益荒男</a>
 <a href="#suspect">不審者</a>
 <a href="#unconscious">無意識</a>
 </p>
@@ -191,6 +192,21 @@ PP ラインの計算を複雑にするために作成してみました。
 <pre>
 <a href="#scripter">執筆者</a>の逆バージョンで、<a href="http://jbbs.livedoor.jp/bbs/read.cgi/netgame/2829/1305122951/195" target="_top">新役職考案スレ 2(195)</a> が原型です。
 <a href="ability.php#authority">投票数変化能力者</a>の騙りの幅を広げるのが狙いです。
+</pre>
+
+<h3 id="tough">益荒男 (占い結果：村人 / 霊能結果：村人) [Ver. 2.2.0 α8～]</h3>
+<h4>[耐性] 人狼襲撃：無効 + 死の宣告</h4>
+<pre>
+<a href="wolf.php#wolf_group">人狼</a> (種類を問わない) の襲撃に耐えることができるが、<a href="sub_role.php#death_warrant">死の宣告</a>を受けてしまう村人。
+<a href="sub_role.php#death_warrant">死の宣告</a>の発動日は翌日の昼。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#doom">死の宣告能力者</a>・<a href="ability.php#resist_wolf">人狼襲撃耐性能力者</a>
+</pre>
+<h4>[作成者からのコメント]</h4>
+<pre>
+他国のタフガイに相当します。
 </pre>
 
 <h3 id="suspect">不審者 (占い結果：人狼 / 霊能結果：村人) [Ver. 1.4.0 α9～]</h3>
@@ -1963,7 +1979,7 @@ A[河童] → B[村人][小心者]
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#philosophy_wizard">賢者</a>
+<a href="#philosophy_wizard">賢者</a>・<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1993,7 +2009,7 @@ A[河童] → B[村人][小心者]
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#reverse_assassin">反魂師</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
+<a href="#reverse_assassin">反魂師</a>・<a href="ability.php#anti_sudden_death">ショック死抑制能力者</a>・<a href="ability.php#revive">蘇生能力者</a>・<a href="ability.php#possessed_limit">憑依制限能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>

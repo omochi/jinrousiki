@@ -16,6 +16,10 @@ class RoleMessageList {
     'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|傾奇者|です。一定日数まで、あなたの#処刑#_投票数_が +1 されます。纏うは艶やか、彩るは歌舞伎。宵越しの銭は持たぬが粋。",
     'type' => 'elder');
 
+  public $tough = array(
+    'message' => "[役割] [|村人|陣営] [|村人|系]\n　あなたは|益荒男|です。#人狼#の襲撃に耐えることができますが、翌日の昼に_ショック死_してしまいます。",
+    'type' => 'human', 'delimiter' => array('#' => 'wolf', '_' => 'chicken'));
+
   public $mage = array(
     'message' => "[役割] [|村人|陣営] [#占い師#系]\n　あなたは#占い師#、夜の間に村人一人を占うことで翌朝その人が「|人|」か「_狼_」か知ることができます。あなたが村人の勝利を握っています。",
     'type' => 'human', 'delimiter' => array('#' => 'mage', '_' => 'wolf'));
@@ -1705,6 +1709,7 @@ class RoleMessageList {
   public $result_elder = array('message' => "さんは|長老|でした", 'type' => 'result_human');
   public $result_scripter = array('message' => "さんは|執筆者|でした", 'type' => 'result_human');
   public $result_eccentricer = array('message' => "さんは|傾奇者|でした", 'type' => 'result_human');
+  public $result_tough = array('message' => "さんは|益荒男|でした", 'type' => 'result_human');
   public $result_suspect = array('message' => "さんは|不審者|でした", 'type' => 'result_human');
   public $result_unconscious = array('message' => "さんは|無意識|でした", 'type' => 'result_human');
   public $result_mage = array('message' => "さんは|占い師|でした", 'delimiter' => array('|' => 'mage'));

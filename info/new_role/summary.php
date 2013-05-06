@@ -107,6 +107,7 @@ Ver. 2.2.0
 <a href="#ver220a5">α5</a>
 <a href="#ver220a6">α6</a>
 <a href="#ver220a7">α7</a>
+<a href="#ver220a8">α8</a>
 </p>
 
 <p>
@@ -3137,6 +3138,15 @@ Ver. 2.2.0
   <td>村人</td>
   <td class="ability"><a href="sub_role.php#supported">受援者</a>に<a href="sub_role.php#aspirator">吸毒者</a>を付加する特殊な後援者。</td>
   <td>Ver. 2.2.0 α7</td>
+</tr>
+<tr id="ver220a8">
+  <td><a href="human.php#tough">益荒男</a></td>
+  <td><a href="human.php">村人</a></td>
+  <td><a href="human.php#human_group">村人系</a></td>
+  <td>村人</td>
+  <td>村人</td>
+  <td class="ability"><a href="wolf.php#wolf_group">人狼</a> (種類を問わない) の襲撃に耐えることができるが、<a href="sub_role.php#death_warrant">死の宣告</a>を受けてしまう村人。</td>
+  <td>Ver. 2.2.0 α8</td>
 </tr>
 </table>
 

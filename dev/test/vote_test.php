@@ -94,13 +94,13 @@ RQ::GetTest()->test_users[20]->live = 'live';
 RQ::GetTest()->test_users[21]->role = 'resurrect_mania[14] mind_friend[21]';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->role = 'plumage_patron';
+RQ::GetTest()->test_users[22]->role = 'tough';
 RQ::GetTest()->test_users[22]->live = 'live';
 
 RQ::GetTest()->test_users[23]->role = 'scarlet_mania deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
-RQ::GetTest()->test_users[24]->role = 'awake_wizard infected[20] supported[22] aspirator';
+RQ::GetTest()->test_users[24]->role = 'clairvoyance_scanner infected[20] supported[22] aspirator';
 RQ::GetTest()->test_users[24]->live = 'live';
 
 RQ::GetTest()->test_users[25]->role = 'horse_ogre disfavor';
@@ -111,7 +111,7 @@ RQ::GetTest()->test_users[25]->profile = "あーうー\nうーあー";
 DevUser::Complement();
 
 //-- 仮想投票データをセット --//
-$set_date = 5;
+$set_date = 4;
 RQ::GetTest()->vote = new StdClass();
 RQ::GetTest()->vote->day = array();
 RQ::GetTest()->vote_target_day = array(
@@ -235,7 +235,7 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 14,	'target_no' => 18,	'type' => 'CHILD_FOX_DO'),
     //array('user_no' => 14,	'target_no' => 13,	'type' => 'VOODOO_KILLER_DO'),
     //array('user_no' => 14,	'target_no' => 5,	'type' => 'JAMMER_MAD_DO'),
-    array('user_no' => 16,	'target_no' => '11 6 1 2 3 4 5',	'type' => 'STEP_MAGE_DO'),
+    //array('user_no' => 16,	'target_no' => '11 6 1 2 3 4 5',	'type' => 'STEP_MAGE_DO'),
     //array('user_no' => 17,	'target_no' => 22,	'type' => 'FAIRY_DO'),
     //array('user_no' => 18,	'target_no' => 20,	'type' => 'VOODOO_FOX_DO'),
     //array('user_no' => 18,	'target_no' => '13 8 9 10',	'type' => 'STEP_WOLF_EAT'),
@@ -257,8 +257,8 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 23,	'target_no' => 3,	'type' => 'ASSASSIN_DO'),
     //array('user_no' => 23,	'target_no' => 11,	'type' => 'MIND_SCANNER_DO'),
     //array('user_no' => 23,	'target_no' => 16,	'type' => 'VAMPIRE_DO'),
-    //array('user_no' => 24,	'target_no' => 2,	'type' => 'MIND_SCANNER_DO'),
-    array('user_no' => 24,	'target_no' => 11,	'type' => 'WIZARD_DO'),
+    array('user_no' => 24,	'target_no' => 22,	'type' => 'MIND_SCANNER_DO'),
+    //array('user_no' => 24,	'target_no' => 11,	'type' => 'WIZARD_DO'),
     //array('user_no' => 24,	'target_no' => '3 9',	'type' => 'SPREAD_WIZARD_DO'),
     //array('user_no' => 24,	'target_no' => 12,	'type' => 'SPREAD_WIZARD_DO'),
     //array('user_no' => 25,	'target_no' => 22,	'type' => 'TRAP_MAD_DO'),
@@ -291,8 +291,8 @@ DB::Connect(); //DB接続 (必要なときだけ設定する)
 DevRoom::Load();
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 

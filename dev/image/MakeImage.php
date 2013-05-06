@@ -13,7 +13,7 @@ $font = 'azuki.ttf';
 
 //$role = 'poison'; //128
 //$role = 'prediction_weather_lady';
-$role = 'plumage_patron';
+$role = 'tough';
 
 $calib_list = array();
 //$calib_list = array(0.5,0,0,0,-1,-0.5,0,0,0.5,0.5); //位置調整例 (step_wolf)

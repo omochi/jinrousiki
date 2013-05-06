@@ -24,5 +24,5 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>なし</li>
+  <li>益荒男：人狼の襲撃に耐えることができるが、死の宣告を受けてしまう村人</li>
 </ul>
