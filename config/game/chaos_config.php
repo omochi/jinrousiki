@@ -227,12 +227,13 @@ class ChaosConfig {
 
   //超・闇鍋
   static $chaos_hyper_random_role_list = array(
-    'human'                 =>  10,
-    'saint'                 =>  15,
+    'human'                 =>   4,
+    'saint'                 =>  12,
     'executor'              =>  10,
     'elder'                 =>  20,
-    'scripter'              =>  15,
+    'scripter'              =>  12,
     'eccentricer'           =>  10,
+    'tough'                 =>  12,
     'suspect'               =>  20,
     'unconscious'           =>  20,
     'mage'                  => 100,
@@ -910,8 +911,7 @@ class ChaosConfig {
   //-- 出現率変動モード --//
   /* 役職 => 倍率 (0 なら出現しなくなる) */
   static $boost_rate_list = array(
-    'a' => array('plumage_patron' => 17,
-		 'scarlet_mania'  => 10),
+    'a' => array('tough' => 10),
     'b' => array('elder'             => 0,
 		 'scripter'          => 0,
 		 'eccentricer'       => 0,

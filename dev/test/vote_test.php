@@ -82,7 +82,7 @@ RQ::GetTest()->test_users[16]->live = 'live';
 RQ::GetTest()->test_users[17]->role = 'psycho_necromancer possessed[3-3] disfavor';
 RQ::GetTest()->test_users[17]->live = 'dead';
 
-RQ::GetTest()->test_users[18]->role = 'step_vampire no_last_words';
+RQ::GetTest()->test_users[18]->role = 'step_vampire no_last_words rival[22]';
 RQ::GetTest()->test_users[18]->live = 'live';
 
 RQ::GetTest()->test_users[19]->role = 'light_fairy psycho_infected';
@@ -94,7 +94,7 @@ RQ::GetTest()->test_users[20]->live = 'live';
 RQ::GetTest()->test_users[21]->role = 'resurrect_mania[14] mind_friend[21]';
 RQ::GetTest()->test_users[21]->live = 'live';
 
-RQ::GetTest()->test_users[22]->role = 'tough';
+RQ::GetTest()->test_users[22]->role = 'cowboy_duelist rival[22]';
 RQ::GetTest()->test_users[22]->live = 'live';
 
 RQ::GetTest()->test_users[23]->role = 'scarlet_mania deep_sleep';
@@ -133,7 +133,7 @@ RQ::GetTest()->vote_target_day = array(
   array('id' => 15, 'target_no' =>  7),
   array('id' => 16, 'target_no' => 11),
   //array('id' => 17, 'target_no' => 22),
-  array('id' => 18, 'target_no' => 16),
+  array('id' => 18, 'target_no' => 23),
   //array('id' => 18, 'target_no' => 3),
   array('id' => 19, 'target_no' => 22),
   array('id' => 20, 'target_no' => 22),
@@ -291,8 +291,8 @@ DB::Connect(); //DB接続 (必要なときだけ設定する)
 DevRoom::Load();
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-#DB::$ROOM->scene = 'day';
-DB::$ROOM->scene = 'night';
+DB::$ROOM->scene = 'day';
+#DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 

@@ -31,7 +31,7 @@ class Login {
     extract(RQ::ToArray()); //引数を展開
     if (GameConfig::TRIP && $trip != '') {
       $trip = Text::Trip('#' . $trip); //トリップ変換
-      $uname .= $trip
+      $uname .= $trip;
     } else {
       $trip = ''; //ブラックリストチェック用にトリップを初期化
     }

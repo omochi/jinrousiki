@@ -20,9 +20,10 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <ul>
   <li>狼視点モード実装</li>
   <li>固定配役追加モード：R(妖精村)追加</li>
+  <li>益荒男：人狼の襲撃に耐えることができるが、死の宣告を受けてしまう村人</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
 <ul>
-  <li>益荒男：人狼の襲撃に耐えることができるが、死の宣告を受けてしまう村人</li>
+  <li>なし</li>
 </ul>
