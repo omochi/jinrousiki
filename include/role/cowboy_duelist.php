@@ -37,7 +37,7 @@ class Role_cowboy_duelist extends Role_valkyrja_duelist {
 
 	$target = DB::$USER->ByRealUname($voted_uname);
 	if ($target->IsPartner($this->partner_role, $user->id)) {
-	  $id = $uname == $this->GetVoteTargetUname($voted_uname) ? $target->id : $user->id;
+	  $id = $voted_uname == $this->GetVoteTargetUname($uname) ? $target->id : $user->id;
 	  $stack[$id] = true;
 	}
       }
