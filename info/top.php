@@ -19,6 +19,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>新規実装 / 仕様変更</h2>
 <ul>
   <li>狼視点モード実装</li>
+  <li>固定配役追加モード：R(妖精村)追加</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

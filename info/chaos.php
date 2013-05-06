@@ -620,7 +620,7 @@ InfoHTML::OutputHeader('闇鍋モード');
 <?php InfoHTML::OutputItemList('topping', range('i', 'p')); ?>
 </p>
 <p>
-<?php InfoHTML::OutputItemList('topping', array('q')); ?>
+<?php InfoHTML::OutputItemList('topping', array('q', 'r')); ?>
 </p>
 
 <?php InfoHTML::OutputItem('topping', 'a', 'Ver. 1.4.0 β19'); ?>
@@ -752,6 +752,11 @@ InfoHTML::OutputHeader('闇鍋モード');
 <?php InfoHTML::OutputItem('topping', 'q', 'Ver. 2.2.0 α6'); ?>
 <pre>
 <a href="new_role/ability.php#sex_mage">性別鑑定能力者</a>1 (<a href="new_role/human.php#wizard_group">魔法使い系</a>を除く)　<a href="new_role/ability.php#sex_only">性別限定能力者</a>1 (メイン役職のみ)
+</pre>
+
+<?php InfoHTML::OutputItem('topping', 'r', 'Ver. 2.2.0 α8'); ?>
+<pre>
+<a href="new_role/chiroptera.php#fairy_group">妖精系</a>1　対妖精枠1 (<a href="new_role/human.php#dummy_guard">夢守人</a>・<a href="new_role/human.php#dummy_poison">夢毒者</a>・<a href="new_role/wolf.php#dream_eater_mad">獏</a>)
 </pre>
 
 

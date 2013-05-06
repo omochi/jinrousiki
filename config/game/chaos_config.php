@@ -883,6 +883,28 @@ class ChaosConfig {
 			  'incubus_ogre'     => 2,
 			  'succubus_yaksa'   => 2)),
 		 'count'  => array(1, 1)),
+    'r' => array('random' => array(
+                    array('fairy'         => 1,
+			  'spring_fairy'  => 1,
+			  'summer_fairy'  => 1,
+			  'autumn_fairy'  => 1,
+			  'winter_fairy'  => 1,
+			  'flower_fairy'  => 1,
+			  'star_fairy'    => 1,
+			  'sun_fairy'     => 1,
+			  'moon_fairy'    => 1,
+			  'grass_fairy'   => 1,
+			  'light_fairy'   => 1,
+			  'dark_fairy'    => 1,
+			  'shadow_fairy'  => 1,
+			  'greater_fairy' => 1,
+			  'mirror_fairy'  => 1,
+			  'sweet_fairy'   => 1,
+			  'ice_fairy'     => 1),
+                    array('dummy_guard'     => 1,
+			  'dummy_poison'    => 1,
+			  'dream_eater_mad' => 2)),
+		 'count'  => array(1, 1)),
 			    );
 
   //-- 出現率変動モード --//

@@ -42,32 +42,33 @@ class RoleTest {
       Text::Output(sprintf(self::LABEL, $label, $id, $key, $checked, $label, $value));
     }
     Text::d();
-
     foreach (array('replace_human', 'change_common', 'change_mad', 'change_cupid') as $option) {
       $count = 0;
+      RQ::Get()->ParsePostData($option);
       foreach (GameOptionConfig::${$option.'_selector_list'} as $key => $mode) {
 	if (++$count % 10 == 0) Text::d();
 	if (is_int($key)) {
 	  $value   = $mode;
-	  $checked = '';
+	  $checked = RQ::Get()->$option == $mode ? ' checked' : '';
 	  $name    = OptionManager::GenerateCaption($mode);
 	} else {
 	  $value   = '';
-	  $checked = ' checked';
+	  $checked = RQ::Get()->$option == '' ? ' checked' : '';
 	  $name    = $mode;
 	}
-	$label = $option . '_' . $key;
+	$label = $option . (is_int($key) ? '_' . $key : '');
 	Text::Output(sprintf(self::LABEL, $label, $option, $value, $checked, $label, $name));
       }
       Text::d();
     }
 
     foreach (array('topping', 'boost_rate') as $option) {
-      $count = 0;
+      $count = -1;
+      RQ::Get()->ParsePostData($option);
       foreach (GameOptionConfig::${$option.'_list'} as $key => $mode) {
-	if (++$count % 10 == 0) Text::d();
-	$label   = $option . '_' . $key;
-	$checked = $key == '' ? ' checked' : '';
+	if (++$count % 9 == 0 && $count > 0) Text::d();
+	$label   = $option . (is_int($key) ? '_' . $key : '');
+	$checked = RQ::Get()->$option == $key ? ' checked' : '';
 	Text::Output(sprintf(self::LABEL, $label, $option, $key, $checked, $label, $mode));
       }
       Text::d();
