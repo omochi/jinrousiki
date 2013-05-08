@@ -270,7 +270,7 @@ class HTML {
 
   //共通 HTML ヘッダ生成
   static function GenerateHeader($title, $css = null, $close = false) {
-    $str = <<<EOF
+    $format = <<<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="ja">
 <head>
@@ -280,11 +280,11 @@ class HTML {
 <title>%s</title>
 
 EOF;
-    $data = sprintf($str, ServerConfig::ENCODE, $title);
+    $str = sprintf($format, ServerConfig::ENCODE, $title);
     if (is_null($css)) $css = 'action';
-    $data .= self::LoadCSS(sprintf('%s/%s', JINRO_CSS, $css));
-    if ($close) $data .= self::GenerateBodyHeader();
-    return $data;
+    $str .= self::LoadCSS(sprintf('%s/%s', JINRO_CSS, $css));
+    if ($close) $str .= self::GenerateBodyHeader();
+    return $str;
   }
 
   //ページジャンプ用 JavaScript 生成

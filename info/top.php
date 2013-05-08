@@ -7,20 +7,18 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.2.0α7アップロード (2013/04/14 (Sun) 19:15) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/58587/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.0α8アップロード (2013/05/07 (Tue) 01:19) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/58781/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-  <li>「蛇姫」仕様変更</li>
-  <li>「紅天女」「鬼車鳥」実装</li>
-  <li>サブ役職「元紅天女」「吸毒者」実装</li>
+  <li>狼視点モード実装</li>
+  <li>固定配役追加モード：R(妖精村)追加</li>
+  <li>「益荒男」実装</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-  <li>狼視点モード実装</li>
-  <li>固定配役追加モード：R(妖精村)追加</li>
-  <li>益荒男：人狼の襲撃に耐えることができるが、死の宣告を受けてしまう村人</li>
+  <li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

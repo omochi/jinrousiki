@@ -91,7 +91,9 @@ class Winner {
       $user->Reparse();
       if (! $user->IsRole('psycho_infected')) $living_id_list[] = $user->id;
       if ($user->IsRole('infected')) {
-	foreach ($user->GetPartner('infected') as $id) $infected_list[$id][] = $user->id;
+	foreach ($user->GetPartner('infected') as $id) {
+	  $infected_list[$id][] = $user->id;
+	}
       }
     }
     if (count($living_id_list) == 1) {
@@ -289,7 +291,7 @@ class GameHTML {
     foreach (GameConfig::$auto_reload_list as $time) {
       $name  = $time . '秒';
       $value = RQ::Get()->auto_reload == $time ? sprintf('【%s】', $name) : $name;
-      $str .= sprintf(' %s&auto_reload=%s">%s</a>', $url, $time, $value);
+      $str .= sprintf(' %s&auto_reload=%d">%s</a>', $url, $time, $value);
     }
     return $str . ')' . Text::LF;
   }
