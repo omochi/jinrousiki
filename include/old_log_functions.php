@@ -114,6 +114,12 @@ class OldLogHTML {
       DB::$ROOM->scene  = 'day';
     }
 
+    $list = array(
+      'game_option' => DB::$ROOM->game_option->row,
+      'option_role' => DB::$ROOM->option_role->row,
+      'max_user'    => 0);
+    RoomOption::Load($list);
+
     $title = sprintf(self::TITLE, DB::$ROOM->id, DB::$ROOM->name, $base_title);
     $br = Text::BR . Text::LF;
 
@@ -122,7 +128,7 @@ class OldLogHTML {
     $str .= $br;
     $str .= DB::$ROOM->GenerateTitleTag(true);
     $str .= $br;
-    $str .= RoomOption::GenerateImage(DB::$ROOM->game_option->row, DB::$ROOM->option_role->row);
+    $str .= RoomOption::GenerateImage();
     $str .= $br;
     $str .= self::DATE_BEFORE;
     for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= sprintf(self::DATE_LINK, $i, $i);
@@ -209,8 +215,13 @@ EOF;
 	  $log_link .= HTML::GenerateLogLink($url, false, "\n[役職表示] (", $dead) . ' )';
 	}
       }
+      $list = array(
+        'game_option' => $ROOM->game_option,
+	'option_role' => $ROOM->option_role,
+	'max_user'    => $ROOM->max_user);
+      RoomOption::Load($list);
       $max_user    = Image::GenerateMaxUser($ROOM->max_user);
-      $game_option = RoomOption::GenerateImage($ROOM->game_option, $ROOM->option_role);
+      $game_option = RoomOption::GenerateImage();
       $winner      = RQ::Get()->watch ? '-' : Image::Winner()->Generate($ROOM->winner);
       $str .= <<<EOF
 <tr>

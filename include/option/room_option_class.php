@@ -5,6 +5,7 @@ class RoomOption {
   const GAME_OPTION = 'game_option';
   const ROLE_OPTION = 'role_option';
 
+  static $stack       = array();
   static $game_option = array();
   static $role_option = array();
   static $icon_order  = array(
@@ -21,14 +22,15 @@ class RoomOption {
     'quiz', 'chaos', 'chaosfull', 'chaos_hyper', 'chaos_verso', 'topping', 'boost_rate',
     'chaos_open_cast', 'chaos_open_cast_camp', 'chaos_open_cast_role', 'secret_sub_role',
     'no_sub_role', 'sub_role_limit_easy', 'sub_role_limit_normal', 'sub_role_limit_hard');
+  static $max_user = 0;
 
-  //登録オプション取得
-  static function GetOption($type) { return implode(' ', self::$$type); }
-
-  //オプション登録
-  static function SetOption($type, $name) {
-    RQ::Set($name, true);
-    if (! in_array($name, self::$$type)) array_push(self::$$type, $name);
+  //オプション情報ロード
+  static function Load(array $list = array()) {
+    if (count($list) < 1) $list = RoomDB::GetOption();
+    extract($list);
+    self::$game_option = $game_option;
+    self::$role_option = $option_role;
+    self::$max_user    = $max_user;
   }
 
   //フォーム入力値取得
@@ -39,84 +41,53 @@ class RoomOption {
     }
   }
 
+  //登録オプション取得
+  static function Get($type) { return implode(' ', self::$$type); }
+
+  //スタックから表示順に取得
+  static function GetOrder() {
+    if (count(self::$stack) < 1) self::SetStack();
+    return array_intersect(self::$icon_order, array_keys(self::$stack));
+  }
+
+  //オプション登録
+  static function Set($type, $name) {
+    RQ::Set($name, true);
+    if (! in_array($name, self::$$type)) array_push(self::$$type, $name);
+  }
+
+  //オプションをパースしてスタック登録
+  static function SetStack() {
+    self::$stack = OptionParser::Get(self::$game_option, self::$role_option);
+  }
+
   //ゲームオプション情報生成
-  static function Generate($game_option, $option_role, $max_user) {
-    return self::GenerateImage($game_option, $option_role) . Image::GenerateMaxUser($max_user);
+  static function Generate() {
+    return self::GenerateImage() . Image::GenerateMaxUser(self::$max_user);
   }
 
   //ゲームオプション画像生成
-  static function GenerateImage($game_option, $option_role = '') {
-    //オプションパース
-    $list = array_merge(OptionParser::Parse($game_option), OptionParser::Parse($option_role));
-
+  static function GenerateImage() {
     $str = '';
-    foreach (array_intersect(self::$icon_order, array_keys($list)) as $option) {
-      $filter   = OptionManager::GetClass($option);
-      $sentence = $filter->GetCaption();
-      if (isset(CastConfig::$option) && is_int(CastConfig::$$option)) {
-	$sentence .= sprintf('(%d人～)', CastConfig::$$option);
-      }
-      switch ($option) {
-      case 'real_time':
-        list($day, $night) = $list[$option];
-	$footer = sprintf('[%d：%d]', $day, $night);
-        $sentence .= sprintf('　昼： %d 分　夜： %d 分', $day, $night);
-	break;
-
-      case 'topping':
-      case 'boost_rate':
-	$type   = $list[$option][0];
-	$item   = $filter->GetItem();
-	$footer = sprintf('[%s]', strtoupper($type));
-	$sentence .= sprintf('(Type%s)', $item[$type]);
-	break;
-
-      default:
-	$footer = '';
-	break;
-      }
-      $str .= Image::Room()->Generate($option, $sentence) . $footer;
-    }
-    return $str;
-  }
-
-  //ゲームオプション説明生成
-  static function GenerateCaption($game_option, $option_role = '') {
-    //オプションパース
-    $list = array_merge(OptionParser::Parse($game_option), OptionParser::Parse($option_role));
-
-    $format = '<p><a href="info/game_option.php#%s">%s</a>：';
-    $str = '';
-    foreach (array_intersect(self::$icon_order, array_keys($list)) as $option) {
-      $filter   = OptionManager::GetClass($option);
-      $sentence = sprintf($format, $option, $filter->GetCaption());
-      if (isset(CastConfig::$option) && is_int(CastConfig::$$option)) {
-	$sentence .= sprintf('(%d人～)', CastConfig::$$option);
-      }
-      switch ($option) {
-      case 'real_time':
-        list($day, $night) = $list[$option];
-	$footer = sprintf('[%d：%d]', $day, $night);
-        $sentence .= sprintf('(昼： %d 分　夜： %d 分)', $day, $night);
-	break;
-
-      case 'topping':
-      case 'boost_rate':
-	$type   = $list[$option][0];
-	$item   = $filter->GetItem();
-	$footer = sprintf('[%s]', strtoupper($type));
-	$sentence .= sprintf('(Type%s)', $item[$type]);
-	break;
-      }
-      $str .= $sentence . $filter->GetExplain() . '</p>' . Text::LF;
+    foreach (self::GetOrder() as $option) {
+      $str .= OptionManager::GetClass($option)->GenerateImage();
     }
     return $str;
   }
 
   //ゲームオプション画像出力
   static function Output() {
-    extract(RoomDB::GetOption());
+    self::Load();
     $format = '<div class="game-option">ゲームオプション：%s</div>' . Text::LF;
-    printf($format, self::Generate($game_option, $option_role, $max_user));
+    printf($format, self::Generate());
+  }
+
+  //ゲームオプション説明生成
+  static function OutputCaption() {
+    $str   = '';
+    foreach (self::GetOrder() as $option) {
+      $str .= OptionManager::GetClass($option)->GenerateRoomCaption();
+    }
+    echo $str;
   }
 }

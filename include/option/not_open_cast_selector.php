@@ -20,8 +20,6 @@ class Option_not_open_cast_selector extends SelectorRoomOptionItem {
     }
   }
 
-  function GetCaption() { return '霊界で配役を公開しない'; }
-
   function GetItem() {
     $stack = array(''               => OptionManager::GetClass('not_close_cast'),
 		   'not_open_cast'  => OptionManager::GetClass('not_open_cast'),
@@ -34,4 +32,6 @@ class Option_not_open_cast_selector extends SelectorRoomOptionItem {
     if (isset($stack[$this->value])) $stack[$this->value]->value = true;
     return $stack;
   }
+
+  function GetCaption() { return '霊界で配役を公開しない'; }
 }

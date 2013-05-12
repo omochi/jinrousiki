@@ -13,22 +13,6 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
     if (OptionManager::$change) $this->enable = false;
   }
 
-  function GetCaption() { return '初日の夜は身代わり君'; }
-
-  function GetExplain() { return '配役は<a href="info/rule.php">ルール</a>を確認して下さい'; }
-
-  function GetItem() {
-    $stack = array(''         => new Option_no_dummy_boy(),
-		   'on'       => OptionManager::GetClass('dummy_boy'),
-		   'gm_login' => OptionManager::GetClass('gm_login'));
-    foreach ($stack as $key => $item) {
-      $item->form_name  = $this->form_name;
-      $item->form_value = $key;
-    }
-    if (isset($stack[$this->value])) $stack[$this->value]->value = true;
-    return $stack;
-  }
-
   function LoadPost() {
     RQ::Get()->ParsePostData($this->name);
     if (is_null(RQ::Get()->{$this->name})) return false;
@@ -42,6 +26,22 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
       }
     }
   }
+
+  function GetItem() {
+    $stack = array(''         => new Option_no_dummy_boy(),
+		   'on'       => OptionManager::GetClass('dummy_boy'),
+		   'gm_login' => OptionManager::GetClass('gm_login'));
+    foreach ($stack as $key => $item) {
+      $item->form_name  = $this->form_name;
+      $item->form_value = $key;
+    }
+    if (isset($stack[$this->value])) $stack[$this->value]->value = true;
+    return $stack;
+  }
+
+  function GetCaption() { return '初日の夜は身代わり君'; }
+
+  function GetExplain() { return '配役は<a href="info/rule.php">ルール</a>を確認して下さい'; }
 }
 
 /*

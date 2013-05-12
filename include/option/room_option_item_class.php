@@ -26,6 +26,9 @@ abstract class RoomOptionItem {
     if (! isset($this->form_value)) $this->form_value = $this->value;
   }
 
+  //フォームデータ取得
+  abstract function LoadPost();
+
   //オプション名取得
   function GetName() { return $this->GetCaption(); }
 
@@ -35,8 +38,20 @@ abstract class RoomOptionItem {
   //説明文取得
   function GetExplain() { return $this->GetCaption(); }
 
-  //フォームデータ取得
-  abstract function LoadPost();
+  //村用画像生成
+  function GenerateImage() {
+    return Image::Room()->Generate($this->name, $this->GetRoomCaption());
+  }
+
+  //村用オプション説明メッセージ生成
+  function GenerateRoomCaption() {
+    $format  = '<div>%s：<a href="info/%s">%s</a>：%s</div>' . Text::LF;
+    $image   = $this->GenerateImage();
+    $url     = $this->GetURL();
+    $caption = $this->GetRoomCaption();
+    $explain = $this->GetExplain();
+    return sprintf($format, $image, $url, $caption, $explain);
+  }
 
   //配役処理 (一人限定)
   function CastOnce(array &$list, &$rand, $str = '') {
@@ -46,11 +61,21 @@ abstract class RoomOptionItem {
 
   //配役処理 (全員)
   function CastAll(array &$list) {
-    foreach (array_keys($list) as $id) $list[$id] .= ' ' . $this->name;
+    foreach (array_keys($list) as $id) {
+      $list[$id] .= ' ' . $this->name;
+    }
     return array($this->name);
   }
-}
 
+  //スタックからデータ取得
+  protected function GetStack() { return RoomOption::$stack[$this->name]; }
+
+  //キャプション取得 (村用)
+  protected function GetRoomCaption () { return $this->GetCaption(); }
+
+  //説明リンク取得
+  protected function GetURL() { return 'game_option.php#' . $this->name; }
+}
 
 //-- チェックボックス型 --//
 abstract class CheckRoomOptionItem extends RoomOptionItem {
@@ -62,6 +87,14 @@ abstract class CheckRoomOptionItem extends RoomOptionItem {
     RQ::Get()->ParsePostOn($this->name);
     if (RQ::Get()->{$this->name}) array_push(RoomOption::${$this->group}, $this->name);
     return RQ::Get()->{$this->name};
+  }
+
+  protected function GetRoomCaption() {
+    $str = parent::GetRoomCaption();
+    if (isset(CastConfig::${$this->name}) && is_int(CastConfig::${$this->name})) {
+      $str .= sprintf(' (%d人～)', CastConfig::${$this->name});
+    }
+    return $str;
   }
 }
 

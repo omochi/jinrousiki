@@ -110,7 +110,7 @@ class RoomManager {
       if ($day < 1 || 99 < $day || $night < 1 || 99 < $night) {
 	RoomManagerHTML::OutputResult('time');
       }
-      RoomOption::SetOption(RoomOption::GAME_OPTION, sprintf('real_time:%d:%d', $day, $night));
+      RoomOption::Set(RoomOption::GAME_OPTION, sprintf('real_time:%d:%d', $day, $night));
       RoomOption::LoadPost('wait_morning');
     }
     RoomOption::LoadPost(
@@ -121,7 +121,7 @@ class RoomManager {
       foreach (array('gm_login', 'dummy_boy') as $option) {
 	if (DB::$ROOM->IsOption($option)) {
 	  RQ::Get()->$option = true;
-	  RoomOption::SetOption(RoomOption::GAME_OPTION, $option);
+	  RoomOption::Set(RoomOption::GAME_OPTION, $option);
 	  break;
 	}
       }
@@ -134,8 +134,8 @@ class RoomManager {
 	$dummy_boy_handle_name = 'GM';
 	$dummy_boy_password    = RQ::Get()->gm_password;
       }
-      RoomOption::SetOption(RoomOption::GAME_OPTION, 'dummy_boy');
-      RoomOption::SetOption(RoomOption::GAME_OPTION, 'gm_login');
+      RoomOption::Set(RoomOption::GAME_OPTION, 'dummy_boy');
+      RoomOption::Set(RoomOption::GAME_OPTION, 'gm_login');
     }
     else {
       //身代わり君関連のチェック
@@ -153,7 +153,7 @@ class RoomManager {
 	  $dummy_boy_handle_name = 'GM';
 	  $dummy_boy_password    = RQ::Get()->gm_password;
 	}
-	RoomOption::SetOption(RoomOption::GAME_OPTION, 'dummy_boy');
+	RoomOption::Set(RoomOption::GAME_OPTION, 'dummy_boy');
 	RoomOption::LoadPost('gerd');
       }
 
@@ -179,8 +179,8 @@ class RoomManager {
 	'change_mad_selector', 'change_cupid_selector');
     }
 
-    $game_option = RoomOption::GetOption(RoomOption::GAME_OPTION);
-    $option_role = RoomOption::GetOption(RoomOption::ROLE_OPTION);
+    $game_option = RoomOption::Get(RoomOption::GAME_OPTION);
+    $option_role = RoomOption::Get(RoomOption::ROLE_OPTION);
     //Text::p($_POST, 'Post');
     //Text::p(RQ::Get(), 'RQ');
     //Text::p($game_option, 'GameOption');
@@ -292,22 +292,23 @@ EOF;
   //部屋説明を出力
   static function OutputDescribe() {
     $title = '村情報表示[エラー]';
-    if (RQ::Get()->room_no < 1) HTML::OutputResult($title, '無効な村番地です');
+    if (RQ::Get()->room_no < 1)  HTML::OutputResult($title, '無効な村番地です');
     DB::$ROOM = RoomManagerDB::Load();
-    if (DB::$ROOM->id < 1) HTML::OutputResult($title, '無効な村番地です');
+    if (DB::$ROOM->id < 1)       HTML::OutputResult($title, '無効な村番地です');
     if (DB::$ROOM->IsFinished()) HTML::OutputResult($title, 'すでにゲーム終了しています');
 
     HTML::OutputHeader('村情報表示', 'info/info', true);
     $format = <<<EOF
 [%d番地]%s村<br>
 <div>～%s～ %s</div>
-<br>
 
 EOF;
-    $max_user = DB::$ROOM->max_user;
-    $image = RoomOption::Generate(DB::$ROOM->game_option, DB::$ROOM->option_role, $max_user);
-    printf($format, DB::$ROOM->id, DB::$ROOM->name, DB::$ROOM->comment, $image);
-    echo RoomOption::GenerateCaption(DB::$ROOM->game_option, DB::$ROOM->option_role);
+    $stack = array('game_option' => DB::$ROOM->game_option,
+		   'option_role' => DB::$ROOM->option_role,
+		   'max_user'    => DB::$ROOM->max_user);
+    RoomOption::Load($stack);
+    printf($format, DB::$ROOM->id, DB::$ROOM->name, DB::$ROOM->comment, RoomOption::Generate());
+    RoomOption::OutputCaption();
     HTML::OutputFooter();
   }
 }
@@ -433,11 +434,12 @@ class RoomManagerHTML {
 </a><br>
 
 EOF;
+    RoomOption::Load($stack);
     extract($stack);
     printf($format,
 	   ServerConfig::DEBUG_MODE ? sprintf(self::DELETE, $room_no) : '', $room_no,
 	   Image::Room()->Generate($status, self::$status[$status]), $room_no, $name,
-	   $comment, RoomOption::Generate($game_option, $option_role, $max_user));
+	   $comment, RoomOption::Generate());
   }
 
   //村作成画面表示
