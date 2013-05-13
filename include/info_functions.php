@@ -208,10 +208,10 @@ EOF;
     //Text::p($server, $id);
     extract($array);
     if ($disable) return false;
+    $title = sprintf('ゲーム一覧 (<a href="%s">%s</a>)', $url, $name);
 
     if (! ExternalLinkBuilder::CheckConnection($url)) { //サーバ通信状態チェック
-      $data = ExternalLinkBuilder::GenerateTimeOut($url);
-      echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
+      ExternalLinkBuilder::OutputTimeOut($title, $url);
       return false;
     }
 
@@ -236,7 +236,7 @@ EOF;
 
     $replace_list = array('href="' => 'href="' . $url, 'src="'  => 'src="' . $url);
     $data = strtr($data, $replace_list);
-    echo ExternalLinkBuilder::GenerateSharedServerRoom($name, $url, $data);
+    ExternalLinkBuilder::Output($title, $data);
   }
 
   //謝辞・素材情報出力

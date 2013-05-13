@@ -1,9 +1,7 @@
 <?php
 //-- 外部リンク生成の基底クラス --//
 class ExternalLinkBuilder {
-  const TIME    = 5; //タイムアウト時間 (秒)
-  const TIMEOUT = "%s: Connection timed out (%d seconds)\n";
-  const GET     = "GET / HTTP/1.1\r\nHost: %s\r\nConnection: Close\r\n\r\n";
+  const TIME = 5; //タイムアウト時間 (秒)
 
   //サーバ通信状態チェック
   static function CheckConnection($url) {
@@ -12,16 +10,16 @@ class ExternalLinkBuilder {
     if (! ($io = @fsockopen($host, 80, $status, $str, self::TIME))) return false;
 
     stream_set_timeout($io, self::TIME);
-    fwrite($io, sprintf(self::GET, $host));
+    fwrite($io, sprintf("GET / HTTP/1.1\r\nHost: %s\r\nConnection: Close\r\n\r\n", $host));
     $data = fgets($io, 128);
     $stream_stack = stream_get_meta_data($io);
     fclose($io);
     return ! $stream_stack['timed_out'];
   }
 
-  //HTML タグ生成
-  static function Generate($title, $data) {
-    return <<<EOF
+  //出力
+  static function Output($title, $data) {
+    echo <<<EOF
 <fieldset>
 <legend>{$title}</legend>
 <div class="game-list"><dl>{$data}</dl></div>
@@ -30,16 +28,11 @@ class ExternalLinkBuilder {
 EOF;
   }
 
-  //タイムアウトメッセージ生成
-  static function GenerateTimeOut($url) {
+  //タイムアウトメッセージ出力
+  static function OutputTimeOut($title, $url) {
+    $format = '%s: Connection timed out (%d seconds)' . Text::LF;
     $stack  = explode('/', $url);
-    return sprintf(self::TIMEOUT, $stack[2], self::TIME);
-  }
-
-  //外部村リンク生成
-  function GenerateSharedServerRoom($name, $url, $data) {
-    $format = 'ゲーム一覧 (<a href="%s">%s</a>)';
-    return self::Generate(sprintf($format, $url, $name), $data);
+    self::Output($title, sprintf($format, $stack[2], self::TIME));
   }
 }
 
