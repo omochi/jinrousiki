@@ -555,10 +555,10 @@ class ChaosConfig {
     'scarlet_mania'         =>  15,
     'soul_mania'            =>  10,
     'dummy_mania'           =>  10,
-    'unknown_mania'         =>  12,
-    'wirepuller_mania'      =>   8,
-    'fire_mania'            =>   8,
-    'sacrifice_mania'       =>   6,
+    'unknown_mania'         =>  16,
+    'wirepuller_mania'      =>  10,
+    'fire_mania'            =>  10,
+    'sacrifice_mania'       =>   8,
     'resurrect_mania'       =>   8,
     'revive_mania'          =>   8);
 

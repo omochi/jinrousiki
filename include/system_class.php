@@ -60,7 +60,7 @@ class Lottery {
 
   //配列からランダムに一つ取り出す
   static function Get(array $list) {
-    return count($list) > 0 ? $list[array_rand($list)] : null;
+    return count($list) > 0 ? $list[mt_rand(0, count($list) - 1)] : null;
   }
 
   //一定範囲からランダムに取り出す
@@ -88,9 +88,8 @@ class Lottery {
 
   //「福引き」を一定回数行ってリストに追加する
   static function Add(array &$list, array $random_list, $count) {
-    $total = count($random_list) - 1;
     for (; $count > 0; $count--) {
-      $role = $random_list[mt_rand(0, $total)];
+      $role = self::Get($random_list);
       isset($list[$role]) ? $list[$role]++ : $list[$role] = 1;
     }
   }

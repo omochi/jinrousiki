@@ -85,7 +85,7 @@ class DevRoom {
     $str = '%0' . strlen($try_count) . 'd回目: ';
     for ($i = 1; $i <= $try_count; $i++) {
       printf($str, $i);
-      $role_list = Cast::GetRoleList($user_count);
+      $role_list = Cast::Get($user_count);
       if ($role_list == '') break;
       Text::p(Vote::GenerateRoleNameList(array_count_values($role_list), true));
     }

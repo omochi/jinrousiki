@@ -330,7 +330,7 @@ class Vote {
 
     //配役決定用変数をセット
     $uname_list        = DB::$USER->GetLivingUsers(); //ユーザ名の配列
-    $role_list         = Cast::GetRoleList($user_count); //役職リストを取得
+    $role_list         = Cast::Get($user_count); //役職リストを取得
     $fix_uname_list    = array(); //役職の決定したユーザ名を格納する
     $fix_role_list     = array(); //ユーザ名に対応する役職
     $remain_uname_list = array(); //希望の役職になれなかったユーザ名を一時的に格納
