@@ -1,9 +1,5 @@
 <?php
-
-/**
- * レンダリングされたページを指定した期間データベース上にキャッシュする機構を提供します。
- * 更新タイミングはInnoDBの行ロックに依存します。すべてのメソッドをトランザクションの内部で呼び出しください。
- */
+//キャッシュコントロールクラス
 class DocumentCache {
   private static $instance = null;
 
@@ -38,7 +34,7 @@ class DocumentCache {
     if (is_null($data) || Time::Get() > $data['expire']) return Talk::Get();
 
     self::Get()->updated = true;
-    if (ServerConfig::DEBUG_MODE) {
+    if (CacheConfig::DEBUG_MODE) {
       Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $data['expire']));
     }
     $filter = unserialize($data['content']);
@@ -48,15 +44,19 @@ class DocumentCache {
   //保存処理
   static function Save($object) {
     if (self::Get()->updated) return;
-    $name   = self::GetName(true);
-    $exists = DocumentCacheDB::Exists($name);
-    if ($exists) { //存在するならロックする
+
+    $name    = self::GetName(true);
+    $content = serialize($object);
+    if (DocumentCacheDB::Exists($name)) { //存在するならロックする
       DB::Transaction();
       $expire = DocumentCacheDB::Lock($name);
-      if ($expire === false || $expire > Time::Get()) return DB::Rollback();
+      if ($expire === false || $expire >= Time::Get()) return DB::Rollback();
+      DocumentCacheDB::Update($name, $content, self::Get()->expire);
+      return DB::Commit();
     }
-    DocumentCacheDB::Save($name, serialize($object), self::Get()->expire);
-    return $exists ? DB::Commit() : true;
+    else {
+      return DocumentCacheDB::Insert($name, $content, self::Get()->expire);
+    }
   }
 }
 
@@ -80,25 +80,37 @@ class DocumentCacheDB {
     return DB::FetchResult();
   }
 
-  //記録
-  static function Save($name, $content, $expire) {
+  //新規作成
+  static function Insert($name, $content, $expire) {
     $query = <<<EOF
 INSERT INTO document_cache (name, content, expire) VALUES (?, ?, ?)
   ON DUPLICATE KEY UPDATE content = ?, expire = ?
 EOF;
     $now    = Time::Get();
     $update = $now + $expire;
-    if (ServerConfig::DEBUG_MODE) {
-      Text::p('Updated', Time::GetDate('Y-m-d H:i:s', $now));
+    if (CacheConfig::DEBUG_MODE) {
+      Text::p('Insert',      Time::GetDate('Y-m-d H:i:s', $now));
       Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $update));
     }
     DB::Prepare($query, array($name, $content, $update, $content, $update));
     DB::Execute();
   }
 
+  //更新
+  static function Update($name, $content, $expire) {
+    $query = 'Update document_cache Set content = ?, expire = ? WHERE name = ?';
+    $now    = Time::Get();
+    $update = $now + $expire;
+    if (CacheConfig::DEBUG_MODE) {
+      Text::p('Updated',     Time::GetDate('Y-m-d H:i:s', $now));
+      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $update));
+    }
+    DB::Prepare($query, array($content, $update, $name));
+    DB::Execute();
+  }
+
   //消去
   static function Clean($exceed) {
-DB::d();
     DB::Prepare('DELETE FROM document_cache WHERE expire < ?', array(Time::Get() - $exceed));
     DB::Execute() && DB::Optimize('document_cache');
   }

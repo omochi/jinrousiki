@@ -22,12 +22,6 @@ class GameConfig {
   static $replace_talk_list = array(); //発言置換モードの変換リスト
   //static $replace_talk_list = array('◆' => '◇'); //流石ツール対応例
 
-  /* データキャッシュ設定 */
-  const CACHE = false; //キャッシュ設定 (以下の設定群の親フラグ)
-  const CACHE_EXCEED = 172800; //キャッシュデータ保持時間 (秒)
-  const CACHE_TALK = false; //発言キャッシュ設定 (観戦モード限定)
-  const CACHE_TALK_EXPIRE = 60; //発言キャッシュのデータ更新間隔 (秒)
-
   /* 表示設定 */
   //「異議」あり
   const OBJECTION = 5; //使用可能回数

@@ -6,6 +6,10 @@ InfoHTML::OutputHeader('開発履歴 / 2.1', 1, 'develop_history');
 ?>
 <p><a href="history.php">最新情報</a></p>
 <p>
+Ver. 2.1.x<br>
+<a href="#ver211">1</a>
+</p>
+<p>
 Ver. 2.1.0<br>
 <a href="#ver210rc1">RC1</a>
 <a href="#ver210rc2">RC2</a>
@@ -23,6 +27,11 @@ Ver. 2.1.0<br>
 <a href="#ver210b3">β3</a>
 <a href="#ver210b4">β4</a>
 </p>
+
+<h2 id="ver211">Ver. 2.1.1 (Rev. 801) : 2013/05/19 (Sun) 04:10</h2>
+<ul>
+<li>狼視点モード実装</li>
+</ul>
 
 <h2 id="ver210">Ver. 2.1.0 (Rev. 690) : 2012/12/24 (Mon) 00:00</h2>
 <ul>

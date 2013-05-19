@@ -32,9 +32,9 @@ class GameView {
     GameHTML::OutputPlayer();
     if (DB::$ROOM->IsFinished()) Winner::Output();
     if (DB::$ROOM->IsPlaying())  GameHTML::OutputRevote();
-    if (GameConfig::CACHE && GameConfig::CACHE_TALK) {
+    if (CacheConfig::ENABLE && CacheConfig::ENABLE_TALK_VIEW) {
       Loader::LoadFile('cache_class');
-      DocumentCache::Load('game_view/talk', GameConfig::CACHE_TALK_EXPIRE);
+      DocumentCache::Load('game_view/talk', CacheConfig::TALK_VIEW_EXPIRE);
       $filter = DocumentCache::GetTalk();
       DocumentCache::Save($filter);
     } else {

@@ -60,7 +60,7 @@ class Loader {
     'paparazzi_class'      => 'paparazzi',
     'room_manager_class'   => array('image_class', 'room_option_class'),
     'login_class'          => array('room_config','session_class'),
-    'game_view_class'      => array('talk_class', 'icon_class'),
+    'game_view_class'      => array('cache_config', 'talk_class', 'icon_class'),
     'game_play_class'      => array('time_config', 'session_class', 'image_class', 'talk_class',
 				    'icon_class'),
     'game_vote_class'      => array('session_class', 'room_option_class', 'user_class',
@@ -152,26 +152,27 @@ class Loader {
     case 'game_config':
     case 'cast_config':
     case 'chaos_config':
-    case 'message':
-    case 'vote_message':
-    case 'winner_message':
     case 'time_config':
     case 'icon_config':
     case 'sound_config':
+    case 'message':
+    case 'vote_message':
+    case 'winner_message':
       $path = JINRO_CONF . '/game';
       break;
 
-    case 'database_config':
     case 'server_config':
+    case 'database_config':
     case 'room_config':
     case 'game_option_config':
+    case 'cache_config':
     case 'user_icon_config':
+    case 'old_log_config':
     case 'menu_config':
     case 'bbs_config':
-    case 'old_log_config':
     case 'shared_server_config':
-    case 'src_upload_config':
     case 'twitter_config':
+    case 'src_upload_config':
     case 'setup_config':
       $path = JINRO_CONF . '/server';
       break;
