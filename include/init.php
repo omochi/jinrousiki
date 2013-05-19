@@ -52,6 +52,7 @@ class Loader {
     'user_icon_class'      => 'user_icon_config',
     'sound_class'          => 'sound_config',
     'cookie_class'         => 'sound_class',
+    'cache_class'          => 'cache_config',
     'twitter_class'        => array('twitter_config', 'twitter'),
     'rss_class'            => array('image_class', 'room_option_class', 'feedengine',
 				    'site_summary'),

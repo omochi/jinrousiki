@@ -7,7 +7,7 @@ if (Loader::IsLoaded('index_functions')) RoomManager::Maintenance();
 
 Loader::LoadRequest('RequestRoomManager');
 if (RQ::Get()->create_room) {
-  Loader::LoadFile('message', 'user_icon_class', 'twitter_class');
+  Loader::LoadFile('message', 'user_icon_class', 'cache_class', 'twitter_class');
   RoomManager::Create();
 }
 elseif (RQ::Get()->change_room) {
