@@ -17,19 +17,6 @@ class SetupDB {
     DB::Reconnect();
   }
 
-  //テーブル作成
-  private static function CreateTable($table, $query) {
-    $result = DB::FetchBool(sprintf('CREATE TABLE %s(%s) ENGINE = InnoDB', $table, $query));
-    printf("テーブル作成: %s: %s<br>\n", $table, $result ? '成功' : '失敗');
-  }
-
-  //インデックス再生成
-  private static function CreateIndex($table, $index, $value) {
-    $query  = 'ALTER TABLE %s DROP INDEX %s, ADD INDEX %s (%s)';
-    $result = DB::FetchBool(sprintf($query, $table, $index, $index, $value));
-    printf("インデックス再生成: %s (%s): %s <br>\n", $index, $table, $result ? '成功' : '失敗');
-  }
-
   //必要なテーブルがあるか確認する
   private static function CheckTable() {
     $revision = ServerConfig::REVISION; //前回のパッケージのリビジョン番号を取得
@@ -40,8 +27,6 @@ class SetupDB {
     $table_list = DB::FetchColumn('SHOW TABLES'); //テーブルのリストを取得
 
     //チェックしてテーブルが存在しなければ作成する
-    $footer  = "<br>\n";
-
     $table = 'room';
     if (! in_array($table, $table_list)) {
       $query = <<<EOF
@@ -91,7 +76,7 @@ INDEX talk_index (room_no, date, scene)
 EOF;
       self::CreateTable($table, $query);
     }
-    if (0 < $revision && $revision < 494) {
+    if (0 < $revision && $revision <= 494) {
       self::CreateIndex($table, 'talk_index', 'room_no, date, scene');
     }
 
@@ -105,7 +90,7 @@ INDEX talk_beforegame_index(room_no)
 EOF;
       self::CreateTable($table, $query);
     }
-    if (0 < $revision && $revision < 494) {
+    if (0 < $revision && $revision <= 494) {
       self::CreateIndex($table, 'talk_beforegame_index', 'room_no');
     }
 
@@ -216,14 +201,38 @@ EOF;
     $table = 'document_cache';
     if (! in_array($table, $table_list)) {
       $query = <<<EOF
-name TEXT NOT NULL, content BLOB, expire INT NOT NULL, PRIMARY KEY (name(255)),
-INDEX document_cache_index(expire)
+room_no INT DEFAULT 0, name CHAR(32) NOT NULL, content BLOB, expire INT NOT NULL,
+INDEX document_cache_index(room_no, name),
+INDEX expire(expire)
 EOF;
+      self::CreateTable($table, $query);
+    }
+    elseif (0 < $revision && $revision <= 792) {
+      self::DropTable($table);
       self::CreateTable($table, $query);
     }
 
     $query = sprintf('GRANT ALL ON %s.* TO %s', DatabaseConfig::NAME, DatabaseConfig::USER);
     DB::FetchBool($query, true);
     echo "初期設定の処理が終了しました<br>\n";
+  }
+
+  //テーブル作成
+  private static function CreateTable($table, $query) {
+    $result = DB::FetchBool(sprintf('CREATE TABLE %s(%s) ENGINE = InnoDB', $table, $query));
+    printf("テーブル作成: %s: %s<br>\n", $table, $result ? '成功' : '失敗');
+  }
+
+  //テーブル削除
+  private static function DropTable($table) {
+    $result = DB::FetchBool(sprintf('DROP TABLE %s', $table));
+    printf("テーブル削除: %s: %s<br>\n", $table, $result ? '成功' : '失敗');
+  }
+
+  //インデックス再生成
+  private static function CreateIndex($table, $index, $value) {
+    $query  = 'ALTER TABLE %s DROP INDEX %s, ADD INDEX %s (%s)';
+    $result = DB::FetchBool(sprintf($query, $table, $index, $index, $value));
+    printf("インデックス再生成: %s (%s): %s <br>\n", $index, $table, $result ? '成功' : '失敗');
   }
 }
