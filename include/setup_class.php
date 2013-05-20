@@ -199,16 +199,13 @@ EOF;
     }
 
     $table = 'document_cache';
-    if (! in_array($table, $table_list)) {
+    if (! in_array($table, $table_list) || 0 < $revision && $revision <= 792) {
+      if (0 < $revision && $revision <= 792) self::DropTable($table);
       $query = <<<EOF
-room_no INT DEFAULT 0, name CHAR(32) NOT NULL, content BLOB, expire INT NOT NULL,
+room_no INT DEFAULT 0, name CHAR(32) NOT NULL, content MEDIUMBLOB, expire INT NOT NULL,
 INDEX document_cache_index(room_no, name),
 INDEX expire(expire)
 EOF;
-      self::CreateTable($table, $query);
-    }
-    elseif (0 < $revision && $revision <= 792) {
-      self::DropTable($table);
       self::CreateTable($table, $query);
     }
 

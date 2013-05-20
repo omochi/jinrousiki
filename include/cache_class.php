@@ -28,7 +28,7 @@ class DocumentCache {
   }
 
   //保存情報取得
-  static function GetData() {
+  static function GetData($serialize = false) {
     $data = DocumentCacheDB::Get(self::GetName(true));
     if (is_null($data) || Time::Get() > $data['expire']) return null;
 
@@ -36,28 +36,22 @@ class DocumentCache {
     if (CacheConfig::DEBUG_MODE) {
       Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $data['expire']));
     }
-    return unserialize($data['content']);
+    $content = gzinflate($data['content']);
+    return $serialize ? unserialize($content) : $content;
   }
 
   //会話情報取得
   static function GetTalk() {
-    $data = DocumentCacheDB::Get(self::GetName(true));
-    if (is_null($data) || Time::Get() > $data['expire']) return Talk::Get();
-
-    self::Get()->updated = true;
-    if (CacheConfig::DEBUG_MODE) {
-      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $data['expire']));
-    }
-    $filter = unserialize($data['content']);
-    return $filter instanceOf TalkBuilder ? $filter : Talk::Get();
- }
+    $filter = self::GetData(true);
+    return (isset($filter) && $filter instanceOf TalkBuilder) ? $filter : Talk::Get();
+  }
 
   //保存処理
-  static function Save($object) {
+  static function Save($object, $serialize = false) {
     if (self::Get()->updated) return;
 
     $name    = self::GetName(true);
-    $content = serialize($object);
+    $content = $serialize ? gzdeflate(serialize($object)) : gzdeflate($object);
     if (DocumentCacheDB::Exists($name)) { //存在するならロックする
       DB::Transaction();
       $expire = DocumentCacheDB::Lock($name);
