@@ -78,7 +78,7 @@ class Loader {
     'game_vote_functions'  => array('game_config', 'message', 'game_functions'),
     'icon_functions'       => array('icon_class', 'user_icon_class'),
     'old_log_functions'    => array('old_log_config', 'cast_config', 'image_class',
-				    'room_option_class'),
+				    'room_option_class', 'cache_class'),
   );
 
   //依存クラス情報 (読み込むデータ => 依存するクラス)

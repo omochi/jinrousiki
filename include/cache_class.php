@@ -27,6 +27,18 @@ class DocumentCache {
     return $hash ? md5(self::Get()->name) : self::Get()->name;
   }
 
+  //保存情報取得
+  static function GetData() {
+    $data = DocumentCacheDB::Get(self::GetName(true));
+    if (is_null($data) || Time::Get() > $data['expire']) return null;
+
+    self::Get()->updated = true;
+    if (CacheConfig::DEBUG_MODE) {
+      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $data['expire']));
+    }
+    return unserialize($data['content']);
+  }
+
   //会話情報取得
   static function GetTalk() {
     $data = DocumentCacheDB::Get(self::GetName(true));

@@ -114,6 +114,12 @@ class OldLogHTML {
       DB::$ROOM->scene  = 'day';
     }
 
+    if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) { //キャッシュ取得判定
+      DocumentCache::Load('old_log/' . print_r(RQ::Get(), true), CacheConfig::OLD_LOG_EXPIRE);
+      $str = DocumentCache::GetData();
+      if (isset($str)) return $str;
+    }
+
     $list = array(
       'game_option' => DB::$ROOM->game_option->row,
       'option_role' => DB::$ROOM->option_role->row,
@@ -137,6 +143,8 @@ class OldLogHTML {
     $str .= GameHTML::GeneratePlayer();
     if (RQ::Get()->role_list) $str .= self::GenerateRoleLink();
     $str .= RQ::Get()->heaven_only ? self::GenerateHeavenLog() : self::GenerateLog();
+    if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) DocumentCache::Save($str);
+
     return $str;
   }
 
