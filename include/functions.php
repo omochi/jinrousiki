@@ -166,7 +166,7 @@ class Security {
 
   //ブラックリストチェック (村立て用)
   static function IsEstablishBlackList() {
-    return self::IsLoginBlackList || self::IsBlackList('establish_');
+    return self::IsLoginBlackList() || self::IsBlackList('establish_');
   }
 
   /**
