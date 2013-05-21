@@ -109,15 +109,16 @@ class OldLogHTML {
       $str = 'まだこの部屋のログは閲覧できません。' . sprintf(self::BACK_URL, $url);
       HTML::OutputResult($base_title, $str);
     }
-    if (DB::$ROOM->watch_mode) {
-      DB::$ROOM->status = 'playing';
-      DB::$ROOM->scene  = 'day';
-    }
 
     if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) { //キャッシュ取得判定
       DocumentCache::Load('old_log/' . print_r(RQ::Get(), true), CacheConfig::OLD_LOG_EXPIRE);
       $str = DocumentCache::GetData();
       if (isset($str)) return $str;
+    }
+
+    if (DB::$ROOM->watch_mode) { //観戦モード判定
+      DB::$ROOM->status = 'playing';
+      DB::$ROOM->scene  = 'day';
     }
 
     $list = array(
@@ -143,8 +144,8 @@ class OldLogHTML {
     $str .= GameHTML::GeneratePlayer();
     if (RQ::Get()->role_list) $str .= self::GenerateRoleLink();
     $str .= RQ::Get()->heaven_only ? self::GenerateHeavenLog() : self::GenerateLog();
-    if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) DocumentCache::Save($str);
 
+    if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) DocumentCache::Save($str);
     return $str;
   }
 
@@ -167,6 +168,11 @@ class OldLogHTML {
       $builder->url = '<a href="index';
     }
     else {
+      if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG_LIST) { //キャッシュ取得判定
+	DocumentCache::Load('old_log/list', CacheConfig::OLD_LOG_LIST_EXPIRE);
+	$str = DocumentCache::GetData();
+	if (isset($str)) return $str;
+      }
       $builder = new PageLinkBuilder('old_log', RQ::Get()->page, $room_count);
       $builder->set_reverse = $is_reverse;
       $builder->AddOption('reverse', $is_reverse      ? 'on' : 'off');
@@ -253,12 +259,17 @@ EOF;
 EOF;
     }
 
-    return $str . <<<EOF
+    $str .= <<<EOF
 </tbody>
 </table>
 </div>
 
 EOF;
+
+    if (! RQ::Get()->generate_index && CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) {
+      DocumentCache::Save($str);
+    }
+    return $str;
   }
 
   //過去ログ一覧のHTML化処理

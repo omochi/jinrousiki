@@ -13,6 +13,10 @@ class CacheConfig {
   const ENABLE_OLD_LOG = false; //有効設定
   const OLD_LOG_EXPIRE = 60; //データ更新間隔 (秒)
 
+  /* 過去ログ一覧 */
+  const ENABLE_OLD_LOG_LIST = false; //有効設定
+  const OLD_LOG_LIST_EXPIRE = 60; //データ更新間隔 (秒)
+
   /* デバッグ用設定 */
   const DEBUG_MODE = false; //デバッグ用メッセージ表示
 }

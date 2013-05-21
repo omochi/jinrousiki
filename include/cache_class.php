@@ -3,14 +3,16 @@
 class DocumentCache {
   private static $instance = null;
 
+  public $room_no = 0;
   public $name    = null;
   public $expire  = 0;
   public $updated = false; //更新済み判定
 
   //クラスの初期化
   private function __construct($name, $expire = 0) {
-    $this->name   = $name;
-    $this->expire = $expire;
+    $this->room_no = isset(DB::$ROOM) ? DB::$ROOM->id : 0;
+    $this->name    = $name;
+    $this->expire  = $expire;
     return self::$instance = $this;
   }
 
@@ -27,9 +29,12 @@ class DocumentCache {
     return $hash ? md5(self::Get()->name) : self::Get()->name;
   }
 
+  //汎用検索情報取得
+  static function GetKey() { return array(self::Get()->room_no, self::GetName(true)); }
+
   //保存情報取得
   static function GetData($serialize = false) {
-    $data = DocumentCacheDB::Get(self::GetName(true));
+    $data = DocumentCacheDB::Get();
     if (is_null($data) || Time::Get() > $data['expire']) return null;
 
     self::Get()->updated = true;
@@ -50,17 +55,16 @@ class DocumentCache {
   static function Save($object, $serialize = false) {
     if (self::Get()->updated) return;
 
-    $name    = self::GetName(true);
     $content = $serialize ? gzdeflate(serialize($object)) : gzdeflate($object);
-    if (DocumentCacheDB::Exists($name)) { //存在するならロックする
+    if (DocumentCacheDB::Exists()) { //存在するならロックする
       DB::Transaction();
-      $expire = DocumentCacheDB::Lock($name);
+      $expire = DocumentCacheDB::Lock();
       if ($expire === false || $expire >= Time::Get()) return DB::Rollback();
-      DocumentCacheDB::Update($name, $content, self::Get()->expire);
+      DocumentCacheDB::Update($content);
       return DB::Commit();
     }
     else {
-      return DocumentCacheDB::Insert($name, $content, self::Get()->expire);
+      return DocumentCacheDB::Insert($content);
     }
   }
 }
@@ -68,58 +72,61 @@ class DocumentCache {
 //-- DB アクセス (DocumentCache 拡張) --//
 class DocumentCacheDB {
   //存在チェック
-  static function Exists($name) {
+  static function Exists() {
     $query = 'SELECT expire FROM document_cache WHERE room_no = ? AND name = ?';
-    DB::Prepare($query, array(DB::$ROOM->id, $name));
+    DB::Prepare($query, DocumentCache::GetKey());
     return DB::Count() > 0;
   }
 
   //取得
-  static function Get($name) {
+  static function Get() {
     $query = 'SELECT content, expire FROM document_cache WHERE room_no = ? AND name = ?';
-    DB::Prepare($query, array(DB::$ROOM->id, $name));
+    DB::Prepare($query, DocumentCache::GetKey());
     return DB::FetchAssoc(true);
   }
 
   //排他更新用ロック
-  static function Lock($name) {
+  static function Lock() {
     $query = 'SELECT expire FROM document_cache WHERE room_no = ? AND name = ? FOR UPDATE';
-    DB::Prepare($query, array(DB::$ROOM->id, $name));
+    DB::Prepare($query, DocumentCache::GetKey());
     return DB::FetchResult();
   }
 
   //新規作成
-  static function Insert($name, $content, $expire) {
+  static function Insert($content) {
     $query = <<<EOF
 INSERT INTO document_cache (room_no, name, content, expire) VALUES (?, ?, ?, ?)
   ON DUPLICATE KEY UPDATE content = ?, expire = ?
 EOF;
+    $filter = DocumentCache::Get();
     $now    = Time::Get();
-    $update = $now + $expire;
+    $expire = $now + $filter->expire;
     if (CacheConfig::DEBUG_MODE) {
       Text::p('Insert',      Time::GetDate('Y-m-d H:i:s', $now));
-      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $update));
+      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $expire));
     }
-    DB::Prepare($query, array(DB::$ROOM->id, $name, $content, $update, $content, $update));
-    DB::Execute();
+    $list = array($filter->room_no, $filter->GetName(true), $content, $expire, $content, $expire);
+    DB::Prepare($query, $list);
+    return DB::Execute();
   }
 
   //更新
-  static function Update($name, $content, $expire) {
+  static function Update($content) {
     $query = 'Update document_cache Set content = ?, expire = ? WHERE room_no = ? AND name = ?';
+    $filter = DocumentCache::Get();
     $now    = Time::Get();
-    $update = $now + $expire;
+    $expire = $now + $filter->expire;
     if (CacheConfig::DEBUG_MODE) {
       Text::p('Updated',     Time::GetDate('Y-m-d H:i:s', $now));
-      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $update));
+      Text::p('Next Update', Time::GetDate('Y-m-d H:i:s', $expire));
     }
-    DB::Prepare($query, array($content, $update, DB::$ROOM->id, $name));
-    DB::Execute();
+    DB::Prepare($query, array($content, $expire, $filter->room_no, $filter->GetName(true)));
+    return DB::Execute();
   }
 
   //消去
   static function Clean($exceed) {
     DB::Prepare('DELETE FROM document_cache WHERE expire < ?', array(Time::Get() - $exceed));
-    DB::Execute() && DB::Optimize('document_cache');
+    return DB::Execute() && DB::Optimize('document_cache');
   }
 }
