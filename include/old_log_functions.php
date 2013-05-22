@@ -110,7 +110,7 @@ class OldLogHTML {
       HTML::OutputResult($base_title, $str);
     }
 
-    if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) { //キャッシュ取得判定
+    if (DocumentCache::Enable('old_log')) { //キャッシュ取得判定
       DocumentCache::Load('old_log/' . print_r(RQ::Get(), true), CacheConfig::OLD_LOG_EXPIRE);
       $str = DocumentCache::GetData();
       if (isset($str)) return $str;
@@ -145,7 +145,7 @@ class OldLogHTML {
     if (RQ::Get()->role_list) $str .= self::GenerateRoleLink();
     $str .= RQ::Get()->heaven_only ? self::GenerateHeavenLog() : self::GenerateLog();
 
-    if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) DocumentCache::Save($str);
+    if (DocumentCache::Enable('old_log')) DocumentCache::Save($str);
     return $str;
   }
 
@@ -158,6 +158,29 @@ class OldLogHTML {
       HTML::OutputResult($title, 'ログはありません。' . sprintf(self::BACK_URL, './'));
     }
 
+    $cache_flag = false; //キャッシュ取得判定
+    if (DocumentCache::Enable('old_log_list')) {
+      foreach (RQ::Get() as $key => $value) { //何か値がセットされていたら無効
+	switch ($key) {
+	case 'page':
+	  $cache_flag = $value == 1;
+	  break;
+
+	default:
+	  $cache_flag = empty($value);
+	  break;
+	}
+
+	if (! $cache_flag) break;
+      }
+
+      if ($cache_flag) {
+	DocumentCache::Load('old_log/list', CacheConfig::OLD_LOG_LIST_EXPIRE);
+	$str = DocumentCache::GetData();
+	if (isset($str)) return $str;
+      }
+    }
+
     //ページリンクデータの生成
     $is_reverse = empty(RQ::Get()->reverse) ? OldLogConfig::REVERSE : RQ::Get()->reverse == 'on';
     if (RQ::Get()->generate_index) {
@@ -168,11 +191,6 @@ class OldLogHTML {
       $builder->url = '<a href="index';
     }
     else {
-      if (CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG_LIST) { //キャッシュ取得判定
-	DocumentCache::Load('old_log/list', CacheConfig::OLD_LOG_LIST_EXPIRE);
-	$str = DocumentCache::GetData();
-	if (isset($str)) return $str;
-      }
       $builder = new PageLinkBuilder('old_log', RQ::Get()->page, $room_count);
       $builder->set_reverse = $is_reverse;
       $builder->AddOption('reverse', $is_reverse      ? 'on' : 'off');
@@ -266,9 +284,7 @@ EOF;
 
 EOF;
 
-    if (! RQ::Get()->generate_index && CacheConfig::ENABLE && CacheConfig::ENABLE_OLD_LOG) {
-      DocumentCache::Save($str);
-    }
+    if ($cache_flag) DocumentCache::Save($str);
     return $str;
   }
 

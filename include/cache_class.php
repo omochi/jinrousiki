@@ -21,6 +21,24 @@ class DocumentCache {
     if (is_null(self::$instance)) new self($name, $expire);
   }
 
+  //有効判定
+  static function Enable($type) {
+    if (! CacheConfig::ENABLE) return false;
+    switch ($type) {
+    case 'talk_view':
+      return CacheConfig::ENABLE_TALK_VIEW;
+
+    case 'old_log':
+      return CacheConfig::ENABLE_OLD_LOG;
+
+    case 'old_log_list':
+      return CacheConfig::ENABLE_OLD_LOG_LIST;
+
+    default:
+      return false;
+    }
+  }
+
   //インスタンス取得
   static function Get() { return self::$instance; }
 
