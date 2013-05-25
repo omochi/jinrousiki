@@ -1,6 +1,7 @@
 <?php
 //キャッシュコントロールクラス
 class DocumentCache {
+  public  static $enable   = null; //有効設定
   private static $instance = null;
 
   public $room_no = 0;
@@ -23,20 +24,26 @@ class DocumentCache {
 
   //有効判定
   static function Enable($type) {
-    if (! CacheConfig::ENABLE) return false;
+    if (isset(self::$enable)) return self::$enable;
     switch ($type) {
     case 'talk_view':
-      return CacheConfig::ENABLE_TALK_VIEW;
+      $enable = CacheConfig::ENABLE_TALK_VIEW;
+      break;
 
     case 'old_log':
-      return CacheConfig::ENABLE_OLD_LOG;
+      $enable = CacheConfig::ENABLE_OLD_LOG;
+      break;
 
     case 'old_log_list':
-      return CacheConfig::ENABLE_OLD_LOG_LIST;
+      $enable = CacheConfig::ENABLE_OLD_LOG_LIST;
+      break;
 
     default:
-      return false;
+      $enable = false;
+      break;
     }
+    self::$enable = CacheConfig::ENABLE && $enable;
+    return self::$enable;
   }
 
   //インスタンス取得
@@ -130,7 +137,7 @@ EOF;
 
   //更新
   static function Update($content) {
-    $query = 'Update document_cache Set content = ?, expire = ? WHERE room_no = ? AND name = ?';
+    $query  = 'Update document_cache Set content = ?, expire = ? WHERE room_no = ? AND name = ?';
     $filter = DocumentCache::Get();
     $now    = Time::Get();
     $expire = $now + $filter->expire;
@@ -143,8 +150,9 @@ EOF;
   }
 
   //消去
-  static function Clean($exceed) {
-    DB::Prepare('DELETE FROM document_cache WHERE expire < ?', array(Time::Get() - $exceed));
+  static function Clean() {
+    $query = 'DELETE FROM document_cache WHERE expire < ?';
+    DB::Prepare($query, array(Time::Get() - CacheConfig::EXCEED));
     return DB::Execute() && DB::Optimize('document_cache');
   }
 }

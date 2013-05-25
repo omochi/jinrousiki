@@ -1049,16 +1049,38 @@ class RoleData {
     return $class;
   }
 
+  //役職名取得
+  static function GetName($role, $sub_role = false) {
+    return $sub_role ? self::$sub_role_list[$role] : self::$main_role_list[$role];
+  }
+
+  //役職のコード名リスト取得
+  static function GetList($sub_role = false) {
+    return array_keys($sub_role ? self::$sub_role_list : self::$main_role_list);
+  }
+
+  //役職グループリスト取得
+  static function GetGroupList() {
+    $stack = array_merge(array('human'), self::$main_role_group_list); //村人は含まれていない
+    return array_intersect(self::GetList(), $stack);
+  }
+
+  //役職の差分取得
+  static function GetDiff(array $list, $sub_role = false) {
+    return array_intersect_key($sub_role ? self::$sub_role_list : self::$main_role_list, $list);
+  }
+
   //メイン役職判定
   static function IsMain($role) { return array_key_exists($role, self::$main_role_list); }
+
+  //サブ役職判定
+  static function IsSub($role) { return array_key_exists($role, self::$sub_role_list); }
 
   //役職グループ判定
   static function IsGroup($role, $group) { return self::GetGroup($role) == $group; }
 
   //役職名のソート
-  static function Sort(array $list) {
-    return array_intersect(array_keys(self::$main_role_list), $list);
-  }
+  static function Sort(array $list) { return array_intersect(self::GetList(), $list); }
 }
 
 //-- 天候データベース --//
@@ -1286,13 +1308,12 @@ class RoleDataHTML {
 
   //タグ生成 (メイン役職専用)
   static function GenerateMain($role, $tag = 'span') {
-    $name = RoleData::$main_role_list[$role];
-    return sprintf(self::TAG, $tag, RoleData::GetCSS($role), $name, $tag);
+    return sprintf(self::TAG, $tag, RoleData::GetCSS($role), RoleData::GetName($role), $tag);
   }
 
-  //タグ生成 (メイン役職専用)
+  //タグ生成 (サブ役職専用)
   static function GenerateSub($role, $tag = 'span') {
-    $name = RoleData::$sub_role_list[$role];
+    $name = RoleData::GetName($role, true);
     foreach (RoleData::$sub_role_group_list as $css => $list) {
       if (in_array($role, $list)) break;
     }
@@ -1301,17 +1322,17 @@ class RoleDataHTML {
 
   //役職説明ページへのリンク生成
   static function GenerateLink($role) {
-    if (array_key_exists($role, RoleData::$sub_role_list)) {
+    if (RoleData::IsSub($role)) {
       $url  = 'sub_role';
-      $name = RoleData::$sub_role_list[$role];
+      $name = RoleData::GetName($role, true);
     }
     elseif (RoleData::GetCamp($role, true) == 'mania') {
       $url  = 'mania';
-      $name = RoleData::$main_role_list[$role];
+      $name = RoleData::GetName($role);
     }
     else {
       $url  = RoleData::GetCamp($role);
-      $name = RoleData::$main_role_list[$role];
+      $name = RoleData::GetName($role);
     }
     return sprintf(self::LINK, $url, $role, $name);
   }

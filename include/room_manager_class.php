@@ -234,7 +234,7 @@ EOF;
     //JinroRSS::Update(); //RSS更新 //テスト中
 
     if (CacheConfig::ENABLE) {
-      DocumentCacheDB::Clean(CacheConfig::EXCEED); //コミットも内部で行う
+      DocumentCacheDB::Clean(); //コミットも内部で行う
     } else {
       DB::Commit();
     }

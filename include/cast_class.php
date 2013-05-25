@@ -134,7 +134,7 @@ class Cast {
       $sub_role_keys = ChaosConfig::$chaos_sub_role_limit_hard_list;
     }
     else {
-      $sub_role_keys = array_keys(RoleData::$sub_role_list);
+      $sub_role_keys = RoleData::GetList(true);
     }
     //Text::p(OptionManager::$stack, 'DeleteRoleList');
 

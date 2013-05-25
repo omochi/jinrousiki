@@ -14,7 +14,7 @@ class Info {
   static function OutputDisableDummyBoyRole() {
     $stack = array();
     foreach (array_merge(array('wolf', 'fox'), CastConfig::$disable_dummy_boy_role_list) as $role) {
-      $stack[] = RoleData::$main_role_list[$role];
+      $stack[] = RoleData::GetName($role);
     }
     echo implode($stack, '・');
   }
@@ -151,7 +151,7 @@ EOF;
     foreach ($stack as $count => $list) {
       $order_stack = array();
       foreach (RoleData::Sort(array_keys($list)) as $role) { //役職順に並び替え
-	$order_stack[] = RoleData::$main_role_list[$role] . $list[$role];
+	$order_stack[] = RoleData::GetName($role) . $list[$role];
       }
       $str .= sprintf($format, $count) . implode('　', $order_stack) . Text::LF;
     }

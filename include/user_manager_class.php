@@ -219,10 +219,6 @@ class UserManager {
   }
 }
 
-//-- データベースアクセス (UserManager 拡張) --//
-class UserManagerDB {
-}
-
 //-- HTML 生成クラス (UserManager 拡張) --//
 class UserManagerHTML {
   const PATH = 'img/entry_user';
@@ -336,12 +332,7 @@ EOF;
 
     $stack = array('none');
     if (DB::$ROOM->IsChaosWish()) {
-      array_push($stack,
-		 'human', 'mage', 'necromancer', 'medium', 'priest', 'guard', 'common',
-		 'poison', 'poison_cat', 'pharmacist', 'assassin', 'mind_scanner', 'jealousy',
-		 'brownie', 'wizard', 'doll', 'escaper', 'wolf', 'mad', 'fox', 'child_fox',
-		 'cupid', 'angel', 'quiz', 'vampire', 'chiroptera', 'fairy', 'ogre', 'yaksa',
-		 'duelist', 'avenger', 'patron', 'mania', 'unknown_mania');
+      $stack = array_merge($stack, RoleData::GetGroupList());
     }
     elseif (DB::$ROOM->IsOption('gray_random')) {
       array_push($stack, 'human', 'wolf', 'mad', 'fox');
@@ -376,7 +367,7 @@ EOF;
     foreach ($stack as $role) {
       if ($count > 0 && $count % 4 == 0) Text::Output(Text::TR); //4個ごとに改行
       $count++;
-      $alt = '←' . ($role == 'none' ? '無し' : RoleData::$main_role_list[$role]);
+      $alt = '←' . ($role == 'none' ? '無し' : RoleData::GetName($role));
       $checked = RQ::Get()->role == $role ? ' checked' : '';
       printf($format, $role, $role, $role, $checked, self::PATH, $role, $alt);
     }

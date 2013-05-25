@@ -202,7 +202,7 @@ class NameTest {
 EOF;
 
     $stack = new StdClass();
-    foreach (array_keys(RoleData::$main_role_list) as $role) { //役職データ収集
+    foreach (RoleData::GetList() as $role) { //役職データ収集
       $stack->group[RoleData::GetGroup($role)][]     = $role;
       $stack->camp[RoleData::GetCamp($role, true)][] = $role;
     }
@@ -212,7 +212,7 @@ EOF;
 	$count++;
 	if ($count > 0 && $count % 9 == 0) Text::d();
 	$value = $role . '-' . $type;
-	$label = RoleData::$main_role_list[$role] . $name;
+	$label = RoleData::GetName($role) . $name;
 	Text::Output(sprintf(self::LABEL, $value, $value, $value, $label));
       }
     }
@@ -227,7 +227,7 @@ EOF;
     list($role, $type) = explode('-', RQ::Get()->type);
     switch ($type) {
     case 'all':
-      $stack = array_keys(RoleData::$main_role_list);
+      $stack = RoleData::GetList();
       break;
 
     case 'camp':
@@ -471,17 +471,17 @@ class VoteTest {
   static function OutputImage(array $list) {
     HTML::OutputHeader('投票テスト', 'game_play', true);
     if ($list['main']) {
-      foreach (array_keys(RoleData::$main_role_list) as $role) {
+      foreach (RoleData::GetList() as $role) {
 	if (Image::Role()->Exists($role)) Image::Role()->Output($role);
       }
     }
     if ($list['sub']) {
-      foreach (array_keys(RoleData::$sub_role_list) as $role) {
+      foreach (RoleData::GetList(true) as $role) {
 	if (Image::Role()->Exists($role)) Image::Role()->Output($role);
       }
     }
     if ($list['result']) {
-      foreach (array_keys(RoleData::$main_role_list) as $role) {
+      foreach (RoleData::GetList() as $role) {
 	Image::Role()->Output('result_'.$role);
       }
     }

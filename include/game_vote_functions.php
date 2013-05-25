@@ -46,9 +46,9 @@ class Vote {
       $header = '出現陣営：';
       $main_type = '陣営';
       $main_role_list = array();
-      foreach ($role_count_list as $key => $value) {
-	if (array_key_exists($key, RoleData::$main_role_list)) {
-	  $main_role_list[RoleData::GetCamp($key, true)] += $value;
+      foreach ($role_count_list as $role => $count) {
+	if (RoleData::IsMain($role)) {
+	  @$main_role_list[RoleData::GetCamp($role, true)] += $count;
 	}
       }
       break;
@@ -57,9 +57,9 @@ class Vote {
       $header = '出現役職種：';
       $main_type = '系';
       $main_role_list = array();
-      foreach ($role_count_list as $key => $value) {
-	if (array_key_exists($key, RoleData::$main_role_list)) {
-	  $main_role_list[RoleData::GetGroup($key)] += $value;
+      foreach ($role_count_list as $role => $count) {
+	if (RoleData::IsMain($role)) {
+	  @$main_role_list[RoleData::GetGroup($role)] += $count;
 	}
       }
       break;
@@ -76,10 +76,10 @@ class Vote {
     case 'role':
       $sub_type = '系';
       $sub_role_list = array();
-      foreach ($role_count_list as $key => $value) {
-	if (! array_key_exists($key, RoleData::$sub_role_list)) continue;
+      foreach ($role_count_list as $role => $count) {
+	if (! RoleData::IsSub($role)) continue;
 	foreach (RoleData::$sub_role_group_list as $list) {
-	  if (in_array($key, $list)) $sub_role_list[$list[0]] += $value;
+	  if (in_array($key, $list)) $sub_role_list[$list[0]] += $count;
 	}
       }
       break;
@@ -91,17 +91,13 @@ class Vote {
     }
 
     $stack = array();
-    foreach (RoleData::$main_role_list as $key => $value) {
-      $count = isset($main_role_list[$key]) ? $main_role_list[$key] : 0;
-      if ($count > 0) {
-	if ($css) $value = RoleDataHTML::GenerateMain($key);
-	$stack[] = $value . $main_type . $count;
-      }
+    foreach (RoleData::GetDiff($main_role_list) as $role => $name) {
+      if ($css) $name = RoleDataHTML::GenerateMain($role);
+      $stack[] = $name . $main_type . $main_role_list[$role];
     }
 
-    foreach (RoleData::$sub_role_list as $key => $value) {
-      $count = isset($sub_role_list[$key]) ? $sub_role_list[$key] : 0;
-      if ($count > 0) $stack[] = '(' . $value . $sub_type . $count . ')';
+    foreach (RoleData::GetDiff($sub_role_list, true) as $role => $name) {
+      $stack[] = '(' . $name . $sub_type . $sub_role_list[$role] . ')';
     }
     return $header . implode('　', $stack);
   }
@@ -682,7 +678,7 @@ class Vote {
 	$wizard_flag->$role = false;
       }
       foreach (DB::$USER->role as $role => $list) {
-	if (array_key_exists($role, RoleData::$main_role_list)) $role_flag->$role = true;
+	if (RoleData::IsMain($role)) $role_flag->$role = true;
       }
       //Text::p($role_flag, 'ROLE_FLAG');
 

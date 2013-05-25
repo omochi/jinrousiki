@@ -458,7 +458,7 @@ EOF;
 
     $str_stack  = array();
     $role_stack = array();
-    foreach (array_intersect(array_keys(RoleData::$main_role_list), $stack) as $role) {
+    foreach (array_intersect(RoleData::GetList(), $stack) as $role) {
       if (! isset($camp)) $camp = RoleData::GetCamp($role);
       if ($camp != RoleData::GetCamp($role) || count($role_stack) > 9) {
 	$str_stack[] = implode(' / ', $role_stack);
@@ -470,7 +470,7 @@ EOF;
     $str_stack[] = implode(' / ', $role_stack);
 
     $role_stack = array();
-    foreach (array_intersect(array_keys(RoleData::$sub_role_list), $stack) as $role) {
+    foreach (array_intersect(RoleData::GetList(true), $stack) as $role) {
       if (count($role_stack) > 9) {
 	$str_stack[] = implode(' / ', $role_stack);
 	$role_stack = array();
