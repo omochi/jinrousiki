@@ -389,6 +389,10 @@ EOF;
     //別ページリンク
     $format = '<a %s href="game_play.php%s">別ページ</a>'.Text::LF;
     printf($format, $blank, self::SelectURL(array('list_down')));
+    if (ServerConfig::DEBUG_MODE) {
+      $format = '<a %s href="game_view.php?room_no=%d">観戦</a>'.Text::LF;
+      printf($format, $blank, DB::$ROOM->id);
+    }
 
     if (DB::$ROOM->IsFinished()) {
       GameHTML::OutputLogLink();
@@ -400,10 +404,6 @@ EOF;
 	$format = '<a %s href="room_manager.php?room_no=%d">村オプション変更</a>'.Text::LF;
 	printf($format, $blank, DB::$ROOM->id);
       }
-    }
-    if (ServerConfig::DEBUG_MODE) {
-      $format = '<a %s href="game_view.php?room_no=%d">観戦</a>'.Text::LF;
-      printf($format, $blank, DB::$ROOM->id);
     }
 
     //音でお知らせ処理
@@ -504,33 +504,25 @@ EOF;
     if (! DB::$ROOM->IsPlaying()) return;
 
     $format = '<div class="system-vote">%s</div>'.Text::LF;
-    if ($left_time == 0) {
+    if (DB::$ROOM->IsEvent('wait_morning')) {
+      printf($format, Message::$wait_morning);
+    }
+    elseif ($left_time == 0) {
       printf($format, $time_message . Message::$vote_announce);
       if (DB::$ROOM->sudden_death > 0) {
 	$time = Time::Convert(DB::$ROOM->sudden_death);
-	if (DB::$ROOM->IsDay()) {
-	  $count = 0;
-	  foreach (DB::$USER->rows as $user) {
-	    if (count($user->target_no) > 0) $count++;
-	  }
-	  $voted = sprintf(' / 投票済み：%d人', $count);
-	}
-	else {
+	if (DB::$ROOM->IsDay() || DB::$SELF->IsDummyBoy()) {
+	  $voted = sprintf(' / 未投票：%d人', self::GetNovotedCount());
+	} else {
 	  $voted = '';
 	}
 	$time_format = '<div class="system-sudden-death">%s%s%s</div>'.Text::LF;
 	printf($time_format, Message::$sudden_death_time, $time, $voted);
       }
     }
-    elseif (DB::$ROOM->IsEvent('wait_morning')) {
-      printf($format, Message::$wait_morning);
-    }
     elseif (DB::$SELF->IsDummyBoy()) {
-      $count = 0;
-      foreach (DB::$USER->rows as $user) {
-	if (count($user->target_no) > 0) $count++;
-      }
-      printf('<div class="system-sudden-death">投票済み：%d人</div>'.Text::LF, $count);
+      $count = self::GetNovotedCount();
+      printf('<div class="system-sudden-death">未投票：%d人</div>'.Text::LF, $count);
     }
 
     if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()) {
@@ -590,5 +582,24 @@ EOF;
       $url .= self::$url_stack[$key];
     }
     return $url;
+  }
+
+  //未投票人数取得
+  private static function GetNovotedCount() {
+    $count = 0;
+    if (DB::$ROOM->IsDay()) {
+      foreach (DB::$USER->rows as $user) {
+	if ($user->IsLive() && count($user->target_no) < 1) $count++;
+      }
+    }
+    elseif (DB::$ROOM->IsNight() && DB::$SELF->IsDummyBoy()) { //身代わり君以外は不可
+      if (! isset(DB::$ROOM->vote)) DB::$ROOM->LoadVote();
+      $vote_data = DB::$ROOM->ParseVote(); //投票情報をパース
+      //Text::p($vote_data, 'Vote Data');
+      foreach (DB::$USER->rows as $user) { //未投票チェック
+	if ($user->CheckVote($vote_data) === false) $count++;
+      }
+    }
+    return $count;
   }
 }
