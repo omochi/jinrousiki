@@ -15,11 +15,9 @@ class Role_reverse_assassin extends Role_assassin {
 	DB::$USER->Kill($target->id, 'ASSASSIN_KILLED');
       }
       elseif (! $target->IsLovers()) {
-	if (isset(RoleManager::$get->reverse[$target_id])) {
-	  RoleManager::$get->reverse[$target_id] = ! RoleManager::$get->reverse[$target_id];
-	} else {
-	  RoleManager::$get->reverse[$target_id] = true;
-	}
+	$stack = RoleManager::GetStack('reverse');
+	$stack[$target_id] = isset($stack[$target_id]) ? ! $stack[$target_id] : true;
+	RoleManager::SetStack('reverse', $stack);
       }
     }
   }

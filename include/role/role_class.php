@@ -5,7 +5,7 @@ class RoleManager {
   static $file  = array(); //ロード済みファイル
   static $class = array(); //ロード済みクラス
   static $actor; //対象ユーザ
-  static $get;   //スタックデータ
+  private static $get; //スタックデータ
 
   //フィルタロード
   static function Load($type, $shift = false, $virtual = false) {
@@ -34,7 +34,7 @@ class RoleManager {
 
   //メイン役職クラスロード
   static function LoadMain(User $user) {
-    self::$actor = $user;
+    self::SetActor($user);
     return self::Load('main_role', true);
   }
 
@@ -53,13 +53,43 @@ class RoleManager {
   //データ取得
   static function GetStack($name) { return isset(self::$get->$name) ? self::$get->$name : null; }
 
+  //ユーザ取得
+  static function GetActor() { return self::$actor; }
+
+  //クラスセット
+  static function SetClass($role) { return self::LoadFile($role) && self::LoadClass($role); }
+
+  //ユーザセット
+  static function SetActor(User $user) {
+    self::$actor = $user;
+  }
+
   //データセット
   static function SetStack($name, $data) {
     self::$get->$name = $data;
   }
 
-  //クラスセット
-  static function SetClass($role) { return self::LoadFile($role) && self::LoadClass($role); }
+  //スタック初期化
+  static function ConstructStack() {
+    self::$get = new StdClass();
+  }
+
+  //データ初期化
+  static function InitStack($name) { self::SetStack($name, array()); }
+
+  //データ消去
+  static function UnsetStack($name) { unset(self::$get->$name); }
+
+  //データ未設定 (空文字) 判定
+  static function IsEmpty($name) { return self::GetStack($name) == ''; }
+
+  //データ存在判定
+  static function ExistStack($name) { return count(self::GetStack($name)) > 0; }
+
+  //データ表示 (デバッグ用)
+  static function p($data = null, $name = null) {
+    Text::p(isset($data) ? self::GetStack($data) : self::$get, $name);
+  }
 
   //クラスのロード済み判定
   private static function IsClass($role) {
@@ -360,7 +390,7 @@ abstract class Role {
 
   //-- 汎用関数 --//
   //ユーザ取得
-  protected function GetActor() { return RoleManager::$actor; }
+  protected function GetActor() { return RoleManager::GetActor(); }
 
   //ユーザ ID 取得
   protected function GetID() { return $this->GetActor()->id; }
@@ -368,12 +398,6 @@ abstract class Role {
   //ユーザ名取得
   protected function GetUname($uname = null) {
     return is_null($uname) ? $this->GetActor()->uname : $uname;
-  }
-
-  //データ初期化
-  protected function InitStack($name = null) {
-    $data = is_null($name) ? $this->role : $name;
-    if (! isset(RoleManager::$get->$data)) RoleManager::$get->$data = array();
   }
 
   //データ取得
@@ -387,15 +411,28 @@ abstract class Role {
     RoleManager::SetStack(is_null($role) ? $this->role : $role, $data);
   }
 
+  //データ初期化
+  protected function InitStack($name = null) {
+    $data  = is_null($name) ? $this->role : $name;
+    $stack = RoleManager::GetStack($data);
+    if (! isset($stack)) RoleManager::InitStack($data);
+  }
+
   //データ追加
   protected function AddStack($data, $role = null, $id = null) {
     if (is_null($id)) $id = $this->GetID();
-    RoleManager::$get->{is_null($role) ? $this->role : $role}[$id] = $data;
+    $name  = is_null($role) ? $this->role : $role;
+    $stack = RoleManager::GetStack($name);
+    $stack[$id] = $data;
+    RoleManager::SetStack($name, $stack);
   }
 
   //データ追加 (Uname 用)
   protected function AddStackName($data, $role = null, $uname = null) {
-    RoleManager::$get->{is_null($role) ? $this->role : $role}[$this->GetUname($uname)] = $data;
+    $name  = is_null($role) ? $this->role : $role;
+    $stack = RoleManager::GetStack($name);
+    $stack[$this->GetUname($uname)] = $data;
+    RoleManager::SetStack($name, $stack);
   }
 
   //同一ユーザ判定
@@ -847,7 +884,10 @@ abstract class Role {
   //-- 投票集計処理 (夜) --//
   //成功データ追加
   protected function AddSuccess($target, $data = null, $null = false) {
-    RoleManager::$get->{is_null($data) ? $this->role : $data}[$target] = $null ? null : true;
+    $name  = is_null($data) ? $this->role : $data;
+    $stack = RoleManager::GetStack($name);
+    $stack[$target] = $null ? null : true;
+    RoleManager::SetStack($name, $stack);
   }
 
   //投票者取得
@@ -888,13 +928,15 @@ class RoleTalk {
     if (DB::$SELF->IsDead() || ! DB::$ROOM->IsPlaying()) return null;
     //if (DB::$SELF->IsDead()) return false; //テスト用
 
-    RoleManager::$get->say = $say;
-    RoleManager::$actor = ($virtual = DB::$SELF->GetVirtual()); //仮想ユーザを取得
+    $virtual = DB::$SELF->GetVirtual(); //仮想ユーザを取得
+    RoleManager::SetStack('say', $say);
     do { //発言置換処理
+      RoleManager::SetActor($virtual);
       foreach (RoleManager::Load('say_convert_virtual') as $filter) {
 	if ($filter->ConvertSay()) break 2;
       }
-      RoleManager::$actor = DB::$SELF;
+
+      RoleManager::SetActor(DB::$SELF);
       foreach (RoleManager::Load('say_convert') as $filter) {
 	if ($filter->ConvertSay()) break 2;
       }
@@ -902,14 +944,14 @@ class RoleTalk {
 
     foreach ($virtual->GetPartner('bad_status', true) as $id => $date) { //妖精の処理
       if ($date != DB::$ROOM->date) continue;
-      RoleManager::$actor = DB::$USER->ByID($id);
+      RoleManager::SetActor(DB::$USER->ByID($id));
       foreach (RoleManager::Load('say_bad_status') as $filter) $filter->ConvertSay();
     }
 
-    RoleManager::$actor = $virtual;
+    RoleManager::SetActor($virtual);
     foreach (RoleManager::Load('say') as $filter) $filter->ConvertSay(); //他のサブ役職の処理
-    $say = RoleManager::$get->say;
-    unset(RoleManager::$get->say);
+    $say = RoleManager::GetStack('say');
+    RoleManager::UnsetStack('say');
     return true;
   }
 
@@ -918,7 +960,7 @@ class RoleTalk {
     //声の大きさを決定
     $voice = RQ::Get()->font_type;
     if (DB::$ROOM->IsPlaying() && DB::$SELF->IsLive()) {
-      RoleManager::$actor = DB::$SELF->GetVirtual();
+      RoleManager::SetActor(DB::$SELF->GetVirtual());
       foreach (RoleManager::Load('voice') as $filter) $filter->FilterVoice($voice, $say);
     }
 
@@ -954,7 +996,7 @@ class RoleHTML {
     foreach (RoleManager::Load('display_real') as $filter) $filter->OutputAbility();
 
     //-- ここからは憑依先の役職を表示 --//
-    RoleManager::$actor = DB::$SELF->GetVirtual();
+    RoleManager::SetActor(DB::$SELF->GetVirtual());
     foreach (RoleManager::Load('display_virtual') as $filter) $filter->OutputAbility();
 
     //-- これ以降はサブ役職非公開オプションの影響を受ける --//
@@ -966,7 +1008,8 @@ class RoleHTML {
     }
     //Text::p($stack);
     $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);
-    $target_list  = array_intersect($display_list, array_slice(RoleManager::$actor->role_list, 1));
+    $diff_list    = array_slice(RoleManager::GetActor()->role_list, 1);
+    $target_list  = array_intersect($display_list, $diff_list);
     //Text::p($target_list);
     foreach ($target_list as $role) Image::Role()->Output($role);
   }

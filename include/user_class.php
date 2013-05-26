@@ -722,6 +722,11 @@ EOF;
     return DB::Insert('vote', $items, $values);
   }
 
+  //デバッグ用
+  public function p($data = null, $name = null) {
+    Text::p(is_null($data) ? $this : $this->$data, $name);
+  }
+
   //仮想的な生死判定
   private function IsDeadFlag($strict = false) {
     if (! $strict) return null;
@@ -1074,7 +1079,7 @@ class UserData {
     else {
       $user_list = UserDataDB::Load($request->room_no, $lock);
     }
-    if (class_exists('RoleManager')) RoleManager::$get = new StdClass;
+    if (class_exists('RoleManager')) RoleManager::ConstructStack();
     $this->Parse($user_list);
   }
 

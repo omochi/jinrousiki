@@ -192,7 +192,7 @@ EOF;
       break;
 
     default:
-      RoleManager::$get->class = null;
+      RoleManager::SetStack('class', null);
       switch ($camp) {
       case 'human':
       case 'wolf':
@@ -220,12 +220,12 @@ EOF;
       }
 
       if ($win_flag) { //ジョーカー系判定
-	RoleManager::$actor = $user;
+	RoleManager::SetActor($user);
 	foreach (RoleManager::Load('joker') as $filter) $filter->FilterWin($win_flag);
       }
 
       if ($win_flag) {
-	$class = is_null(RoleManager::$get->class) ? $camp : RoleManager::$get->class;
+	$class = is_null(RoleManager::GetStack('class')) ? $camp : RoleManager::GetStack('class');
       }
       else {
 	$result = 'lose';

@@ -34,7 +34,7 @@ DevUser::Initialize(25);
 RQ::GetTest()->test_users[1]->role = 'resurrect_mania';
 RQ::GetTest()->test_users[1]->live = 'dead';
 
-RQ::GetTest()->test_users[2]->role = 'resist_wolf authority lost_ability';
+RQ::GetTest()->test_users[2]->role = 'wolf authority';
 RQ::GetTest()->test_users[2]->live = 'live';
 
 RQ::GetTest()->test_users[3]->role = 'possessed_wolf possessed_target[3-17]';
@@ -58,7 +58,7 @@ RQ::GetTest()->test_users[8]->live = 'live';
 RQ::GetTest()->test_users[9]->role = 'poison_cat joker[2]';
 RQ::GetTest()->test_users[9]->live = 'live';
 
-RQ::GetTest()->test_users[10]->role = 'sweep_assassin death_note[5] speaker';
+RQ::GetTest()->test_users[10]->role = 'reverse_assassin death_note[5] speaker';
 RQ::GetTest()->test_users[10]->live = 'live';
 
 RQ::GetTest()->test_users[11]->role = 'voodoo_mad downer_luck';
@@ -97,7 +97,7 @@ RQ::GetTest()->test_users[21]->live = 'live';
 RQ::GetTest()->test_users[22]->role = 'cowboy_duelist rival[22]';
 RQ::GetTest()->test_users[22]->live = 'live';
 
-RQ::GetTest()->test_users[23]->role = 'scarlet_mania deep_sleep';
+RQ::GetTest()->test_users[23]->role = 'psycho_escaper deep_sleep';
 RQ::GetTest()->test_users[23]->live = 'live';
 
 RQ::GetTest()->test_users[24]->role = 'clairvoyance_scanner infected[20] supported[22] aspirator';
@@ -197,18 +197,18 @@ if ($set_date == 1) { //初日用
   );
 } else {
   RQ::GetTest()->vote->night = array(
-    //array('user_no' => 2,	'target_no' => 22,	'type' => 'WOLF_EAT'),
-    array('user_no' => 3,	'target_no' => 22,	'type' => 'WOLF_EAT'),
+    array('user_no' => 2,	'target_no' => 23,	'type' => 'WOLF_EAT'),
+    //array('user_no' => 3,	'target_no' => 22,	'type' => 'WOLF_EAT'),
     array('user_no' => 4, 	'target_no' => 3,	'type' => 'MAGE_DO'),
     //array('user_no' => 4, 	'target_no' => '9 14 19 18 3',	'type' => 'STEP_MAGE_DO'),
     array('user_no' => 5,	'target_no' => 13,	'type' => 'MAGE_DO'),
     //array('user_no' => 7,	'target_no' => 11,	'type' => 'GUARD_DO'),
     array('user_no' => 7,	'target_no' => '8 9 10',	'type' => 'STEP_GUARD_DO'),
-    array('user_no' => 8,	'target_no' => 21,	'type' => 'GUARD_DO'),
+    array('user_no' => 8,	'target_no' => 23,	'type' => 'GUARD_DO'),
     //array('user_no' => 8,	'target_no' => 15,	'type' => 'ANTI_VOODOO_DO'),
     array('user_no' => 9,	'target_no' => 3,	'type' => 'POISON_CAT_DO'),
     //array('user_no' => 9,	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 10,	'target_no' => 25,	'type' => 'ASSASSIN_DO'),
+    array('user_no' => 10,	'target_no' => 8,	'type' => 'ASSASSIN_DO'),
     //array('user_no' => 10,	'target_no' => null,	'type' => 'ASSASSIN_NOT_DO'),
     //array('user_no' => 10,	'target_no' => 8,	'type' => 'DEATH_NOTE_DO'),
     //array('user_no' => 10,	'target_no' => null,	'type' => 'DEATH_NOTE_NOT_DO'),
@@ -243,7 +243,7 @@ if ($set_date == 1) { //初日用
     array('user_no' => 18,	'target_no' => '17 16 11',	'type' => 'STEP_VAMPIRE_DO'),
     array('user_no' => 19,	'target_no' => 23,	'type' => 'FAIRY_DO'),
     //array('user_no' => 19,	'target_no' => '3 7 23',	'type' => 'SPREAD_WIZARD_DO'),
-    array('user_no' => 20,	'target_no' => 3,	'type' => 'VAMPIRE_DO'),
+    array('user_no' => 20,	'target_no' => 23,	'type' => 'VAMPIRE_DO'),
     //array('user_no' => 21,	'target_no' => 5,	'type' => 'CHILD_FOX_DO'),
     //array('user_no' => 22,	'target_no' => 23,	'type' => 'ESCAPE_DO'),
     //array('user_no' => 22,	'target_no' => 13,	'type' => 'FAIRY_DO'),
@@ -252,9 +252,9 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 22,	'target_no' => null,	'type' => 'OGRE_NOT_DO'),
     //array('user_no' => 22,	'target_no' => 23,	'type' => 'WIZARD_DO'),
     //array('user_no' => 23,	'target_no' => 12,	'type' => 'REPORTER_DO'),
-    //array('user_no' => 23,	'target_no' => 11,	'type' => 'ESCAPE_DO'),
+    array('user_no' => 23,	'target_no' => 11,	'type' => 'ESCAPE_DO'),
     //array('user_no' => 23,	'target_no' => 25,	'type' => 'REPORTER_DO'),
-    //array('user_no' => 23,	'target_no' => 3,	'type' => 'ASSASSIN_DO'),
+    //array('user_no' => 23,	'target_no' => 8,	'type' => 'ASSASSIN_DO'),
     //array('user_no' => 23,	'target_no' => 11,	'type' => 'MIND_SCANNER_DO'),
     //array('user_no' => 23,	'target_no' => 16,	'type' => 'VAMPIRE_DO'),
     array('user_no' => 24,	'target_no' => 22,	'type' => 'MIND_SCANNER_DO'),
@@ -291,8 +291,8 @@ DB::Connect(); //DB接続 (必要なときだけ設定する)
 DevRoom::Load();
 DB::$ROOM->date = $set_date;
 #DB::$ROOM->scene = 'beforegame';
-DB::$ROOM->scene = 'day';
-#DB::$ROOM->scene = 'night';
+#DB::$ROOM->scene = 'day';
+DB::$ROOM->scene = 'night';
 #DB::$ROOM->scene = 'aftergame';
 //DB::$ROOM->system_time = Time::Get(); //現在時刻を取得
 

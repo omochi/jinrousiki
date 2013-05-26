@@ -34,12 +34,12 @@ class Role_guard extends Role {
   }
 
   //護衛
-  function Guard(User $user, $flag = false) {
+  function Guard(User $user) {
     $stack = array(); //護衛者検出
     foreach (RoleManager::LoadFilter('guard') as $filter) {
       $stack = array_merge($stack, $filter->GetGuard($user->id));
     }
-    //Text::p($stack, sprintf('List [gurad/%s]',$this->GetVoter()->uname));
+    //Text::p($stack, sprintf('◆List [gurad/%s]',$this->GetVoter()->uname));
 
     $result  = false;
     $half    = DB::$ROOM->IsEvent('half_guard'); //曇天
@@ -52,7 +52,7 @@ class Role_guard extends Role {
       if ($ignore = $filter->IgnoreGuard()) continue; //個別護衛失敗判定
       $result |= ! ($half && Lottery::Bool()) && (! $limited || is_null($ignore));
 
-      $filter->GuardAction($this->GetWolfVoter(), $flag); //護衛実行処理
+      $filter->GuardAction(); //護衛実行処理
       //護衛成功メッセージを登録
       $this->AddSuccess($actor->id, 'guard_success'); //成功者を登録
       if (! DB::$ROOM->IsOption('seal_message') && $actor->IsFirstGuardSuccess($user->id)) {
@@ -79,7 +79,7 @@ class Role_guard extends Role {
   function IgnoreGuard() { return false; }
 
   //護衛処理
-  function GuardAction(User $user, $flag) {}
+  function GuardAction() {}
 
   //狩り
   function Hunt(User $user) {

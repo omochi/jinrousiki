@@ -358,14 +358,14 @@ class TalkBuilder {
       }
       else {
 	$mind_read = false; //特殊発言透過判定
-	RoleManager::$actor = $actor;
+	RoleManager::SetActor($actor);
 	foreach (RoleManager::Load('mind_read') as $filter) {
 	  $mind_read |= $filter->IsMindRead();
 	  if ($mind_read) break;
 	}
 
 	if (! $mind_read) {
-	  RoleManager::$actor = $this->actor;
+	  RoleManager::SetActor($this->actor);
 	  foreach (RoleManager::Load('mind_read_active') as $filter) {
 	    $mind_read |= $filter->IsMindReadActive($actor);
 	    if ($mind_read) break;
@@ -373,19 +373,21 @@ class TalkBuilder {
 	}
 
 	if (! $mind_read) {
-	  RoleManager::$actor = $real_user;
+	  RoleManager::SetActor($real_user);
 	  foreach (RoleManager::Load('mind_read_possessed') as $filter) {
 	    $mind_read |= $filter->IsMindReadPossessed($actor);
 	    if ($mind_read) break;
 	  }
 	}
 
-	RoleManager::$actor = $actor;
+	RoleManager::SetActor($actor);
 	switch ($talk->location) {
 	case 'common': //共有者
 	  if ($this->flag->common || $mind_read) return $this->Add($actor, $talk, $real);
+
 	  $filter = RoleManager::LoadMain($actor);
 	  if (! method_exists($filter, 'Whisper')) return; //player スイッチによる不整合対策
+
 	  if ($filter->Whisper($this, $talk->font_type)) return;
 	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
@@ -394,8 +396,10 @@ class TalkBuilder {
 
 	case 'wolf': //人狼
 	  if ($this->flag->wolf || $mind_read) return $this->Add($actor, $talk, $real);
+
 	  $filter = RoleManager::LoadMain($actor);
 	  if (! method_exists($filter, 'Howl')) return; //player スイッチによる不整合対策
+
 	  if ($filter->Howl($this, $talk->font_type)) return;
 	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
@@ -404,6 +408,7 @@ class TalkBuilder {
 
 	case 'mad': //囁き狂人
 	  if ($this->flag->wolf || $mind_read) return $this->Add($actor, $talk, $real);
+
 	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
@@ -411,11 +416,13 @@ class TalkBuilder {
 
 	case 'fox': //妖狐
 	  if ($this->flag->fox || $mind_read) return $this->Add($actor, $talk, $real);
-	  RoleManager::$actor = DB::$SELF;
+
+	  RoleManager::SetActor(DB::$SELF);
 	  foreach (RoleManager::Load('talk_fox') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
-	  RoleManager::$actor = $actor;
+
+	  RoleManager::SetActor($actor);
 	  foreach (RoleManager::Load('talk_whisper') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
@@ -425,10 +432,12 @@ class TalkBuilder {
 	  if ($this->flag->dummy_boy || $mind_read || $this->actor->IsSameName($talk->uname)) {
 	    return $this->Add($actor, $talk, $real);
 	  }
+
 	  foreach (RoleManager::Load('talk_self') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
-	  RoleManager::$actor = $this->actor;
+
+	  RoleManager::SetActor($this->actor);
 	  foreach (RoleManager::Load('talk_ringing') as $filter) {
 	    if ($filter->Whisper($this, $talk->font_type)) return;
 	  }
@@ -562,11 +571,11 @@ EOF;
 
   //役職情報ロード
   private function LoadFilter() {
-    RoleManager::$actor = $this->actor;
-    RoleManager::$actor->virtual_live |= false;
+    $this->actor->virtual_live |= false;
+    RoleManager::SetActor($this->actor);
+    RoleManager::SetStack('viewer', $this->actor);
+    RoleManager::SetStack('builder', $this);
     $this->filter = RoleManager::Load('talk');
-    RoleManager::$get->viewer  = RoleManager::$actor;
-    RoleManager::$get->builder = $this;
   }
 
   //フィルタ用フラグセット
