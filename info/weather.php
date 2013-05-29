@@ -39,363 +39,363 @@ Ver. 2.2.0
   <th>初登場</th>
 </tr>
 <tr id="ver150a2">
-  <td><a href="#weather_grassy"><?php echo WeatherData::GetName(0); ?></a></td>
+  <td><a href="#weather_grassy"><?php WeatherData::OutputName(0); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(0); ?></td>
+  <td><?php WeatherData::OutputCaption(0); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_mower"><?php echo WeatherData::GetName(1); ?></a></td>
+  <td><a href="#weather_mower"><?php WeatherData::OutputName(1); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(1); ?></td>
+  <td><?php WeatherData::OutputCaption(1); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_blind_vote"><?php echo WeatherData::GetName(2); ?></a></td>
+  <td><a href="#weather_blind_vote"><?php WeatherData::OutputName(2); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(2); ?></td>
+  <td><?php WeatherData::OutputCaption(2); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_fox_dead"><?php echo WeatherData::GetName(3); ?></a></td>
+  <td><a href="#weather_no_fox_dead"><?php WeatherData::OutputName(3); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(3); ?></td>
+  <td><?php WeatherData::OutputCaption(3); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_critical"><?php echo WeatherData::GetName(4); ?></a></td>
+  <td><a href="#weather_critical"><?php WeatherData::OutputName(4); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(4); ?></td>
+  <td><?php WeatherData::OutputCaption(4); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_blind_talk_day"><?php echo WeatherData::GetName(5); ?></a></td>
+  <td><a href="#weather_blind_talk_day"><?php WeatherData::OutputName(5); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(5); ?></td>
+  <td><?php WeatherData::OutputCaption(5); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_blind_talk_night"><?php echo WeatherData::GetName(6); ?></a></td>
+  <td><a href="#weather_blind_talk_night"><?php WeatherData::OutputName(6); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(6); ?></td>
+  <td><?php WeatherData::OutputCaption(6); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_full_moon"><?php echo WeatherData::GetName(7); ?></a></td>
+  <td><a href="#weather_full_moon"><?php WeatherData::OutputName(7); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(7); ?></td>
+  <td><?php WeatherData::OutputCaption(7); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_new_moon"><?php echo WeatherData::GetName(8); ?></a></td>
+  <td><a href="#weather_new_moon"><?php WeatherData::OutputName(8); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(8); ?></td>
+  <td><?php WeatherData::OutputCaption(8); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_contact"><?php echo WeatherData::GetName(9); ?></a></td>
+  <td><a href="#weather_no_contact"><?php WeatherData::OutputName(9); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(9); ?></td>
+  <td><?php WeatherData::OutputCaption(9); ?></td>
   <td>Ver. 1.5.0 α2</td>
 </tr>
 <tr id="ver150a3">
-  <td><a href="#weather_invisible"><?php echo WeatherData::GetName(10); ?></a></td>
+  <td><a href="#weather_invisible"><?php WeatherData::OutputName(10); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(10); ?></td>
+  <td><?php WeatherData::OutputCaption(10); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_rainbow"><?php echo WeatherData::GetName(11); ?></a></td>
+  <td><a href="#weather_rainbow"><?php WeatherData::OutputName(11); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(11); ?></td>
+  <td><?php WeatherData::OutputCaption(11); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_side_reverse"><?php echo WeatherData::GetName(12); ?></a></td>
+  <td><a href="#weather_side_reverse"><?php WeatherData::OutputName(12); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(12); ?></td>
+  <td><?php WeatherData::OutputCaption(12); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_line_reverse"><?php echo WeatherData::GetName(13); ?></a></td>
+  <td><a href="#weather_line_reverse"><?php WeatherData::OutputName(13); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(13); ?></td>
+  <td><?php WeatherData::OutputCaption(13); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_actor"><?php echo WeatherData::GetName(14); ?></a></td>
+  <td><a href="#weather_actor"><?php WeatherData::OutputName(14); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(14); ?></td>
+  <td><?php WeatherData::OutputCaption(14); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_critical_luck"><?php echo WeatherData::GetName(15); ?></a></td>
+  <td><a href="#weather_critical_luck"><?php WeatherData::OutputName(15); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(15); ?></td>
+  <td><?php WeatherData::OutputCaption(15); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_sudden_death"><?php echo WeatherData::GetName(16); ?></a></td>
+  <td><a href="#weather_no_sudden_death"><?php WeatherData::OutputName(16); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(16); ?></td>
+  <td><?php WeatherData::OutputCaption(16); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_thunderbolt"><?php echo WeatherData::GetName(17); ?></a></td>
+  <td><a href="#weather_thunderbolt"><?php WeatherData::OutputName(17); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(17); ?></td>
+  <td><?php WeatherData::OutputCaption(17); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_last_words"><?php echo WeatherData::GetName(18); ?></a></td>
+  <td><a href="#weather_no_last_words"><?php WeatherData::OutputName(18); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(18); ?></td>
+  <td><?php WeatherData::OutputCaption(18); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_dream"><?php echo WeatherData::GetName(19); ?></a></td>
+  <td><a href="#weather_no_dream"><?php WeatherData::OutputName(19); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(19); ?></td>
+  <td><?php WeatherData::OutputCaption(19); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_full_ogre"><?php echo WeatherData::GetName(20); ?></a></td>
+  <td><a href="#weather_full_ogre"><?php WeatherData::OutputName(20); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(20); ?></td>
+  <td><?php WeatherData::OutputCaption(20); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_seal_ogre"><?php echo WeatherData::GetName(21); ?></a></td>
+  <td><a href="#weather_seal_ogre"><?php WeatherData::OutputName(21); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(21); ?></td>
+  <td><?php WeatherData::OutputCaption(21); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_full_revive"><?php echo WeatherData::GetName(22); ?></a></td>
+  <td><a href="#weather_full_revive"><?php WeatherData::OutputName(22); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(22); ?></td>
+  <td><?php WeatherData::OutputCaption(22); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_revive"><?php echo WeatherData::GetName(23); ?></a></td>
+  <td><a href="#weather_no_revive"><?php WeatherData::OutputName(23); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(23); ?></td>
+  <td><?php WeatherData::OutputCaption(23); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr>
-  <td><a href="#weather_brownie"><?php echo WeatherData::GetName(24); ?></a></td>
+  <td><a href="#weather_brownie"><?php WeatherData::OutputName(24); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(24); ?></td>
+  <td><?php WeatherData::OutputCaption(24); ?></td>
   <td>Ver. 1.5.0 α3</td>
 </tr>
 <tr id="ver150a4">
-  <td><a href="#weather_whisper_ringing"><?php echo WeatherData::GetName(25); ?></a></td>
+  <td><a href="#weather_whisper_ringing"><?php WeatherData::OutputName(25); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(25); ?></td>
+  <td><?php WeatherData::OutputCaption(25); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_howl_ringing"><?php echo WeatherData::GetName(26); ?></a></td>
+  <td><a href="#weather_howl_ringing"><?php WeatherData::OutputName(26); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(26); ?></td>
+  <td><?php WeatherData::OutputCaption(26); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_sweet_ringing"><?php echo WeatherData::GetName(27); ?></a></td>
+  <td><a href="#weather_sweet_ringing"><?php WeatherData::OutputName(27); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(27); ?></td>
+  <td><?php WeatherData::OutputCaption(27); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_deep_sleep"><?php echo WeatherData::GetName(28); ?></a></td>
+  <td><a href="#weather_deep_sleep"><?php WeatherData::OutputName(28); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(28); ?></td>
+  <td><?php WeatherData::OutputCaption(28); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_silent"><?php echo WeatherData::GetName(29); ?></a></td>
+  <td><a href="#weather_silent"><?php WeatherData::OutputName(29); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(29); ?></td>
+  <td><?php WeatherData::OutputCaption(29); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_missfire_revive"><?php echo WeatherData::GetName(30); ?></a></td>
+  <td><a href="#weather_missfire_revive"><?php WeatherData::OutputName(30); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(30); ?></td>
+  <td><?php WeatherData::OutputCaption(30); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_hunt"><?php echo WeatherData::GetName(31); ?></a></td>
+  <td><a href="#weather_no_hunt"><?php WeatherData::OutputName(31); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(31); ?></td>
+  <td><?php WeatherData::OutputCaption(31); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_full_guard"><?php echo WeatherData::GetName(32); ?></a></td>
+  <td><a href="#weather_full_guard"><?php WeatherData::OutputName(32); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(32); ?></td>
+  <td><?php WeatherData::OutputCaption(32); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_frostbite"><?php echo WeatherData::GetName(33); ?></a></td>
+  <td><a href="#weather_frostbite"><?php WeatherData::OutputName(33); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(33); ?></td>
+  <td><?php WeatherData::OutputCaption(33); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_alchemy_pharmacist"><?php echo WeatherData::GetName(34); ?></a></td>
+  <td><a href="#weather_alchemy_pharmacist"><?php WeatherData::OutputName(34); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(34); ?></td>
+  <td><?php WeatherData::OutputCaption(34); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_hyper_random_voter"><?php echo WeatherData::GetName(35); ?></a></td>
+  <td><a href="#weather_hyper_random_voter"><?php WeatherData::OutputName(35); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(35); ?></td>
+  <td><?php WeatherData::OutputCaption(35); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_half_moon"><?php echo WeatherData::GetName(36); ?></a></td>
+  <td><a href="#weather_half_moon"><?php WeatherData::OutputName(36); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(36); ?></td>
+  <td><?php WeatherData::OutputCaption(36); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_half_guard"><?php echo WeatherData::GetName(37); ?></a></td>
+  <td><a href="#weather_half_guard"><?php WeatherData::OutputName(37); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(37); ?></td>
+  <td><?php WeatherData::OutputCaption(37); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_passion"><?php echo WeatherData::GetName(38); ?></a></td>
+  <td><a href="#weather_passion"><?php WeatherData::OutputName(38); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(38); ?></td>
+  <td><?php WeatherData::OutputCaption(38); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_poison"><?php echo WeatherData::GetName(39); ?></a></td>
+  <td><a href="#weather_no_poison"><?php WeatherData::OutputName(39); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(39); ?></td>
+  <td><?php WeatherData::OutputCaption(39); ?></td>
   <td>Ver. 1.5.0 α4</td>
 </tr>
 <tr id="ver150a8">
-  <td><a href="#weather_psycho_infected"><?php echo WeatherData::GetName(40); ?></a></td>
+  <td><a href="#weather_psycho_infected"><?php WeatherData::OutputName(40); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(40); ?></td>
+  <td><?php WeatherData::OutputCaption(40); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_hyper_critical"><?php echo WeatherData::GetName(41); ?></a></td>
+  <td><a href="#weather_hyper_critical"><?php WeatherData::OutputName(41); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(41); ?></td>
+  <td><?php WeatherData::OutputCaption(41); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_boost_cute"><?php echo WeatherData::GetName(42); ?></a></td>
+  <td><a href="#weather_boost_cute"><?php WeatherData::OutputName(42); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(42); ?></td>
+  <td><?php WeatherData::OutputCaption(42); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_authority"><?php echo WeatherData::GetName(43); ?></a></td>
+  <td><a href="#weather_no_authority"><?php WeatherData::OutputName(43); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(43); ?></td>
+  <td><?php WeatherData::OutputCaption(43); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_force_assassin_do"><?php echo WeatherData::GetName(44); ?></a></td>
+  <td><a href="#weather_force_assassin_do"><?php WeatherData::OutputName(44); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(44); ?></td>
+  <td><?php WeatherData::OutputCaption(44); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_corpse_courier_mad"><?php echo WeatherData::GetName(45); ?></a></td>
+  <td><a href="#weather_corpse_courier_mad"><?php WeatherData::OutputName(45); ?></a></td>
   <td><a href="#type_vote_day">処刑投票妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(45); ?></td>
+  <td><?php WeatherData::OutputCaption(45); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_full_wizard"><?php echo WeatherData::GetName(46); ?></a></td>
+  <td><a href="#weather_full_wizard"><?php WeatherData::OutputName(46); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(46); ?></td>
+  <td><?php WeatherData::OutputCaption(46); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr>
-  <td><a href="#weather_debilitate_wizard"><?php echo WeatherData::GetName(47); ?></a></td>
+  <td><a href="#weather_debilitate_wizard"><?php WeatherData::OutputName(47); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(47); ?></td>
+  <td><?php WeatherData::OutputCaption(47); ?></td>
   <td>Ver. 1.5.0 α8</td>
 </tr>
 <tr id="ver150a9">
-  <td><a href="#weather_no_trap"><?php echo WeatherData::GetName(48); ?></a></td>
+  <td><a href="#weather_no_trap"><?php WeatherData::OutputName(48); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(48); ?></td>
+  <td><?php WeatherData::OutputCaption(48); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_sacrifice"><?php echo WeatherData::GetName(49); ?></a></td>
+  <td><a href="#weather_no_sacrifice"><?php WeatherData::OutputName(49); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(49); ?></td>
+  <td><?php WeatherData::OutputCaption(49); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_reflect_assassin"><?php echo WeatherData::GetName(50); ?></a></td>
+  <td><a href="#weather_no_reflect_assassin"><?php WeatherData::OutputName(50); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(50); ?></td>
+  <td><?php WeatherData::OutputCaption(50); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_cursed"><?php echo WeatherData::GetName(51); ?></a></td>
+  <td><a href="#weather_no_cursed"><?php WeatherData::OutputName(51); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(51); ?></td>
+  <td><?php WeatherData::OutputCaption(51); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
-  <td><a href="#weather_blinder"><?php echo WeatherData::GetName(52); ?></a></td>
+  <td><a href="#weather_blinder"><?php WeatherData::OutputName(52); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(52); ?></td>
+  <td><?php WeatherData::OutputCaption(52); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
-  <td><a href="#weather_mind_open"><?php echo WeatherData::GetName(53); ?></a></td>
+  <td><a href="#weather_mind_open"><?php WeatherData::OutputName(53); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(53); ?></td>
+  <td><?php WeatherData::OutputCaption(53); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr>
-  <td><a href="#weather_aurora"><?php echo WeatherData::GetName(54); ?></a></td>
+  <td><a href="#weather_aurora"><?php WeatherData::OutputName(54); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(54); ?></td>
+  <td><?php WeatherData::OutputCaption(54); ?></td>
   <td>Ver. 1.5.0 α9</td>
 </tr>
 <tr id="ver220a4">
-  <td><a href="#weather_random_step"><?php echo WeatherData::GetName(55); ?></a></td>
+  <td><a href="#weather_random_step"><?php WeatherData::OutputName(55); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(55); ?></td>
+  <td><?php WeatherData::OutputCaption(55); ?></td>
   <td>Ver. 2.2.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_no_step"><?php echo WeatherData::GetName(56); ?></a></td>
+  <td><a href="#weather_no_step"><?php WeatherData::OutputName(56); ?></a></td>
   <td><a href="#type_ability">能力強化・封印</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(56); ?></td>
+  <td><?php WeatherData::OutputCaption(56); ?></td>
   <td>Ver. 2.2.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_confession"><?php echo WeatherData::GetName(57); ?></a></td>
+  <td><a href="#weather_confession"><?php WeatherData::OutputName(57); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(57); ?></td>
+  <td><?php WeatherData::OutputCaption(57); ?></td>
   <td>Ver. 2.2.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_gentleman"><?php echo WeatherData::GetName(58); ?></a></td>
+  <td><a href="#weather_gentleman"><?php WeatherData::OutputName(58); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(58); ?></td>
+  <td><?php WeatherData::OutputCaption(58); ?></td>
   <td>Ver. 2.2.0 α4</td>
 </tr>
 <tr>
-  <td><a href="#weather_lady"><?php echo WeatherData::GetName(59); ?></a></td>
+  <td><a href="#weather_lady"><?php WeatherData::OutputName(59); ?></a></td>
   <td><a href="#type_talk">会話妨害</a></td>
-  <td><?php InfoHTML::OutputWeatherCaption(59); ?></td>
+  <td><?php WeatherData::OutputCaption(59); ?></td>
   <td>Ver. 2.2.0 α4</td>
 </tr>
 </table>

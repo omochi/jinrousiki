@@ -172,9 +172,6 @@ EOF;
     }
   }
 
-  //天候詳細表示
-  static function OutputWeatherCaption($id) { echo WeatherData::GetCaption($id); }
-
   //他のサーバの部屋画面ロード用データを出力
   static function OutputSharedRoomList() {
     if (SharedServerConfig::DISABLE) return false;

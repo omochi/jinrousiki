@@ -1273,23 +1273,17 @@ class WeatherData {
   //天候データ取得
   static function Get($id = null) { return self::$list[$id]; }
 
-  //天候名取得
-  static function GetName($id) { return self::$list[$id]['name']; }
-
   //イベント取得
   static function GetEvent($id) { return self::$list[$id]['event']; }
 
-  //説明取得
-  static function GetCaption($id) { return self::$list[$id]['caption']; }
-
-  //天候イベント登録
-  static function SetEvent($id) {
-    DB::$ROOM->event->weather = $id;
-    DB::$ROOM->event->{self::GetEvent($id)} = true;
-  }
-
   //存在判定
   static function Exists($id) { return isset(self::$list[$id]); }
+
+  //天候名出力
+  static function OutputName($id) { echo self::$list[$id]['name']; }
+
+  //説明出力
+  static function OutputCaption($id) { echo self::$list[$id]['caption']; }
 }
 
 //-- HTML 生成クラス (RoleData 拡張) --//

@@ -837,11 +837,13 @@ class UserData {
     foreach ($event_list as $event) {
       switch ($event['type']) {
       case 'WEATHER':
-	WeatherData::SetEvent((int)$event['message']);
+	$id = (int)$event['message'];
+	DB::$ROOM->event->weather = $id;
+	DB::$ROOM->event->{WeatherData::GetEvent($id)} = true;
 	break;
 
       case 'EVENT':
-	DB::$ROOM->event->$event['message'] = true;
+	DB::$ROOM->event->{$event['message']} = true;
 	break;
 
       case 'VOTE_DUEL':
