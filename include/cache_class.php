@@ -1,5 +1,5 @@
 <?php
-//キャッシュコントロールクラス
+//-- キャッシュコントロールクラス --//
 class DocumentCache {
   public  static $enable   = null; //有効設定
   private static $instance = null;

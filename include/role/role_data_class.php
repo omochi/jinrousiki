@@ -1,9 +1,8 @@
 <?php
 //-- 役職データベース --//
 class RoleData {
-  //-- 役職名の翻訳 --//
+  /* 役職名 (役職通知リストはこの順番で表示される) */
   //メイン役職のリスト (コード名 => 表示名)
-  //初日の役職通知リストはこの順番で表示される
   static public $main_role_list = array(
     'human'                 => '村人',
     'saint'                 => '聖女',
@@ -341,7 +340,6 @@ class RoleData {
     'revive_mania'          => '五徳猫');
 
   //サブ役職のリスト (コード名 => 表示名)
-  //初日の役職通知リストはこの順番で表示される
   static public $sub_role_list = array(
     'chicken'            => '小心者',
     'rabbit'             => 'ウサギ',
@@ -901,6 +899,7 @@ class RoleData {
     'copied_soul'           => '元覚',
     'copied_teller'         => '元語');
 
+  /* 役職グループ */
   //メイン役職のグループリスト (役職 => 所属グループ)
   //このリストの並び順に strpos() で判別する (毒系など、順番依存の役職があるので注意)
   static public $main_role_group_list = array(
@@ -908,7 +907,7 @@ class RoleData {
     'unknown_mania'   => 'unknown_mania', 'wirepuller_mania' => 'unknown_mania',
     'fire_mania'      => 'unknown_mania', 'sacrifice_mania'  => 'unknown_mania',
     'resurrect_mania' => 'unknown_mania', 'revive_mania'     => 'unknown_mania',
-    'mania' => 'mania', //マニア系
+    'mania' => 'mania', //神話マニア系
     'chiroptera' => 'chiroptera', 'fairy' => 'fairy', //蝙蝠陣営
     'ogre' => 'ogre', 'yaksa' => 'yaksa', //鬼陣営
     'duelist' => 'duelist', 'avenger' => 'avenger', 'patron'  => 'patron', //決闘者陣営
@@ -977,11 +976,11 @@ class RoleData {
     'mania'        => array('copied', 'copied_trick', 'copied_basic', 'copied_nymph', 'copied_soul',
 			    'copied_teller'));
 
-  //-- 関数 --//
+  /* 関数 */
   //役職グループ取得
   static function GetGroup($role) {
-    foreach (self::$main_role_group_list as $key => $value) {
-      if (strpos($role, $key) !== false) return $value;
+    foreach (self::$main_role_group_list as $main_role => $group) {
+      if (strpos($role, $main_role) !== false) return $group;
     }
     return 'human';
   }
@@ -1029,30 +1028,33 @@ class RoleData {
 
   //役職クラス (CSS) 取得
   static function GetCSS($role) {
-    switch ($class = self::GetGroup($role)) {
+    switch ($css = self::GetGroup($role)) {
     case 'poison_cat':
-      $class = 'cat';
+      $css = 'cat';
       break;
 
     case 'mind_scanner':
-      $class = 'mind';
+      $css = 'mind';
       break;
 
     case 'child_fox':
-      $class = 'fox';
+      $css = 'fox';
       break;
 
     case 'unknown_mania':
-      $class = 'mania';
+      $css = 'mania';
       break;
     }
-    return $class;
+    return $css;
   }
 
   //役職名取得
   static function GetName($role, $sub_role = false) {
     return $sub_role ? self::$sub_role_list[$role] : self::$main_role_list[$role];
   }
+
+  //役職省略名取得
+  static function GetShortName($role) { return self::$short_role_list[$role]; }
 
   //役職のコード名リスト取得
   static function GetList($sub_role = false) {
@@ -1070,6 +1072,26 @@ class RoleData {
     return array_intersect_key($sub_role ? self::$sub_role_list : self::$main_role_list, $list);
   }
 
+  //役職の差分取得 (省略名用)
+  static function GetShortDiff(array $list) {
+    array_shift($list); //先頭はメイン役職
+    return array_intersect_key(self::$short_role_list, array_flip($list));
+  }
+
+  //表示対象役職取得
+  static function GetDisplayList(array $list) {
+    array_shift($list); //先頭はメイン役職
+
+    $stack = array();
+    foreach (array('real', 'virtual', 'none') as $name) {
+      $stack = array_merge($stack, RoleFilterData::${'display_' . $name});
+    }
+    //Text::p($stack);
+
+    $display_list = array_diff(array_keys(self::$sub_role_list), $stack);
+    return array_intersect($display_list, $list);
+  }
+
   //メイン役職判定
   static function IsMain($role) { return array_key_exists($role, self::$main_role_list); }
 
@@ -1085,7 +1107,7 @@ class RoleData {
 
 //-- 天候データベース --//
 class WeatherData {
-  //天候のリスト
+  /* 天候リスト */
   static public $list = array(
      0 => array('name'    => 'スコール',
 		'event'   => 'grassy',
@@ -1269,7 +1291,7 @@ class WeatherData {
 		'caption' => '全員 淑女'),
   );
 
-  //-- 関数 --//
+  /* 関数 */
   //天候データ取得
   static function Get($id = null) { return self::$list[$id]; }
 
@@ -1294,10 +1316,9 @@ class RoleDataHTML {
 
   //タグ生成
   static function Generate($role, $css = null, $sub_role = false) {
-    $str  = $sub_role ? Text::BR : '';
-    $type = $sub_role ? 'sub' : 'main';
+    $str = $sub_role ? Text::BR : '';
     if (is_null($css)) $css = RoleData::GetCSS($role);
-    return $str . sprintf(self::SPAN, $css, @RoleData::${$type . '_role_list'}[$role]);
+    return $str . sprintf(self::SPAN, $css, RoleData::GetName($role, $sub_role));
   }
 
   //タグ生成 (メイン役職専用)
@@ -1307,11 +1328,11 @@ class RoleDataHTML {
 
   //タグ生成 (サブ役職専用)
   static function GenerateSub($role, $tag = 'span') {
-    $name = RoleData::GetName($role, true);
     foreach (RoleData::$sub_role_group_list as $css => $list) {
-      if (in_array($role, $list)) break;
+      if (in_array($role, $list)) {
+	return sprintf(self::TAG, $tag, $css, RoleData::GetName($role, true), $tag);
+      }
     }
-    return sprintf(self::TAG, $tag, $css, $name, $tag);
   }
 
   //役職説明ページへのリンク生成

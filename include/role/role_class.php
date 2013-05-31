@@ -983,10 +983,10 @@ class RoleHTML {
     if (! DB::$ROOM->IsPlaying()) return false; //ゲーム中のみ表示する
 
     if (DB::$SELF->IsDead()) { //死亡したら口寄せ以外は表示しない
-      echo '<span class="ability ability-dead">' . Message::$ability_dead . '</span><br>';
+      echo '<span class="ability ability-dead">' . Message::$ability_dead . '</span>' . Text::BR;
       if (DB::$SELF->IsRole('mind_evoke')) Image::Role()->Output('mind_evoke');
       if (DB::$SELF->IsDummyBoy() && ! DB::$ROOM->IsOpenCast()) { //身代わり君のみ隠蔽情報を表示
-	echo '<div class="system-vote">' . Message::$close_cast . '</div>'."\n";
+	echo '<div class="system-vote">' . Message::$close_cast . '</div>' . Text::LF;
       }
       return;
     }
@@ -1002,27 +1002,20 @@ class RoleHTML {
     //-- これ以降はサブ役職非公開オプションの影響を受ける --//
     if (DB::$ROOM->IsOption('secret_sub_role')) return;
 
-    $stack = array();
-    foreach (array('real', 'virtual', 'none') as $name) {
-      $stack = array_merge($stack, RoleFilterData::${'display_' . $name});
+    foreach (RoleData::GetDisplayList(RoleManager::GetActor()->role_list) as $role) {
+      Image::Role()->Output($role);
     }
-    //Text::p($stack);
-    $display_list = array_diff(array_keys(RoleData::$sub_role_list), $stack);
-    $diff_list    = array_slice(RoleManager::GetActor()->role_list, 1);
-    $target_list  = array_intersect($display_list, $diff_list);
-    //Text::p($target_list);
-    foreach ($target_list as $role) Image::Role()->Output($role);
   }
 
   //仲間表示
   static function OutputPartner(array $list, $header, $footer = null) {
     if (count($list) < 1) return false; //仲間がいなければ表示しない
     $list[] = '</td>';
-    $str = '<table class="ability-partner"><tr>'."\n" .
-      Image::Role()->Generate($header, null, true) ."\n" .
-      '<td>　' . implode('さん　', $list) ."\n";
-    if ($footer) $str .= Image::Role()->Generate($footer, null, true) ."\n";
-    echo $str . '</tr></table>'."\n";
+    $str = '<table class="ability-partner"><tr>' . Text::LF .
+      Image::Role()->Generate($header, null, true)  . Text::LF .
+      '<td>　' . implode('さん　', $list)  . Text::LF;
+    if ($footer) $str .= Image::Role()->Generate($footer, null, true)  . Text::LF;
+    Text::Output($str . '</tr></table>');
   }
 
   //現在の憑依先表示

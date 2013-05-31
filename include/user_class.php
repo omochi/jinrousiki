@@ -505,7 +505,7 @@ class User {
 
     //メイン役職を取得
     $camp = $this->GetCamp();
-    $name = @RoleData::$short_role_list[$this->main_role];
+    $name = RoleData::GetShortName($this->main_role);
     $str  = '<span class="add-role"> [';
     $str .= $camp == 'human' ? $name : sprintf('<span class="%s">%s</span>', $camp, $name);
     if ($main_only) {
@@ -515,10 +515,7 @@ class User {
     }
 
     //サブ役職を追加
-    $sub_role_list = array_slice($this->role_list, 1);
-    $stack = array_intersect(array_keys(RoleData::$short_role_list), $sub_role_list);
-    foreach ($stack as $role) {
-      $name = RoleData::$short_role_list[$role];
+    foreach (RoleData::GetShortDiff($this->role_list) as $role => $name) {
       switch ($role) {
       case 'lovers':
       case 'possessed_exchange':

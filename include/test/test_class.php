@@ -433,7 +433,7 @@ class VoteTest {
     echo '<tr><th>人口</th>';
     foreach (ChaosConfig::$role_group_rate_list as $group => $rate) {
       $role = RoleData::GetGroup($group);
-      printf('<th class="%s">%s</th>', RoleData::GetCSS($role), RoleData::$short_role_list[$role]);
+      printf('<th class="%s">%s</th>', RoleData::GetCSS($role), RoleData::GetShortName($role));
     }
     Text::Output('</tr>');
     for ($i = 8; $i <= 40; $i++) {
