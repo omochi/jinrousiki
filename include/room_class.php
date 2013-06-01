@@ -403,7 +403,9 @@ class Room {
   function ChangeNight() {
     $this->scene = 'night';
     if ($this->test_mode) return true;
+
     RoomDB::UpdateScene();
+    if (CacheConfig::ENABLE) DocumentCacheDB::Reset();
     return $this->Talk('', 'NIGHT'); //夜がきた通知
   }
 
@@ -411,10 +413,11 @@ class Room {
   function ChangeDate() {
     $this->ShiftScene();
     if ($this->test_mode) return true;
+
     RoomDB::UpdateScene(true);
     $this->Talk($this->date, 'MORNING'); //夜が明けた通知
     RoomDB::UpdateTime(); //最終書き込みを更新
-
+    if (CacheConfig::ENABLE) DocumentCacheDB::Reset();
     return Winner::Check(); //勝敗のチェック
   }
 
@@ -560,6 +563,17 @@ EOF;
     $list[] = DB::$ROOM->id;
 
     DB::Prepare($query, $list);
+    return DB::FetchBool();
+  }
+
+  //村開始処理
+  static function Start() {
+    $query = <<<EOF
+UPDATE room SET status = ?, date = ?, scene = ?, vote_count = ?,
+overtime_alert = FALSE, scene_start_time = UNIX_TIMESTAMP(), start_datetime = NOW()
+WHERE room_no = ?
+EOF;
+    DB::Prepare($query, array('playing', DB::$ROOM->date, DB::$ROOM->scene, 1, DB::$ROOM->id));
     return DB::FetchBool();
   }
 

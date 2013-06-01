@@ -8,6 +8,7 @@ class CacheConfig {
   /* 観戦発言 */
   const ENABLE_TALK_VIEW = false; //有効設定
   const TALK_VIEW_EXPIRE = 60; //データ更新間隔 (秒)
+  const TALK_VIEW_COUNT  = 10; //キャッシュが有効化される最低人数
 
   /* 過去ログ */
   const ENABLE_OLD_LOG = false; //有効設定

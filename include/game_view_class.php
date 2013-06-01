@@ -36,6 +36,7 @@ class GameView {
       DocumentCache::Load('game_view/talk', CacheConfig::TALK_VIEW_EXPIRE);
       $filter = DocumentCache::GetTalk();
       DocumentCache::Save($filter, true);
+      DocumentCache::Output('talk_view');
     } else {
       $filter = Talk::Get();
     }

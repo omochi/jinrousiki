@@ -479,12 +479,7 @@ class Vote {
     DB::$ROOM->scene = DB::$ROOM->IsOption('open_day') ? 'day' : 'night';
     foreach (DB::$USER->rows as $user) $user->UpdatePlayer(); //player 登録
     if (! DB::$ROOM->test_mode) {
-      $str = "UPDATE room SET status = 'playing', date = %d, scene = '%s', vote_count = 1, " .
-	"overtime_alert = FALSE, scene_start_time = UNIX_TIMESTAMP(), start_datetime = NOW() " .
-	"WHERE room_no = %d";
-      $query = sprintf($str, DB::$ROOM->date, DB::$ROOM->scene, DB::$ROOM->id);
-
-      DB::Execute($query);
+      RoomDB::Start();
       //JinroRSS::Update(); //RSS機能はテスト中
     }
     DB::$ROOM->Talk($sentence);
@@ -498,6 +493,7 @@ class Vote {
     }
     if (DB::$ROOM->test_mode) return true;
 
+    if (CacheConfig::ENABLE) DocumentCacheDB::Reset();
     RoomDB::UpdateTime(); //最終書き込み時刻を更新
     Winner::Check(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
     return true;
