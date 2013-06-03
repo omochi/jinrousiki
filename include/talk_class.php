@@ -9,13 +9,8 @@ class Talk {
     return $builder;
   }
 
-  //会話出力
-  static function Output() {
-    return self::Get()->Output();
-  }
-
-  //霊界の会話出力
-  static function OutputHeaven() {
+  //霊界の会話取得
+  static function GetHeaven() {
     //出力条件をチェック
     //if (DB::$SELF->IsDead()) return false; //呼び出し側でチェックするので現在は不要
 
@@ -30,8 +25,14 @@ class Talk {
 
       $builder->AddRaw($symbol, $handle_name, $talk->sentence, $talk->font_type);
     }
-    $builder->Output();
+    return $builder;
   }
+
+  //会話出力
+  static function Output() { return self::Get()->Output(); }
+
+  //霊界の会話出力
+  static function OutputHeaven() { return self::GetHeaven()->Output(); }
 }
 
 //-- 発言パーサ --//

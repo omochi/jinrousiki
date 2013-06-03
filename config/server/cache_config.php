@@ -7,12 +7,22 @@ class CacheConfig {
 
   /* 観戦発言 */
   const ENABLE_TALK_VIEW = false; //有効設定
-  const TALK_VIEW_EXPIRE = 60; //データ更新間隔 (秒)
-  const TALK_VIEW_COUNT  = 10; //キャッシュが有効化される最低人数
+  const TALK_VIEW_EXPIRE = 90; //データ更新間隔 (秒)
+  const TALK_VIEW_COUNT  = 15; //キャッシュが有効化される参加人数
+
+  /* ゲーム内発言 */
+  const ENABLE_TALK_PLAY = false; //有効設定
+  const TALK_PLAY_EXPIRE = 60; //データ更新間隔 (秒)
+  const TALK_PLAY_COUNT  = 25; //キャッシュが有効化される参加人数
+
+  /* 霊界発言 */
+  const ENABLE_TALK_HEAVEN = false; //有効設定
+  const TALK_HEAVEN_EXPIRE = 90; //データ更新間隔 (秒)
+  const TALK_HEAVEN_COUNT  = 25; //キャッシュが有効化される参加人数
 
   /* 過去ログ */
   const ENABLE_OLD_LOG = false; //有効設定
-  const OLD_LOG_EXPIRE = 60; //データ更新間隔 (秒)
+  const OLD_LOG_EXPIRE = 90; //データ更新間隔 (秒)
 
   /* 過去ログ一覧 */
   const ENABLE_OLD_LOG_LIST = false; //有効設定

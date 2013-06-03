@@ -1050,11 +1050,11 @@ class RoleData {
 
   //役職名取得
   static function GetName($role, $sub_role = false) {
-    return $sub_role ? self::$sub_role_list[$role] : self::$main_role_list[$role];
+    return $sub_role ? @self::$sub_role_list[$role] : @self::$main_role_list[$role];
   }
 
   //役職省略名取得
-  static function GetShortName($role) { return self::$short_role_list[$role]; }
+  static function GetShortName($role) { return @self::$short_role_list[$role]; }
 
   //役職のコード名リスト取得
   static function GetList($sub_role = false) {

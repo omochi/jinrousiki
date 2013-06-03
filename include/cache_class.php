@@ -32,6 +32,16 @@ class DocumentCache {
 	$enable = CacheConfig::ENABLE_TALK_VIEW && $count <= DB::$USER->GetUserCount();
 	break;
 
+      case 'talk_play':
+	$count  = CacheConfig::TALK_PLAY_COUNT;
+	$enable = CacheConfig::ENABLE_TALK_PLAY && $count <= DB::$USER->GetUserCount();
+	break;
+
+      case 'talk_heaven':
+	$count  = CacheConfig::TALK_HEAVEN_COUNT;
+	$enable = CacheConfig::ENABLE_TALK_HEAVEN && $count <= DB::$USER->GetUserCount();
+	break;
+
       case 'old_log':
 	$enable = CacheConfig::ENABLE_OLD_LOG;
 	break;
@@ -73,20 +83,23 @@ class DocumentCache {
   }
 
   //会話情報取得
-  static function GetTalk() {
-    $filter = self::GetData(true);
-    return (isset($filter) && $filter instanceOf TalkBuilder) ? $filter : Talk::Get();
+  static function GetTalk($force = false, $heaven = false) {
+    if (! $force) {
+      $filter = self::GetData(true);
+      if (isset($filter) && $filter instanceOf TalkBuilder) return $filter;
+    }
+    return $heaven ? Talk::GetHeaven() : Talk::Get();
   }
 
   //保存処理
-  static function Save($object, $serialize = false) {
-    if (self::Get()->updated) return;
+  static function Save($object, $serialize = false, $force = false) {
+    if (! $force && self::Get()->updated) return;
 
     $content = gzdeflate($serialize ? serialize($object) : $object);
     if (DocumentCacheDB::Exists()) { //存在するならロックする
       DB::Transaction();
       $expire = DocumentCacheDB::Lock();
-      if ($expire === false || $expire >= Time::Get()) {
+      if ($expire === false || (! $force && $expire >= Time::Get())) {
 	self::Get()->next = $expire;
 	return DB::Rollback();
       }
@@ -100,8 +113,22 @@ class DocumentCache {
 
   //キャッシュ情報出力
   static function Output($type) {
-    $format = '<div class="talk-cache">次回キャッシュ更新時刻：%s</div>';
-    printf($format, Time::GetDate('Y-m-d H:i:s', self::Get()->next));
+    $format = '<div class="talk-cache">次回キャッシュ更新時刻：%s (%s)</div>';
+    switch ($type) {
+    case 'talk_view':
+      $str = 'シーン変更でリセットされます';
+      break;
+
+    case 'talk_play':
+    case 'talk_heaven':
+      $str = 'シーン変更・発言更新でリセットされます';
+      break;
+
+    default:
+      $str = '';
+      break;
+    }
+    printf($format, Time::GetDate('Y-m-d H:i:s', self::Get()->next), $str);
   }
 
   //時刻出力

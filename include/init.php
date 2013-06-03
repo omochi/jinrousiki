@@ -63,7 +63,7 @@ class Loader {
     'login_class'          => array('room_config','session_class'),
     'game_view_class'      => array('talk_class', 'icon_class', 'cache_class'),
     'game_play_class'      => array('time_config', 'session_class', 'image_class', 'talk_class',
-				    'icon_class'),
+				    'icon_class', 'cache_class'),
     'game_vote_class'      => array('session_class', 'room_option_class', 'user_class',
 				    'icon_class', 'role_class', 'cache_class',
 				    'game_vote_functions'),

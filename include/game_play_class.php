@@ -48,7 +48,8 @@ class GamePlay {
     }
 
     //-- 発言処理 --//
-    $say_limit = null;
+    $say_limit   = null;
+    $update_talk = false; //発言更新判定 (キャッシュ用)
     if (! DB::$ROOM->dead_mode || DB::$ROOM->heaven_mode) { //発言が送信されるのは bottom フレーム
       $say_limit = RoleTalk::Convert(RQ::Get()->say); //発言置換処理
 
@@ -57,10 +58,12 @@ class GamePlay {
       }
       elseif (RQ::Get()->last_words && (! DB::$SELF->IsDummyBoy() || DB::$ROOM->IsBeforeGame())) {
 	self::SaveLastWords(RQ::Get()->say); //遺言登録 (細かい判定条件は関数内で行う)
+	$update_talk = DB::$SELF->IsDummyBoy();
       }
       //死者 or 身代わり君 or 同一ゲームシーンなら書き込む
       elseif (DB::$SELF->IsDead() || DB::$SELF->IsDummyBoy() || DB::$SELF->CheckScene()) {
 	self::Talk(RQ::Get()->say);
+	$update_talk = true;
       }
       else {
 	self::CheckSilence(); //発言ができない状態ならゲーム停滞チェック
@@ -104,7 +107,29 @@ class GamePlay {
 	GameHTML::OutputQuizVote();
       }
     }
-    (DB::$ROOM->heaven_mode && DB::$SELF->IsDead()) ? Talk::OutputHeaven() : Talk::Output();
+
+    if (DB::$ROOM->heaven_mode && DB::$SELF->IsDead()) {
+      $cache_type = 'talk_heaven';
+      if (DocumentCache::Enable($cache_type)) {
+	DocumentCache::Load('game_play/heaven', CacheConfig::TALK_HEAVEN_EXPIRE);
+	$filter = DocumentCache::GetTalk($update_talk, true);
+	DocumentCache::Save($filter, true, $update_talk);
+	DocumentCache::Output($cache_type);
+      } else {
+	$filter = Talk::GetHeaven();
+      }
+    } else {
+      $cache_type = 'talk_play';
+      if (! DB::$ROOM->IsPlaying() && DocumentCache::Enable($cache_type)) {
+	DocumentCache::Load('game_play/talk', CacheConfig::TALK_PLAY_EXPIRE);
+	$filter = DocumentCache::GetTalk($update_talk);
+	DocumentCache::Save($filter, true, $update_talk);
+	DocumentCache::Output($cache_type);
+      } else {
+	$filter = Talk::Get();
+      }
+    }
+    $filter->Output();
 
     if (! DB::$ROOM->heaven_mode) {
       GameHTML::OutputLastWords();
