@@ -59,7 +59,9 @@ class User {
 
   //player 入れ替え処理
   public function ChangePlayer($id) {
-    if (! isset($this->role_id) || $this->role_id == $id) return false;
+    if (! isset(DB::$USER->player) || ! isset($this->role_id) || $this->role_id == $id) {
+      return false;
+    }
     $this->role_id = $id;
     $this->Parse(DB::$USER->player->role_list[$id]);
     return true;
