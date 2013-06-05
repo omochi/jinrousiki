@@ -1364,19 +1364,16 @@ class Vote {
     }
 
     //規定数以上の投票があった / キッカーが身代わり君 / 自己 KICK が有効の場合に処理
-    if ($vote_count < GameConfig::KICK && ! DB::$SELF->IsDummyBoy() &&
-	! (GameConfig::SELF_KICK && $target->IsSelf())) {
-      return $vote_count;
+    if ($vote_count >= GameConfig::KICK || DB::$SELF->IsDummyBoy() ||
+	(GameConfig::SELF_KICK && $target->IsSelf())) {
+      UserDB::Kick($target->id);
+
+      //通知処理
+      DB::$ROOM->Talk($target->handle_name . Message::$kick_out);
+      DB::$ROOM->Talk(Message::$vote_reset);
+
+      RoomDB::UpdateVoteCount(); //投票リセット処理
     }
-    $query = "UPDATE user_entry SET live = 'kick', session_id = NULL " .
-      sprintf('WHERE room_no = %d AND user_no = %d', DB::$ROOM->id, $target->id);
-    DB::Execute($query);
-
-    //通知処理
-    DB::$ROOM->Talk($target->handle_name . Message::$kick_out);
-    DB::$ROOM->Talk(Message::$vote_reset);
-
-    RoomDB::UpdateVoteCount(); //投票リセット処理
     return $vote_count;
   }
 

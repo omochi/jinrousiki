@@ -76,11 +76,11 @@ class Winner {
     if (DB::$ROOM->test_mode) return false;
 
     //コピー能力者がいるのでキャッシュを更新するかクエリから引くこと
-    $human  = UserDB::GetCampCount('human');  //村人
-    $wolf   = UserDB::GetCampCount('wolf');   //人狼
-    $fox    = UserDB::GetCampCount('fox');    //妖狐
-    $lovers = UserDB::GetCampCount('lovers'); //恋人
-    $quiz   = UserDB::GetCampCount('quiz');   //出題者
+    $human  = UserDataDB::GetCampCount('human');  //村人
+    $wolf   = UserDataDB::GetCampCount('wolf');   //人狼
+    $fox    = UserDataDB::GetCampCount('fox');    //妖狐
+    $lovers = UserDataDB::GetCampCount('lovers'); //恋人
+    $quiz   = UserDataDB::GetCampCount('quiz');   //出題者
 
     //-- 吸血鬼の勝利判定 --//
     $vampire = false;

@@ -2,7 +2,6 @@
 //-- 個別ユーザクラス --//
 class User {
   public $id;
-  public $user_no; //一時互換用
   public $uname;
   public $role;
   public $main_role;
@@ -17,7 +16,6 @@ class User {
 
   public function __construct($role = null) {
     if (is_null($role)) return;
-    $this->user_no = $this->id; //一時互換用
     $this->role = $role;
     $this->Parse();
   }
@@ -1128,18 +1126,9 @@ class UserData {
 
 //-- データベースアクセス (User 拡張) --//
 class UserDB {
-  //-- user_entry --//
-  const ROLE = 'SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND user_no > ? AND ';
-
-  //ユーザ情報取得
-  static function GetUser() {
-    $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
-    DB::Prepare($query, array(RQ::Get()->room_no, RQ::Get()->user_no));
-    return DB::FetchAssoc(true);
-  }
-
+  /* user_entry */
   //ユーザクラス取得
-  static function LoadUser($user_no) {
+  static function Load($user_no) {
     $query = <<<EOF
 SELECT user_no AS id, uname, handle_name, sex, profile, role, icon_no, u.session_id,
   color, icon_name
@@ -1150,40 +1139,11 @@ EOF;
     return DB::FetchClass('User', true);
   }
 
-  //生存陣営カウント
-  static function GetCampCount($type) {
-    $query = self::ROLE;
-    $list  = array(DB::$ROOM->id, 'live', 0);
-
-    switch ($type) {
-    case 'human':
-      $query .= '!(role LIKE ?) AND !(role LIKE ?)';
-      array_push($list, '%wolf%', '%fox%');
-      break;
-
-    case 'wolf':
-      $query .= 'role LIKE ?';
-      $list[] = '%wolf%';
-      break;
-
-    case 'fox':
-      $query .= 'role LIKE ?';
-      $list[] = '%fox%';
-      break;
-
-    case 'lovers':
-      $query .= 'role LIKE ?';
-      $list[] = '%lovers%';
-      break;
-
-    case 'quiz':
-      $query .= 'role LIKE ?';
-      $list[] = '%quiz%';
-      break;
-    }
-
-    DB::Prepare($query, $list);
-    return DB::Count();
+  //ユーザ情報取得
+  static function Get() {
+    $query = 'SELECT * FROM user_entry WHERE room_no = ? AND user_no = ?';
+    DB::Prepare($query, array(RQ::Get()->room_no, RQ::Get()->user_no));
+    return DB::FetchAssoc(true);
   }
 
   //遺言取得
@@ -1193,11 +1153,9 @@ EOF;
     return DB::FetchResult();
   }
 
-  //キック判定
+  //キック済み判定
   static function IsKick($uname) {
-    $query = <<<EOF
-SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND uname = ?
-EOF;
+    $query = 'SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND uname = ?';
     DB::Prepare($query, array(RQ::Get()->room_no, 'kick', $uname));
     return DB::Count() > 0;
   }
@@ -1222,9 +1180,7 @@ EOF;
 
   //重複 IP 判定
   static function IsDuplicateIP() {
-    $query = <<<EOF
-SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?
-EOF;
+    $query = 'SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND ip_address = ?';
     DB::Prepare($query, array(RQ::Get()->room_no, 'live', Security::GetIP()));
     return DB::Count() > 0;
   }
@@ -1244,7 +1200,14 @@ EOF;
     return DB::FetchBool();
   }
 
-  //-- vote --//
+  //キック処理
+  static function Kick($id) {
+    $query = 'UPDATE user_entry SET live = ?, session_id = NULL WHERE room_no = ? AND user_no = ?';
+    DB::Prepare($query, array('kick', DB::$ROOM->id, $id));
+    return DB::FetchBool();
+  }
+
+  /* vote */
   //投票取得
   static function GetVote($user_no, $type, $not_type) {
     $query = <<<EOF
@@ -1347,5 +1310,41 @@ EOF;
     DB::Execute('SET @new_user_no := 0');
     DB::Prepare($query);
     return DB::FetchClass('User');
+  }
+
+  //生存陣営カウント
+  static function GetCampCount($type) {
+    $query = 'SELECT user_no FROM user_entry WHERE room_no = ? AND live = ? AND user_no > ? AND ';
+    $list  = array(DB::$ROOM->id, 'live', 0);
+
+    switch ($type) {
+    case 'human':
+      $query .= '!(role LIKE ?) AND !(role LIKE ?)';
+      array_push($list, '%wolf%', '%fox%');
+      break;
+
+    case 'wolf':
+      $query .= 'role LIKE ?';
+      $list[] = '%wolf%';
+      break;
+
+    case 'fox':
+      $query .= 'role LIKE ?';
+      $list[] = '%fox%';
+      break;
+
+    case 'lovers':
+      $query .= 'role LIKE ?';
+      $list[] = '%lovers%';
+      break;
+
+    case 'quiz':
+      $query .= 'role LIKE ?';
+      $list[] = '%quiz%';
+      break;
+    }
+
+    DB::Prepare($query, $list);
+    return DB::Count();
   }
 }

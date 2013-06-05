@@ -174,11 +174,10 @@ class DevUser {
   static function Complement($scene = 'beforegame') {
     foreach (RQ::GetTest()->test_users as $id => $user) {
       $user->room_no = RQ::Get()->room_no;
-      $user->user_no = $id; //一時互換用
-      if (! isset($user->sex)) $user->sex = $id % 2 == 0 ? 'female' : 'male';
       $user->role_id = $id;
+      if (! isset($user->live))    $user->live    = 'live';
+      if (! isset($user->sex))     $user->sex     = $id % 2 == 0 ? 'female' : 'male';
       if (! isset($user->profile)) $user->profile = $id;
-      if (! isset($user->live)) $user->live = 'live';
       $user->last_load_scene = $scene;
       if ($id > 1) {
 	$user->color = self::$icon_color_list[($id - 2) % 10];

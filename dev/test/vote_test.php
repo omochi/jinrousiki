@@ -387,7 +387,7 @@ if (RQ::Get()->say != '') { //発言変換テスト
   RoleTalk::Save(RQ::Get()->say, 'day', 0);
 }
 if (DB::$ROOM->IsDay()) { //昼の投票テスト
-  $self_id = DB::$SELF->user_no;
+  $self_id = DB::$SELF->id;
   RQ::Get()->situation = 'VOTE_KILL';
   RQ::Get()->back_url = '';
   foreach (RQ::GetTest()->vote_target_day as $stack) {

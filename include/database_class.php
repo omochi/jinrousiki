@@ -199,14 +199,6 @@ class DB {
     return $shift ? array_shift($stack) : $stack;
   }
 
-  //オブジェクト形式の配列を取得 (互換用)
-  static function FetchObject($query, $class, $shift = false) {
-    $stmt = self::Execute($query);
-    self::Reset();
-    $stack = $stmt instanceOf PDOStatement ? $stmt->fetchAll(PDO::FETCH_CLASS, $class) : array();
-    return $shift ? array_shift($stack) : $stack;
-  }
-
   //データベース登録
   static function Insert($table, $items, $values) {
     return self::FetchBool("INSERT INTO {$table}({$items}) VALUES({$values})");

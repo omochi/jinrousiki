@@ -18,7 +18,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-<li>なし</li>
+<li>データキャッシュ機能：観戦・ゲーム内(ゲーム開始前後)・霊界に対応</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

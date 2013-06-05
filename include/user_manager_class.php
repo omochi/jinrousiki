@@ -88,11 +88,10 @@ class UserManager {
     $footer = '<br>別の名前にしてください。' . $back_url;
 
     if ($user_no > 0) { //登録情報変更モード
-      $target = UserDB::LoadUser($user_no);
+      $target = UserDB::Load($user_no);
       if ($target->session_id != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません。');
       }
-      $target->user_no = $user_no;
       $target->room_no = RQ::Get()->room_no;
 
       if (! $target->IsDummyBoy() && ($handle_name == '身代わり君' || $handle_name == 'システム')) {
@@ -193,7 +192,7 @@ class UserManager {
   //ユーザ登録画面表示
   static function Output() {
     if (RQ::Get()->user_no > 0) { //登録情報変更モード
-      $stack = UserDB::GetUser();
+      $stack = UserDB::Get();
       if ($stack['session_id'] != Session::GetID()) {
 	HTML::OutputResult('村人登録 [セッションエラー]', 'セッション ID が一致しません');
       }
