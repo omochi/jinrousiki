@@ -10,6 +10,11 @@ class Info {
     printf($format, $list, $min);
   }
 
+  //自動リロード設定出力
+  static function OutputAutoReload() {
+    printf('%s秒', implode('秒・', GameConfig::$auto_reload_list));
+  }
+
   //身代わり君がなれない役職のリスト出力
   static function OutputDisableDummyBoyRole() {
     $stack = array();
