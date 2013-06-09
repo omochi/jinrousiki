@@ -48,32 +48,27 @@ class Info {
 
 //-- 日時関連 (Info 拡張) --//
 class InfoTime {
-  public static $spend_day;      //非リアルタイム制の発言で消費される時間 (昼)
-  public static $spend_night;    //非リアルタイム制の発言で消費される時間 (夜)
-  public static $silence_day;    //非リアルタイム制の沈黙で経過する時間 (昼)
-  public static $silence_night;  //非リアルタイム制の沈黙で経過する時間 (夜)
-  public static $silence;        //非リアルタイム制の沈黙になるまでの時間
-  public static $sudden_death;   //制限時間を消費後に突然死するまでの時間
-  public static $alert;          //警告音開始
-  public static $alert_distance; //警告音の間隔
-  public static $die_room;       //自動廃村になるまでの時間
-  public static $establish_wait; //次の村を立てられるまでの待ち時間
+  public static $spend_day;     //非リアルタイム制の発言で消費される時間 (昼)
+  public static $spend_night;   //非リアルタイム制の発言で消費される時間 (夜)
+  public static $silence_day;   //非リアルタイム制の沈黙で経過する時間 (昼)
+  public static $silence_night; //非リアルタイム制の沈黙で経過する時間 (夜)
+  public static $silence;       //非リアルタイム制の沈黙になるまでの時間
+  public static $sudden_death;  //制限時間を消費後に突然死するまでの時間
 
   function __construct() {
     $day_seconds   = floor(12 * 60 * 60 / TimeConfig::DAY);
     $night_seconds = floor( 6 * 60 * 60 / TimeConfig::NIGHT);
 
-    self::$spend_day      = Time::Convert($day_seconds);
-    self::$spend_night    = Time::Convert($night_seconds);
-    self::$silence_day    = Time::Convert(TimeConfig::SILENCE_PASS * $day_seconds);
-    self::$silence_night  = Time::Convert(TimeConfig::SILENCE_PASS * $night_seconds);
-    self::$silence        = Time::Convert(TimeConfig::SILENCE);
-    self::$sudden_death   = Time::Convert(TimeConfig::SUDDEN_DEATH);
-    self::$alert          = Time::Convert(TimeConfig::ALERT);
-    self::$alert_distance = Time::Convert(TimeConfig::ALERT_DISTANCE);
-    self::$die_room       = Time::Convert(RoomConfig::DIE_ROOM);
-    self::$establish_wait = Time::Convert(RoomConfig::ESTABLISH_WAIT);
+    self::$spend_day     = Time::Convert($day_seconds);
+    self::$spend_night   = Time::Convert($night_seconds);
+    self::$silence_day   = Time::Convert(TimeConfig::SILENCE_PASS * $day_seconds);
+    self::$silence_night = Time::Convert(TimeConfig::SILENCE_PASS * $night_seconds);
+    self::$silence       = Time::Convert(TimeConfig::SILENCE);
+    self::$sudden_death  = Time::Convert(TimeConfig::SUDDEN_DEATH);
   }
+
+  //変換結果を出力する
+  static function Output($seconds) { echo Time::Convert($seconds); }
 }
 
 //-- HTML 生成クラス (Info 拡張) --//

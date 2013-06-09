@@ -23,6 +23,7 @@ InfoHTML::OutputHeader('ルール', 0, 'rule');
 <ul>
   <li><a href="#rule_purpose">ゲームの目的</a></li>
   <li><a href="#rule_win">勝利条件</a></li>
+  <li><a href="#rule_live_count">村人の人数の数え方</a></li>
   <li><a href="#rule_cast">村の人口推移</a></li>
   <li><a href="#rule_role">役割紹介</a></li>
 </ul>
@@ -45,13 +46,30 @@ InfoHTML::OutputHeader('ルール', 0, 'rule');
 </ul>
 <div>
 必ずしもあなたが生き残ることがこのゲームの目的ではありません。<br>
-自分を犠牲にしてもあなたのチームが勝てば勝利となります。<br>
+自分を犠牲にしてもあなたのチームが勝てば勝利となります。 → <a href="spec.php#win">詳細</a><br>
+村人の人数の数え方は<a href="#rule_live_count">別項目</a>で説明します。
+</div>
+
+<h3 id="rule_live_count">[村人の人数の数え方]</h3>
+<div>
+生存者のうち、村人カウントに属する人のみの人数を当プログラムの説明内で「生存カウント」と表現する事があります。<br>
+村の勝利判定に使用される「村人の人数」とは生存カウントのことを指します。
+</div>
+
+<ul>
+  <li>村人の人数(村人カウント)：生存者 - (人狼カウント + 妖狐カウント)</li>
+  <li><span class="wolf">人狼</span>の人数(人狼カウント)：人狼の人数 (狂人は含まない)</li>
+  <li><span class="fox">妖狐</span>の人数(妖狐カウント)：妖狐の人数</li>
+</ul>
+
+<div>
+例：村人3　人狼2　狂人1　妖狐1 (合計7人) → 7 - (2 + 1) = 4
 </div>
 
 <h3 id="rule_cast">[村人の人口推移]</h3>
 <div>
 村には特殊な能力を持った人や、考えの異なる人が居ます。<br>
-下の表がその人口の推移です → <a href="cast.php">詳細</a>。
+下の表がその人口の推移です。 → <a href="cast.php">詳細</a>
 </div>
 <ul>
   <li>村人側の勝利を望む人たち　村人、占い師、霊能者、狩人、共有者</li>

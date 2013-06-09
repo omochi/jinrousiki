@@ -108,7 +108,7 @@ InfoHTML::OutputHeader('詳細な仕様', 0, 'spec');
   </ol>
 </li>
 <li>恋人支配 (生存者が全て恋人) → 恋人勝利</li>
-<li>出題者死亡 (クイズ村限定) → 引き分け</li>
+<li>出題者死亡 (<a href="game_option.php#quiz">クイズ村</a>限定) → 引き分け</li>
 <li>規定数以上の再投票 → 引き分け</li>
 </ol>
 <pre>

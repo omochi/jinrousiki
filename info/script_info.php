@@ -1,7 +1,7 @@
 <?php
 define('JINRO_ROOT', '..');
 require_once(JINRO_ROOT . '/include/init.php');
-Loader::LoadFile('message', 'user_icon_class', 'room_option_class');
+Loader::LoadFile('cache_config', 'message', 'user_icon_class', 'room_option_class');
 Loader::LoadClass('InfoTime');
 InfoHTML::OutputHeader('仕様', 0, 'script_info');
 ?>
@@ -40,6 +40,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
   <li><a href="#difference_title_room">村作成関連</a>
   <li><a href="#difference_title_time">時間関連</a>
   <li><a href="#difference_title_network">外部サーバ連携</a>
+  <li><a href="#difference_cache">データキャッシュ</a></li>
   <li><a href="#difference_title_limit">制限事項</a>
 </ul>
 
@@ -112,7 +113,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 
 <h4 id="difference_die_room">自動廃村</h4>
 <div>
-ゲームが開始されない場合、最後に発言された時間から [ <?php echo InfoTime::$die_room; ?> ] 放置されると自動で村は廃墟になります。<br>
+ゲームが開始されない場合、最後に発言された時間から [ <?php InfoTime::Output(RoomConfig::DIE_ROOM); ?> ] 放置されると自動で村は廃墟になります。<br>
 手動で廃村にする方法はありません。連絡用の掲示板やゲーム内の発言で村に登録しないように促してください。
 </div>
 
@@ -169,7 +170,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <div>
 「音」を ON にすると、「ゲーム開始前で人数が変動した時」「ゲーム開始前で満員になった時」<br>
 「夜が明けた時」「再投票になった時」「未投票者への告知 (超過時間経過1分毎)」<br>
-「未投票者への警告 (超過時間残り [ <?php echo InfoTime::$alert; ?> ] より、[ <?php echo InfoTime::$alert_distance; ?> ] 毎) 」「異議ありの時」に音でお知らせしてくれます。<br>
+「未投票者への警告 (超過時間残り [ <?php InfoTime::Output(TimeConfig::ALERT); ?> ] より、[ <?php InfoTime::Output(TimeConfig::ALERT_DISTANCE); ?> ] 毎) 」「異議ありの時」に音でお知らせしてくれます。<br>
 「異議あり」については<a href="#difference_objection">別項目</a>で説明します。
 </div>
 <h5>Ver. 1.4.14～ / Ver. 1.5.0 ～</h5>
@@ -277,7 +278,7 @@ Perl から PHP にすることで動作を高速にし、排他制御を MySQL 
 <h4 id="difference_establish_wait">次の村を立てられるまでの待ち時間 [Ver. 1.4.0 β1～]</h4>
 <div>
 打ち合わせミスや、リロードによる多重村立て事故を防ぐため、一つの村が立ってから次の村を立てられるまでの待ち時間をサーバ管理者が設定できます。<br>
-現在の設定は [ <?php echo InfoTime::$establish_wait; ?> ] です。
+現在の設定は [ <?php InfoTime::Output(RoomConfig::ESTABLISH_WAIT); ?> ] です。
 </div>
 
 <h4 id="difference_establish_password">村作成パスワード [Ver. 1.3.5～ / Ver. 1.4.2～ / Ver. 1.5.0 α3～]</h4>
@@ -343,6 +344,60 @@ PC の時計をサーバと合わせる必要がなくなりました。
 <h4 id="difference_twitter">Twitter [Ver. 1.4.0 β9～]</h4>
 <div>
 サーバ管理者が設定した Twitter アカウントに村立て情報を投稿することができます。
+</div>
+
+<h3 id="difference_cache">データキャッシュ [Ver. 2.2.0 α8～]</h3>
+<div>
+システムの負荷を下げるために一定時間、データのキャッシュを取る事ができます (サーバ管理者設定)。<br>
+各個別設定を有効にするには全体設定が有効化されている必要があります。<br>
+現在の全体設定は [ <?php printf(CacheConfig::ENABLE ? '有効' : '無効'); ?> ] になっています。<br>
+村作成時に [ <?php InfoTime::Output(CacheConfig::EXCEED); ?> ] より前のキャッシュデータは全て削除されます。
+</div>
+<ul>
+  <li><a href="#difference_cache_talk_view">ゲーム内会話 (観戦者用)</a></li>
+  <li><a href="#difference_cache_talk_play">ゲーム内会話 (参加者用)</a></li>
+  <li><a href="#difference_cache_talk_heaven">霊界会話</a></li>
+  <li><a href="#difference_cache_old_log">過去ログ</a></li>
+  <li><a href="#difference_cache_old_log_list">過去ログ一覧</a></li>
+</ul>
+
+<h4 id="difference_cache_talk_view">ゲーム内会話 (観戦者用) [Ver. 2.2.0 α8～]</h4>
+<div>
+有効化されると画面内に次回キャッシュ更新時刻が表示されます。<br>
+現在の個別設定は [ <?php printf(CacheConfig::ENABLE_TALK_VIEW ? '有効' : '無効'); ?> ] で、キャッシュ時間は [ <?php InfoTime::Output(CacheConfig::TALK_VIEW_EXPIRE); ?> ]、 参加人数が [ <?php echo CacheConfig::TALK_VIEW_COUNT; ?>人 ] から有効になります。<br>
+ゲームシーンが更新されるとキャッシュがリセットされます。<br>
+</div>
+<h5>Ver. 2.2.0 β2～</h5>
+<div>
+有効化参加人数設定追加<br>
+シーン切り替えリセット処理追加
+</div>
+
+<h4 id="difference_cache_talk_play">ゲーム内会話 (参加者用) [Ver. 2.2.0 β2～]</h4>
+<div>
+有効化されると画面内に次回キャッシュ更新時刻が表示されます。<br>
+対象シーンはゲーム開始前とゲーム終了後です。<br>
+現在の個別設定は [ <?php printf(CacheConfig::ENABLE_TALK_PLAY ? '有効' : '無効'); ?> ] で、キャッシュ時間は [ <?php InfoTime::Output(CacheConfig::TALK_PLAY_EXPIRE); ?> ]、 参加人数が [ <?php echo CacheConfig::TALK_PLAY_COUNT; ?>人 ] から有効になります。<br>
+参加者の誰かが発言するか、ゲームシーンが更新されるとリセットされます。
+</div>
+
+<h4 id="difference_cache_talk_heaven">霊界会話 [Ver. 2.2.0 β2～]</h4>
+<div>
+有効化されると画面内に次回キャッシュ更新時刻が表示されます。<br>
+現在の個別設定は [ <?php printf(CacheConfig::ENABLE_TALK_HEAVEN ? '有効' : '無効'); ?> ] で、キャッシュ時間は [ <?php InfoTime::Output(CacheConfig::TALK_HEAVEN_EXPIRE); ?> ]、 参加人数が [ <?php echo CacheConfig::TALK_HEAVEN_COUNT; ?>人 ] から有効になります。<br>
+参加者の誰かが発言するか、ゲームシーンが更新されるとリセットされます。
+</div>
+
+<h4 id="difference_cache_old_log">過去ログ [Ver. 2.2.0 β1～]</h4>
+<div>
+各村ログの正・逆などのオプション別にキャッシュされます。<br>
+現在の個別設定は [ <?php printf(CacheConfig::ENABLE_OLD_LOG ? '有効' : '無効'); ?> ] で、キャッシュ時間は [ <?php InfoTime::Output(CacheConfig::OLD_LOG_EXPIRE); ?> ] です。
+</div>
+
+<h4 id="difference_cache_old_log_list">過去ログ一覧 [Ver. 2.2.0 β1～]</h4>
+<div>
+ページ番号などのオプションが無いページのみがキャッシュされます。<br>
+現在の個別設定は [ <?php printf(CacheConfig::ENABLE_OLD_LOG_LIST ? '有効' : '無効'); ?> ] で、キャッシュ時間は [ <?php InfoTime::Output(CacheConfig::OLD_LOG_LIST_EXPIRE); ?> ] です。
 </div>
 
 <h3 id="difference_title_limit">制限事項</h3>
