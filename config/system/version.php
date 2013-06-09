@@ -4,10 +4,10 @@ class ScriptInfo {
   const VERSION = 'Ver. 2.2.0 beta2';
 
   //パッケージの最終更新日
-  const LAST_UPDATE = '2013/05/30 (Thu) 01:13';
+  const LAST_UPDATE = '2013/06/09 (Sun) 22:06';
 
   //パッケージ化した時の Revision
-  const REVISION = 820;
+  const REVISION = 838;
 
   //パッケージ名
   const PACKAGE = '<a href="http://sourceforge.jp/projects/jinrousiki/">人狼式</a>';

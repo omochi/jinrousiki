@@ -7,18 +7,18 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.2.0β1アップロード (2013/05/27 (Mon) 00:37) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/58890/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.0β2アップロード (2013/06/09 (Sun) 22:06) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/58970/">ダウンロード</a> (SourceForge)</h2>
 <ul>
   <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-<li>データキャッシュ機能：過去ログ一覧・過去ログに対応</li>
-<li>背景画像変更：TOPページ更新履歴</li>
-<li>投票済み情報：未投票人数に変更</li>
+<li>データキャッシュ機能：観戦・ゲーム内(ゲーム開始前後)・霊界に対応</li>
+<li>特徴と仕様：カテゴリ別に再構成</li>
+<li>ゲームのルール：生存カウントの記載を追加</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-<li>データキャッシュ機能：観戦・ゲーム内(ゲーム開始前後)・霊界に対応</li>
+<li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
