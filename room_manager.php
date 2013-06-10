@@ -11,7 +11,7 @@ if (RQ::Get()->create_room) {
   RoomManager::Create();
 }
 elseif (RQ::Get()->change_room) {
-  Loader::LoadFile('session_class', 'user_class');
+  Loader::LoadFile('session_class', 'user_class', 'cache_class');
   RoomManager::Create();
 }
 elseif (RQ::Get()->describe_room) {

@@ -111,7 +111,8 @@ class GamePlay {
     if (DB::$ROOM->heaven_mode && DB::$SELF->IsDead()) {
       $cache_type = 'talk_heaven';
       if (DocumentCache::Enable($cache_type)) {
-	DocumentCache::Load('game_play/heaven', CacheConfig::TALK_HEAVEN_EXPIRE);
+	$cache_name = 'game_play/heaven' . (RQ::Get()->icon ? '_icon' : '');
+	DocumentCache::Load($cache_name, CacheConfig::TALK_HEAVEN_EXPIRE);
 	$filter = DocumentCache::GetTalk($update_talk, true);
 	DocumentCache::Save($filter, true, $update_talk);
 	DocumentCache::Output($cache_type);
@@ -121,7 +122,8 @@ class GamePlay {
     } else {
       $cache_type = 'talk_play';
       if (! DB::$ROOM->IsPlaying() && DocumentCache::Enable($cache_type)) {
-	DocumentCache::Load('game_play/talk', CacheConfig::TALK_PLAY_EXPIRE);
+	$cache_name = 'game_play/talk' . (RQ::Get()->icon ? '_icon' : '');
+	DocumentCache::Load($cache_name, CacheConfig::TALK_PLAY_EXPIRE);
 	$filter = DocumentCache::GetTalk($update_talk);
 	DocumentCache::Save($filter, true, $update_talk);
 	DocumentCache::Output($cache_type);

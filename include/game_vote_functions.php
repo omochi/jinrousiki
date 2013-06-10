@@ -1373,6 +1373,7 @@ class Vote {
       DB::$ROOM->Talk(Message::$vote_reset);
 
       RoomDB::UpdateVoteCount(); //投票リセット処理
+      if (CacheConfig::ENABLE) DocumentCacheDB::Reset(); //キャッシュリセット処理
     }
     return $vote_count;
   }

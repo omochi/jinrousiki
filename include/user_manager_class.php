@@ -129,6 +129,7 @@ class UserManager {
 	HTML::OutputResult('村人登録 [登録情報変更]', $str);
       }
       DB::$ROOM->TalkBeforeGame($str, $target->uname, $target->handle_name, $target->color);
+      if (CacheConfig::ENABLE) DocumentCacheDB::Reset(); //キャッシュリセット処理
 
       if ($target->UpdateList($stack) && DB::Commit()) {
 	UserManagerHTML::OutputChange();
@@ -175,6 +176,7 @@ class UserManager {
       setcookie('objection',  '', $cookie_time);
 
       DB::$ROOM->Talk($handle_name . ' ' . Message::$entry_user); //入村メッセージ
+      if (CacheConfig::ENABLE) DocumentCacheDB::Reset(); //キャッシュリセット処理
       RoomDB::UpdateTime();
       DB::Commit();
 
