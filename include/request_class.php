@@ -45,6 +45,11 @@ class RQ {
 
   //データ展開
   static function ToArray() { return self::Get()->ToArray(); }
+
+  //デバッグ用
+  public function p($data = null, $name = null) {
+    Text::p(is_null($data) ? self::Get() : self::Get()->$data, $name);
+  }
 }
 
 //-- 引数解析の基底クラス --//
@@ -372,7 +377,7 @@ class RequestOldLog extends RequestBase {
 			'wolf_sight', 'personal_result', 'role_list');
     }
     else {
-      $this->ParseGetData('reverse');
+      $this->ParseGetData('reverse', 'name');
       $this->ParseGet('SetPage', 'page');
     }
   }

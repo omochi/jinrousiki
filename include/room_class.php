@@ -767,13 +767,25 @@ EOF;
 
   //終了した村番地を取得
   static function GetFinished($reverse) {
-    $order = $reverse ? 'DESC' : 'ASC';
-    $query = 'SELECT room_no FROM room WHERE status = ? ORDER BY room_no ' . $order;
+    if (isset(RQ::Get()->name)) {
+      $query = <<<EOF
+SELECT room_no FROM room INNER JOIN user_entry USING (room_no)
+WHERE status = ? AND (uname LIKE ? OR handle_name LIKE ?)
+EOF;
+      $name = '%' . RQ::Get()->name . '%';
+      $list = array('finished', $name, $name);
+    }
+    else {
+      $query = 'SELECT room_no FROM room WHERE status = ?';
+      $list  = array('finished');
+    }
+
+    $query .= ' ORDER BY room_no ' . ($reverse ? 'DESC' : 'ASC');
     if (RQ::Get()->page != 'all') {
       $view = OldLogConfig::VIEW;
       $query .= sprintf(' LIMIT %d, %d', $view * (RQ::Get()->page - 1), $view);
     }
-    DB::Prepare($query, array('finished'));
+    DB::Prepare($query, $list);
     return DB::FetchColumn();
   }
 
