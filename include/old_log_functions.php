@@ -252,6 +252,7 @@ EOF;
 	'option_role' => $ROOM->option_role,
 	'max_user'    => $ROOM->max_user);
       RoomOption::Load($list);
+      RoomOption::SetStack();
       $max_user    = Image::GenerateMaxUser($ROOM->max_user);
       $game_option = RoomOption::GenerateImage();
       $winner      = RQ::Get()->watch ? '-' : Image::Winner()->Generate($ROOM->winner);
