@@ -1,8 +1,6 @@
 <?php
 //-- データベースアクセス --//
 class DB {
-  const DSN = 'mysql:dbname=%s;host=%s';
-
   public  static $ROOM = null;
   public  static $USER = null;
   public  static $SELF = null;
@@ -17,14 +15,12 @@ class DB {
 
   //データベース接続クラス生成
   /*
-    $id     : DatabaseConfig->name_list から選択
+    $id     : DatabaseConfig::$name_list から選択
     $header : HTML ヘッダ出力情報 [true: 出力済み    / false: 未出力]
     $exit   : エラー処理          [true: exit を返す / false で終了]
   */
   private function __construct($id = null, $header = false, $exit = true) {
-    if (DatabaseConfig::DISABLE) {
-      return self::Output($header, $exit, 'MySQL サーバ', '接続不可設定になっています');
-    }
+    self::Check($header, $exit);
 
     //データベース名設定
     $name = isset($id) ? @DatabaseConfig::$name_list[is_int($id) ? $id - 1 : $id] : null;
@@ -32,19 +28,29 @@ class DB {
 
     //コンストラクタ用パラメータセット
     $host = DatabaseConfig::HOST;
-    $dsn  = sprintf(self::DSN, $name, $host);
-
     try {
-      $pdo = new PDO($dsn, DatabaseConfig::USER, DatabaseConfig::PASSWORD);
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
-      self::$instance = $pdo;
-      self::Execute('SET NAMES ' . DatabaseConfig::ENCODE);
-      return self::$instance;
+      return self::Initialize(sprintf('mysql:host=%s;dbname=%s', $host, $name));
     }
     catch (PDOException $e) {
-      return self::Output($header, $exit, 'MySQL サーバ' . $e->getMessage(), $host);
+      return self::Output($header, $exit, $e->getMessage() . ': ' . $host);
     }
+  }
+
+  //接続設定確認
+  static function Check($header, $exit) {
+    if (DatabaseConfig::DISABLE) {
+      return self::Output($header, $exit, '接続不可設定になっています');
+    }
+  }
+
+  // PDO インスタンス初期化
+  static function Initialize($dsn){
+    $pdo = new PDO($dsn, DatabaseConfig::USER, DatabaseConfig::PASSWORD);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+    self::$instance = $pdo;
+    self::Execute('SET NAMES ' . DatabaseConfig::ENCODE);
+    return self::$instance;
   }
 
   //データベース接続
@@ -54,14 +60,14 @@ class DB {
   }
 
   //データベース接続 (ヘッダ出力あり)
-  static function ConnectInHeader() {
-    if (is_null(self::$instance)) new self(null, true, false);
+  static function ConnectInHeader($id = null) {
+    if (is_null(self::$instance)) new self($id, true, false);
     return isset(self::$instance);
   }
 
   //データベース再接続
-  static function Reconnect() {
-    new self(null, true);
+  static function Reconnect($id = null) {
+    new self($id, true);
     return isset(self::$instance);
   }
 
@@ -258,14 +264,14 @@ class DB {
   }
 
   //データベース接続エラー出力 ($header, $exit は Connect() 参照)
-  private static function Output($header, $exit, $title, $type) {
-    $title .= '接続失敗';
-    $str = $title . ': ' . $type;
+  private static function Output($header, $exit, $str) {
+    $title = 'MySQL サーバ接続失敗';
+    $body  = $title . ': ' . $str;
     if ($header) {
-      printf('<font color="#FF0000">%s</font><br>', $str);
+      Text::d(sprintf('<font color="#FF0000">%s</font>', $body));
       if ($exit) HTML::OutputFooter($exit);
       return false;
     }
-    HTML::OutputResult($title, $str);
+    HTML::OutputResult($title, $body);
   }
 }

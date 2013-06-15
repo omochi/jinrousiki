@@ -18,8 +18,7 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-<li>データキャッシュ機能：ゲーム内：アイコンの表示設定に対応</li>
-<li>データキャッシュ機能：リセット処理とデザインを調整</li>
+<li>初期化処理の最適化</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>

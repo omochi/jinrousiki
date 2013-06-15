@@ -9,7 +9,7 @@ class RQ {
   }
 
   //Request クラスのロード
-  static function Load($class = 'RequestBase', $force = true) {
+  static function Load($class = 'RequestBase', $force = false) {
     if ($force || is_null(self::$instance)) new self($class);
   }
 
@@ -47,7 +47,7 @@ class RQ {
   static function ToArray() { return self::Get()->ToArray(); }
 
   //デバッグ用
-  public function p($data = null, $name = null) {
+  static function p($data = null, $name = null) {
     Text::p(is_null($data) ? self::Get() : self::Get()->$data, $name);
   }
 }

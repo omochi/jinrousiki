@@ -13,7 +13,7 @@ class RoomManager {
 
   //村 (room) の作成
   static function Create() {
-    if (ServerConfig::DISABLE_ESTABLISH) {
+    if (ServerConfig::DISABLE_ESTABLISH || DatabaseConfig::DISABLE) {
       HTML::OutputResult('村作成 [制限事項]', '村作成はできません');
     }
     if (Security::CheckReferer('', array('127.0.0.1', '192.168.'))) { //リファラチェック
@@ -256,7 +256,7 @@ EOF;
 
   //部屋作成画面を出力
   static function OutputCreate() {
-    if (ServerConfig::DISABLE_ESTABLISH) {
+    if (ServerConfig::DISABLE_ESTABLISH || DatabaseConfig::DISABLE) {
       Text::Output('村作成はできません');
       return;
     }
