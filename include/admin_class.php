@@ -1,6 +1,6 @@
 <?php
 //-- 管理用クラス --//
-class JinroAdmin {
+class JinrouAdmin {
   //村削除
   static function DeleteRoom() {
     if (! ServerConfig::DEBUG_MODE) {

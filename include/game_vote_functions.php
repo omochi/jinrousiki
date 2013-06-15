@@ -480,7 +480,7 @@ class Vote {
     foreach (DB::$USER->rows as $user) $user->UpdatePlayer(); //player 登録
     if (! DB::$ROOM->test_mode) {
       RoomDB::Start();
-      //JinroRSS::Update(); //RSS機能はテスト中
+      //JinrouRSS::Update(); //RSS機能はテスト中
     }
     DB::$ROOM->Talk($sentence);
     if ($is_detective && count($detective_list) > 0) { //探偵村の指名

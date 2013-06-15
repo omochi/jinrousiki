@@ -1,6 +1,6 @@
 <?php
 //-- Twitter 投稿クラス --//
-class JinroTwitter {
+class JinrouTwitter {
   const LIMIT  = 140; //制限文字数
   const ENCODE = 'UTF-8'; //文字コード
   const URL    = 'https://api.twitter.com/1/statuses/update.json'; //送信先 URL

@@ -18,11 +18,11 @@ RQ::Set('add_role',       true);
 RQ::Set('heaven_talk',    true);
 RQ::Set('generate_index', true);
 
-//JinroAdmin::DeleteLog(RQ::Get()->min_room_no, RQ::Get()->max_room_no); //部屋削除
+//JinrouAdmin::DeleteLog(RQ::Get()->min_room_no, RQ::Get()->max_room_no); //部屋削除
 
 DB::Connect(RQ::Get()->db_no);
 //OldLogHTML::GenerateIndex(); //インデックスページ生成
 //HTML::OutputFooter(true);
 
 Loader::LoadFile('winner_message', 'icon_class', 'image_class', 'talk_class');
-JinroAdmin::GenerateLog();
+JinrouAdmin::GenerateLog();

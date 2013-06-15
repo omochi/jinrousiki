@@ -6,7 +6,7 @@ class RoomManager {
     if (ServerConfig::DISABLE_MAINTENANCE) return; //スキップ判定
 
     RoomManagerDB::DieRoom(); //一定時間更新の無い村は廃村にする
-    //JinroRSS::Update(); //RSS更新 //テスト中
+    //JinrouRSS::Update(); //RSS更新 //テスト中
 
     RoomManagerDB::ClearSession(); //終了した村のセッションデータを削除する
   }
@@ -231,8 +231,8 @@ EOF;
       }
     }
 
-    JinroTwitter::Send($room_no, RQ::Get()->room_name, RQ::Get()->room_comment); //Twitter 投稿
-    //JinroRSS::Update(); //RSS更新 //テスト中
+    JinrouTwitter::Send($room_no, RQ::Get()->room_name, RQ::Get()->room_comment); //Twitter 投稿
+    //JinrouRSS::Update(); //RSS更新 //テスト中
 
     if (CacheConfig::ENABLE) {
       DocumentCacheDB::Clean(); //コミットも内部で行う
@@ -250,7 +250,7 @@ EOF;
   static function OutputList() {
     if (ServerConfig::SECRET_ROOM) return; //シークレットテストモード
 
-    //JinroRSS::Output(); //RSS //テスト中
+    //JinrouRSS::Output(); //RSS //テスト中
     foreach (RoomManagerDB::GetList() as $stack) RoomManagerHTML::OutputRoom($stack);
   }
 

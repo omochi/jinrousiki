@@ -358,7 +358,7 @@ EOF;
   private static function Execute() {
     RQ::Get()->ParsePostInt('number');
     RQ::Get()->ParsePostData('name', 'comment');
-    if (JinroTwitter::Send(RQ::Get()->number, RQ::Get()->name, RQ::Get()->comment)) {
+    if (JinrouTwitter::Send(RQ::Get()->number, RQ::Get()->name, RQ::Get()->comment)) {
       Text::d('Twitter 投稿成功');
     }
   }

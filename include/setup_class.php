@@ -1,6 +1,6 @@
 <?php
 //-- データベース初期セットアップクラス --//
-class JinroSetup {
+class JinrouSetup {
   private static $revision; //バージョン情報
   private static $table_list = array(); //テーブルリスト
 

@@ -129,7 +129,7 @@ class Winner {
     }
 
     //ゲーム終了
-    //JinroRSS::Update(); //RSS機能はテスト中
+    //JinrouRSS::Update(); //RSS機能はテスト中
     return RoomDB::Finish($winner);
   }
 
@@ -603,7 +603,7 @@ EOF;
   //再投票メッセージ出力
   static function OutputRevote() {
     if (RQ::Get()->play_sound && ! DB::$ROOM->view_mode && DB::$ROOM->vote_count > 1 &&
-	DB::$ROOM->vote_count > JinroCookie::$vote_count) {
+	DB::$ROOM->vote_count > JinrouCookie::$vote_count) {
       Sound::Output('revote'); //音を鳴らす (未投票突然死対応)
     }
 

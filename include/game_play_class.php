@@ -44,7 +44,7 @@ class GamePlay {
 
     if (RQ::Get()->play_sound) { //音でお知らせ
       Loader::LoadFile('cookie_class');
-      JinroCookie::Set(); //クッキー情報セット
+      JinrouCookie::Set(); //クッキー情報セット
     }
 
     //-- 発言処理 --//
@@ -436,23 +436,23 @@ EOF;
     //音でお知らせ処理
     if (RQ::Get()->play_sound && (DB::$ROOM->IsBeforeGame() || DB::$ROOM->IsDay())) {
       if (DB::$ROOM->IsBeforeGame()) { //入村・満員
-	if (JinroCookie::$user_count > 0) {
+	if (JinrouCookie::$user_count > 0) {
 	  $user_count = DB::$USER->GetUserCount();
 	  $max_user   = RoomDB::Fetch('max_user');
-	  if ($user_count == $max_user && JinroCookie::$user_count != $max_user) {
+	  if ($user_count == $max_user && JinrouCookie::$user_count != $max_user) {
 	    Sound::Output('full');
-	  } elseif (JinroCookie::$user_count != $user_count) {
+	  } elseif (JinrouCookie::$user_count != $user_count) {
 	    Sound::Output('entry');
 	  }
 	}
       }
-      elseif (JinroCookie::$scene != '' && JinroCookie::$scene != DB::$ROOM->scene) { //夜明け
+      elseif (JinrouCookie::$scene != '' && JinrouCookie::$scene != DB::$ROOM->scene) { //夜明け
 	Sound::Output('morning');
       }
 
       //「異議」あり
-      $cookie = explode(',', JinroCookie::$objection); //クッキーの値を配列に格納する
-      $stack  = JinroCookie::$objection_list;
+      $cookie = explode(',', JinrouCookie::$objection); //クッキーの値を配列に格納する
+      $stack  = JinrouCookie::$objection_list;
       $count  = count($stack);
       if (count($cookie) == $count) {
 	for ($i = 0; $i < $count; $i++) { //差分を計算 (index は 0 から)
