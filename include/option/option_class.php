@@ -52,6 +52,14 @@ class OptionManager {
     self::$stack = $delete;
   }
 
+  //役職置換処理
+  static function Replace(array &$list, $base, $target) {
+    if (! isset($list[$base]) || $list[$base] < 1) return false;
+    $list[$base]--;
+    isset($list[$target]) ? $list[$target]++ : $list[$target] = 1;
+    return true;
+  }
+
   //オプション名生成
   static function GenerateCaption($name) {
     return self::Load($name) ? self::LoadClass($name)->GetName() : '';

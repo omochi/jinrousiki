@@ -77,9 +77,9 @@ class RoleTest {
     $stack = array(
       'gerd' => 'ゲルト君', 'poison' => '毒', 'assassin' => '暗殺', 'wolf' => '人狼',
       'boss_wolf' => '白狼', 'poison_wolf' => '毒狼', 'tongue_wolf' => '舌禍狼',
-      'possessed_wolf' => '憑狼', 'fox' => '妖狐', 'child_fox' => '子狐', 'cupid' => 'QP',
-      'medium' => '巫女', 'mania' => 'マニア', 'detective' => '探偵', 'festival' => 'お祭り',
-      'limit_off' => 'リミッタオフ');
+      'possessed_wolf' => '憑狼', 'sirius_wolf' => '天狼', 'fox' => '妖狐', 'child_fox' => '子狐',
+      'cupid' => 'QP', 'medium' => '巫女', 'mania' => 'マニア', 'detective' => '探偵',
+      'festival' => 'お祭り', 'limit_off' => 'リミッタオフ');
     $count = 0;
     foreach ($stack as $option => $name) {
       if (++$count % 14 == 0) Text::d();
@@ -141,7 +141,8 @@ class RoleTest {
     //普通村向けオプション
     $option_stack = array(
       'gerd', 'poison', 'assassin', 'wolf', 'boss_wolf', 'poison_wolf', 'tongue_wolf',
-      'possessed_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania', 'detective');
+      'possessed_wolf', 'sirius_wolf', 'fox', 'child_fox', 'cupid', 'medium', 'mania',
+      'detective');
     RQ::Get()->Parse('post', 'IsOn', $option_stack);
     foreach ($option_stack as $option) {
       if (RQ::Get()->$option) $stack->option_role[] = $option;
