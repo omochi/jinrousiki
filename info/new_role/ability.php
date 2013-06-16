@@ -406,13 +406,18 @@ InfoHTML::OutputRoleHeader('能力者逆引き');
 </pre>
 
 <h2 id="possessed">憑依能力者</h2>
+<h3 id="possessed_direct">直接型</h3>
 <pre>
 <a href="wolf.php#possessed_wolf">憑狼</a>・<a href="wolf.php#possessed_mad">犬神</a>・<a href="fox.php#possessed_fox">憑狐</a>
+</pre>
+<h3 id="possessed_indirect">間接型</h3>
+<pre>
+<a href="lovers.php#exchange_angel">魂移使</a>(<a href="sub_role.php#possessed_exchange">交換憑依</a>)
 </pre>
 
 <h2 id="possessed_limit">憑依制限能力者</h2>
 <pre>
-<a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>・<a href="#possessed">憑依能力者</a>
+<a href="human.php#detective_common">探偵</a>・<a href="#revive_self">自己蘇生能力者</a>・<a href="#possessed_direct">憑依能力者(直接型)</a>
 </pre>
 
 <h2 id="seal">封印対象者</h2>

@@ -455,7 +455,7 @@ PP ラインの計算を複雑にするために作成してみました。
 <h4>[占い能力] 呪殺：無し / 憑依妨害：特殊 / 占い妨害：無効 / 呪い：解呪</h4>
 <pre>
 対呪い専門の特殊な占い師。
-占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed">憑依能力者</a>の場合は呪殺し(死因は「呪返し」)、
+占った人が<a href="ability.php#cursed">呪い所持者</a>や<a href="ability.php#possessed_direct">憑依能力者(直接型)</a>の場合は呪殺し(死因は「呪返し」)、
 <a href="ability.php#voodoo">呪術能力者</a>に呪いをかけられていた場合は解呪(呪返しが発動しない)する。
 呪殺か解呪が成功した場合のみ、次の日に専用のシステムメッセージが表示される。
 </pre>
@@ -1089,7 +1089,7 @@ PP ラインの計算を複雑にするために作成してみました。
 <li>2 日目朝以降に死んでも蘇生判定を満たせば蘇生する。</li>
 <li>5 日目になると能力を失う。</li>
 <li><a href="ability.php#revive_limit">蘇生対象外</a> (選ばれた場合は失敗する)。</li>
-<li><a href="ability.php#possessed">憑依能力者</a>の憑依対象外。</li>
+<li><a href="ability.php#possessed_direct">憑依能力者(直接型)</a> の憑依対象外。</li>
 </ol>
 <h5>Ver. 1.4.0 β12～</h5>
 <pre>

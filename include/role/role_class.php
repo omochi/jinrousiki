@@ -200,7 +200,7 @@ class RoleFilterData {
 
   //声量
   static $voice = array('strong_voice', 'normal_voice', 'weak_voice', 'inside_voice',
-			     'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
+			'outside_voice', 'upper_voice', 'downer_voice', 'random_voice');
 
   //処刑投票 (メイン)
   static $vote_do_main = array(

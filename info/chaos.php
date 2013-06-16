@@ -794,7 +794,7 @@ InfoHTML::OutputHeader('闇鍋モード');
 
 <?php InfoHTML::OutputItem('boost_rate', 'e', 'Ver. 1.5.0 β9'); ?>
 <pre>
-<a href="new_role/lovers.php#exchange_angel">魂移使</a>・<a href="new_role/ability.php#possessed">憑依能力者</a>の出現率が 0 になります。
+<a href="new_role/ability.php#possessed">憑依能力者</a>の出現率が 0 になります。
 </pre>
 
 <?php InfoHTML::OutputItem('boost_rate', 'f', 'Ver. 1.5.0 β12'); ?>

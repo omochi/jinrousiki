@@ -139,7 +139,7 @@ InfoHTML::OutputRoleHeader('サブ役職');
 </pre>
 <h4>関連役職</h4>
 <pre>
-<a href="#gynophobia">女性恐怖症</a>
+<a href="#gynophobia">女性恐怖症</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -149,6 +149,10 @@ InfoHTML::OutputRoleHeader('サブ役職');
 <h3 id="gynophobia">女性恐怖症 [Ver. 1.4.0 β14～]</h3>
 <pre>
 処刑投票時に女性に投票するとショック死する。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="#androphobia">男性恐怖症</a>・<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -1803,7 +1807,7 @@ B：「恋人陣営の勝利」
 <h3 id="possessed_target">憑依者 [Ver. 1.4.0 α24～]</h3>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-<a href="ability.php#possessed">憑依能力者</a>が誰かに憑依したら付加される。
+<a href="ability.php#possessed_direct">憑依能力者(直接型)</a>が誰かに憑依したら付加される。
 </pre>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>
@@ -1823,7 +1827,7 @@ B：「恋人陣営の勝利」
 <h4>[役職表示] 表示無し</h4>
 <h4>[配役制限] 役職付加専用</h4>
 <pre>
-<a href="ability.php#possessed">憑依能力者</a>に憑依されている人に付加される。
+<a href="ability.php#possessed_direct">憑依能力者(直接型)</a>に憑依されている人に付加される。
 </pre>
 <h5>Ver. 1.4.0 β15～</h5>
 <pre>

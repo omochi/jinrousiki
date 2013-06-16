@@ -214,6 +214,10 @@ InfoHTML::OutputRoleHeader('恋人陣営');
 <pre>
 天使系の<a href="mania.php#basic_mania">基本種</a>。矢を撃った二人が男女だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sex">性別関連能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 組み合わせ次第で特典が追加されるキューピッドの上位種です。
@@ -225,6 +229,10 @@ InfoHTML::OutputRoleHeader('恋人陣営');
 <pre>
 矢を撃った二人が男性同士だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
 </pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sex">性別関連能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 <a href="#angel">天使</a>の男性版です。
@@ -235,6 +243,10 @@ InfoHTML::OutputRoleHeader('恋人陣営');
 <h4>[恋人作成能力] 自分撃ち固定：無し / 付加：共感者 (女性同士限定)</h4>
 <pre>
 矢を撃った二人が女性だった場合に<a href="sub_role.php#mind_sympathy">共感者</a>を付加する天使。
+</pre>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#sex">性別関連能力者</a>
 </pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
@@ -251,9 +263,13 @@ InfoHTML::OutputRoleHeader('恋人陣営');
 <li>矢が競合した場合は抽選が発生し、一組だけが入れ替わる。<br>
   例) A-B・B-C と矢を撃たれた → A-B または B-C のどちらかだけが入れ替わる。
 </li>
-<li><a href="ability.php#possessed">憑依能力者</a>が対象だった場合は交換憑依は発生しない。</li>
+<li><a href="ability.php#possessed_direct">憑依能力者(直接型)</a>が対象だった場合は交換憑依は発生しない。</li>
 <li>他人撃ちをした場合、矢を撃った本人には交換憑依が成立したかどうかは分からない。</li>
 </ol>
+<h4>関連役職</h4>
+<pre>
+<a href="ability.php#possessed">憑依能力者</a>
+</pre>
 <h4>[作成者からのコメント]</h4>
 <pre>
 ラブコメでよくある「中の人が入れ替わってしまう」展開を再現してみました。
