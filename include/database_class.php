@@ -29,7 +29,7 @@ class DB {
     //コンストラクタ用パラメータセット
     $host = DatabaseConfig::HOST;
     try {
-      return self::Initialize(sprintf('mysql:host=%s;dbname=%s', $host, $name));
+      self::Initialize(sprintf('mysql:host=%s;dbname=%s', $host, $name));
     }
     catch (PDOException $e) {
       return self::Output($header, $exit, $e->getMessage() . ': ' . $host);
@@ -43,7 +43,7 @@ class DB {
     }
   }
 
-  // PDO インスタンス初期化
+  //PDO インスタンス初期化
   static function Initialize($dsn){
     $pdo = new PDO($dsn, DatabaseConfig::USER, DatabaseConfig::PASSWORD);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

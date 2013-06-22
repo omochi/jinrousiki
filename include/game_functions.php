@@ -299,12 +299,11 @@ class GameHTML {
   //ログへのリンク生成
   static function GenerateLogLink() {
     $url    = 'old_log.php?room_no=' . DB::$ROOM->id;
-    $br     = Text::BR . Text::LF;
     $header = DB::$ROOM->view_mode ? '[ログ]' : '[全体ログ]';
-    $str    = HTML::GenerateLogLink($url, true, $br . $header);
+    $str    = HTML::GenerateLogLink($url, true, Text::BRLF . $header);
 
     $header = '[役職表示ログ]';
-    return  $str . HTML::GenerateLogLink($url . '&add_role=on', false, $br . $header);
+    return  $str . HTML::GenerateLogLink($url . '&add_role=on', false, Text::BRLF . $header);
   }
 
   //日付と生存者の人数を生成
@@ -369,13 +368,15 @@ class GameHTML {
       }
       else {
 	$live  = '(死亡)';
-	$mouse = ' onMouseover="this.src=' . "'$path'" . '"'; //元のアイコン
+	$mouse = ' onMouseover="this.src=' . "'{$path}'" . '"'; //元のアイコン
 
 	$path = Icon::GetDead(); //アイコンを死亡アイコンに入れ替え
-	$mouse .= ' onMouseout="this.src=' . "'$path'" . '"';
+	$mouse .= ' onMouseout="this.src=' . "'{$path}'" . '"';
       }
 
-      if (DB::$ROOM->personal_mode) $live .= sprintf('<br>(%s)', Winner::Generate($user->id));
+      if (DB::$ROOM->personal_mode) {
+	$live .= Text::BR . sprintf('(%s)', Winner::Generate($user->id));
+      }
 
       //ユーザプロフィールと枠線の色を追加
       //Title 内の改行はブラウザ依存あり (Firefox 系は無効)
@@ -388,18 +389,18 @@ class GameHTML {
       if (ServerConfig::DEBUG_MODE) $str .= sprintf(' (%d)', $id);
 
       if ($open_data) { //ゲーム終了後・死亡後＆霊界役職公開モードなら、役職・ユーザネームも表示
-	$str .= '<br>　(' . str_replace($trip_from, $trip_to, $user->uname); //トリップ対応
+	$str .= Text::BR . '　(' . str_replace($trip_from, $trip_to, $user->uname); //トリップ対応
 
 	//憑依状態なら憑依しているユーザを追加
 	$real_user = DB::$USER->ByReal($id);
 	//交換憑依判定
 	if ($real_user->IsSame($user)) $real_user = DB::$USER->TraceExchange($id);
 	if (! $real_user->IsSame($user) && $real_user->IsLive()) {
-	  $str .= sprintf('<br>[%s]', $real_user->uname);
+	  $str .= Text::BR . sprintf('[%s]', $real_user->uname);
 	}
-	$str .= ')<br>' . $user->GenerateRoleName(); //役職情報を追加
+	$str .= ')' . Text::BR . $user->GenerateRoleName(); //役職情報を追加
       }
-      $str .= sprintf('<br>%s</td>' . Text::LF, $live);
+      $str .= Text::BR . $live . '</td>' . Text::LF;
     }
     return $str . '</tr></table></div>' . Text::LF;
   }
@@ -487,7 +488,7 @@ EOF;
     if (RQ::Get()->list_down)  $url_header .= '&list_down=on';
 
     $title = ServerConfig::TITLE . ' [プレイ]';
-    $anchor_header = Text::BR . Text::LF;
+    $anchor_header = Text::BRLF;
     /*
       Mac に JavaScript でエラーを吐くブラウザがあった当時のコード
       現在の Safari・Firefox では不要なので false でスキップしておく
@@ -611,8 +612,8 @@ EOF;
     if (! DB::$ROOM->IsDay() || DB::$ROOM->revote_count < 1) return false;
 
     if (is_null(DB::$SELF->target_no)) { //投票済みチェック
-      $str = '<div class="revote">%s (%d回%s)</div><br>' . Text::LF;
-      printf($str, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
+      $format = '<div class="revote">%s (%d回%s)</div>' . Text::BRLF;
+      printf($format, Message::$revote, GameConfig::DRAW, Message::$draw_announce);
     }
     echo self::LoadVote(DB::$ROOM->date); //投票結果を出力
   }

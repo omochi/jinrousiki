@@ -3,8 +3,8 @@
 class Info {
   //村の最大人数設定出力
   static function OutputMaxUser() {
-    $format = '%s のどれかを村に登録できる村人の最大人数として設定することができます。<br>' .
-      "ただしゲームを開始するには最低 %s の村人が必要です。";
+    $format = '%s のどれかを村に登録できる村人の最大人数として設定することができます。' .
+      Text::BR . 'ただしゲームを開始するには最低 %s の村人が必要です。';
     $list = sprintf('[ %s人 ]', implode('人・', RoomConfig::$max_user_list));
     $min  = sprintf('[ %d人 ]', min(array_keys(CastConfig::$role_list)));
     printf($format, $list, $min);
@@ -40,8 +40,8 @@ class Info {
 
   //村人置換系オプションのサーバ設定出力
   static function OutputReplaceRole($option) {
-    $format = 'は管理人がカスタムすることを前提にしたオプションです<br>現在の初期設定は全員' .
-      '%sになります';
+    $format = 'は管理人がカスタムすることを前提にしたオプションです' . Text::BR .
+      '現在の初期設定は全員%sになります';
     printf($format, RoleDataHTML::GenerateLink(CastConfig::$replace_role_list[$option]));
   }
 }
@@ -105,7 +105,7 @@ EOF;
   //カテゴリ別ページ内リンク出力
   static function OutputCategory(array $list) {
     foreach ($list as $name) {
-      printf('<a href="#%s">%s</a>'.Text::LF, $name, OptionManager::GenerateCaption($name));
+      printf('<a href="#%s">%s</a>' . Text::LF, $name, OptionManager::GenerateCaption($name));
     }
   }
 
@@ -125,7 +125,7 @@ EOF;
     foreach ($role_list as $role) {
       $str .= RoleDataHTML::GenerateMain($role, 'th');
     }
-    $str .= '</tr>'.Text::LF;
+    $str .= '</tr>' . Text::LF;
     echo $header . $str;
 
     //人数毎の配役を表示
@@ -135,7 +135,7 @@ EOF;
       foreach ($role_list as $role) {
 	$tag .= sprintf('<td>%d</td>', isset($value[$role]) ? $value[$role] : 0);
       }
-      printf('<tr>%s</tr>'.Text::LF, $tag);
+      printf('<tr>%s</tr>' . Text::LF, $tag);
       if ($key == $max) break;
       if ($key % 20 == 0) echo $str;
     }
@@ -146,7 +146,7 @@ EOF;
   static function OutputFestival() {
     $stack  = CastConfig::$festival_role_list;
     $format = '%' . strlen(max(array_keys($stack))) . 's人：';
-    $str    = '<pre>'.Text::LF;
+    $str    = '<pre>' . Text::LF;
     ksort($stack); //人数順に並び替え
     foreach ($stack as $count => $list) {
       $order_stack = array();
@@ -155,18 +155,18 @@ EOF;
       }
       $str .= sprintf($format, $count) . implode('　', $order_stack) . Text::LF;
     }
-    echo $str . '</pre>'.Text::LF;
+    echo $str . '</pre>' . Text::LF;
   }
 
   //オプションリスト表示 (闇鍋モード用)
   static function OutputItem($option, $name, $version) {
-    $format = '<h3 id="%s_%s">%s [%s～]</h3>'.Text::LF;
+    $format = '<h3 id="%s_%s">%s [%s～]</h3>' . Text::LF;
     printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name], $version);
   }
 
   //個別オプション表示 (闇鍋モード用)
   static function OutputItemList($option, array $list) {
-    $format = '<a href="#%s_%s">%s</a>'.Text::LF;
+    $format = '<a href="#%s_%s">%s</a>' . Text::LF;
     foreach ($list as $name) {
       printf($format, $option, $name, GameOptionConfig::${$option.'_list'}[$name]);
     }
@@ -245,11 +245,11 @@ EOF;
     }
 
     foreach ($stack as $class => $list) {
-      $str = sprintf("<h2>%s</h2>\n<ul>\n", $class);
+      $str = sprintf('<h2>%s</h2>' . Text::LF, $class) . '<ul>' . Text::LF;
       foreach ($list as $name => $url) {
-	$str .= sprintf('<li><a target="_blank" href="%s">%s</a></li>'.Text::LF, $url, $name);
+	$str .= sprintf('<li><a target="_blank" href="%s">%s</a></li>' . Text::LF, $url, $name);
       }
-      echo $str . "</ul>\n";
+      echo $str . '</ul>' . Text::LF;
     }
 
     $format = <<<EOF

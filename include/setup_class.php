@@ -163,7 +163,7 @@ class SetupDB {
   //データベース接続 (データベース作成用)
   static function Connect() {
     try {
-      return DB::Initialize(sprintf('mysql:host=%s', DatabaseConfig::HOST));
+      DB::Initialize(sprintf('mysql:host=%s', DatabaseConfig::HOST));
     }
     catch (PDOException $e) {
       HTML::OutputFooter(true);

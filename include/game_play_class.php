@@ -331,12 +331,12 @@ class GamePlay {
     //ゲーム終了後・霊界
     if (DB::$ROOM->IsFinished() || (DB::$ROOM->heaven_mode && DB::$SELF->IsDead())) {
       echo DB::$ROOM->IsFinished() ? DB::$ROOM->GenerateTitleTag() :
-	'<td>&lt;&lt;&lt;幽霊の間&gt;&gt;&gt;</td>'."\n";
+	'<td>&lt;&lt;&lt;幽霊の間&gt;&gt;&gt;</td>' . Text::LF;
 
       //過去シーンのログへのリンク生成
       echo '<td class="view-option">ログ ';
       $header = sprintf('<a %s href="game_log.php%s', $blank, self::SelectURL(array()));
-      $format = $header . '&date=%d&scene=%s">%d(%s)</a>'."\n";
+      $format = $header . '&date=%d&scene=%s">%d(%s)</a>' . Text::LF;
 
       printf($format, 0, 'beforegame', 0, '前');
       if (DB::$ROOM->date > 1) {
@@ -349,7 +349,7 @@ class GamePlay {
 
 	if (DB::$ROOM->heaven_mode) {
 	  if (DB::$ROOM->IsNight()) printf($format, $i, 'day',  $i, '昼');
-	  Text::Output("</td>\n</tr></table>");
+	  Text::Output('</td>' . Text::LF . '</tr></table>');
 	  return;
 	}
       }
@@ -362,13 +362,13 @@ class GamePlay {
 	  printf($format, DB::$ROOM->date, 'night', DB::$ROOM->date, '夜');
 	}
 
-	$format = $header . '&scene=%s">(%s)</a>'."\n";
+	$format = $header . '&scene=%s">(%s)</a>' . Text::LF;
 	printf($format, 'aftergame', '後');
 	printf($format, 'heaven',    '霊');
       }
     }
     else {
-      echo DB::$ROOM->GenerateTitleTag() . '<td class="view-option">'."\n";
+      echo DB::$ROOM->GenerateTitleTag() . '<td class="view-option">' . Text::LF;
       if (DB::$SELF->IsDead() && DB::$ROOM->dead_mode) { //死亡者の場合の、真ん中の全表示地上モード
 	$format = <<<EOF
 <form method="post" action="%s" name="reload_middle_frame" target="middle">
@@ -382,42 +382,47 @@ EOF;
     }
 
     if (DB::$ROOM->IsFinished()) {
-      echo '<br>';
+      echo Text::BR;
     }
     else { //ゲーム終了後は自動更新しない
       GameHTML::OutputAutoReloadLink(self::GetURL(array('auto_reload')));
 
-      $format  = '[%s" class="option-%s">音</a>]'.Text::LF;
+      $format  = '[%s" class="option-%s">音</a>]' . Text::LF;
       $url     = self::GetURL(array('play_sound'));
       $add_url = '&play_sound=on';
       RQ::Get()->play_sound ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
     }
 
     //アイコン表示
-    $format = '[%s" class="option-%s">アイコン</a>]'.Text::LF;
-    $url    = self::GetURL(array('icon'));
-    RQ::Get()->icon ? printf($format, $url, 'on') : printf($format, $url . '&icon=on', 'off');
+    $format  = '[%s" class="option-%s">アイコン</a>]' . Text::LF;
+    $url     = self::GetURL(array('icon'));
+    $add_url = '&icon=on';
+    RQ::Get()->icon ? printf($format, $url, 'on') : printf($format, $url . $ddd_url, 'off');
 
     if (DB::$ROOM->IsFinished()) { //ユーザ名表示
-      $format = '[%s" class="option-%s">名前</a>]'.Text::LF;
-      $url    = self::GetURL(array('name'));
-      RQ::Get()->name ? printf($format, $url, 'on') : printf($format, $url . '&name=on', 'off');
+      $format  = '[%s" class="option-%s">名前</a>]' . Text::LF;
+      $url     = self::GetURL(array('name'));
+      $add_url = '&name=on';
+      RQ::Get()->name ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
     }
 
     //プレイヤーリストの表示位置
-    $url = self::GetURL(array('list_down'));
-    echo $url . sprintf("%sリスト</a>\n", RQ::Get()->list_down ? '">↑' : '&list_down=on">↓');
+    $format  = '%s">%sリスト</a>' . Text::LF;
+    $url     = self::GetURL(array('list_down'));
+    $add_url = '&list_down=on';
+    RQ::Get()->list_down ? printf($format, $url, '↑') : printf($format, $url . $add_url, '↓');
+
 
     if (! DB::$ROOM->IsFinished()) { //オプションリンク
-      $format = '<a %s href="room_manager.php?room_no=%d&describe_room=on">OP</a>'.Text::LF;
+      $format = '<a %s href="room_manager.php?room_no=%d&describe_room=on">OP</a>' . Text::LF;
       printf($format, $blank, DB::$ROOM->id);
     }
 
     //別ページリンク
-    $format = '<a %s href="game_play.php%s">別ページ</a>'.Text::LF;
+    $format = '<a %s href="game_play.php%s">別ページ</a>' . Text::LF;
     printf($format, $blank, self::SelectURL(array('list_down')));
     if (ServerConfig::DEBUG_MODE) {
-      $format = '<a %s href="game_view.php?room_no=%d">観戦</a>'.Text::LF;
+      $format = '<a %s href="game_view.php?room_no=%d">観戦</a>' . Text::LF;
       printf($format, $blank, DB::$ROOM->id);
     }
 
@@ -425,10 +430,10 @@ EOF;
       GameHTML::OutputLogLink();
     }
     elseif (DB::$ROOM->IsBeforegame()) {
-      $format = '<a %s href="user_manager.php%s&user_no=%d">登録情報変更</a>'.Text::LF;
+      $format = '<a %s href="user_manager.php%s&user_no=%d">登録情報変更</a>' . Text::LF;
       printf($format, $blank, self::SelectURL(array()), DB::$SELF->id);
       if (DB::$SELF->IsDummyBoy()) {
-	$format = '<a %s href="room_manager.php?room_no=%d">村オプション変更</a>'.Text::LF;
+	$format = '<a %s href="room_manager.php?room_no=%d">村オプション変更</a>' . Text::LF;
 	printf($format, $blank, DB::$ROOM->id);
       }
     }
@@ -467,10 +472,10 @@ EOF;
 
     switch (DB::$ROOM->scene) {
     case 'beforegame': //開始前の注意を出力
-      echo '<div class="caution">'."\n";
+      echo '<div class="caution">' . Text::LF;
       echo 'ゲームを開始するには全員がゲーム開始に投票する必要があります';
-      echo '<span>(投票した人は村人リストの背景が赤くなります)</span>'."\n";
-      echo '</div>'."\n";
+      echo '<span>(投票した人は村人リストの背景が赤くなります)</span>' . Text::LF;
+      echo '</div>' . Text::LF;
       RoomOption::Output(); //ゲームオプション表示
       break;
 
@@ -500,12 +505,12 @@ EOF;
     elseif (DB::$ROOM->IsPlaying()) {
       if (DB::$ROOM->IsRealTime()) { //リアルタイム制
 	GameTime::GetRealPass($left_time);
-	echo '<td class="real-time"><form name="realtime_form">'."\n";
-	echo '<input type="text" name="output_realtime" size="60" readonly>'."\n";
-	echo '</form></td>'."\n";
+	echo '<td class="real-time"><form name="realtime_form">' . Text::LF;
+	echo '<input type="text" name="output_realtime" size="60" readonly>' . Text::LF;
+	echo '</form></td>' . Text::LF;
       }
       else { //仮想時間制
-	printf("<td>%s%s</td>\n", $time_message, GameTime::GetTalkPass($left_time));
+	printf('<td>%s%s</td>' . Text::LF, $time_message, GameTime::GetTalkPass($left_time));
       }
     }
 
@@ -530,7 +535,7 @@ EOF;
 
     if (! DB::$ROOM->IsPlaying()) return;
 
-    $format = '<div class="system-vote">%s</div>'.Text::LF;
+    $format = '<div class="system-vote">%s</div>' . Text::LF;
     if (DB::$ROOM->IsEvent('wait_morning')) {
       printf($format, Message::$wait_morning);
     }
@@ -543,13 +548,13 @@ EOF;
 	} else {
 	  $voted = '';
 	}
-	$time_format = '<div class="system-sudden-death">%s%s%s</div>'.Text::LF;
+	$time_format = '<div class="system-sudden-death">%s%s%s</div>' . Text::LF;
 	printf($time_format, Message::$sudden_death_time, $time, $voted);
       }
     }
     elseif (DB::$SELF->IsDummyBoy()) {
       $count = self::GetNovotedCount();
-      printf('<div class="system-sudden-death">未投票：%d人</div>'.Text::LF, $count);
+      printf('<div class="system-sudden-death">未投票：%d人</div>' . Text::LF, $count);
     }
 
     if (DB::$SELF->IsDead() && ! DB::$ROOM->IsOpenCast()) {

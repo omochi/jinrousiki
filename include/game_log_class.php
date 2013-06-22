@@ -32,7 +32,7 @@ class GameLog {
     default:
       if (DB::$ROOM->date < RQ::Get()->date ||
 	  (DB::$ROOM->IsDate(RQ::Get()->date) &&
-	   (DB::$ROOM->IsDay() || DB::$ROOM->scene == RQ::Get()->scene))) { //「未来」判定
+	   (DB::$ROOM->IsDay() || DB::$ROOM->scene == RQ::Get()->scene))) { //未来判定
 	HTML::OutputResult($title, $title . '：無効なシーンです');
       }
       DB::$ROOM->last_date = DB::$ROOM->date;
@@ -44,7 +44,6 @@ class GameLog {
 
     //-- ログ出力 --//
     GameHTML::OutputHeader('game_log');
-    $format = '<h1>ログ閲覧 %s</h1>'.Text::LF;
     switch (RQ::Get()->scene) {
     case 'beforegame':
       $scene = '(開始前)';
@@ -66,7 +65,7 @@ class GameLog {
       $scene = '(霊界)';
       break;
     }
-    printf($format, $scene);
+    printf('<h1>ログ閲覧 %s</h1>' . Text::LF, $scene);
 
     if (RQ::Get()->scene == 'heaven') {
       DB::$ROOM->heaven_mode = true; //念のためセット
@@ -80,6 +79,7 @@ class GameLog {
       DB::$SELF->live = 'live';
       RoleHTML::OutputAbility();
     }
+
     Talk::Output();
     if (DB::$ROOM->IsPlaying()) { //プレイ中は投票結果・遺言・死者を表示
       GameHTML::OutputLastWords();
@@ -88,6 +88,7 @@ class GameLog {
     elseif (DB::$ROOM->IsAfterGame()) {
       GameHTML::OutputLastWords(true); //遺言 (昼終了時限定)
     }
+
     if (DB::$ROOM->IsNight()) GameHTML::OutputVote();
     HTML::OutputFooter(true);
   }

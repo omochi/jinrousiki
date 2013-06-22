@@ -128,19 +128,18 @@ class OldLogHTML {
     RoomOption::Load($list);
 
     $title = sprintf(self::TITLE, DB::$ROOM->id, DB::$ROOM->name, $base_title);
-    $br = Text::BR . Text::LF;
 
     $str  = HTML::GenerateHeader($title, 'old_log', true);
     $str .= '<a href="old_log.php">←戻る</a>';
-    $str .= $br;
+    $str .= Text::BRLF;
     $str .= DB::$ROOM->GenerateTitleTag(true);
-    $str .= $br;
+    $str .= Text::BRLF;
     $str .= RoomOption::GenerateImage();
-    $str .= $br;
+    $str .= Text::BRLF;
     $str .= self::DATE_BEFORE;
     for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= sprintf(self::DATE_LINK, $i, $i);
     $str .= self::DATE_AFTER;
-    $str .= $br;
+    $str .= Text::BRLF;
     $str .= GameHTML::GeneratePlayer();
     if (RQ::Get()->role_list) $str .= self::GenerateRoleLink();
     $str .= RQ::Get()->heaven_only ? self::GenerateHeavenLog() : self::GenerateLog();
@@ -479,6 +478,6 @@ EOF;
       $role_stack[] = RoleDataHTML::GenerateSub($role) . count(DB::$USER->role[$role]);
     }
     $str_stack[] = implode(' / ', $role_stack);
-    return implode(Text::BR . Text::LF, $str_stack);
+    return implode(Text::BRLF, $str_stack);
   }
 }

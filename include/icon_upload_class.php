@@ -25,18 +25,19 @@ class IconUpload {
 
     case 'success': //セッション ID 情報を DB から削除
       $url = 'icon_view.php';
-      $str = '登録完了：アイコン一覧のページに飛びます。<br>'. Text::LF .
+      $str = '登録完了：アイコン一覧のページに飛びます。' . Text::BRLF .
 	'切り替わらないなら <a href="%s">ここ</a> 。';
       DB::Connect();
       if (! IconDB::ClearSession(RQ::Get()->icon_no)) {
-	$str .= "<br>\nセッションの削除に失敗しました。";
+	$str .= Text::BRLF . 'セッションの削除に失敗しました。';
       }
       HTML::OutputResult('アイコン登録完了', sprintf($str, $url), $url);
       break;
 
     case 'cancel': //アイコン削除
       //負荷エラー用
-      $str = "サーバが混雑しているため、削除に失敗しました。<br>\n管理者に問い合わせてください。";
+      $str = 'サーバが混雑しているため、削除に失敗しました。' . Text::BRLF .
+	'管理者に問い合わせてください。';
 
       //トランザクション開始
       DB::Connect();
@@ -58,7 +59,7 @@ class IconUpload {
       DB::Disconnect();
 
       $url = 'icon_upload.php';
-      $str = '削除完了：登録ページに飛びます。<br>' . Text::LF .
+      $str = '削除完了：登録ページに飛びます。' . Text::BRLF .
 	'切り替わらないなら <a href="%s">ここ</a> 。';
       HTML::OutputResult('アイコン削除完了', sprintf($str, $url), $url);
       break;
@@ -70,7 +71,8 @@ class IconUpload {
 
     //アップロードされたファイルのエラーチェック
     if (@$_FILES['upfile']['error'][$i] != 0) {
-      $str = "ファイルのアップロードエラーが発生しました。<br>\n再度実行してください。";
+      $str = 'ファイルのアップロードエラーが発生しました。' . Text::BRLF .
+	'再度実行してください。';
       HTML::OutputResult(self::TITLE, $str . self::URL);
     }
     extract(RQ::ToArray()); //引数を展開

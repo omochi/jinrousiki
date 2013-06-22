@@ -238,7 +238,7 @@ EOF;
     }
 
     $header = '<b>前日の夜、%s ';
-    $footer = '</b><br>' . Text::LF;
+    $footer = '</b>' . Text::BRLF;
     foreach (RQ::GetTest()->vote->night as $stack) {
       printf($header, DB::$USER->ByID($stack['user_no'])->GenerateShortRoleName(false, true));
       $target = '';

@@ -1,14 +1,15 @@
 <?php
 //-- テキスト処理クラス --//
 class Text {
-  const BR = '<br>';
-  const LF = "\n";
-  const TR = "</tr>\n<tr>";
+  const BR   = '<br>';
+  const LF   = "\n";
+  const BRLF = "<br>\n";
+  const TR   = "</tr>\n<tr>";
 
   //結合
   static function Concat($stack) {
     $stack = func_get_args();
-    return implode(self::BR . self::LF, $stack);
+    return implode(self::BRLF, $stack);
   }
 
   //出力
