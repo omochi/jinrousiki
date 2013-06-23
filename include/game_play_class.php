@@ -397,7 +397,7 @@ EOF;
     $format  = '[%s" class="option-%s">アイコン</a>]' . Text::LF;
     $url     = self::GetURL(array('icon'));
     $add_url = '&icon=on';
-    RQ::Get()->icon ? printf($format, $url, 'on') : printf($format, $url . $ddd_url, 'off');
+    RQ::Get()->icon ? printf($format, $url, 'on') : printf($format, $url . $add_url, 'off');
 
     if (DB::$ROOM->IsFinished()) { //ユーザ名表示
       $format  = '[%s" class="option-%s">名前</a>]' . Text::LF;
