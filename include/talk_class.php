@@ -62,7 +62,7 @@ class TalkParser {
     case 'system':
       switch ($this->action) {
       case 'MORNING':
-	$this->sentence = Message::$morning_header . $sentence . Message::$morning_footer;
+	$this->sentence = sprintf(Message::$morning, $sentence);
 	return;
 
       case 'NIGHT':

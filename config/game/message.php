@@ -1,64 +1,70 @@
 <?php
 //-- 基本システムメッセージ --//
 class Message {
-  //-- room_manger.php --//
-  //RoomMager::Create() : 村作成
-  //身代わり君のコメント
-  static public $dummy_boy_comment = '僕はおいしくないよ';
+  /* 身代わり君 */
+  static public $dummy_boy            = '◆身代わり君　'; //仮想 GM 発言ヘッダー
+  static public $dummy_boy_comment    = '僕はおいしくないよ'; //コメント
+  static public $dummy_boy_last_words = '僕はおいしくないって言ったのに……'; //遺言
 
-  //身代わり君の遺言
-  static public $dummy_boy_last_words = '僕はおいしくないって言ったのに……';
-
-  //-- user_manager.php --//
-  //UserManager::Entry() : ユーザ登録
+  /* ユーザ登録 */
   //入村メッセージ
-  //static public $entry_user = 'さんが村の集会場にやってきました';
-  static public $entry_user = 'さんが幻想入りしました';
+  //static public $entry_user = ' が村の集会場にやってきました';
+  static public $entry_user = ' が幻想入りしました';
 
-  //-- game_view.php & game_play.php --//
+  /* 特殊通知メッセージ */
   static public $vote_announce = '時間がありません。投票してください。'; //会話の制限時間切れ
-  static public $wait_morning = '待機時間中です。'; //早朝待機制の待機時間中
-  static public $close_cast = '配役隠蔽中です。'; //配役隠蔽通知 (霊界自動公開モード用)
+  static public $wait_morning  = '待機時間中です。'; //早朝待機制の待機時間中
+  static public $close_cast    = '配役隠蔽中です。'; //配役隠蔽通知 (霊界自動公開モード用)
 
-  //-- game_play.php --//
-  //発言数上限
-  static public $say_limit = '文字数または行数が多すぎたので発言できませんでした';
+  /* 投票 */
+  static public $vote_reset = '＜投票がリセットされました　再度投票してください＞'; //投票リセット
+  static public $kick_out   = 'は席をあけわたし、村から去りました'; //Kick 処理
 
-  //GamePlay::CheckSilence() : 沈黙判定
-  static public $silence = 'ほどの沈黙が続いた'; //沈黙で時間経過 (会話で時間経過制)
-  //突然死の警告メッセージ
-  //static public $sudden_death_announce = '投票完了されない方は死して地獄へ堕ちてしまいます';
+  /* 再投票 */
+  static public $revote        = '再投票となりました'; //投票結果
+  static public $draw_announce = '再投票となると引き分けになります'; //引き分け告知
+
+  /* 未投票処理 */
+  //static public $sudden_death_announce = '投票完了されない方は死して地獄へ堕ちてしまいます'; //警告
+  //static public $sudden_death_time     = '突然死になるまで後：'; //期限
+  //static public $sudden_death          = 'は突然お亡くなりになられました'; //突然死処理
   static public $sudden_death_announce = '投票完了されない方はスキマ送りされてしまいます';
-  //static public $sudden_death_time = '突然死になるまで後：'; //突然死発動まで
-  static public $sudden_death_time = 'スキマ送りされるまで後：';
-  //static public $sudden_death = 'さんは突然お亡くなりになられました'; //突然死
-  static public $sudden_death = 'さんは紫に連れ去られました';
+  static public $sudden_death_time     = 'スキマ送りされるまで後：';
+  static public $sudden_death          = 'は紫に連れ去られました';
 
-  //-- game_play.php & game_vote.php --//
-  //投票リセット
-  static public $vote_reset = '＜投票がリセットされました　再度投票してください＞';
+  /* 発言 */
+  static public $say_limit = '文字数または行数が多すぎたので発言できませんでした'; //発言数上限
+  static public $silence   = 'ほどの沈黙が続いた'; //沈黙判定 (会話で時間経過制)
 
-  //-- game_vote.php --//
-  //Vote::AggregateKick() : Kick 処理
-  static public $kick_out = 'さんは席をあけわたし、村から去りました'; //Kick で村から去った人
+  /* 遠吠え・囁き */
+  static public $wolf_howl   = 'アオォーン・・・'; //人狼の遠吠え
+  //static public $common_talk = 'ヒソヒソ・・・'; //共有者の囁き
+  static public $common_talk = 'あーうー・・・あーうー・・・';
+  static public $lovers_talk = 'うふふ・・・うふふ・・・'; //恋人の囁き
+  static public $howling     = 'キィーーン・・・'; //スピーカーの音割れ効果音
 
-  //Vote::AggregateGameStart() : ゲーム開始処理
-  //static public $chaos = '配役隠蔽モードです'; //配役隠蔽通知 (闇鍋用)
-  static public $chaos = '配役隠蔽モードだよ☆カオスを楽しんでね♪';
+  /* 発言置換能力者 */
+  static public $cute_wolf = ''; //不審者・萌系 (空なら人狼の遠吠えになる)
+  //static public $gentleman = "お待ち下さい。\n%sさん、ハンケチーフを落としておりますぞ。";  //紳士
+  //static public $lady      = "お待ちなさい！\n%s、タイが曲がっていてよ。"; //淑女
+  static public $gentleman = "お待ち下さい。\nあぁ……%s様の残り湯、美味にございます……。";
+  static public $lady      = "こんなのがいいの！？\n%s！　そこに直って！　わたくしの足をなめなさい！！";
 
-  //Vote::InsertRandomMessage() : ランダムメッセージ挿入
+  /* シーン切り替え */
+  static public $morning    = '朝日が昇り、%s 日目の朝がやってきました'; //朝
+  static public $night      = '日が落ち、暗く静かな夜がやってきました'; //夜
+  //static public $chaos      = '配役隠蔽モードです'; //配役隠蔽通知 (闇鍋用)
+  static public $chaos      = '配役隠蔽モードだよ☆カオスを楽しんでね♪';
+  static public $skip_night = '白澤の能力で夜が飛ばされました……'; //白澤の能力発動
+
+  /* ランダムメッセージ挿入 */
   //GameConfig::RANDOM_MESSAGE を true にすると、この配列の中身がランダムに表示される
   static public $random_message_list = array();
 
-  //-- game_functions.php --//
-  //GameHTML::OutputRevote() : 再投票アナウンス
-  static public $revote = '再投票となりました'; //投票結果
-  static public $draw_announce = '再投票となると引き分けになります'; //引き分け告知
-
-  //GameHTML::GenerateLastWords() : 遺言の表示
+  /* 遺言 */
   static public $lastwords = '夜が明けると前の日に亡くなった方の遺言書が見つかりました';
 
-  //GameHTML::ParseDead() : 死因の表示
+  /* 死亡メッセージ */
   //static public $vote_killed        = 'は投票の結果処刑されました'; //処刑
   static public $vote_killed        = 'を弾幕ごっこ (投票) の結果ぴちゅーん (処刑) しました';
   static public $blind_vote         = '傘化けの能力で投票結果が隠されました'; //傘化け
@@ -113,7 +119,7 @@ class Message {
   static public $death_note_moved   = 'にデスノートが移動したようです'; //デスノートの移動
   static public $step               = 'で足音が聞こえた…'; //足音
 
-  //花妖精のリスト (A-Z)
+  /* 花妖精のリスト (A-Z) */
   static public $flowered_a = 'の頭の上に松の花が咲きました';
   static public $flowered_b = 'の頭の上に梅の花が咲きました';
   static public $flowered_c = 'の頭の上に桜の花が咲きました';
@@ -141,7 +147,7 @@ class Message {
   static public $flowered_y = 'の頭の上に百合の花が咲きました';
   static public $flowered_z = 'の頭の上に仙人掌の花が咲きました';
 
-  //星妖精のリスト (A-Z)
+  /* 星妖精のリスト (A-Z) */
   static public $constellation_a = 'は昨夜、牡羊座を見ていたようです';
   static public $constellation_b = 'は昨夜、牡牛座を見ていたようです';
   static public $constellation_c = 'は昨夜、双子座を見ていたようです';
@@ -169,7 +175,7 @@ class Message {
   static public $constellation_y = 'は昨夜、鳳凰座を見ていたようです';
   static public $constellation_z = 'は昨夜、南十字座を見ていたようです';
 
-  //道化師のリスト (A-Z)
+  /* 道化師のリスト (A-Z) */
   static public $pierrot_a = 'は昨夜、玉乗りをしていたようです';
   static public $pierrot_b = 'は昨夜、綱渡りをしていたようです';
   static public $pierrot_c = 'は昨夜、火の輪くぐりをしていたようです';
@@ -197,10 +203,9 @@ class Message {
   static public $pierrot_y = 'は昨夜、ブラフに引っかかったようです';
   static public $pierrot_z = 'は昨夜、命乞いの練習をしていたようです';
 
-  //-- talk_class.php --//
-  //TalkParse::Parse() : 会話・システムメッセージ出力
-  static public $objection = ' が「異議」を申し立てました'; //「異議」あり
-  //static public $game_start = 'はゲーム開始投票をしました'; //ゲーム開始投票 (現在は不使用)
+  /* 投票ログ */
+  //static public $game_start        = ' はゲーム開始投票をしました'; //ゲーム開始投票 (現在は不使用)
+  static public $objection         = ' が「異議」を申し立てました'; //「異議」あり
   static public $kick_do           = ' に KICK 投票しました'; //KICK 投票
   static public $vote_do           = ' に処刑投票しました'; //処刑投票
   static public $wolf_eat          = ' に狙いをつけました'; //人狼の投票
@@ -236,28 +241,7 @@ class Message {
   static public $death_note_do     = ' の名前を書きました'; //デスノートの投票
   static public $death_note_not_do = ' はデスノートを使いませんでした'; //デスノートのキャンセル投票
 
-  //特殊メッセージ
-  static public $morning_header = '朝日が昇り '; //朝のヘッダー
-  static public $morning_footer = ' 日目の朝がやってきました'; //朝のフッター
-  static public $night = '日が落ち、暗く静かな夜がやってきました'; //夜
-  static public $skip_night = '白澤の能力で夜が飛ばされました……'; //白澤の能力発動
-  static public $dummy_boy = '◆身代わり君　'; //仮想GMモード用ヘッダー
-
-  //遠吠え・囁き
-  static public $wolf_howl   = 'アオォーン・・・'; //人狼の遠吠え
-  //static public $common_talk = 'ヒソヒソ・・・'; //共有者の囁き
-  static public $common_talk = 'あーうー・・・あーうー・・・'; //共有者の囁き
-  static public $lovers_talk = 'うふふ・・・うふふ・・・'; //恋人の囁き
-  static public $howling     = 'キィーーン・・・'; //スピーカーの音割れ効果音
-
-  //RoleTalk::Convert() : 発言置換系役職
-  static public $cute_wolf = ''; //萌狼・不審者 (空なら人狼の遠吠えになる)
-  //static public $gentleman = "お待ち下さい。\n%sさん、ハンケチーフを落としておりますぞ。";  //紳士
-  static public $gentleman = "お待ち下さい。\nあぁ……%s様の残り湯、美味にございます……。";  //紳士
-  //static public $lady = "お待ちなさい！\n%s、タイが曲がっていてよ。"; //淑女
-  static public $lady = "こんなのがいいの！？\n%s！　そこに直って！　わたくしの足をなめなさい！！"; //淑女
-
-  //RoleHTML::OutputAbility() : 能力の表示
+  /* 能力の表示 */
   static public $ability_dead             = 'アナタは息絶えました・・・'; //死者
   static public $ability_vote             = '処刑する人を選択してください'; //処刑
   static public $ability_wolf_eat         = '喰い殺す人を選択してください'; //人狼
