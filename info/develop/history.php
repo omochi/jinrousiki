@@ -5,7 +5,8 @@ Loader::LoadFile('info_functions');
 InfoHTML::OutputHeader('開発履歴', 1, 'develop_history');
 ?>
 <p>
-Ver. 2.2.0
+Ver. 2.2.0<br>
+<a href="#ver220rc1">RC1</a>
 </p>
 <p>
 <a href="#ver220a1">α1</a>
@@ -26,6 +27,13 @@ Ver. 2.2.0
 <a href="history_2.0.php">2.0</a>
 <a href="history_2.1.php">2.1</a>
 </p>
+
+<h2 id="ver220rc1">Ver. 2.2.0 RC1 (Rev. 848) : 2013/06/23 (Sun) 17:25</h2>
+<ul>
+<li>データキャッシュ機能：ゲーム内：アイコンの表示設定に対応</li>
+<li>データキャッシュ機能：リセット処理とデザインを調整</li>
+<li>初期化処理の最適化</li>
+</ul>
 
 <h2 id="ver220b2">Ver. 2.2.0 β2 (Rev. 838) : 2013/06/09 (Sun) 22:06</h2>
 <ul>
