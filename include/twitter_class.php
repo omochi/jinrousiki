@@ -3,7 +3,7 @@
 class JinrouTwitter {
   const LIMIT  = 140; //制限文字数
   const ENCODE = 'UTF-8'; //文字コード
-  const URL    = 'https://api.twitter.com/1/statuses/update.json'; //送信先 URL
+  const API    = 'https://api.twitter.com/1.1/statuses/update.json'; //Twitter API
   const SHORT  = 'http://tinyurl.com/api-create.php?url='; //短縮 URL
 
   //投稿処理
@@ -25,6 +25,7 @@ class JinrouTwitter {
       }
       if (! self::OverLimit($str . $url, 1)) $str .= ' ' . $url;
     }
+
     if (0 < strlen(TwitterConfig::HASH) && ! self::OverLimit($str . TwitterConfig::HASH, 2)) {
       $str .= sprintf(' #%s', TwitterConfig::HASH);
     }
@@ -32,9 +33,10 @@ class JinrouTwitter {
     //投稿
     $to = new TwitterOAuth(TwitterConfig::KEY_CK, TwitterConfig::KEY_CS,
 			   TwitterConfig::KEY_AT, TwitterConfig::KEY_AS);
-    $response = $to->OAuthRequest(self::URL, 'POST', array('status' => $str));
+    $response = $to->OAuthRequest(self::API, 'POST', array('status' => $str));
 
     if (! ($response === false || strrpos($response, 'error'))) return true;
+
     //エラー処理
     Text::Output('Twitter への投稿に失敗しました。', true);
     Text::p($str, 'メッセージ');
