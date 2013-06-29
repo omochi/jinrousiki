@@ -1,8 +1,9 @@
 <?php
+ini_set('display_errors', 'On');
 error_reporting(E_ALL);
-define('JINRO_ROOT', '../..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 Loader::LoadFile('test_class', 'image_class');
+Loader::LoadRequest('RequestBaseGame', true);
 
 //-- 特殊モード設定 --//
 $vote_view_mode = false; //投票表示モード
@@ -17,8 +18,6 @@ $role_view_list = array(
 );
 
 //-- 仮想村データをセット --//
-Loader::LoadRequest('RequestBaseGame', true);
-
 DevRoom::Initialize(array('name' => '投票テスト村', 'status' => 'playing'));
 RQ::AddTestRoom('game_option', 'not_open_cast');
 RQ::AddTestRoom('game_option', 'open_vote death_note');

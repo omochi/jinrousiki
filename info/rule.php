@@ -1,6 +1,5 @@
 <?php
-define('JINRO_ROOT', '..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 Loader::LoadClass('InfoTime');
 InfoHTML::OutputHeader('ルール', 0, 'rule');
 ?>

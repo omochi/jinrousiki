@@ -32,7 +32,7 @@ EOF;
 
   //フォーマット変換
   private static function Convert($format, $type) {
-    $path = sprintf(self::PATH_FORMAT, JINRO_ROOT, SoundConfig::PATH, SoundConfig::$$type,
+    $path = sprintf(self::PATH_FORMAT, JINROU_ROOT, SoundConfig::PATH, SoundConfig::$$type,
 		    SoundConfig::EXTENSION);
 
     return sprintf($format, self::CLASS_ID, self::CODEBASE_URL, self::CODEBASE_FILE,

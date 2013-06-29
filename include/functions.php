@@ -283,7 +283,7 @@ class HTML {
 EOF;
     $str = sprintf($format, ServerConfig::ENCODE, $title);
     if (is_null($css)) $css = 'action';
-    $str .= self::LoadCSS(sprintf('%s/%s', JINRO_CSS, $css));
+    $str .= self::LoadCSS(sprintf('%s/%s', JINROU_CSS, $css));
     if ($close) $str .= self::GenerateBodyHeader();
     return $str;
   }
@@ -341,7 +341,7 @@ EOF;
 
   //JavaScript 読み込み
   static function LoadJavaScript($file, $path = null) {
-    if (is_null($path)) $path = JINRO_ROOT . '/javascript';
+    if (is_null($path)) $path = JINROU_ROOT . '/javascript';
     return sprintf(self::JS, $path, $file);
   }
 

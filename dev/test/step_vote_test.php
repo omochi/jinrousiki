@@ -1,12 +1,11 @@
 <?php
+ini_set('display_errors', 'On');
 error_reporting(E_ALL);
-define('JINRO_ROOT', '../..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 Loader::LoadFile('test_class', 'image_class');
-
-//-- 仮想村データをセット --//
 Loader::LoadRequest('RequestBaseGame', true);
 
+//-- 仮想村データをセット --//
 DevRoom::Initialize(array('name' => '投票テスト村', 'status' => 'playing'));
 RQ::AddTestRoom('game_option', 'not_open_cast');
 RQ::AddTestRoom('game_option', 'open_vote death_note');

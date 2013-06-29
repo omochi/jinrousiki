@@ -1,6 +1,30 @@
 <?php
 //-- 村作成コントローラー --//
 class RoomManager {
+  //実行処理
+  static function Execute() {
+    if (RQ::Get()->create_room) {
+      Loader::LoadFile('message', 'user_icon_class', 'cache_class', 'twitter_class');
+      RoomManager::Create();
+    }
+    elseif (RQ::Get()->change_room) {
+      Loader::LoadFile('session_class', 'user_class', 'cache_class');
+      RoomManager::Create();
+    }
+    elseif (RQ::Get()->describe_room) {
+      Loader::LoadFile('chaos_config');
+      RoomManager::OutputDescribe();
+    }
+    elseif (RQ::Get()->room_no > 0) {
+      Loader::LoadFile('session_class', 'user_class', 'option_form_class');
+      RoomManager::OutputCreate();
+    }
+    else {
+      Loader::LoadFile('chaos_config');
+      RoomManager::OutputList();
+    }
+  }
+
   //メンテナンス処理
   static function Maintenance() {
     if (ServerConfig::DISABLE_MAINTENANCE) return; //スキップ判定

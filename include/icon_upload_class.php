@@ -9,7 +9,6 @@ class IconUpload {
     if (UserIconConfig::DISABLE) {
       HTML::OutputResult('ユーザアイコンアップロード', '現在アップロードは停止しています');
     }
-    Loader::LoadRequest('RequestIconUpload');
     isset(RQ::Get()->command) ? self::Upload() : self::Output();
   }
 

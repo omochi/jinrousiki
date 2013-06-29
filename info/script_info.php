@@ -1,6 +1,5 @@
 <?php
-define('JINRO_ROOT', '..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 Loader::LoadFile('cache_config', 'message', 'user_icon_class', 'room_option_class');
 Loader::LoadClass('InfoTime');
 InfoHTML::OutputHeader('仕様', 0, 'script_info');

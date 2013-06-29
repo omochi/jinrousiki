@@ -442,7 +442,7 @@ class Room {
 
   //背景設定 CSS タグを生成
   function GenerateCSS() {
-    if (isset($this->scene)) return HTML::LoadCSS(sprintf('%s/game_%s', JINRO_CSS, $this->scene));
+    if (isset($this->scene)) return HTML::LoadCSS(sprintf('%s/game_%s', JINROU_CSS, $this->scene));
   }
 
   //村のタイトルタグを生成

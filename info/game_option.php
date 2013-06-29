@@ -1,6 +1,5 @@
 <?php
-define('JINRO_ROOT', '..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 Loader::LoadFile('cast_config', 'role_data_class', 'room_option_class', 'info_functions');
 InfoHTML::OutputHeader('ゲームオプション', 0, 'game_option');
 ?>

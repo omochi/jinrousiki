@@ -405,6 +405,7 @@ class RequestIconEdit extends RequestBaseIcon {
 //-- icon_upload.php --//
 class RequestIconUpload extends RequestBaseIcon {
   function __construct() {
+    if (Security::CheckValue($_FILES)) die;
     parent::__construct();
     $this->Parse('file', 'intval', array('size'));
     $this->Parse('file', null, array('type', 'tmp_name'));
@@ -420,6 +421,7 @@ class RequestSharedRoom extends RequestBase {
 //-- src/upload.php --//
 class RequestSrcUpload extends RequestBase {
   function __construct() {
+    if (Security::CheckValue($_FILES)) die;
     Text::Encode();
     $this->ParsePostStr('name', 'caption', 'user', 'password');
     $file = new StdClass();

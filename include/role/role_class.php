@@ -97,7 +97,7 @@ class RoleManager {
   }
 
   //ファイルパス取得
-  private static function GetPath($name) { return sprintf(self::PATH, JINRO_INC, $name); }
+  private static function GetPath($name) { return sprintf(self::PATH, JINROU_INC, $name); }
 
   //役職リスト取得
   private static function GetList($type) {

@@ -1652,9 +1652,9 @@ EOF;
   //ヘッダ出力
   private static function OutputHeader() {
     HTML::OutputHeader(ServerConfig::TITLE . ' [投票]', 'game');
-    HTML::OutputCSS(sprintf('%s/game_vote', JINRO_CSS));
+    HTML::OutputCSS(sprintf('%s/game_vote', JINROU_CSS));
     Text::Output('<link rel="stylesheet" id="scene">');
-    $css = empty(DB::$ROOM->scene) ? null : sprintf('%s/game_%s', JINRO_CSS, DB::$ROOM->scene);
+    $css = empty(DB::$ROOM->scene) ? null : sprintf('%s/game_%s', JINROU_CSS, DB::$ROOM->scene);
     HTML::OutputBodyHeader($css);
     $str = <<<EOF
 <a id="game_top"></a>

@@ -1,6 +1,5 @@
 <?php
-define('JINRO_ROOT', '..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 Loader::LoadFile('message', 'info_functions');
 InfoHTML::OutputHeader('詳細な仕様', 0, 'spec');
 ?>

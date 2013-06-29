@@ -1,6 +1,5 @@
 <?php
-define('JINRO_ROOT', '../..');
-require_once(JINRO_ROOT . '/include/init.php');
+require_once('init.php');
 HTML::OutputHeader('新役職情報 - [一覧]', 'new_role');
 HTML::OutputBodyHeader();
 ?>

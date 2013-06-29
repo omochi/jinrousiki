@@ -267,7 +267,7 @@ class ObjectionTest {
 </form></td></tr>
 
 EOF;
-    $image = JINRO_ROOT . '/' . GameConfig::OBJECTION_IMAGE;
+    $image = JINROU_ROOT . '/' . GameConfig::OBJECTION_IMAGE;
     $stack = array(
       'entry'            => '入村',
       'full'             => '定員',

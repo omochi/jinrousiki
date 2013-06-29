@@ -1,8 +1,16 @@
 <?php
 //-- ユーザ登録コントローラー --//
 class UserManager {
+  //実行処理
+  static function Execute() {
+    DB::Connect();
+    Session::Start();
+    RQ::Get()->entry ? UserManager::Entry() : UserManager::Output();
+    DB::Disconnect();
+  }
+
   //ユーザ登録
-  static function Entry() {
+  private static function Entry() {
     extract(RQ::ToArray()); //引数を展開
     $url = sprintf('user_manager.php?room_no=%d', $room_no); //ベースバックリンク
     if ($user_no > 0) $url .= sprintf('&user_no=%d', $user_no); //登録情報変更モード
@@ -192,7 +200,7 @@ class UserManager {
   }
 
   //ユーザ登録画面表示
-  static function Output() {
+  private static function Output() {
     if (RQ::Get()->user_no > 0) { //登録情報変更モード
       $stack = UserDB::Get();
       if ($stack['session_id'] != Session::GetID()) {
