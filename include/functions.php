@@ -305,33 +305,33 @@ EOF;
   }
 
   //ログへのリンク生成
-  static function GenerateLogLink($url, $watch = false, $header = '', $footer = '') {
+  static function GenerateLogLink($url, $watch = false, $header = '', $css = '', $footer = '') {
     $str = <<<EOF
-{$header} <a target="_top" href="{$url}"{$footer}>正</a>
-<a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
-<a target="_top" href="{$url}&heaven_talk=on"{$footer}>霊</a>
-<a target="_top" href="{$url}&reverse_log=on&heaven_talk=on"{$footer}>逆&amp;霊</a>
-<a target="_top" href="{$url}&heaven_only=on"{$footer} >逝</a>
-<a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$footer}>逆&amp;逝</a>
+{$header} <a target="_top" href="{$url}"{$css}>正</a>
+<a target="_top" href="{$url}&reverse_log=on"{$css}>逆</a>
+<a target="_top" href="{$url}&heaven_talk=on"{$css}>霊</a>
+<a target="_top" href="{$url}&reverse_log=on&heaven_talk=on"{$css}>逆&amp;霊</a>
+<a target="_top" href="{$url}&heaven_only=on"{$css} >逝</a>
+<a target="_top" href="{$url}&reverse_log=on&heaven_only=on"{$css}>逆&amp;逝</a>
 EOF;
 
     if ($watch) {
       $str .= <<<EOF
 
-<a target="_top" href="{$url}&watch=on"{$footer}>観</a>
-<a target="_top" href="{$url}&watch=on&reverse_log=on"{$footer}>逆&amp;観</a>
+<a target="_top" href="{$url}&watch=on"{$css}>観</a>
+<a target="_top" href="{$url}&watch=on&reverse_log=on"{$css}>逆&amp;観</a>
 EOF;
     }
-    return $str;
+    return $str . $footer;
   }
 
   //ログへのリンク生成 (観戦モード用)
-  static function GenerateWatchLogLink($url, $header = '', $footer = '') {
+  static function GenerateWatchLogLink($url, $header = '', $css = '', $footer = '') {
     $str = <<<EOF
-{$header} <a target="_top" href="{$url}"{$footer}>正</a>
-<a target="_top" href="{$url}&reverse_log=on"{$footer}>逆</a>
-<a target="_top" href="{$url}&wolf_sight=on"{$footer}>正&amp;狼</a>
-<a target="_top" href="{$url}&wolf_sight=on&reverse_log=on"{$footer}>逆&amp;狼</a>
+{$header} <a target="_top" href="{$url}"{$css}>正</a>
+<a target="_top" href="{$url}&reverse_log=on"{$css}>逆</a>
+<a target="_top" href="{$url}&wolf_sight=on"{$css}>正&amp;狼</a>
+<a target="_top" href="{$url}&wolf_sight=on&reverse_log=on"{$css}>逆&amp;狼</a>{$footer}
 EOF;
     return $str;
   }

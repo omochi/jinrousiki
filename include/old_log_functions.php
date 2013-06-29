@@ -95,11 +95,7 @@ class PageLinkBuilder {
 
 //-- HTML 生成クラス (OldLog 拡張) --//
 class OldLogHTML {
-  const BACK_URL    = "<br>\n<a href=\"%s\">←戻る</a>\n";
-  const TITLE       = '[%d番地] %s - %s';
-  const DATE_BEFORE = "<a href=\"#beforegame\">前</a>\n";
-  const DATE_LINK   = "<a href=\"#date%d\">%d</a>\n";
-  const DATE_AFTER  = "<a href=\"#aftergame\">後</a>\n";
+  const BACK_URL = "<br>\n<a href=\"%s\">←戻る</a>\n";
 
   //指定の部屋番号のログを生成する
   static function Generate() {
@@ -127,19 +123,17 @@ class OldLogHTML {
       'max_user'    => 0);
     RoomOption::Load($list);
 
-    $title = sprintf(self::TITLE, DB::$ROOM->id, DB::$ROOM->name, $base_title);
+    $title = sprintf('[%d番地] %s - %s', DB::$ROOM->id, DB::$ROOM->name, $base_title);
 
     $str  = HTML::GenerateHeader($title, 'old_log', true);
-    $str .= '<a href="old_log.php">←戻る</a>';
-    $str .= Text::BRLF;
-    $str .= DB::$ROOM->GenerateTitleTag(true);
-    $str .= Text::BRLF;
-    $str .= RoomOption::GenerateImage();
-    $str .= Text::BRLF;
-    $str .= self::DATE_BEFORE;
-    for ($i = 1; $i <= DB::$ROOM->last_date; $i++) $str .= sprintf(self::DATE_LINK, $i, $i);
-    $str .= self::DATE_AFTER;
-    $str .= Text::BRLF;
+    $str .= '<a href="old_log.php">←戻る</a>' . Text::BRLF;
+    $str .= DB::$ROOM->GenerateTitleTag(true) . Text::BRLF;
+    $str .= RoomOption::GenerateImage() . Text::BRLF;
+    $str .= '<a href="#beforegame">前</a>' . Text::LF;
+    for ($i = 1; $i <= DB::$ROOM->last_date; $i++) {
+      $str .= sprintf('<a href="#date%d">%d</a>', $i, $i) . Text::LF;
+    }
+    $str .= '<a href="#aftergame">後</a>' . Text::LF . Text::BRLF;
     $str .= GameHTML::GeneratePlayer();
     if (RQ::Get()->role_list) $str .= self::GenerateRoleLink();
     $str .= RQ::Get()->heaven_only ? self::GenerateHeavenLog() : self::GenerateLog();
@@ -194,19 +188,17 @@ class OldLogHTML {
       $builder->set_reverse = $is_reverse;
       $builder->AddOption('reverse', $is_reverse      ? 'on' : 'off');
       $builder->AddOption('watch',   RQ::Get()->watch ? 'on' : 'off');
+      if (RQ::Get()->name) $builder->AddOption('name', RQ::Get()->name);
       $db_no = RQ::Get()->db_no;
       if (is_int($db_no) && $db_no > 0) $builder->AddOption('db_no', $db_no);
     }
 
-    $back_url = RQ::Get()->generate_index ? '../' : './';
-    $img_url  = RQ::Get()->generate_index ? '../' : '';
-
-    $str = HTML::GenerateHeader($title, 'old_log_list', true) . <<<EOF
-<p><a href="{$back_url}">←戻る</a></p>
-<img src="{$img_url}img/old_log_title.jpg"><br>
+    $format_header = <<<EOF
+<p><a href="%s">←戻る</a></p>
+<img src="%simg/old_log_title.jpg"><br>
 <div>
 <table>
-<caption>{$builder->Generate()}</caption>
+<caption>%s</caption>
 <thead>
 <tr><th>村No</th><th>村名</th><th>人数</th><th>日数</th><th>勝</th></tr>
 </thead>
@@ -214,67 +206,88 @@ class OldLogHTML {
 
 EOF;
 
+    $str  = HTML::GenerateHeader($title, 'old_log_list', true);
+    if (RQ::Get()->generate_index) {
+      $str .= sprintf($format_header, '../', '../', $builder->Generate());
+    } else {
+      $str .= sprintf($format_header, './', '', $builder->Generate());
+    }
+
     //全部表示の場合、一ページで全部表示する。それ以外は設定した数毎に表示
+    $format = <<<EOF
+<tr>
+<td class="number" rowspan="3"><a href="game_view.php?room_no=%d">%d</a></td>
+<td class="title%s"><a href="%s">%s 村</a></td>
+<td class="upper">%d %s</td>
+<td class="upper">%d</td>
+<td class="side">%s</td>
+</tr>
+<tr class="list middle">
+<td class="comment side">～%s～</td>
+<td class="time comment" colspan="3">%s</td>
+</tr>
+<tr class="lower list">
+<td class="comment%s">
+%s%s
+</td>
+<td colspan="3">%s</td>
+</tr>
+
+EOF;
+    $format_login = '<a href="login.php?room_no=%d%s">[再入村]</a>';
     $current_time = Time::Get();
     foreach (RoomDataDB::GetFinished($is_reverse) as $room_no) {
-      $ROOM = RoomDataDB::LoadFinished($room_no);
+      DB::$ROOM = RoomDataDB::LoadFinished($room_no);
 
-      $dead      = $ROOM->date == 0 ? ' vanish' : ''; //廃村判定
-      $establish = $ROOM->establish_datetime == '' ? '' :
-	Time::ConvertTimeStamp($ROOM->establish_datetime);
+      $vanish = DB::$ROOM->IsDate(0) ? ' vanish' : ''; //廃村判定
       if (RQ::Get()->generate_index) {
-	$base_url = $ROOM->id . '.html';
+	$base_url = DB::$ROOM->id . '.html';
 	$login    = '';
-	$log_link = '(<a href="' .  $ROOM->id . 'r.html">逆</a>)';
+	$log_link = sprintf('(<a href="%dr.html">逆</a>)', DB::$ROOM->id);
       }
       else {
-	$base_url = 'old_log.php?room_no=' . $ROOM->id;
+	$base_url = 'old_log.php?room_no=' . DB::$ROOM->id;
 	if (is_int(RQ::Get()->db_no) && RQ::Get()->db_no > 0) {
 	  $base_url .= '&db_no=' . RQ::Get()->db_no;
 	}
 	if (RQ::Get()->watch) $base_url .= '&watch=on';
-	$login = $current_time - strtotime($ROOM->finish_datetime) > RoomConfig::KEEP_SESSION ? '' :
-	  '<a href="login.php?room_no=' . $ROOM->id . '"' . $dead . ">[再入村]</a>\n";
+
+	if ($current_time - strtotime(DB::$ROOM->finish_datetime) > RoomConfig::KEEP_SESSION) {
+	  $login = '';
+	} else {
+	  $login = sprintf($format_login, DB::$ROOM->id, $vanish) . Text::LF;
+	}
 
 	if (RQ::Get()->watch) {
-	  $log_link = HTML::GenerateWatchLogLink($base_url, '(') . ' )';
+	  $log_link = HTML::GenerateWatchLogLink($base_url, '(', '', ' )');
 	}
 	else {
-	  $log_link = HTML::GenerateLogLink($base_url, true, '(') . ' )';
+	  $log_link = HTML::GenerateLogLink($base_url, true, '(', '', ' )');
 
-	  $url = $base_url . '&add_role=on';
-	  $log_link .= HTML::GenerateLogLink($url, false, "\n[役職表示] (", $dead) . ' )';
+	  $url    = $base_url . '&add_role=on';
+	  $header = Text::LF . '[役職表示] (';
+	  $log_link .= HTML::GenerateLogLink($url, false, $header, $vanish, ' )');
 	}
       }
+
+      if (DB::$ROOM->establish_datetime == '') {
+	$establish = '';
+      } else {
+	$establish = Time::ConvertTimeStamp(DB::$ROOM->establish_datetime);
+      }
+
       $list = array(
-        'game_option' => $ROOM->game_option,
-	'option_role' => $ROOM->option_role,
-	'max_user'    => $ROOM->max_user);
+        'game_option' => DB::$ROOM->game_option,
+	'option_role' => DB::$ROOM->option_role,
+	'max_user'    => DB::$ROOM->max_user);
       RoomOption::Load($list);
       RoomOption::SetStack();
-      $max_user    = Image::GenerateMaxUser($ROOM->max_user);
-      $game_option = RoomOption::GenerateImage();
-      $winner      = RQ::Get()->watch ? '-' : Image::Winner()->Generate($ROOM->winner);
-      $str .= <<<EOF
-<tr>
-<td class="number" rowspan="3"><a href="game_view.php?room_no={$ROOM->id}">{$ROOM->id}</a></td>
-<td class="title{$dead}"><a href="{$base_url}">{$ROOM->name} 村</a></td>
-<td class="upper">{$ROOM->user_count} {$max_user}</td>
-<td class="upper">{$ROOM->date}</td>
-<td class="side">{$winner}</td>
-</tr>
-<tr class="list middle">
-<td class="comment side">～{$ROOM->comment}～</td>
-<td class="time comment" colspan="3">{$establish}</td>
-</tr>
-<tr class="lower list">
-<td class="comment{$dead}">
-{$login}{$log_link}
-</td>
-<td colspan="3">{$game_option}</td>
-</tr>
 
-EOF;
+      $str .= sprintf($format,
+        DB::$ROOM->id, DB::$ROOM->id, $vanish, $base_url, DB::$ROOM->name,
+        DB::$ROOM->user_count, Image::GenerateMaxUser(DB::$ROOM->max_user), DB::$ROOM->date,
+	RQ::Get()->watch ? '-' : Image::Winner()->Generate(DB::$ROOM->winner),
+        DB::$ROOM->comment, $establish, $vanish, $login, $log_link, RoomOption::GenerateImage());
     }
 
     $str .= <<<EOF
@@ -293,12 +306,12 @@ EOF;
     RQ::Set('reverse', 'off');
     if (RQ::Get()->max_room_no < 1) return false;
     $header = sprintf('../log/%sindex', RQ::Get()->prefix);
-    $footer = '</body></html>'."\n";
+    $footer = '</body></html>' . Text::LF;
     $end_page = ceil((RQ::Get()->max_room_no - RQ::Get()->min_room_no + 1) / OldLogConfig::VIEW);
     for ($i = 1; $i <= $end_page; $i++) {
       RQ::Set('page', $i);
       $index = RQ::Get()->index_no - $i + 1;
-      file_put_contents("{$header}{$index}.html",  self::GenerateList($i) . $footer);
+      file_put_contents($header. $index . '.html', self::GenerateList($i) . $footer);
     }
   }
 
@@ -400,7 +413,6 @@ EOF;
     $id = DB::$ROOM->IsPlaying() ? 'date' . DB::$ROOM->date : DB::$ROOM->scene;
     $builder = new TalkBuilder('talk ' . $table_class, $id);
     if (RQ::Get()->reverse_log) $builder->GenerateTimeStamp();
-    //if (DB::$ROOM->watch_mode) $builder->AddSystem(DB::$ROOM->date . print_r(DB::$ROOM->event, true));
 
     foreach (TalkDB::GetLog($date, $scene) as $talk) {
       switch ($talk->scene) {

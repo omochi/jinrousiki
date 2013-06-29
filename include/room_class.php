@@ -791,7 +791,19 @@ EOF;
 
   //終了した村数を取得
   static function GetFinishedCount() {
-    DB::Prepare('SELECT room_no FROM room WHERE status = ?', array('finished'));
+    if (isset(RQ::Get()->name)) {
+      $query = <<<EOF
+SELECT room_no FROM room INNER JOIN user_entry USING (room_no)
+WHERE status = ? AND (uname LIKE ? OR handle_name LIKE ?)
+EOF;
+      $name = '%' . RQ::Get()->name . '%';
+      $list = array('finished', $name, $name);
+    }
+    else {
+      $query = 'SELECT room_no FROM room WHERE status = ?';
+      $list  = array('finished');
+    }
+    DB::Prepare($query, $list);
     return DB::Count();
   }
 
