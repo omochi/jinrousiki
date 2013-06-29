@@ -67,7 +67,7 @@ RQ::GetTest()->test_users[11]->live = 'live';
 RQ::GetTest()->test_users[12]->role = 'fox death_selected[5]';
 RQ::GetTest()->test_users[12]->live = 'live';
 
-RQ::GetTest()->test_users[13]->role = 'trap_mad lady';
+RQ::GetTest()->test_users[13]->role = 'voodoo_killer lady';
 RQ::GetTest()->test_users[13]->live = 'live';
 
 RQ::GetTest()->test_users[14]->role = 'blue_fox mind_friend[21] death_warrant[6]';
@@ -228,9 +228,9 @@ if ($set_date == 1) { //初日用
     //array('user_no' => 13,	'target_no' => null,	'type' => 'POSSESSED_NOT_DO'),
     //array('user_no' => 13,	'target_no' => 6,	'type' => 'POISON_CAT_DO'),
     //array('user_no' => 13,	'target_no' => null,	'type' => 'POISON_CAT_NOT_DO'),
-    array('user_no' => 13,	'target_no' => 13,	'type' => 'TRAP_MAD_DO'),
+    //array('user_no' => 13,	'target_no' => 13,	'type' => 'TRAP_MAD_DO'),
     //array('user_no' => 13,	'target_no' => null,	'type' => 'TRAP_MAD_NOT_DO'),
-    //array('user_no' => 13,	'target_no' => 11,	'type' => 'VOODOO_KILLER_DO'),
+    array('user_no' => 13,	'target_no' => 3,	'type' => 'VOODOO_KILLER_DO'),
     //array('user_no' => 13,	'target_no' => '12 13 14',	'type' => 'STEP_DO'),
     //array('user_no' => 14,	'target_no' => 18,	'type' => 'CHILD_FOX_DO'),
     //array('user_no' => 14,	'target_no' => 13,	'type' => 'VOODOO_KILLER_DO'),

@@ -857,7 +857,7 @@ class Vote {
     foreach ($stack as $action) {
       if (! isset($vote_data[$action])) $vote_data[$action] = array();
     }
-    //Text::p($vote_data);
+    //Text::p($vote_data, 'VoteData: Fill');
 
     //-- 変数の初期化 --//
     $stack = array('trap', 'trapped', 'snow_trap', 'frostbite', 'guard', 'gatekeeper_guard',
@@ -914,7 +914,7 @@ class Vote {
 	foreach (DB::$USER->rows as $user) {
 	  if (DB::$USER->IsVirtualLive($user->id)) $stack[] = $user->id;
 	}
-	//Text::p($stack, 'random_step');
+	//Text::p($stack, '◆random_step');
 	shuffle($stack);
 	$count = 0;
 	foreach ($stack as $id) {
@@ -1173,7 +1173,7 @@ class Vote {
     //幻系の能力失効処理
     //RoleManager::p($name, "◆Target [{$name}]");
     foreach (array_keys(RoleManager::GetStack($name)) as $id) DB::$USER->ByID($id)->LostAbility();
-    RoleManager::UnsetStack($role);
+    RoleManager::UnsetStack($name);
 
     if (DB::$ROOM->IsDate(1)) {
       //-- コピーレイヤー --//
@@ -1262,7 +1262,7 @@ class Vote {
     if (! DB::$ROOM->IsOption('seal_message')) {  //陰陽師・厄神の成功結果登録
       foreach (array('voodoo_killer', 'anti_voodoo') as $role) {
 	$name = $role . '_success';
-	//RoleManager::p($name, "◆SUCCESS [{$role}]");
+	//RoleManager::p($name, "◆Success [{$role}]");
 	if (RoleManager::ExistStack($name)) RoleManager::GetClass($role)->SaveSuccess();
 	RoleManager::UnsetStack($name);
       }
