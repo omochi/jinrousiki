@@ -9,6 +9,7 @@ class MenuConfig {
 
   static public $add_list = array(
     '式神研系' => array(
+      '真・チルノ鯖'		=> 'http://jinrousiki.sourceforge.jp/cirno/',
       'ミスティア鯖'		=> 'http://www.kuroienogu.net/mystia/',
       '小町鯖'			=> 'http://www48.atpages.jp/onodukakomachi/',
       '輝夜鯖'			=> 'http://www42.atpages.jp/houraisankaguya/',
@@ -19,7 +20,7 @@ class MenuConfig {
 
     '東方ウミガメ系' => array(
       '早苗鯖'		=> 'http://alicegame.dip.jp/sanae/',
-      '椛鯖'		=> 'http://tm010.luna.ddns.vc/',
+      //'椛鯖'		=> 'http://tm010.luna.ddns.vc/',
       'Wiki'		=> 'http://www27.atwiki.jp/umigamejinnro/',
       '掲示板'		=> 'http://jbbs.livedoor.jp/netgame/2829/',
       'チャットルーム'	=> 'http://umigamejinrou.chatx2.whocares.jp/'),
@@ -27,7 +28,6 @@ class MenuConfig {
     '東方ウミガメ系予備' => array('咲夜鯖' => 'http://www7.atpages.jp/izayoi398/'),
 
     'やる夫系' => array(
-      '流石妹者鯖'		=> 'http://www21.atpages.jp/sasugasister/',
       '真紅鯖'			=> 'http://alicegame.dip.jp/shinku/',
       '雛苺テスト鯖'		=> 'http://alicegame.dip.jp/hina/',
       'Wiki'			=> 'http://www37.atwiki.jp/yaruomura/',
@@ -40,13 +40,13 @@ class MenuConfig {
     'やる夫系予備' => array(
       '流石兄弟鯖'	=> 'http://www12.atpages.jp/yaruo/jinro/',
       '流石弟者鯖'	=> 'http://www16.atpages.jp/sasugabros/',
+      '流石妹者鯖'	=> 'http://www21.atpages.jp/sasugasister/',
       '薔薇姉妹鯖'	=> 'http://www13.atpages.jp/yaranai/',
       '水銀鯖'		=> 'http://www13.atpages.jp/suigintou/',
       '金糸雀保管庫'	=> 'http://www15.atpages.jp/kanaria/',
       '翠星石鯖'	=> 'http://alicegame.dip.jp/suisei/',
       '蒼星石テスト鯖'	=> 'http://alicegame.dip.jp/sousei/',
-      '世紀末鯖'	=> 'http://www14.atpages.jp/mmr1/',
-      '平賀鯖'		=> 'http://yarujin.m29.coreserver.jp/hiraga/'),
+      '世紀末鯖'	=> 'http://www14.atpages.jp/mmr1/'),
 
     '鉄村人狼系' => array(
       'バーボンハウス鯖'	=> 'http://bourbonhouse.xsrv.jp/jinro/',
@@ -54,7 +54,7 @@ class MenuConfig {
       'ミストさんテスト鯖'	=> 'http://bourbonhouse.xsrv.jp/test/',
       'Wiki'			=> 'http://www29.atwiki.jp/onmyoutetu-jinro/'),
 
-    '鉄村人狼系予備' => array('旧バーボンハウス鯖' => 'http://www16.atpages.jp/bourbonjinro/'),
+    '鉄村人狼系予備' => array('旧バーボンハウス鯖(跡地)' => 'http://www16.atpages.jp/bourbonjinro/'),
 
     'iM@S系' => array(
       '四条劇場'	=> 'http://takanegm.com/',

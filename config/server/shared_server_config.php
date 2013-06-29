@@ -5,6 +5,20 @@ class SharedServerConfig {
 
   //表示する他のサーバのリスト
   static public $server_list = array(
+    'cirno' => array('name' => '真・チルノ鯖',
+		      'url' => 'http://jinrousiki.sourceforge.jp/cirno/',
+		      'encode' => 'UTF-8',
+		      'separator' => '<!-- atpages banner tag -->',
+		      'footer' => '</a><br>',
+		      'disable' => false),
+
+    'mystia' => array('name' => 'ミスティア鯖',
+		   'url' => 'http://www.kuroienogu.net/mystia/',
+		   'encode' => 'UTF-8',
+		   'separator' => '',
+		   'footer' => '',
+		   'disable' => false),
+
     'kaguya' => array('name' => '輝夜鯖',
 		      'url' => 'http://www42.atpages.jp/houraisankaguya/',
 		      'encode' => 'UTF-8',
@@ -12,27 +26,20 @@ class SharedServerConfig {
 		      'footer' => '</a><br>',
 		      'disable' => false),
 
-    'eva' => array('name' => 'Eva 鯖',
-		   'url' => 'http://jinrou.kuroienogu.net/',
-		   'encode' => 'EUC-JP',
-		   'separator' => '',
-		   'footer' => '</a><br>',
-		   'disable' => true),
-
     'sanae' => array('name' => '早苗鯖',
 		     'url' => 'http://alicegame.dip.jp/sanae/',
 		     'encode' => 'UTF-8',
 		     'separator' => '',
 		     'footer' => '',
 		     'disable' => false),
-
+    /*
     'momiji' => array('name' => '椛鯖',
 		     'url' => 'http://tm010.luna.ddns.vc/',
 		     'encode' => 'UTF-8',
 		     'separator' => '',
 		     'footer' => '',
 		     'disable' => false),
-
+    */
     'suisei' => array('name' => '翠星石鯖',
 		      'url' => 'http://alicegame.dip.jp/suisei/',
 		      'encode' => 'UTF-8',
@@ -47,7 +54,7 @@ class SharedServerConfig {
 		      'footer' => '',
 		      'disable' => false),
 
-    'shink' => array('name' => '真紅',
+    'shink' => array('name' => '真紅鯖',
 		      'url' => 'http://alicegame.dip.jp/shinku/',
 		      'encode' => 'UTF-8',
 		      'separator' => '',
@@ -95,5 +102,5 @@ class SharedServerConfig {
 		     'separator' => '<!-- atpages banner tag -->',
 		     'footer' => '</a><br>',
 		     'disable' => false)
-			      );
+				     );
 }
