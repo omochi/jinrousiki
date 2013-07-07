@@ -31,8 +31,10 @@ class GameOptionConfig {
 
   //-- 身代わり君設定 --//
   static $dummy_boy_enable = true; //初日の夜は身代わり君
-  //身代わり君のデフォルト ['':身代わり君無し / 'on':身代わり君有り / 'gm_login': GM有り ]
+  //身代わり君のデフォルト ['':身代わり君無し / 'on':身代わり君有り / 'gm_login': GM 有り ]
   static $default_dummy_boy = 'on';
+
+  static $gm_login_enable = true; //GM 有り
 
   static $gerd_enable  = true; //ゲルト君モード
   static $default_gerd = false;

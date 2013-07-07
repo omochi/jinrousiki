@@ -147,6 +147,7 @@ abstract class SelectorRoomOptionItem extends RoomOptionItem {
 	}
       }
     }
+
     return $this->item_list;
   }
 
