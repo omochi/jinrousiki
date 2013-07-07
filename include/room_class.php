@@ -447,12 +447,11 @@ class Room {
 
   //村のタイトルタグを生成
   function GenerateTitleTag($log = false) {
-    if ($log) {
-      $format = '%s村 [%d番地]<br>～%s～';
-    } else {
-      $format = '<td class="room"><span>%s村</span>　[%d番地]<br>～%s～</td>' . Text::LF;
-    }
-    return sprintf($format, $this->name, $this->id, $this->comment);
+    $format = '<%s class="room"><span class="room-name">%s村</span>　[%d番地]' . Text::BR .
+      '<span class="room-comment">～%s～</span></%s>' . Text::LF;
+    $tag = $log ? 'span' : 'td';
+
+    return sprintf($format, $tag, $this->name, $this->id, $this->comment, $tag);
   }
 }
 
@@ -542,7 +541,7 @@ class RoomDB {
   static function UpdateOvertimeAlert($bool = false) {
     if (DB::$ROOM->test_mode) return true;
     $format = <<<EOF
-UPDATE room SET overtime_alert = %s, last_update_time = UNIX_TIMESTAMP()  WHERE room_no = ?
+UPDATE room SET overtime_alert = %s, last_update_time = UNIX_TIMESTAMP() WHERE room_no = ?
 EOF;
     DB::Prepare(sprintf($format, $bool ? 'TRUE' : 'FALSE'), array(DB::$ROOM->id));
     return DB::FetchBool();
