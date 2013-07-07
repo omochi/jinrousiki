@@ -18,8 +18,8 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
     if (is_null(RQ::Get()->{$this->name})) return false;
 
     $post = RQ::Get()->{$this->name};
-    foreach ($this->form_list as $option => $value) {
-      if ($post == $value) {
+    foreach ($this->form_list as $option => $form_value) {
+      if ($post == $form_value) {
 	RQ::Set($option, true);
 	array_push(RoomOption::${$this->group}, $option);
 	break;
@@ -28,14 +28,23 @@ class Option_dummy_boy_selector extends SelectorRoomOptionItem {
   }
 
   function GetItem() {
-    $stack = array(''         => new Option_no_dummy_boy(),
-		   'on'       => OptionManager::GetClass('dummy_boy'),
-		   'gm_login' => OptionManager::GetClass('gm_login'));
-    foreach ($stack as $key => $item) {
-      $item->form_name  = $this->form_name;
-      $item->form_value = $key;
+    $stack = array('' => new Option_no_dummy_boy());
+    foreach ($this->form_list as $option => $form_value) {
+      $item = OptionManager::GetClass($option);
+      if ($item->enable) $stack[$form_value] = $item;
     }
-    if (isset($stack[$this->value])) $stack[$this->value]->value = true;
+
+    foreach ($stack as $form_value => $item) {
+      $item->form_name  = $this->form_name;
+      $item->form_value = $form_value;
+    }
+
+    if (array_key_exists($this->value, $stack)) { //チェック位置判定
+      $stack[$this->value]->value = true;
+    } else {
+      $stack['']->value = true;
+    }
+
     return $stack;
   }
 

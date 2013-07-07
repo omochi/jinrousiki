@@ -1,7 +1,6 @@
 <?php
 //-- オプション入力画面表示クラス --//
 class OptionForm {
-  const SEPARATOR = "  <tr><td colspan=\"2\"><hr></td></tr>\n";
   const TEXTBOX = '<input type="%s" name="%s" id="%s" size="%d" value="%s">%s';
   const TEXTBOX_EXPLAIN = ' <span class="explain">%s</span>';
   const CHECKBOX = '<input type="%s" id="%s" name="%s" value="%s"%s> <span class="explain">%s</span>';
@@ -37,13 +36,14 @@ class OptionForm {
   static function Output() {
     $class = '';
     foreach (self::$order as $group => $name) {
-      if (! is_int($group)) $class = sprintf(' class="%s"', $group);
+      if (! is_int($group)) $class = sprintf(' class="%s"', $group); //class 切り替え
       is_null($name) ? self::GenerateSeparator($group) : self::Generate($name, $class);
     }
+
     if (count(self::$javascript) > 0) {
-      echo "<script type=\"text/javascript\">\n<!--\n";
+      Text::Output("<script type=\"text/javascript\">\n<!--");
       foreach (self::$javascript as $code) Text::Output($code);
-      echo "//-->\n</script>\n";
+      Text::Output("//-->\n</script>");
     }
   }
 
@@ -51,6 +51,7 @@ class OptionForm {
   private static function Generate($name, $class) {
     $item = OptionManager::GetClass($name);
     if (! $item->enable || ! isset($item->type)) return;
+
     switch ($item->type) {
     case 'textbox':
     case 'password':
@@ -74,8 +75,9 @@ class OptionForm {
       $str = self::GenerateGroup($item);
       break;
     }
+
     $format = <<<EOF
-   <tr%s>
+  <tr%s>
     <td class="title"><label for="%s">%s：</label></td>
     <td>%s</td>
   </tr>
@@ -86,20 +88,9 @@ EOF;
 
   //境界線生成
   private static function GenerateSeparator($group) {
-    print(self::SEPARATOR);
+    Text::Output('  <tr><td colspan="2"><hr></td></tr>');
     if (OptionManager::$change) return;
-    $format = <<<EOF
-   <tr class="%s" id="%s_on">
-    <td class="title"><label onClick="toggle_option_display('%s', true)">%s</label></td>
-    <td onClick="toggle_option_display('%s', true)"><a href="javascript:void(0)">折り畳む</a></td>
-  </tr>
 
-   <tr id="%s_off">
-    <td class="title"><label onClick="toggle_option_display('%s', false)">%s</label></td>
-    <td onClick="toggle_option_display('%s', false)"><a href="javascript:void(0)">展開する</a></td>
-  </tr>
-
-EOF;
     switch ($group) {
     case 'base':
       $name = '基本オプション';
@@ -129,6 +120,19 @@ EOF;
     default:
       return;
     }
+
+    $format = <<<EOF
+   <tr class="%s" id="%s_on">
+     <td class="title"><label onClick="toggle_option_display('%s', true)">%s</label></td>
+     <td onClick="toggle_option_display('%s', true)"><a href="javascript:void(0)">折り畳む</a></td>
+  </tr>
+
+   <tr id="%s_off">
+     <td class="title"><label onClick="toggle_option_display('%s', false)">%s</label></td>
+     <td onClick="toggle_option_display('%s', false)"><a href="javascript:void(0)">展開する</a></td>
+  </tr>
+
+EOF;
     printf($format, $group, $group, $group, $name, $group,
 	   $group, $group, $name, $group);
   }
@@ -138,6 +142,7 @@ EOF;
     $size  = sprintf('%s_input', $item->name);
     $str   = $item->GetExplain();
     $value = OptionManager::$change ? DB::$ROOM->{array_pop(explode('_', $item->name))} : null;
+
     return sprintf(self::TEXTBOX, $item->type, $item->name, $item->name, RoomConfig::$$size,
 		   $value, isset($str) ? sprintf(self::TEXTBOX_EXPLAIN, $str) : '');
   }
@@ -145,6 +150,7 @@ EOF;
   //チェックボックス生成
   private static function GenerateCheckbox(CheckRoomOptionItem $item) {
     $footer = isset($item->footer) ? $item->footer : sprintf('(%s)', $item->GetExplain());
+
     return sprintf(self::CHECKBOX, $item->type, $item->name, $item->form_name, $item->form_value,
 		   $item->value ? ' checked' : '', Text::Line($footer));
   }
@@ -160,7 +166,8 @@ EOF;
     }
 
     $footer = sprintf(self::REALTIME, Text::Line($item->GetExplain()),
-		      $item->name,  $day, $item->name, $night);
+		      $item->name, $day, $item->name, $night);
+
     return sprintf(self::CHECKBOX, 'checkbox', $item->name, $item->name, $item->form_value,
 		   $item->value ? ' checked' : '', $footer);
   }
@@ -174,6 +181,10 @@ EOF;
       $str .= sprintf(self::SELECTOR, $code, $code == $item->value ? ' selected' : '', $label);
     }
     $explain = Text::Line($item->GetExplain());
+    if (! OptionManager::$change && isset($item->javascript)) {
+      self::$javascript[] = $item->javascript;
+    }
+
     $format = <<<EOF
 <select id="%s" name="%s"%s>
 <optgroup label="%s">
@@ -181,16 +192,14 @@ EOF;
 </select>
 <span class="explain">(%s)</span>
 EOF;
-    if (! OptionManager::$change && isset($item->javascript)) {
-      self::$javascript[] = $item->javascript;
-    }
+
     return sprintf($format, $item->name, $item->form_name, $item->on_change, $item->label,
 		   $str, $explain);
   }
 
   //グループ生成
   private static function GenerateGroup(RoomOptionItem $item) {
-    $str  = '';
+    $str = '';
     foreach ($item->GetItem() as $child) {
       $type = $child->type;
       if (! empty($type)) {
@@ -199,9 +208,10 @@ EOF;
 	  $str .= self::GenerateCheckbox($child);
 	  break;
 	}
-	$str .= "<br>\n";
+	$str .= Text::BRLF;
       }
     }
+
     return $str;
   }
 }
