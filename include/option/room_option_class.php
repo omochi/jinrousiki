@@ -28,6 +28,7 @@ class RoomOption {
   static function Load(array $list = array()) {
     if (count($list) < 1) $list = RoomDB::GetOption();
     extract($list);
+    self::$stack       = array();
     self::$game_option = $game_option;
     self::$role_option = $option_role;
     self::$max_user    = $max_user;
