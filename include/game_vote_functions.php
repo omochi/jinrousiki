@@ -493,7 +493,6 @@ class Vote {
     }
     if (DB::$ROOM->test_mode) return true;
 
-    if (CacheConfig::ENABLE) DocumentCacheDB::Reset();
     RoomDB::UpdateTime(); //最終書き込み時刻を更新
     Winner::Check(); //配役時に勝敗が決定している可能性があるので勝敗判定を行う
     return true;
@@ -1373,7 +1372,6 @@ class Vote {
       DB::$ROOM->Talk(Message::$vote_reset);
 
       RoomDB::UpdateVoteCount(); //投票リセット処理
-      if (CacheConfig::ENABLE) DocumentCacheDB::Reset(); //キャッシュリセット処理
     }
     return $vote_count;
   }

@@ -405,7 +405,6 @@ class Room {
     if ($this->test_mode) return true;
 
     RoomDB::UpdateScene();
-    if (CacheConfig::ENABLE) DocumentCacheDB::Reset();
     return $this->Talk('', 'NIGHT'); //夜がきた通知
   }
 
@@ -417,7 +416,6 @@ class Room {
     RoomDB::UpdateScene(true);
     $this->Talk($this->date, 'MORNING'); //夜が明けた通知
     RoomDB::UpdateTime(); //最終書き込みを更新
-    if (CacheConfig::ENABLE) DocumentCacheDB::Reset();
     return Winner::Check(); //勝敗のチェック
   }
 

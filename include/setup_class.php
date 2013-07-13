@@ -120,7 +120,7 @@ class JinrouSetup {
   private static function Reset($table) {
     switch ($table) {
     case 'document_cache':
-      if (self::IsRevision(792)) self::DropTable($table);
+      if (self::IsRevision(792) || self::IsRevision(863)) self::DropTable($table);
       break;
     }
   }
@@ -297,7 +297,8 @@ EOF;
 
     case 'document_cache':
       return <<<EOF
-room_no INT DEFAULT 0, name CHAR(32) NOT NULL, content MEDIUMBLOB, expire INT NOT NULL,
+room_no INT DEFAULT 0, name CHAR(32) NOT NULL, content MEDIUMBLOB,
+  expire INT NOT NULL, hash CHAR(32),
 INDEX document_cache_index(room_no, name),
 INDEX expire(expire)
 EOF;
