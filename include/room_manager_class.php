@@ -226,7 +226,6 @@ class RoomManager {
       DB::$ROOM->TalkBeforeGame($str, DB::$SELF->uname, DB::$SELF->handle_name, DB::$SELF->color);
 
       RoomDB::UpdateVoteCount(); //投票リセット処理
-      if (CacheConfig::ENABLE) DocumentCacheDB::Reset(); //キャッシュリセット処理
       DB::Commit();
 
       $str = <<<EOF
