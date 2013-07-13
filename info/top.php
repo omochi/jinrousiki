@@ -17,6 +17,8 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 <h2>新規実装 / 仕様変更</h2>
 <ul>
 <li>初期化処理を最適化</li>
+<li>データキャッシュ機能：リセット判定を再設計</li>
+<li>データベース構造(カラムの型)を最適化</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
