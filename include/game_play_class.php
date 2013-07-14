@@ -122,7 +122,8 @@ class GamePlay {
     } else {
       $cache_type = 'talk_play';
       if (! DB::$ROOM->IsPlaying() && DocumentCache::Enable($cache_type)) {
-	$cache_name = 'game_play/talk' . (RQ::Get()->icon ? '_icon' : '');
+	$cache_name = 'game_play/talk' . (RQ::Get()->icon ? '_icon' : '') .
+	  (RQ::Get()->name ? '_name' : '');
 	DocumentCache::Load($cache_name, CacheConfig::TALK_PLAY_EXPIRE);
 	$filter = DocumentCache::GetTalk($update_talk);
 	DocumentCache::Save($filter, true, $update_talk);
