@@ -5,6 +5,10 @@ Loader::LoadFile('info_functions');
 InfoHTML::OutputHeader('開発履歴', 1, 'develop_history');
 ?>
 <p>
+Ver. 2.2.x<br>
+<a href="#ver221">1</a>
+</p>
+<p>
 Ver. 2.2.0<br>
 <a href="#ver220rc1">RC1</a>
 <a href="#ver220">Release</a>
@@ -28,6 +32,12 @@ Ver. 2.2.0<br>
 <a href="history_2.0.php">2.0</a>
 <a href="history_2.1.php">2.1</a>
 </p>
+
+<h2 id="ver221">Ver. 2.2.1 (Rev. 880) : 2013/07/15 (Mon) 03:00</h2>
+<ul>
+<li>データキャッシュ機能：リセット判定を再設計</li>
+<li>憑依+恋人後追い処理の仕様変更</li>
+</ul>
 
 <h2 id="ver220">Ver. 2.2.0 (Rev. 861) : 2013/06/30 (Sun) 01:00</h2>
 <ul>

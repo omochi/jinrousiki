@@ -7,18 +7,16 @@ This server is Japanese only. -&gt; <a href="http://sourceforge.jp/projects/jinr
 </font>
 
 <h1>TOPIC</h1>
-<h2>Ver. 2.2.0 RC1 アップロード (2013/06/23 (Sun) 17:25) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/59041/">ダウンロード</a> (SourceForge)</h2>
+<h2>Ver. 2.2.1 アップロード (2013/07/15 (Mon) 03:00) → <a href="http://sourceforge.jp/projects/jinrousiki/releases/59131/">ダウンロード</a> (SourceForge)</h2>
 <ul>
-  <!-- <li>→ <a href="info/develop/debug.php#ver150b15">デバッグ情報</a> (2011/11/06 (Sun) 04:20)</li> -->
-<li>データキャッシュ機能：ゲーム内：アイコンの表示設定に対応</li>
-<li>データキャッシュ機能：リセット処理とデザインを調整</li>
-<li>初期化処理の最適化</li>
+<li>データキャッシュ機能：リセット判定を再設計</li>
+<li>憑依+恋人後追い処理の仕様変更</li>
 </ul>
 
 <h1>開発状況</h1>
 <h2>新規実装 / 仕様変更</h2>
 <ul>
-<li>Twitter API 1.1 に対応</li>
+<li>なし</li>
 </ul>
 
 <h2>現在作成中 / 公開テスト待ち</h2>
