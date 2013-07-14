@@ -26,12 +26,22 @@ class Role_possessed_wolf extends Role_wolf {
   //憑依処理
   function Possessed() {
     $possessed_date = DB::$ROOM->date + 1; //憑依する日を取得
+    $followed_list  = null; //恋人後追いリスト
     foreach ($this->GetStack('possessed') as $id => $target_id) {
       $user    = DB::$USER->ByID($id); //憑依者
       $target  = DB::$USER->ByID($target_id); //憑依予定先
       $virtual = $user->GetVirtual(); //現在の憑依先
       if (! isset($user->possessed_reset))  $user->possessed_reset  = null;
       if (! isset($user->possessed_cancel)) $user->possessed_cancel = null;
+
+      // 憑依成立している恋人なら、後追いが発生していないか確認する
+      if (! $user->possessed_reset && ! $user->possessed_cancel && $user->IsLovers()) {
+	if (is_null($followed_list)) {
+	  $followed_list = RoleManager::GetClass('lovers')->Followed(false, true);
+	}
+
+	if (in_array($user->id, $followed_list)) $user->possessed_cancel = true;
+      }
 
       if ($user->IsDead(true)) { //憑依者死亡
 	if (isset($target->id)) {
